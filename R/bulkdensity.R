@@ -331,6 +331,374 @@ sptf_bd10 <- function(A_C_OF) {
 }
 
 
+#' Calculate the bulk density given the pedotransferfunction of Federer et al. (1993)
+#'
+#' @param A_SOM_LOI (numeric) The percentage organic matter in the soil (\%).
+#'
+#' @import data.table
+#' 
+#' @references Federer et al. (1993) The organic fraction - bulk density relationship and the expression of nutrient content in forest soils.
+#'
+#' @export
+sptf_bd11 <- function(A_SOM_LOI) {
+  
+  # Check input
+  checkmate::assert_numeric(A_SOM_LOI, lower = 0, upper = 100, any.missing = FALSE)
+  
+  # Collect data into a table
+  dt <- data.table(A_SOM_LOI = A_SOM_LOI, value = NA_real_)
+  
+  # estimate soil density in Mg m-3 = ton m-3
+  dt[, value := 0.111 * 1.450/(1.450 * A_SOM_LOI/100 + 0.111 * (1-A_SOM_LOI/100))]
+  
+  # convert to kg / m3
+  dt[, value := value * 1000]
+  
+  # return value
+  value <- dt[, value]
+  
+  # return value
+  return(value)
+  
+}
+
+#' Calculate the bulk density given the pedotransferfunction of Tamminen & Starr (1994)
+#'
+#' @param A_SOM_LOI (numeric) The percentage organic matter in the soil (\%).
+#'
+#' @import data.table
+#' 
+#' @references Tamminen & Starr (1994) Bulk density of forested mineral soils.
+#'
+#' @export
+sptf_bd12 <- function(A_SOM_LOI) {
+  
+  # Check input
+  checkmate::assert_numeric(A_SOM_LOI, lower = 0, upper = 100, any.missing = FALSE)
+  
+  # Collect data into a table
+  dt <- data.table(A_SOM_LOI = A_SOM_LOI, value = NA_real_)
+  
+  # estimate soil density in Mg m-3 = ton m-3
+  dt[, value := 1.565 - 0.2298 * A_SOM_LOI^0.5]
+  
+  # convert to kg / m3
+  dt[, value := value * 1000]
+  
+  # return value
+  value <- dt[, value]
+  
+  # return value
+  return(value)
+  
+}
+
+#' Calculate the bulk density given the pedotransferfunction of Tamminen & Starr (1994)
+#'
+#' @param A_SOM_LOI (numeric) The percentage organic matter in the soil (\%).
+#'
+#' @import data.table
+#' 
+#' @references Tamminen & Starr (1994) Bulk density of forested mineral soils.
+#'
+#' @export
+sptf_bd13 <- function(A_SOM_LOI) {
+  
+  # Check input
+  checkmate::assert_numeric(A_SOM_LOI, lower = 0, upper = 100, any.missing = FALSE)
+  
+  # Collect data into a table
+  dt <- data.table(A_SOM_LOI = A_SOM_LOI, value = NA_real_)
+  
+  # estimate soil density in Mg m-3 = ton m-3
+  dt[, value := 1.735 - 0.2678* A_SOM_LOI^0.5]
+  
+  # convert to kg / m3
+  dt[, value := value * 1000]
+  
+  # return value
+  value <- dt[, value]
+  
+  # return value
+  return(value)
+  
+}
+
+
+#' Calculate the bulk density given the pedotransferfunction of Tomasalla & Hodnett (1998).
+#'
+#' @param A_C_OF (numeric) The fraction organic carbon in the soil (g / kg).
+#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
+#' @param A_SILT_MI (numeric) The silt content of the soil (\%).
+#'
+#' @import data.table
+#' 
+#' @references Tomasalla & Hodnett (1998) Estimating soil water retention characteristics from limited data in Brazilian Amazonia.
+#'
+#' @export
+sptf_bd14 <- function(A_C_OF, A_CLAY_MI, A_SILT_MI) {
+  
+  # Check input
+  arg.length <- max(length(A_SOM_LOI), length(A_CLAY_MI),length(A_SILT_MI))
+  checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000, any.missing = FALSE,len = arg.length)
+  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
+  checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
+  
+  # Collect data into a table (set in units %)
+  dt <- data.table(A_C_OF = A_C_OF * 0.1, 
+                   A_CLAY_MI = A_CLAY_MI,
+                   A_SILT_MI = A_SILT_MI,
+                   value = NA_real_)
+  
+  # estimate soil density in Mg m-3 = ton m-3
+  dt[, value := 1.578 - 0.054 * A_C_OF - 0.006 * A_SILT_MI - 0.004 * A_CLAY_MI]
+  
+  # convert to kg / m3
+  dt[, value := value * 1000]
+  
+  # return value
+  value <- dt[, value]
+  
+  # return value
+  return(value)
+  
+}
+
+#' Calculate the bulk density given the pedotransferfunction of Bernoux et al. (1998)
+#'
+#' @param A_C_OF (numeric) The fraction organic carbon in the soil (g / kg).
+#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
+#'
+#' @import data.table
+#' 
+#' @references Bernoux et al. (1998) Bulk Densities of Brazilian Amazon Soils Related to Other Soil Properties
+#'
+#' @export
+sptf_bd15 <- function(A_C_OF, A_CLAY_MI) {
+  
+  # Check input
+  arg.length <- max(length(A_SOM_LOI), length(A_CLAY_MI))
+  checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000, any.missing = FALSE,len = arg.length)
+  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
+  
+  # Collect data into a table (set in units %)
+  dt <- data.table(A_C_OF = A_C_OF * 0.1, 
+                   A_CLAY_MI = A_CLAY_MI,
+                   A_SILT_MI = A_SILT_MI,
+                   value = NA_real_)
+  
+  # estimate soil density in Mg m-3 = ton m-3
+  dt[, value := 1.398 - 0.042 * A_C_OF - 0.0047 * A_CLAY_MI]
+  
+  # convert to kg / m3
+  dt[, value := value * 1000]
+  
+  # return value
+  value <- dt[, value]
+  
+  # return value
+  return(value)
+  
+}
+
+#' Calculate the bulk density given the pedotransferfunction of Post & Kwon (2000)
+#'
+#' @param A_SOM_LOI (numeric) The percentage organic matter in the soil (\%).
+#'
+#' @import data.table
+#' 
+#' @references Post & Kwon (2000) Soil carbon sequestration and land-use change: processes and potential
+#'
+#' @export
+sptf_bd16 <- function(A_SOM_LOI) {
+  
+  # Check input
+  checkmate::assert_numeric(A_SOM_LOI, lower = 0, upper = 100, any.missing = FALSE)
+  
+  # Collect data into a table
+  dt <- data.table(A_SOM_LOI = A_SOM_LOI, value = NA_real_)
+  
+  # estimate soil density in Mg m-3 = ton m-3
+  dt[, value := 0.244 * 1.640 / (1.640 * A_SOM_LOI/100 + 0.244 * (1 - A_SOM_LOI/100))]
+  
+  # convert to kg / m3
+  dt[, value := value * 1000]
+  
+  # return value
+  value <- dt[, value]
+  
+  # return value
+  return(value)
+  
+}
+
+
+#' Calculate the bulk density given the pedotransferfunction of Leonaviciute (2000).
+#'
+#' @param A_C_OF (numeric) The fraction organic carbon in the soil (g / kg).
+#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
+#' @param A_SILT_MI (numeric) The silt content of the soil (\%).
+#'
+#' @import data.table
+#' 
+#' @references Leonaviciute (2000). Predicting soil bulk and particle densities by pedotransfer functions from existing soil data in Lithuania.
+#'
+#' @export
+sptf_bd17 <- function(A_C_OF, A_CLAY_MI, A_SILT_MI) {
+  
+  # Check input
+  arg.length <- max(length(A_SOM_LOI), length(A_CLAY_MI),length(A_SILT_MI))
+  checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000, any.missing = FALSE,len = arg.length)
+  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
+  checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
+  
+  # Collect data into a table (set in units %)
+  dt <- data.table(A_C_OF = A_C_OF * 0.1, 
+                   A_CLAY_MI = A_CLAY_MI,
+                   A_SILT_MI = A_SILT_MI,
+                   value = NA_real_)
+  
+  # estimate soil density in Mg m-3 = ton m-3
+  dt[, value := 1.70398 - 0.00313 * A_SILT_MI + 0.00261 * A_CLAY_MI - 0.11245 * A_C_OF]
+  
+  # convert to kg / m3
+  dt[, value := value * 1000]
+  
+  # return value
+  value <- dt[, value]
+  
+  # return value
+  return(value)
+  
+}
+
+#' Calculate the bulk density given the pedotransferfunction of Leonaviciute (2000).
+#'
+#' @param A_C_OF (numeric) The fraction organic carbon in the soil (g / kg).
+#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
+#' @param A_SAND_MI (numeric) The sand content of the soil (\%).
+#' @param A_SILT_MI (numeric) The silt content of the soil (\%).
+#'
+#' @import data.table
+#' 
+#' @references Leonaviciute (2000). Predicting soil bulk and particle densities by pedotransfer functions from existing soil data in Lithuania.
+#'
+#' @export
+sptf_bd18 <- function(A_C_OF, A_CLAY_MI, A_SAND_MI, A_SILT_MI) {
+  
+  # Check input
+  arg.length <- max(length(A_SOM_LOI), length(A_CLAY_MI),length(A_SILT_MI),length(A_SAND_MI))
+  checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000, any.missing = FALSE,len = arg.length)
+  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
+  checkmate::assert_numeric(A_SAND_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
+  checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
+  
+  # Collect data into a table (set in units %)
+  dt <- data.table(A_C_OF = A_C_OF * 0.1, 
+                   A_CLAY_MI = A_CLAY_MI,
+                   A_SAND_MI = A_SAND_MI,
+                   A_SILT_MI = A_SILT_MI,
+                   value = NA_real_)
+  
+  # estimate soil density in Mg m-3 = ton m-3
+  dt[, value := 0.99915 - 0.00592 * log(A_SILT_MI) + 0.7712 * log(A_CLAY_MI) + 0.09371 * log(A_SAND_MI) - 0.08415 * log(A_C_OF)]
+  
+  # convert to kg / m3
+  dt[, value := value * 1000]
+  
+  # return value
+  value <- dt[, value]
+  
+  # return value
+  return(value)
+  
+}
+
+#' Calculate the bulk density given the pedotransferfunction of Leonaviciute (2000).
+#'
+#' @param A_C_OF (numeric) The fraction organic carbon in the soil (g / kg).
+#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
+#' @param A_SAND_MI (numeric) The sand content of the soil (\%).
+#' @param A_SILT_MI (numeric) The silt content of the soil (\%).
+#'
+#' @import data.table
+#' 
+#' @references Leonaviciute (2000). Predicting soil bulk and particle densities by pedotransfer functions from existing soil data in Lithuania.
+#'
+#' @export
+sptf_bd19 <- function(A_C_OF, A_CLAY_MI, A_SAND_MI, A_SILT_MI) {
+  
+  # Check input
+  arg.length <- max(length(A_SOM_LOI), length(A_CLAY_MI),length(A_SILT_MI),length(A_SAND_MI))
+  checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000, any.missing = FALSE,len = arg.length)
+  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
+  checkmate::assert_numeric(A_SAND_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
+  checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
+  
+  # Collect data into a table (set in units %)
+  dt <- data.table(A_C_OF = A_C_OF * 0.1, 
+                   A_CLAY_MI = A_CLAY_MI,
+                   A_SAND_MI = A_SAND_MI,
+                   A_SILT_MI = A_SILT_MI,
+                   value = NA_real_)
+  
+  # estimate soil density in Mg m-3 = ton m-3
+  dt[, value := 1.073 + 0.03273 * log(A_SILT_MI) + 0.03875 * log(A_CLAY_MI) + 0.07888 * log(A_SAND_MI) - 0.05431 * log(A_C_OF)]
+  
+  # convert to kg / m3
+  dt[, value := value * 1000]
+  
+  # return value
+  value <- dt[, value]
+  
+  # return value
+  return(value)
+  
+}
+
+#' Calculate the bulk density given the pedotransferfunction of Leonaviciute (2000).
+#'
+#' @param A_C_OF (numeric) The fraction organic carbon in the soil (g / kg).
+#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
+#' @param A_SAND_MI (numeric) The sand content of the soil (\%).
+#' @param A_SILT_MI (numeric) The silt content of the soil (\%).
+#'
+#' @import data.table
+#' 
+#' @references Leonaviciute (2000). Predicting soil bulk and particle densities by pedotransfer functions from existing soil data in Lithuania.
+#'
+#' @export
+sptf_bd20 <- function(A_C_OF, A_CLAY_MI, A_SAND_MI, A_SILT_MI) {
+  
+  # Check input
+  arg.length <- max(length(A_SOM_LOI), length(A_CLAY_MI),length(A_SILT_MI),length(A_SAND_MI))
+  checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000, any.missing = FALSE,len = arg.length)
+  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
+  checkmate::assert_numeric(A_SAND_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
+  checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
+  
+  # Collect data into a table (set in units %)
+  dt <- data.table(A_C_OF = A_C_OF * 0.1, 
+                   A_CLAY_MI = A_CLAY_MI,
+                   A_SAND_MI = A_SAND_MI,
+                   A_SILT_MI = A_SILT_MI,
+                   value = NA_real_)
+  
+  # estimate soil density in Mg m-3 = ton m-3
+  dt[, value := 1.06727 + 0.01074 * log(A_SILT_MI) + 0.0807 * log(A_CLAY_MI) + 0.08759 * log(A_SAND_MI) + 0.0565 * log(A_C_OF)]
+  
+  # convert to kg / m3
+  dt[, value := value * 1000]
+  
+  # return value
+  value <- dt[, value]
+  
+  # return value
+  return(value)
+  
+}
+
+
 
 in kaur 2002, zit meerder funs
 ruehlmann_2009 data uit duisland
