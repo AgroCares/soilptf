@@ -2169,6 +2169,268 @@ sptf_bd64 <- function(A_SOM_LOI) {
   
 }
 
+#' Calculate the bulk density given the pedotransferfunction of Aguilera et al. (2013)
+#'
+#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
+#'
+#' @import data.table
+#' 
+#' @references Aguilera et al. (2013). Managing soil carbon for climate change mitigation and adaptation in Mediterranean cropping systems: A meta-analysis 
+#'
+#' @export
+sptf_bd65 <- function(A_C_OF) {
+  
+  # Check input
+  checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000, any.missing = FALSE)
+  
+  # Collect data into a table (in units g/kg)
+  dt <- data.table(A_C_OF = A_C_OF, value = NA_real_)
+  
+  # estimate soil density in Mg m-3 = ton m-3
+  dt[, value := 1.8403 - 0.443 * log10(A_C_OF)]
+  
+  # convert to kg / m3
+  dt[, value := value * 1000]
+  
+  # return value
+  value <- dt[, value]
+  
+  # return value
+  return(value)
+  
+}
+
+#' Calculate the bulk density given the pedotransferfunction of Howard et al. (1995)
+#'
+#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
+#'
+#' @import data.table
+#' 
+#' @references Howard et al. (1995) The carbon content of soil and its geographical distribution in Great Britain 
+#' 
+#'
+#' @export
+sptf_bd66 <- function(A_C_OF) {
+  
+  # Check input
+  checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000, any.missing = FALSE)
+  
+  # Collect data into a table (in units %)
+  dt <- data.table(A_C_OF = A_C_OF * 0.1, value = NA_real_)
+  
+  # estimate soil density in Mg m-3 = ton m-3
+  dt[, value := 1.3 - 0.275 * log(A_C_OF)]
+  
+  # convert to kg / m3
+  dt[, value := value * 1000]
+  
+  # return value
+  value <- dt[, value]
+  
+  # return value
+  return(value)
+  
+}
+
+#' Calculate the bulk density given the pedotransferfunction of Song et al. (2005)
+#'
+#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
+#'
+#' @import data.table
+#' 
+#' @references Song et al. (2005) Topsoil organic carbon storage of China and its loss by cultivation 
+#'
+#' @export
+sptf_bd67 <- function(A_C_OF) {
+  
+  # Check input
+  checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000, any.missing = FALSE)
+  
+  # Collect data into a table (in units g/kg)
+  dt <- data.table(A_C_OF = A_C_OF, value = NA_real_)
+  
+  # estimate soil density in Mg m-3 = ton m-3
+  dt[, value := 1.377 * exp(-0.0048 * A_C_OF)]
+  
+  # convert to kg / m3
+  dt[, value := value * 1000]
+  
+  # return value
+  value <- dt[, value]
+  
+  # return value
+  return(value)
+  
+}
+
+#' Calculate the bulk density given the pedotransferfunction of Song et al. (2005)
+#'
+#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
+#'
+#' @import data.table
+#' 
+#' @references Song et al. (2005) Topsoil organic carbon storage of China and its loss by cultivation 
+#'
+#' @export
+sptf_bd68 <- function(A_C_OF) {
+  
+  # Check input
+  checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000, any.missing = FALSE)
+  
+  # Collect data into a table (in units g/kg)
+  dt <- data.table(A_C_OF = A_C_OF, value = NA_real_)
+  
+  # estimate soil density in Mg m-3 = ton m-3
+  dt[, value := 1.3565 * exp(-0.0046 * A_C_OF)]
+  
+  # convert to kg / m3
+  dt[, value := value * 1000]
+  
+  # return value
+  value <- dt[, value]
+  
+  # return value
+  return(value)
+  
+}
+
+#' Calculate the bulk density given the pedotransferfunction of Qiao et al. (2019)
+#'
+#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
+#' @param B_DEPTH (numeric) The depth of the sampled soil layer (m)
+#'
+#' @import data.table
+#' 
+#' @references Qiao et al. (2019) Development of pedotransfer functions for predicting the bulk density in the critical zone on the Loess Plateau, China
+#'
+#' @export
+sptf_bd69 <- function(A_CLAY_MI, B_DEPTH) {
+  
+  # Check input
+  arg.length <- max(length(A_CLAY_MI), length(B_DEPTH))
+  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
+  checkmate::assert_numeric(B_DEPTH, lower = 0, upper = 2, any.missing = FALSE,len = arg.length)
+  
+  # Collect data into a table (depth set in units cm)
+  dt <- data.table(A_CLAY_MI = A_CLAY_MI, 
+                   B_DEPTH = B_DEPTH * 100,
+                   value = NA_real_)
+  
+  # estimate soil density in Mg m-3 = ton m-3
+  dt[, value := 1.68 + 0.001 * B_DEPTH - 2.249 / A_CLAY_MI - 0.086/B_DEPTH]
+  
+  # convert to kg / m3
+  dt[, value := value * 1000]
+  
+  # return value
+  value <- dt[, value]
+  
+  # return value
+  return(value)
+  
+}
+
+#' Calculate the bulk density given the pedotransferfunction of Wang et al. (2014)
+#'
+#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
+#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
+#' @param A_SILT_MI (numeric) The silt content of the soil (\%)
+#' @param B_DEPTH (numeric) The depth of the sampled soil layer (m)
+#' @param B_ALTITUDE (numeric) The altitude (m)
+#' @param B_SLOPE_DEGREE (numeric) The slope of the field (degrees)
+#' @param B_SLOPE_ASPECT (numeric) The slope aspect (degrees)
+#'
+#' @import data.table
+#' 
+#' @references Wang et al. (2014) Prediction of Bulk Density of Soils in the Loess Plateau Region of China
+#'
+#' @export
+sptf_bd70 <- function(A_C_OF,A_CLAY_MI, A_SILT_MI,B_DEPTH, B_ALTITUDE,B_SLOPE_DEGREE,B_SLOPE_ASPECT) {
+  
+  # Check input
+  arg.length <- max(length(A_C_OF),length(A_CLAY_MI), length(A_SILT_MI),
+                    length(B_DEPTH),length(B_ALTITUDE),
+                    length(B_SLOPE_DEGREE),length(B_SLOPE_ASPECT))
+  
+  checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000, any.missing = FALSE,len = arg.length)
+  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
+  checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
+  checkmate::assert_numeric(B_DEPTH, lower = 0, upper = 2, any.missing = FALSE,len = arg.length)
+  checkmate::assert_numeric(B_ALTITUDE, lower = 0, upper = 10000, any.missing = FALSE,len = arg.length)
+  checkmate::assert_numeric(B_SLOPE_DEGREE, lower = 0, upper = 90, any.missing = FALSE,len = arg.length)
+  checkmate::assert_numeric(B_SLOPE_ASPECT, lower = 0, upper = 360, any.missing = FALSE,len = arg.length)
+  
+  # Collect data into a table (depth set in units cm)
+  dt <- data.table(A_C_OF = A_C_OF,
+                   A_CLAY_MI = A_CLAY_MI, 
+                   A_SILT_MI = A_SILT_MI,
+                   B_DEPTH = B_DEPTH * 100,
+                   B_ALTITUDE = B_ALTITUDE,
+                   B_SLOPE_DEGREE = B_SLOPE_DEGREE,
+                   B_SLOPE_ASPECT = B_SLOPE_ASPECT,
+                   value = NA_real_)
+  
+  # estimate soil density in Mg m-3 = ton m-3
+  dt[, value := 1.795 + 0.003 * A_CLAY_MI - 0.005 * A_SILT_MI - 0.01 * A_C_OF - 0.000022 * B_ALTITUDE - 0.003 * B_SLOPE_DEGREE + 0.000001 * B_SLOPE_ASPECT]
+  
+  # convert to kg / m3
+  dt[, value := value * 1000]
+  
+  # return value
+  value <- dt[, value]
+  
+  # return value
+  return(value)
+  
+}
+
+#' Calculate the bulk density given the pedotransferfunction of Wang et al. (2014)
+#'
+#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
+#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
+#' @param A_SILT_MI (numeric) The silt content of the soil (\%)
+#' @param B_SLOPE_DEGREE (numeric) The slope of the field (degrees)
+#'
+#' @import data.table
+#' 
+#' @references Wang et al. (2014) Prediction of Bulk Density of Soils in the Loess Plateau Region of China
+#'
+#' @export
+sptf_bd71 <- function(A_C_OF,A_CLAY_MI, A_SILT_MI,B_SLOPE_DEGREE) {
+  
+  # Check input
+  arg.length <- max(length(A_C_OF),length(A_CLAY_MI), length(A_SILT_MI),
+                    length(B_SLOPE_DEGREE))
+  
+  checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000, any.missing = FALSE,len = arg.length)
+  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
+  checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
+  checkmate::assert_numeric(B_SLOPE_DEGREE, lower = 0, upper = 90, any.missing = FALSE,len = arg.length)
+  
+  # Collect data into a table (depth set in units cm)
+  dt <- data.table(A_C_OF = A_C_OF,
+                   A_CLAY_MI = A_CLAY_MI, 
+                   A_SILT_MI = A_SILT_MI,
+                   B_SLOPE_DEGREE = B_SLOPE_DEGREE,
+                   value = NA_real_)
+  
+  # estimate soil density in Mg m-3 = ton m-3
+  dt[, value := 1.8284 + 0.0429 * log10(A_CLAY_MI) + 0.0205 * A_CLAY_MI^0.5 - 0.0125 * cos(A_CLAY_MI) -
+       0.0061 * A_SILT_MI + 0.0001 * A_SILT_MI * B_SLOPE_DEGREE - 0.0098 * B_SLOPE_DEGREE - 0.0071 * A_C_OF -
+       0.0505 * A_C_OF^0.5 + 0.0002 * A_C_OF^2]
+  
+  # convert to kg / m3
+  dt[, value := value * 1000]
+  
+  # return value
+  value <- dt[, value]
+  
+  # return value
+  return(value)
+  
+}
+
+
 # in kaur 2002, zit meerder funs
 # ruehlmann_2009 data uit duisland
 
