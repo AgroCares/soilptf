@@ -8,9 +8,11 @@
 #' @format A data.frame with x rows and x columns:
 #' \describe{
 #'   \item{id}{an unique number for each pedotransfer function}
-#'   \item{country}{The country or region where the pedotransfer function can be applied}
+#'   \item{country}{The country or region where the pedotransfer function can be applied,country codes from https://datahub.io/core/country-codes}
+#'   \item{continent}{The continent where the pedotransfer function can be applied,country codes from https://datahub.io/core/continent-codes}
 #'   \item{soiltype}{Applicability of the ptf given USDA soil classifications}
 #'   \item{landuse}{Applicability of the ptf given landuse}
+#'   \item{depth}{Applicability of the ptf for topsoil (0-30cm) or subsoil (>30cm), given by the maximum depth observed in the datset}
 #'   \item{soilproperties}{The soil properties required to estimate the bulk density}
 #'   \item{reference}{the paper describing the pedotransferfunction}
 #'   \item{url}{weblink to reference}
