@@ -439,7 +439,7 @@ sptf_bd13 <- function(A_SOM_LOI) {
 sptf_bd14 <- function(A_C_OF, A_CLAY_MI, A_SILT_MI) {
   
   # Check input
-  arg.length <- max(length(A_SOM_LOI), length(A_CLAY_MI),length(A_SILT_MI))
+  arg.length <- max(length(A_C_OF), length(A_CLAY_MI),length(A_SILT_MI))
   checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000, any.missing = FALSE,len = arg.length)
   checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
   checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
@@ -477,7 +477,7 @@ sptf_bd14 <- function(A_C_OF, A_CLAY_MI, A_SILT_MI) {
 sptf_bd15 <- function(A_C_OF, A_CLAY_MI) {
   
   # Check input
-  arg.length <- max(length(A_SOM_LOI), length(A_CLAY_MI))
+  arg.length <- max(length(A_C_OF), length(A_CLAY_MI))
   checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000, any.missing = FALSE,len = arg.length)
   checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
   
@@ -546,7 +546,7 @@ sptf_bd16 <- function(A_SOM_LOI) {
 sptf_bd17 <- function(A_C_OF, A_CLAY_MI, A_SILT_MI) {
   
   # Check input
-  arg.length <- max(length(A_SOM_LOI), length(A_CLAY_MI),length(A_SILT_MI))
+  arg.length <- max(length(A_C_OF), length(A_CLAY_MI),length(A_SILT_MI))
   checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000, any.missing = FALSE,len = arg.length)
   checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
   checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
@@ -586,7 +586,7 @@ sptf_bd17 <- function(A_C_OF, A_CLAY_MI, A_SILT_MI) {
 sptf_bd18 <- function(A_C_OF, A_CLAY_MI, A_SAND_MI, A_SILT_MI) {
   
   # Check input
-  arg.length <- max(length(A_SOM_LOI), length(A_CLAY_MI),length(A_SILT_MI),length(A_SAND_MI))
+  arg.length <- max(length(A_C_OF), length(A_CLAY_MI),length(A_SILT_MI),length(A_SAND_MI))
   checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000, any.missing = FALSE,len = arg.length)
   checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
   checkmate::assert_numeric(A_SAND_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
@@ -628,7 +628,7 @@ sptf_bd18 <- function(A_C_OF, A_CLAY_MI, A_SAND_MI, A_SILT_MI) {
 sptf_bd19 <- function(A_C_OF, A_CLAY_MI, A_SAND_MI, A_SILT_MI) {
   
   # Check input
-  arg.length <- max(length(A_SOM_LOI), length(A_CLAY_MI),length(A_SILT_MI),length(A_SAND_MI))
+  arg.length <- max(length(A_C_OF), length(A_CLAY_MI),length(A_SILT_MI),length(A_SAND_MI))
   checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000, any.missing = FALSE,len = arg.length)
   checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
   checkmate::assert_numeric(A_SAND_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
@@ -670,7 +670,7 @@ sptf_bd19 <- function(A_C_OF, A_CLAY_MI, A_SAND_MI, A_SILT_MI) {
 sptf_bd20 <- function(A_C_OF, A_CLAY_MI, A_SAND_MI, A_SILT_MI) {
   
   # Check input
-  arg.length <- max(length(A_SOM_LOI), length(A_CLAY_MI),length(A_SILT_MI),length(A_SAND_MI))
+  arg.length <- max(length(A_C_OF), length(A_CLAY_MI),length(A_SILT_MI),length(A_SAND_MI))
   checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000, any.missing = FALSE,len = arg.length)
   checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
   checkmate::assert_numeric(A_SAND_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
@@ -711,7 +711,7 @@ sptf_bd20 <- function(A_C_OF, A_CLAY_MI, A_SAND_MI, A_SILT_MI) {
 sptf_bd21 <- function(A_C_OF, A_CLAY_MI, A_SILT_MI) {
   
   # Check input
-  arg.length <- max(length(A_SOM_LOI), length(A_CLAY_MI),length(A_SILT_MI))
+  arg.length <- max(length(A_C_OF), length(A_CLAY_MI),length(A_SILT_MI))
   checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000, any.missing = FALSE,len = arg.length)
   checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
   checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
@@ -845,7 +845,7 @@ sptf_bd24 <- function(A_SOM_LOI) {
 sptf_bd25 <- function(A_C_OF, A_CLAY_MI, A_SILT_MI,A_H2O_T105,B_DEPTH) {
   
   # Check input
-  arg.length <- max(length(A_SOM_LOI), length(A_CLAY_MI),length(A_SILT_MI),length(A_H2O_T105),length(B_DEPTH))
+  arg.length <- max(length(A_C_OF), length(A_CLAY_MI),length(A_SILT_MI),length(A_H2O_T105),length(B_DEPTH))
   checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000, any.missing = FALSE,len = arg.length)
   checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
   checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
@@ -1024,7 +1024,7 @@ sptf_bd29 <- function(A_C_OF,A_SAND_MI, B_DEPTH) {
 sptf_bd30 <- function(A_C_OF, A_CLAY_MI) {
   
   # Check input
-  arg.length <- max(length(A_SOM_LOI), length(A_CLAY_MI))
+  arg.length <- max(length(A_C_OF), length(A_CLAY_MI))
   checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000, any.missing = FALSE,len = arg.length)
   checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
   
@@ -1541,7 +1541,7 @@ sptf_bd44 <- function(A_C_OF) {
 sptf_bd45 <- function(A_C_OF, A_SAND_MI) {
   
   # Check input
-  arg.length <- max(length(A_SOM_LOI), length(A_SAND_MI))
+  arg.length <- max(length(A_C_OF), length(A_SAND_MI))
   checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000, any.missing = FALSE,len = arg.length)
   checkmate::assert_numeric(A_SAND_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
   
@@ -1577,7 +1577,7 @@ sptf_bd45 <- function(A_C_OF, A_SAND_MI) {
 sptf_bd46 <- function(A_C_OF, A_SAND_MI) {
   
   # Check input
-  arg.length <- max(length(A_SOM_LOI), length(A_SAND_MI))
+  arg.length <- max(length(A_C_OF), length(A_SAND_MI))
   checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000, any.missing = FALSE,len = arg.length)
   checkmate::assert_numeric(A_SAND_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
   
@@ -1766,8 +1766,411 @@ sptf_bd51 <- function(A_SOM_LOI) {
   
 }
 
+#' Calculate the bulk density given the pedotransferfunction of Jeffrey (1970)
+#'
+#' @param A_SOM_LOI (numeric) The percentage organic matter in the soil (\%).
+#'
+#' @import data.table
+#' 
+#' @references Jeffrey (1970). A Note on the use of Ignition Loss as a Means for the Approximate Estimation of Soil Bulk Density
+#'
+#' @export
+sptf_bd52 <- function(A_SOM_LOI) {
+  
+  # Check input
+  checkmate::assert_numeric(A_SOM_LOI, lower = 0, upper = 100, any.missing = FALSE)
+  
+  # Collect data into a table
+  dt <- data.table(A_SOM_LOI = A_SOM_LOI, value = NA_real_)
+  
+  # estimate soil density in Mg m-3 = ton m-3
+  dt[, value := 1.482-0.6786 * log10(A_SOM_LOI)]
+  
+  # convert to kg / m3
+  dt[, value := value * 1000]
+  
+  # return value
+  value <- dt[, value]
+  
+  # return value
+  return(value)
+  
+}
+
+#' Calculate the bulk density given the pedotransferfunction of Harrison & Bocock (1981)
+#'
+#' @param A_SOM_LOI (numeric) The percentage organic matter in the soil (\%).
+#'
+#' @import data.table
+#' 
+#' @references Harrison & Bocock (1981) Estimation of Soil Bulk-Density from Loss-on-Ignition Values.
+#'
+#' @export
+sptf_bd53 <- function(A_SOM_LOI) {
+  
+  # Check input
+  checkmate::assert_numeric(A_SOM_LOI, lower = 0, upper = 100, any.missing = FALSE)
+  
+  # Collect data into a table
+  dt <- data.table(A_SOM_LOI = A_SOM_LOI, value = NA_real_)
+  
+  # estimate soil density in Mg m-3 = ton m-3
+  dt[, value := 1.558 - 0.728 * log10(A_SOM_LOI)]
+  
+  # convert to kg / m3
+  dt[, value := value * 1000]
+  
+  # return value
+  value <- dt[, value]
+  
+  # return value
+  return(value)
+  
+}
+
+#' Calculate the bulk density given the pedotransferfunction of Harrison & Bocock (1981)
+#'
+#' @param A_SOM_LOI (numeric) The percentage organic matter in the soil (\%).
+#'
+#' @import data.table
+#' 
+#' @references Harrison & Bocock (1981) Estimation of Soil Bulk-Density from Loss-on-Ignition Values.
+#'
+#' @export
+sptf_bd54 <- function(A_SOM_LOI) {
+  
+  # Check input
+  checkmate::assert_numeric(A_SOM_LOI, lower = 0, upper = 100, any.missing = FALSE)
+  
+  # Collect data into a table
+  dt <- data.table(A_SOM_LOI = A_SOM_LOI, value = NA_real_)
+  
+  # estimate soil density in Mg m-3 = ton m-3
+  dt[, value := 1.729-0.769 * log10(A_SOM_LOI)]
+  
+  # convert to kg / m3
+  dt[, value := value * 1000]
+  
+  # return value
+  value <- dt[, value]
+  
+  # return value
+  return(value)
+  
+}
+
+#' Calculate the bulk density given the pedotransferfunction of Harrison & Bocock (1981)
+#'
+#' @param A_SOM_LOI (numeric) The percentage organic matter in the soil (\%).
+#'
+#' @import data.table
+#' 
+#' @references Harrison & Bocock (1981) Estimation of Soil Bulk-Density from Loss-on-Ignition Values.
+#'
+#' @export
+sptf_bd55 <- function(A_SOM_LOI) {
+  
+  # Check input
+  checkmate::assert_numeric(A_SOM_LOI, lower = 0, upper = 100, any.missing = FALSE)
+  
+  # Collect data into a table
+  dt <- data.table(A_SOM_LOI = A_SOM_LOI, value = NA_real_)
+  
+  # estimate soil density in Mg m-3 = ton m-3
+  dt[, value := 2.089-1.156 * log10(A_SOM_LOI)]
+  
+  # convert to kg / m3
+  dt[, value := value * 1000]
+  
+  # return value
+  value <- dt[, value]
+  
+  # return value
+  return(value)
+  
+}
+
+#' Calculate the bulk density given the pedotransferfunction of Harrison & Bocock (1981)
+#'
+#' @param A_SOM_LOI (numeric) The percentage organic matter in the soil (\%).
+#'
+#' @import data.table
+#' 
+#' @references Harrison & Bocock (1981) Estimation of Soil Bulk-Density from Loss-on-Ignition Values.
+#'
+#' @export
+sptf_bd56 <- function(A_SOM_LOI) {
+  
+  # Check input
+  checkmate::assert_numeric(A_SOM_LOI, lower = 0, upper = 100, any.missing = FALSE)
+  
+  # Collect data into a table
+  dt <- data.table(A_SOM_LOI = A_SOM_LOI, value = NA_real_)
+  
+  # estimate soil density in Mg m-3 = ton m-3
+  dt[, value := 1.392-0.556 * log10(A_SOM_LOI)]
+  
+  # convert to kg / m3
+  dt[, value := value * 1000]
+  
+  # return value
+  value <- dt[, value]
+  
+  # return value
+  return(value)
+  
+}
+
+#' Calculate the bulk density given the pedotransferfunction of Harrison & Bocock (1981)
+#'
+#' @param A_SOM_LOI (numeric) The percentage organic matter in the soil (\%).
+#'
+#' @import data.table
+#' 
+#' @references Harrison & Bocock (1981) Estimation of Soil Bulk-Density from Loss-on-Ignition Values.
+#'
+#' @export
+sptf_bd57 <- function(A_SOM_LOI) {
+  
+  # Check input
+  checkmate::assert_numeric(A_SOM_LOI, lower = 0, upper = 100, any.missing = FALSE)
+  
+  # Collect data into a table
+  dt <- data.table(A_SOM_LOI = A_SOM_LOI, value = NA_real_)
+  
+  # estimate soil density in Mg m-3 = ton m-3
+  dt[, value := 1.8 - 0.772 * log10(A_SOM_LOI)]
+  
+  # convert to kg / m3
+  dt[, value := value * 1000]
+  
+  # return value
+  value <- dt[, value]
+  
+  # return value
+  return(value)
+  
+}
+
+#' Calculate the bulk density given the pedotransferfunction of Grigal (1989)
+#'
+#' @param A_SOM_LOI (numeric) The percentage organic matter in the soil (\%).
+#'
+#' @import data.table
+#' 
+#' @references Grigal (1989). Bulk density of surface soils and peat in the north central united states
+#'
+#' @export
+sptf_bd58 <- function(A_SOM_LOI) {
+  
+  # Check input
+  checkmate::assert_numeric(A_SOM_LOI, lower = 0, upper = 100, any.missing = FALSE)
+  
+  # Collect data into a table
+  dt <- data.table(A_SOM_LOI = A_SOM_LOI, value = NA_real_)
+  
+  # estimate soil density in Mg m-3 = ton m-3
+  dt[, value := 0.073 + 2.369 * exp(-0.0730 * A_SOM_LOI)]
+  
+  # convert to kg / m3
+  dt[, value := value * 1000]
+  
+  # return value
+  value <- dt[, value]
+  
+  # return value
+  return(value)
+  
+}
+
+#' Calculate the bulk density given the pedotransferfunction of Grigal (1989)
+#'
+#' @param A_SOM_LOI (numeric) The percentage organic matter in the soil (\%).
+#'
+#' @import data.table
+#' 
+#' @references Grigal (1989). Bulk density of surface soils and peat in the north central united states
+#'
+#' @export
+sptf_bd59 <- function(A_SOM_LOI) {
+  
+  # Check input
+  checkmate::assert_numeric(A_SOM_LOI, lower = 0, upper = 100, any.missing = FALSE)
+  
+  # Collect data into a table
+  dt <- data.table(A_SOM_LOI = A_SOM_LOI, value = NA_real_)
+  
+  # estimate soil density in Mg m-3 = ton m-3
+  dt[, value := 0.669 + 0.941 * exp(-0.240 * A_SOM_LOI)]
+  
+  # convert to kg / m3
+  dt[, value := value * 1000]
+  
+  # return value
+  value <- dt[, value]
+  
+  # return value
+  return(value)
+  
+}
+
+#' Calculate the bulk density given the pedotransferfunction of Grigal (1989)
+#'
+#' @param A_SOM_LOI (numeric) The percentage organic matter in the soil (\%).
+#'
+#' @import data.table
+#' 
+#' @references Grigal (1989). Bulk density of surface soils and peat in the north central united states
+#'
+#' @export
+sptf_bd60 <- function(A_SOM_LOI) {
+  
+  # Check input
+  checkmate::assert_numeric(A_SOM_LOI, lower = 0, upper = 100, any.missing = FALSE)
+  
+  # Collect data into a table
+  dt <- data.table(A_SOM_LOI = A_SOM_LOI, value = NA_real_)
+  
+  # estimate soil density in Mg m-3 = ton m-3
+  dt[, value := 4.258 * exp(-0.047 * A_SOM_LOI)]
+  
+  # convert to kg / m3
+  dt[, value := value * 1000]
+  
+  # return value
+  value <- dt[, value]
+  
+  # return value
+  return(value)
+  
+}
+
+#' Calculate the bulk density given the pedotransferfunction of Grigal (1989)
+#'
+#' @param A_SOM_LOI (numeric) The percentage organic matter in the soil (\%).
+#'
+#' @import data.table
+#' 
+#' @references Grigal (1989). Bulk density of surface soils and peat in the north central united states
+#'
+#' @export
+sptf_bd61 <- function(A_SOM_LOI) {
+  
+  # Check input
+  checkmate::assert_numeric(A_SOM_LOI, lower = 0, upper = 100, any.missing = FALSE)
+  
+  # Collect data into a table
+  dt <- data.table(A_SOM_LOI = A_SOM_LOI, value = NA_real_)
+  
+  # estimate soil density in Mg m-3 = ton m-3
+  dt[, value := 0.043 + 4.258 * exp(-0.047 *A_SOM_LOI)]
+  
+  # convert to kg / m3
+  dt[, value := value * 1000]
+  
+  # return value
+  value <- dt[, value]
+  
+  # return value
+  return(value)
+  
+}
+
+#' Calculate the bulk density given the pedotransferfunction of Honeysett & Ratkowsky (1989).
+#'
+#' @param A_SOM_LOI (numeric) The percentage organic matter in the soil (\%).
+#'
+#' @import data.table
+#' 
+#' @references Honeysett & Ratkowsky (1989). The use of ignition loss to estimate bulk density of forest soils. 
+#'
+#' @export
+sptf_bd62 <- function(A_SOM_LOI) {
+  
+  # Check input
+  checkmate::assert_numeric(A_SOM_LOI, lower = 0, upper = 100, any.missing = FALSE)
+  
+  # Collect data into a table
+  dt <- data.table(A_SOM_LOI = A_SOM_LOI, value = NA_real_)
+  
+  # estimate soil density in Mg m-3 = ton m-3
+  dt[, value := 1/(0.564 + 0.0556 * A_SOM_LOI)]
+  
+  # convert to kg / m3
+  dt[, value := value * 1000]
+  
+  # return value
+  value <- dt[, value]
+  
+  # return value
+  return(value)
+  
+}
+
+#' Calculate the bulk density given the pedotransferfunction of Honeysett & Ratkowsky (1989).
+#'
+#' @param A_SOM_LOI (numeric) The percentage organic matter in the soil (\%).
+#'
+#' @import data.table
+#' 
+#' @references Honeysett & Ratkowsky (1989). The use of ignition loss to estimate bulk density of forest soils. 
+#'
+#' @export
+sptf_bd63 <- function(A_SOM_LOI) {
+  
+  # Check input
+  checkmate::assert_numeric(A_SOM_LOI, lower = 0, upper = 100, any.missing = FALSE)
+  
+  # Collect data into a table
+  dt <- data.table(A_SOM_LOI = A_SOM_LOI, value = NA_real_)
+  
+  # estimate soil density in Mg m-3 = ton m-3
+  dt[, value := 1.801 - 0.397 * ln(A_SOM_LOI)]
+  
+  # convert to kg / m3
+  dt[, value := value * 1000]
+  
+  # return value
+  value <- dt[, value]
+  
+  # return value
+  return(value)
+  
+}
+
+#' Calculate the bulk density given the pedotransferfunction of Cienciala et al. (2006)
+#'
+#' @param A_SOM_LOI (numeric) The percentage organic matter in the soil (\%).
+#'
+#' @import data.table
+#' 
+#' @references Cienciala et al. (2006). Forest topsoil organic carbon content in Southwest Bohema region 
+#'
+#' @export
+sptf_bd64 <- function(A_SOM_LOI) {
+  
+  # Check input
+  checkmate::assert_numeric(A_SOM_LOI, lower = 0, upper = 100, any.missing = FALSE)
+  
+  # Collect data into a table
+  dt <- data.table(A_SOM_LOI = A_SOM_LOI, value = NA_real_)
+  
+  # estimate soil density in Mg m-3 = ton m-3
+  dt[, value := 100 / (A_SOM_LOI/0.244 + (100 - A_SOM_LOI)/ 1.41)]
+  
+  # convert to kg / m3
+  dt[, value := value * 1000]
+  
+  # return value
+  value <- dt[, value]
+  
+  # return value
+  return(value)
+  
+}
+
 # in kaur 2002, zit meerder funs
-ruehlmann_2009 data uit duisland
-# nanko_2014 bevat ptf
+# ruehlmann_2009 data uit duisland
+
 
 
