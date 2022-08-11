@@ -69,7 +69,7 @@ sptf_bd2 <- function(A_SOM_LOI) {
   dt <- data.table(A_SOM_LOI = A_SOM_LOI,value = NA_real_)
   
   # estimate soil density in Mg m-3 = ton m-3
-  dt[, value := 10^(0.09963 - 0.00064*log10(A_SOM_LOI) - 0.22302 * log10(OM)^2)]
+  dt[, value := 10^(0.09963 - 0.00064*log10(A_SOM_LOI) - 0.22302 * log10(A_SOM_LOI)^2)]
   
   # convert to kg / m3
   dt[, value := value * 1000]
@@ -1111,7 +1111,7 @@ sptf_bd32 <- function(A_C_OF) {
 
 #' Calculate the bulk density given the pedotransferfunction of Keller & Hakansson (2010)
 #'
-#' @param A_SOM_LOI (numeric) The percentage of organic matter in the soil (#%).
+#' @param A_SOM_LOI (numeric) The percentage of organic matter in the soil (\%).
 #' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
 #' @param A_SAND_MI (numeric) The sand content of the soil (\%).
 #' @param A_SILT_MI (numeric) The silt content of the soil (\%).
@@ -2125,7 +2125,7 @@ sptf_bd63 <- function(A_SOM_LOI) {
   dt <- data.table(A_SOM_LOI = A_SOM_LOI, value = NA_real_)
   
   # estimate soil density in Mg m-3 = ton m-3
-  dt[, value := 1.801 - 0.397 * ln(A_SOM_LOI)]
+  dt[, value := 1.801 - 0.397 * log(A_SOM_LOI)]
   
   # convert to kg / m3
   dt[, value := value * 1000]
