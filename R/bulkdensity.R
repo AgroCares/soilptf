@@ -3026,8 +3026,8 @@ sptf_bd88 <- function(A_C_OF,A_CLAY_MI,A_CACO3_MI,A_PH_WA) {
                    value = NA_real_)
   
   # estimate soil density in Mg m-3 = ton m-3
-  dt[, value := -0.247 * A_C_OF * arctan(A_CLAY_MI/(A_CACO3_MI + 7.00216)) + 
-                A_C_OF * arctan(A_PH_WA)/(A_CACO3_MI + 10.505) + 1.53433]
+  dt[, value := -0.247 * A_C_OF * atan(A_CLAY_MI/(A_CACO3_MI + 7.00216)) + 
+                A_C_OF * atan(A_PH_WA)/(A_CACO3_MI + 10.505) + 1.53433]
   
   # convert to kg / m3
   dt[, value := value * 1000]
@@ -3058,12 +3058,12 @@ sptf_bd89 <- function(A_C_OF,A_CLAY_MI,A_SILT_MI) {
   
   checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000, any.missing = FALSE,len = arg.length)
   checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(A_SAND_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
+  checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
    
   # Collect data into a table (all units in %)
   dt <- data.table(A_C_OF = A_C_OF * 0.1,
                    A_CLAY_MI = A_CLAY_MI,
-                   A_SAND_MI = A_SAND_MI,
+                   A_SILT_MI = A_SILT_MI,
                    value = NA_real_)
   
   # estimate soil density in Mg m-3 = ton m-3
@@ -3229,7 +3229,7 @@ sptf_bd93 <- function(A_C_OF) {
 sptf_bd94 <- function(A_SOM_LOI,A_SAND_MI,A_CLAY_MI) {
   
   # add visual binding
-  w = NULL
+  w = x = y = z = NULL
   
   # Check input
   arg.length <- max(length(A_SAND_MI),length(A_CLAY_MI),length(A_SOM_LOI))
@@ -3814,6 +3814,9 @@ sptf_bd110 <- function(A_C_OF, B_DEPTH) {
 #' 
 #' @export
 sptf_bd111 <- function(A_C_OF) {
+  
+  # add visual bindings
+  value1 = value2 = value3 = value4 = value5 = value6 = NULL
   
   # Check input
   checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000, any.missing = FALSE)
