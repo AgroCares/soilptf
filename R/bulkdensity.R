@@ -4171,6 +4171,9 @@ sptf_bd120 <- function(A_C_OF, A_CLAY_MI, A_SILT_MI) {
 #' @export
 sptf_bd121 <- function(A_C_OF, A_CLAY_MI, A_SAND_MI, A_CACO3_MI, A_PH_WA, B_ALTITUDE, B_SLOPE_DEGREE) {
   
+  # add visual binding
+  B_ROCKS_FR = NULL
+  
   # Check input
   arg.length <- max(length(A_C_OF), length(A_CLAY_MI),length(A_SAND_MI),
                     length(A_CACO3_MI), length(A_PH_WA),length(B_ALTITUDE),
@@ -4625,6 +4628,9 @@ sptf_bd132 <- function(A_C_OF) {
 #'
 #' @export
 sptf_bd133 <- function(A_C_OF, B_DEPTH, B_SLOPE_DEGREE) {
+  
+  # add visual binding
+  B_ROCKS_FR = NULL
   
   # Check input
   arg.length <- max(length(A_C_OF), length(B_DEPTH),length(B_SLOPE_DEGREE))
