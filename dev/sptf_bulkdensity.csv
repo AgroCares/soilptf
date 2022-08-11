@@ -1,65 +1,104 @@
-﻿id;country;continent;soiltype;landuse;depth;nsample;r2;soilproperties;reference;url
-1;NL;EU;variable;agriculture;30;;;a_som_loi||a_clay_mi;cbgv_2022;https://edepot.wur.nl/413891
-2;US;NA;sandy loam;forest;30;103;0,96;a_som_loi;curtis_1964;https://doi.org/10.2136/sssaj1964.03615995002800020044x
-3;GB;EU;silty clay;forest;30;77;0,9;a_som_loi;adams_1973;https://doi.org/10.1111/j.1365-2389.1973.tb00737.x
-4;US;NA;variable;variable;292;721;0,462;a_c_of;alexander_1980;https://doi.org/10.2136/sssaj1980.03615995004400040005x
-5;US;NA;variable;variable;264;721;0,332;a_c_of;alexander_1980;https://doi.org/10.2136/sssaj1980.03615995004400040005x
-6;US;NA;loam;forest;80;130;;a_som_loi;federer_1983;https://doi.org/10.2136/sssaj1983.03615995004700050034x
-7;US;NA;loamy sand;forest;45;60;0,75;a_c_of;huntington_1989;https://journals.lww.com/soilsci/abstract/1989/11000/carbon,_organic_matter,_and_bulk_density.9.aspx
-8;US;NA;loamy sand;forest;45;60;0,75;a_som_loi;huntington_1989;https://journals.lww.com/soilsci/abstract/1989/11000/carbon,_organic_matter,_and_bulk_density.9.aspx
-9;US;NA;variable;variable;;19651;0,41;a_c_of;manrique_1991;https://doi.org/10.2136/sssaj1991.03615995005500020030x
-10;US;NA;variable;variable;;19651;0,36;a_c_of;manrique_1991;https://doi.org/10.2136/sssaj1991.03615995005500020030x
-11;US;NA;sandy  loam||silt loam;forest;30;480;;a_som_loi;federer_1993;https://doi.org/10.1139/x93-131
-12;FI;EU;variable;forest;65;75;0,61;a_som_loi;tamminen_1994;https://helda.helsinki.fi/bitstream/handle/1975/9162/028-1_Tamminen.pdf?sequence=3
-13;FI;EU;variable;forest;65;75;0,7;a_som_loi;tamminen_1994;https://helda.helsinki.fi/bitstream/handle/1975/9162/028-1_Tamminen.pdf?sequence=3
-14;BR;SA;variable;forest;;613;0,22;a_c_of||a_silt_mi||a_clay_mi;tomasella_1998;
-15;BR;SA;variable;forest;35;323;0,498;a_c_of||a_clay_mi;bernoux_1998;https://doi.org/10.2136/sssaj1998.03615995006200030029x
-16;;;variable;variable;35;;;a_som_loi;post_2000;https://doi.org/10.1046/j.1365-2486.2000.00308.x
-17;LT;EU;;forest;35;;;a_c_of||a_silt_mi||a_clay_mi;leonaviciute_2000;
-18;LT;EU;;forest;35;;;a_c_of||a_silt_mi||a_clay_mi||a_sand_mi;leonaviciute_2000;
-19;LT;EU;;forest;35;;;a_c_of||a_silt_mi||a_clay_mi||a_sand_mi;leonaviciute_2000;
-20;LT;EU;;forest;35;;;a_c_of||a_silt_mi||a_clay_mi||a_sand_mi;leonaviciute_2000;
-21;IN;AS;variable;variable;110;224;0,5;a_c_of||a_silt_mi||a_clay_mi;kaur_2002;https://www.publish.csiro.au/sr/sr01023
-22;CA;NA;variable;forest;30;284;;a_som_loi;tremblay_2002;https://doi.org/10.1139/x02-023
-23;CA;NA;loamy sand | silty sand;forest;30;288;0,77;a_som_loi;prevost_2004;https://doi.org/10.2136/sssaj2004.9430
-24;CA;NA;loamy sand | silty sand;forest;30;126;0,637;a_som_loi;prevost_2004;https://doi.org/10.2136/sssaj2004.9430
-25;US;NA;variable;variable;300;47015;0,44;a_c_of||a_silt_mi||a_clay_mi||b_depth||a_h2o_t105;heuscher_2005;https://doi.org/10.2136/sssaj2005.0051a
-26;CA;NA;loamy to sandy loams;forest;100;125;0,82;a_som_loi;perie_2007;https://doi.org/10.4141/CJSS06008
-27;CA;NA;loamy to sandy loams;forest;100;125;0,1;a_som_loi;perie_2007;https://doi.org/10.4141/CJSS06008
-28;AU;OC;variable;variable;100;1407;0,405;a_sand_mi||b_depth;tranter_2007;https://doi.org/10.1111/j.1475-2743.2007.00092.x
-29;AU;OC;variable;variable;100;546;0,498;a_sand_mi||b_depth;tranter_2007;https://doi.org/10.1111/j.1475-2743.2007.00092.x
-30;BR;SA;variable;variable;100;1396;0,63;a_c_of||a_clay_mi;benites_2007;https://doi.org/10.1016/j.geoderma.2007.01.005
-31;BR;SA;variable;variable;100;1396;0,42;a_clay_mi;benites_2007;https://doi.org/10.1016/j.geoderma.2007.01.005
-32;US;NA;variable;agriculture;30;609;0,872;a_c_of;ruehlmann_2009;https://doi.org/10.2136/sssaj2007.0149
-33;SE;EU;variable;variable;30;171;0,81;a_som_loi||a_clay_mi||a_sand_mi;keller_2010;https://doi.org/10.1016/j.geoderma.2009.11.013
-34;CN;AS;variable;variable;200;1566;0,76;a_som_loi;han_2012;https://doi.org/10.1097/SS.0B013E31823FD493
-35;CN;AS;variable;variable;200;1566;0,791;a_som_loi;han_2012;https://doi.org/10.1097/SS.0B013E31823FD493
-36;;EU;variable;variable;190;925;0,63;a_c_of||a_clay_mi||a_sand_mi;hollis_2012;https://doi.org/10.1111/j.1365-2389.2011.01412.x
-37;;EU;variable;forest;190;67;0,68;a_c_of;hollis_2012;https://doi.org/10.1111/j.1365-2389.2011.01412.x
-38;;EU;variable;agriculture;30;333;0,62;a_c_of||a_clay_mi||a_sand_mi;hollis_2012;https://doi.org/10.1111/j.1365-2389.2011.01412.x
-39;EE;EU;variable;agriculture;25;17293;0,43;a_c_of||a_clay_mi||b_depth||a_h2o_t105;suuster_2011;https://doi.org/10.1016/j.geoderma.2011.04.005
-40;KP;AS;variable;variable;200;108;0,2;a_som_loi;hong_2013;https://doi.org/10.7717/peerj.71
-41;KP;AS;variable;variable;200;642;0,45;a_som_loi;hong_2013;https://doi.org/10.7717/peerj.71
-42;JO;AS;variable;variable;20;332;0,38;a_c_of;al-qinna_2013;https://doi: 10.13031/trans.56.9922
-43;JO;AS;variable;variable;20;332;0,392;a_c_of;al-qinna_2013;https://doi: 10.13031/trans.56.9922
-44;JO;AS;variable;variable;20;332;0,37;a_c_of;al-qinna_2013;https://doi: 10.13031/trans.56.9922
-45;JO;AS;variable;variable;20;332;0,463;a_c_of||a_sand_mi;al-qinna_2013;https://doi: 10.13031/trans.56.9922
-46;JO;AS;variable;variable;20;332;0,486;a_c_of||a_sand_mi;al-qinna_2013;https://doi: 10.13031/trans.56.9922
-47;JO;AS;variable;variable;20;332;0,463;a_c_of||a_sand_mi||a_clay_mi||a_silt_mi;al-qinna_2013;https://doi: 10.13031/trans.56.9922
-48;JP;AS;variable;variable;30;3513;0,673;a_c_of;nanko_2014;https://doi.org/10.1016/j.geoderma.2013.07.025
-49;JP;AS;variable;variable;30;3513;0,677;a_som_loi;nanko_2014;https://doi.org/10.1016/j.geoderma.2013.07.025
-50;BE;EU;variable;forest;200;1614;0,57;a_som_loi;devos_2005;https://doi.org/10.2136/sssaj2005.0500
-51;BE;EU;variable;forest;200;1614;0,55;a_som_loi;devos_2005;https://doi.org/10.2136/sssaj2005.0500
-52;AU;OC;variable;variable;5;98;0,81812025;a_som_loi;jeffrey_1970;https://www.jstor.org/stable/2258183
-53;;;variable;variable;30;765;0,9;a_som_loi;harrison_1981;https://www.jstor.org/stable/2402382
-54;;;variable;variable;90;312;0,76;a_som_loi;harrison_1981;https://www.jstor.org/stable/2402382
-55;SE;EU;variable;forest;30;101;0,9604;a_som_loi;harrison_1981;https://www.jstor.org/stable/2402382
-56;GB;EU;variable;grassland;30;50;0,3969;a_som_loi;harrison_1981;https://www.jstor.org/stable/2402382
-57;NZ;OC;variable;grassland;30;51;0,6889;a_som_loi;harrison_1981;https://www.jstor.org/stable/2402382
-58;US;NA;variable;forest;5;812;0,75;a_som_loi;grigal_1989;https://doi.org/10.4141/cjss89-092
-59;US;NA;variable;forest;30;812;0,95;a_som_loi;grigal_1989;https://doi.org/10.4141/cjss89-092
-60;US;NA;peat;nature;25;232;0,89;a_som_loi;grigal_1989;https://doi.org/10.4141/cjss89-092
-61;US;NA;peat;nature;175;232;0,89;a_som_loi;grigal_1989;https://doi.org/10.4141/cjss89-092
-62;AU;OC;clay;forest;80;136;0,95;a_som_loi;honeysett_1989;https://doi.org/10.1111/j.1365-2389.1989.tb01275.x
-63;AU;OC;clay;forest;80;136;0,95;a_som_loi;honeysett_1989;https://doi.org/10.1111/j.1365-2389.1989.tb01275.x
-64;CZ;EU;;forest;30;360;0,26;a_som_loi;cienciala_2006;http://dx.doi.org/10.17221/4519-JFS
+﻿id;country;continent;soiltype;landuse;depth;nsample;r2;soilproperties;reference;url;;
+1;NL;EU;variable;agriculture;30;;;a_som_loi||a_clay_mi;cbgv_2022;https://edepot.wur.nl/413891;;
+2;US;NA;sandy loam;forest;30;103;0,96;a_som_loi;curtis_1964;https://doi.org/10.2136/sssaj1964.03615995002800020044x;;
+3;GB;EU;silty clay;forest;30;77;0,9;a_som_loi;adams_1973;https://doi.org/10.1111/j.1365-2389.1973.tb00737.x;;
+4;US;NA;variable;variable;292;721;0,462;a_c_of;alexander_1980;https://doi.org/10.2136/sssaj1980.03615995004400040005x;;
+5;US;NA;variable;variable;264;721;0,332;a_c_of;alexander_1980;https://doi.org/10.2136/sssaj1980.03615995004400040005x;;
+6;US;NA;loam;forest;80;130;;a_som_loi;federer_1983;https://doi.org/10.2136/sssaj1983.03615995004700050034x;;
+7;US;NA;loamy sand;forest;45;60;0,75;a_c_of;huntington_1989;https://journals.lww.com/soilsci/abstract/1989/11000/carbon,_organic_matter,_and_bulk_density.9.aspx;;
+8;US;NA;loamy sand;forest;45;60;0,75;a_som_loi;huntington_1989;https://journals.lww.com/soilsci/abstract/1989/11000/carbon,_organic_matter,_and_bulk_density.9.aspx;;
+9;US;NA;variable;variable;;19651;0,41;a_c_of;manrique_1991;https://doi.org/10.2136/sssaj1991.03615995005500020030x;;
+10;US;NA;variable;variable;;19651;0,36;a_c_of;manrique_1991;https://doi.org/10.2136/sssaj1991.03615995005500020030x;;
+11;US;NA;sandy  loam||silt loam;forest;30;480;;a_som_loi;federer_1993;https://doi.org/10.1139/x93-131;;
+12;FI;EU;variable;forest;65;75;0,61;a_som_loi;tamminen_1994;https://helda.helsinki.fi/bitstream/handle/1975/9162/028-1_Tamminen.pdf?sequence=3;;
+13;FI;EU;variable;forest;65;75;0,7;a_som_loi;tamminen_1994;https://helda.helsinki.fi/bitstream/handle/1975/9162/028-1_Tamminen.pdf?sequence=3;;
+14;BR;SA;variable;forest;;613;0,22;a_c_of||a_silt_mi||a_clay_mi;tomasella_1998;;;
+15;BR;SA;variable;forest;35;323;0,498;a_c_of||a_clay_mi;bernoux_1998;https://doi.org/10.2136/sssaj1998.03615995006200030029x;;
+16;;;variable;variable;35;;;a_som_loi;post_2000;https://doi.org/10.1046/j.1365-2486.2000.00308.x;;
+17;LT;EU;;forest;35;;;a_c_of||a_silt_mi||a_clay_mi;leonaviciute_2000;;;
+18;LT;EU;;forest;35;;;a_c_of||a_silt_mi||a_clay_mi||a_sand_mi;leonaviciute_2000;;;
+19;LT;EU;;forest;35;;;a_c_of||a_silt_mi||a_clay_mi||a_sand_mi;leonaviciute_2000;;;
+20;LT;EU;;forest;35;;;a_c_of||a_silt_mi||a_clay_mi||a_sand_mi;leonaviciute_2000;;;
+21;IN;AS;variable;variable;110;224;0,5;a_c_of||a_silt_mi||a_clay_mi;kaur_2002;https://www.publish.csiro.au/sr/sr01023;;
+22;CA;NA;variable;forest;30;284;;a_som_loi;tremblay_2002;https://doi.org/10.1139/x02-023;;
+23;CA;NA;loamy sand | silty sand;forest;30;288;0,77;a_som_loi;prevost_2004;https://doi.org/10.2136/sssaj2004.9430;;
+24;CA;NA;loamy sand | silty sand;forest;30;126;0,637;a_som_loi;prevost_2004;https://doi.org/10.2136/sssaj2004.9430;;
+25;US;NA;variable;variable;300;47015;0,44;a_c_of||a_silt_mi||a_clay_mi||b_depth||a_h2o_t105;heuscher_2005;https://doi.org/10.2136/sssaj2005.0051a;;
+26;CA;NA;loamy to sandy loams;forest;100;125;0,82;a_som_loi;perie_2007;https://doi.org/10.4141/CJSS06008;;
+27;CA;NA;loamy to sandy loams;forest;100;125;0,1;a_som_loi;perie_2007;https://doi.org/10.4141/CJSS06008;;
+28;AU;OC;variable;variable;100;1407;0,405;a_sand_mi||b_depth;tranter_2007;https://doi.org/10.1111/j.1475-2743.2007.00092.x;;
+29;AU;OC;variable;variable;100;546;0,498;a_sand_mi||b_depth;tranter_2007;https://doi.org/10.1111/j.1475-2743.2007.00092.x;;
+30;BR;SA;variable;variable;100;1396;0,63;a_c_of||a_clay_mi;benites_2007;https://doi.org/10.1016/j.geoderma.2007.01.005;;
+31;BR;SA;variable;variable;100;1396;0,42;a_clay_mi;benites_2007;https://doi.org/10.1016/j.geoderma.2007.01.005;;
+32;US;NA;variable;agriculture;30;609;0,872;a_c_of;ruehlmann_2009;https://doi.org/10.2136/sssaj2007.0149;;
+33;SE;EU;variable;variable;30;171;0,81;a_som_loi||a_clay_mi||a_sand_mi;keller_2010;https://doi.org/10.1016/j.geoderma.2009.11.013;;
+34;CN;AS;variable;variable;200;1566;0,76;a_som_loi;han_2012;https://doi.org/10.1097/SS.0B013E31823FD493;;
+35;CN;AS;variable;variable;200;1566;0,791;a_som_loi;han_2012;https://doi.org/10.1097/SS.0B013E31823FD493;;
+36;;EU;variable;variable;190;925;0,63;a_c_of||a_clay_mi||a_sand_mi;hollis_2012;https://doi.org/10.1111/j.1365-2389.2011.01412.x;;
+37;;EU;variable;forest;190;67;0,68;a_c_of;hollis_2012;https://doi.org/10.1111/j.1365-2389.2011.01412.x;;
+38;;EU;variable;agriculture;30;333;0,62;a_c_of||a_clay_mi||a_sand_mi;hollis_2012;https://doi.org/10.1111/j.1365-2389.2011.01412.x;;
+39;EE;EU;variable;agriculture;25;17293;0,43;a_c_of||a_clay_mi||b_depth||a_h2o_t105;suuster_2011;https://doi.org/10.1016/j.geoderma.2011.04.005;;
+40;KP;AS;variable;variable;200;108;0,2;a_som_loi;hong_2013;https://doi.org/10.7717/peerj.71;;
+41;KP;AS;variable;variable;200;642;0,45;a_som_loi;hong_2013;https://doi.org/10.7717/peerj.71;;
+42;JO;AS;variable;variable;20;332;0,38;a_c_of;al-qinna_2013;https://doi: 10.13031/trans.56.9922;;
+43;JO;AS;variable;variable;20;332;0,392;a_c_of;al-qinna_2013;https://doi: 10.13031/trans.56.9922;;
+44;JO;AS;variable;variable;20;332;0,37;a_c_of;al-qinna_2013;https://doi: 10.13031/trans.56.9922;;
+45;JO;AS;variable;variable;20;332;0,463;a_c_of||a_sand_mi;al-qinna_2013;https://doi: 10.13031/trans.56.9922;;
+46;JO;AS;variable;variable;20;332;0,486;a_c_of||a_sand_mi;al-qinna_2013;https://doi: 10.13031/trans.56.9922;;
+47;JO;AS;variable;variable;20;332;0,463;a_c_of||a_sand_mi||a_clay_mi||a_silt_mi;al-qinna_2013;https://doi: 10.13031/trans.56.9922;;
+48;JP;AS;variable;variable;30;3513;0,673;a_c_of;nanko_2014;https://doi.org/10.1016/j.geoderma.2013.07.025;;
+49;JP;AS;variable;variable;30;3513;0,677;a_som_loi;nanko_2014;https://doi.org/10.1016/j.geoderma.2013.07.025;;
+50;BE;EU;variable;forest;200;1614;0,57;a_som_loi;devos_2005;https://doi.org/10.2136/sssaj2005.0500;;
+51;BE;EU;variable;forest;200;1614;0,55;a_som_loi;devos_2005;https://doi.org/10.2136/sssaj2005.0500;;
+52;AU;OC;variable;variable;5;98;0,81812025;a_som_loi;jeffrey_1970;https://www.jstor.org/stable/2258183;;
+53;;;variable;variable;30;765;0,9;a_som_loi;harrison_1981;https://www.jstor.org/stable/2402382;;
+54;;;variable;variable;90;312;0,76;a_som_loi;harrison_1981;https://www.jstor.org/stable/2402382;;
+55;SE;EU;variable;forest;30;101;0,9604;a_som_loi;harrison_1981;https://www.jstor.org/stable/2402382;;
+56;GB;EU;variable;grassland;30;50;0,3969;a_som_loi;harrison_1981;https://www.jstor.org/stable/2402382;;
+57;NZ;OC;variable;grassland;30;51;0,6889;a_som_loi;harrison_1981;https://www.jstor.org/stable/2402382;;
+58;US;NA;variable;forest;5;812;0,75;a_som_loi;grigal_1989;https://doi.org/10.4141/cjss89-092;;
+59;US;NA;variable;forest;30;812;0,95;a_som_loi;grigal_1989;https://doi.org/10.4141/cjss89-092;;
+60;US;NA;peat;nature;25;232;0,89;a_som_loi;grigal_1989;https://doi.org/10.4141/cjss89-092;;
+61;US;NA;peat;nature;175;232;0,89;a_som_loi;grigal_1989;https://doi.org/10.4141/cjss89-092;;
+62;AU;OC;clay;forest;80;136;0,95;a_som_loi;honeysett_1989;https://doi.org/10.1111/j.1365-2389.1989.tb01275.x;;
+63;AU;OC;clay;forest;80;136;0,95;a_som_loi;honeysett_1989;https://doi.org/10.1111/j.1365-2389.1989.tb01275.x;;
+64;CZ;EU;;forest;30;360;0,26;a_som_loi;cienciala_2006;http://dx.doi.org/10.17221/4519-JFS;;
+65;;EU;variable;variable;30;278;;a_c_of;anguilera_2013;http://dx.doi.org/10.1016/j.agee.2013.02.003;;
+66;GB;EU;peat;variable;30;;;a_c_of;howard_1995;https://doi.org/10.1111/j.1475-2743.1995.tb00488.x;;
+67;CN;AS;variable;agriculture;30;358772;0,787;a_c_of;song_2005;https://doi.org/10.1007/s10533-004-2222-3;;
+68;CN;AS;variable;nature;30;165122;0,726;a_c_of;song_2005;https://doi.org/10.1007/s10533-004-2222-3;;
+69;CN;AS;loam;variable;500;534;0,356;b_depth||a_clay_mi;qiao_2019;https://doi.org/10.1007/s11368-018-2040-1;;
+70;CN;AS;variable;variable;25;748;0,3999;b_altitude||a_c_of||a_clay_mi||a_silt_mi||b_slope_degree||b_slope_aspect;wang_2014;https::/doi.org/10.1007/s10712-013-9249-8;;
+71;CN;AS;variable;variable;25;748;0,41;a_c_of||a_clay_mi||a_silt_mi||b_slope_degree;wang_2014;https::/doi.org/10.1007/s10712-013-9249-8;;
+72;SE;EU;sand;agriculture;30;10;;a_c_of;katterer_2006;https://doi.org/10.1080/09064710500310170;;
+73;SE;EU;clay;agriculture;30;56;;a_c_of;katterer_2006;https://doi.org/10.1080/09064710500310170;;
+74;SE;EU;loam;agriculture;30;27;;a_c_of;katterer_2006;https://doi.org/10.1080/09064710500310170;;
+75;SE;EU;variable;agriculture;30;337;0,32;a_c_of;katterer_2006;https://doi.org/10.1080/09064710500310170;;
+76;SE;EU;peat;agriculture;30;49;;a_c_of;katterer_2006;https://doi.org/10.1080/09064710500310170;;
+77;SE;EU;variable;variable;100;1283;0,59;a_c_of;katterer_2006;https://doi.org/10.1080/09064710500310170;;
+78;TN;AF;variable;variable;100;707;0,55;a_c_of||a_clay_mi||a_sand_mi||a_ph_wa;brahim_2012;https::/doi.org/10.1016/j.jaridenv.2012.01.012;;
+79;TN;AF;variable;variable;40;141;0,58;a_c_of||a_sand_mi|Ia_silt_mi||a_ph_wa;brahim_2012;https::/doi.org/10.1016/j.jaridenv.2012.01.012;;
+80;TN;AF;variable;variable;100;90;0,31;a_c_of||a_clay_mi||a_caco3_mi;brahim_2012;https::/doi.org/10.1016/j.jaridenv.2012.01.012;;
+81;US;NA;variable;variable;100;174339;0,682;a_c_of;abeldaki_2016;https://doi.org/10.1016/j.asej.2016.12.002;;
+82;NG;AF;variable;variable;100;1161;0,109;a_sand_mi||a_silt_mi;akpa_2016;https://doi.org/10.1111/sum.12310;;
+83;NG;AF;variable;variable;40;260;0,161;a_sand_mi||a_silt_mi;akpa_2016;https://doi.org/10.1111/sum.12310;;
+84;BR;SA;organic;variable;30;228;0,56;a_c_of||a_clay_mi;beutler_2017;https://doi.org/10.1590/18069657rbcs20160158;;
+85;BR;SA;organic;variable;30;228;0,52;a_c_of;beutler_2017;https://doi.org/10.1590/18069657rbcs20160158;;
+86;CD;AF;variable;variable;100;196;0,244;a_c_of||a_clay_mi||a_sand_mi;botula_2015;https://doi.org/10.2136/sssaj2014.06.0238;;
+87;;;;;;937;;;calhoun_2001;;;
+88;;;;;;119;;;dexter_2004;;;
+89;;;;;;156;;;drew_1973;;;
+90;;;;;;134;;;eschner_1957;;;
+91;;;;;;106;;;kobal_2011;;;
+92;;;;;;2100;;;rawls_2004;;;
+93;;;;;;2950;;;reidy_2016;;;
+94;;;;;;40;;;saini_1966;;;
+95;;;;;;32;;;sevastas_2018;;;
+96;;;;;;32;;;sevastas_2018;;;
+97;;;;;;37;;;williams_1970;;;
+98;;;;;;784;;;wu_2003;;;
+99;;;;;;4860;;;yang_2007;;;
+100;;;;;;788;;in nasta;zinke_1986;;;
+101;;;;;;;;new;barros_2013;;;
+102;;;;;;;;;chen_2018;;;
+103;;;;;;;;;souza_2016;;;
