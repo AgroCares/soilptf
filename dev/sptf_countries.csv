@@ -1,0 +1,250 @@
+country_name;country_code;continent_code
+afghanistan;AF;AS
+åland islands;AX;EU
+albania;AL;EU
+algeria;DZ;AF
+american samoa;AS;OC
+andorra;AD;EU
+angola;AO;AF
+anguilla;AI;NA
+antarctica;AQ;AN
+antigua and barbuda;AG;NA
+argentina;AR;SA
+armenia;AM;AS
+aruba;AW;NA
+australia;AU;OC
+austria;AT;EU
+azerbaijan;AZ;AS
+bahamas;BS;NA
+bahrain;BH;AS
+bangladesh;BD;AS
+barbados;BB;NA
+belarus;BY;EU
+belgium;BE;EU
+belize;BZ;NA
+benin;BJ;AF
+bermuda;BM;NA
+bhutan;BT;AS
+bolivia, plurinational state of;BO;SA
+bonaire, sint eustatius and saba;BQ;NA
+bosnia and herzegovina;BA;EU
+botswana;BW;AF
+bouvet island;BV;SA
+brazil;BR;SA
+british indian ocean territory;IO;AS
+brunei darussalam;BN;AS
+bulgaria;BG;EU
+burkina faso;BF;AF
+burundi;BI;AF
+cambodia;KH;AS
+cameroon;CM;AF
+canada;CA;NA
+cape verde;CV;AF
+cayman islands;KY;NA
+central african republic;CF;AF
+chad;TD;AF
+chile;CL;SA
+china;CN;AS
+christmas island;CX;AS
+cocos (keeling) islands;CC;AS
+colombia;CO;SA
+comoros;KM;AF
+congo;CG;AF
+congo, the democratic republic of the;CD;AF
+cook islands;CK;OC
+costa rica;CR;NA
+côte d'ivoire;CI;AF
+croatia;HR;EU
+cuba;CU;NA
+curaçao;CW;NA
+cyprus;CY;EU
+czech republic;CZ;EU
+denmark;DK;EU
+djibouti;DJ;AF
+dominica;DM;NA
+dominican republic;DO;NA
+ecuador;EC;SA
+egypt;EG;AF
+el salvador;SV;NA
+equatorial guinea;GQ;AF
+eritrea;ER;AF
+estonia;EE;EU
+ethiopia;ET;EU
+falkland islands (malvinas);FK;SA
+faroe islands;FO;EU
+fiji;FJ;OC
+finland;FI;EU
+france;FR;EU
+french guiana;GF;SA
+french polynesia;PF;OC
+french southern territories;TF;AF
+gabon;GA;AF
+gambia;GM;AF
+georgia;GE;AS
+germany;DE;EU
+ghana;GH;AF
+gibraltar;GI;EU
+greece;GR;EU
+greenland;GL;NA
+grenada;GD;NA
+guadeloupe;GP;NA
+guam;GU;OC
+guatemala;GT;NA
+guernsey;GG;EU
+guinea;GN;AF
+guinea-bissau;GW;AF
+guyana;GY;SA
+haiti;HT;NA
+heard island and mcdonald islands;HM;OC
+holy see (vatican city state);VA;EU
+honduras;HN;NA
+hong kong;HK;AS
+hungary;HU;EU
+iceland;IS;EU
+india;IN;AS
+indonesia;ID;AS
+iran, islamic republic of;IR;AS
+iraq;IQ;AS
+ireland;IE;EU
+isle of man;IM;EU
+israel;IL;AS
+italy;IT;EU
+jamaica;JM;NA
+japan;JP;AS
+jersey;JE;EU
+jordan;JO;AS
+kazakhstan;KZ;AS
+kenya;KE;AF
+kiribati;KI;OC
+korea, democratic people's republic of;KP;AS
+korea, republic of;KR;AS
+kuwait;KW;AS
+kyrgyzstan;KG;AS
+lao people's democratic republic;LA;AS
+latvia;LV;EU
+lebanon;LB;AS
+lesotho;LS;AF
+liberia;LR;AF
+libya;LY;AF
+liechtenstein;LI;EU
+lithuania;LT;EU
+luxembourg;LU;EU
+macao;MO;AS
+macedonia, the former yugoslav republic of;MK;EU
+madagascar;MG;AF
+malawi;MW;AF
+malaysia;MY;AS
+maldives;MV;AS
+mali;ML;AF
+malta;MT;EU
+marshall islands;MH;OC
+martinique;MQ;NA
+mauritania;MR;AF
+mauritius;MU;AF
+mayotte;YT;AF
+mexico;MX;NA
+micronesia, federated states of;FM;OC
+moldova, republic of;MD;EU
+monaco;MC;EU
+mongolia;MN;AS
+montenegro;ME;EU
+montserrat;MS;NA
+morocco;MA;AF
+mozambique;MZ;AF
+myanmar;MM;AS
+namibia;;AF
+nauru;NR;OC
+nepal;NP;AS
+netherlands;NL;EU
+new caledonia;NC;OC
+new zealand;NZ;OC
+nicaragua;NI;NA
+niger;NE;AF
+nigeria;NG;AF
+niue;NU;OC
+norfolk island;NF;OC
+northern mariana islands;MP;OC
+norway;NO;EU
+oman;OM;AS
+pakistan;PK;AS
+palau;PW;OC
+palestine, state of;PS;AS
+panama;PA;NA
+papua new guinea;PG;OC
+paraguay;PY;SA
+peru;PE;SA
+philippines;PH;AS
+pitcairn;PN;OC
+poland;PL;EU
+portugal;PT;EU
+puerto rico;PR;NA
+qatar;QA;AS
+réunion;RE;AF
+romania;RO;EU
+russian federation;RU;AS
+rwanda;RW;AF
+saint barthélemy;BL;NA
+saint helena, ascension and tristan da cunha;SH;AF
+saint kitts and nevis;KN;NA
+saint lucia;LC;NA
+saint martin (french part);MF;NA
+saint pierre and miquelon;PM;NA
+saint vincent and the grenadines;VC;NA
+samoa;WS;OC
+san marino;SM;EU
+sao tome and principe;ST;AF
+saudi arabia;SA;AS
+senegal;SN;AF
+serbia;RS;EU
+seychelles;SC;AF
+sierra leone;SL;AF
+singapore;SG;AS
+sint maarten (dutch part);SX;NA
+slovakia;SK;EU
+slovenia;SI;EU
+solomon islands;SB;OC
+somalia;SO;AF
+south africa;ZA;AF
+south georgia and the south sandwich islands;GS;SA
+south sudan;SS;AF
+spain;ES;EU
+sri lanka;LK;AS
+sudan;SD;AF
+suriname;SR;SA
+svalbard and jan mayen;SJ;EU
+swaziland;SZ;AF
+sweden;SE;EU
+switzerland;CH;EU
+syrian arab republic;SY;AS
+taiwan, province of china;TW;AS
+tajikistan;TJ;AS
+tanzania, united republic of;TZ;AF
+thailand;TH;AS
+timor-leste;TL;AS
+togo;TG;AF
+tokelau;TK;OC
+tonga;TO;OC
+trinidad and tobago;TT;NA
+tunisia;TN;AF
+turkey;TR;AS
+turkmenistan;TM;AS
+turks and caicos islands;TC;NA
+tuvalu;TV;OC
+uganda;UG;AF
+ukraine;UA;EU
+united arab emirates;AE;AS
+united kingdom;GB;EU
+united states;US;NA
+united states minor outlying islands;UM;NA
+uruguay;UY;SA
+uzbekistan;UZ;AS
+vanuatu;VU;OC
+venezuela, bolivarian republic of;VE;SA
+viet nam;VN;AS
+virgin islands, british;VG;NA
+virgin islands, u.s.;VI;NA
+wallis and futuna;WF;OC
+western sahara;EH;AF
+yemen;YE;AS
+zambia;ZM;AF
+zimbabwe;ZW;AF

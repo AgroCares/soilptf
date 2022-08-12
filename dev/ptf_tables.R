@@ -21,11 +21,14 @@
     # json_data <- fromJSON(paste(readLines(json_file), collapse=""))
     # json_data$resources$path
     
-  # download data
-  d2 <- fread('https://pkgstore.datahub.io/core/country-list/data_csv/data/d7c9d7cfb42cb69f4422dec222dbbaa8/data_csv.csv', encoding = 'UTF-8')
-
+    # download data
+    # d2 <- fread('https://pkgstore.datahub.io/core/country-list/data_csv/data/d7c9d7cfb42cb69f4422dec222dbbaa8/data_csv.csv', encoding = 'UTF-8')
+  
+  # loaddata
+  d2 <- fread('dev/sptf_countries.csv')
+  
   # update column names
-  setnames(d2,c('country_name','country_code'))
+  setnames(d2,c('country_name','country_code','continent_code'))
   
   # set countries to lower case
   d2[, country_name := tolower(country_name)]
