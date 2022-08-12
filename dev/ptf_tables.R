@@ -5,7 +5,7 @@
   require(usethis)
   
   # load the csv file with pdtf for bulk density
-  d1 <- fread('dev/sptf_bulkdensity.csv',na.strings=NULL)
+  d1 <- fread('dev/sptf_bulkdensity.csv',na.strings=NULL, dec=',')
 
   # make copy for package table
   sptf_bulkdensity <- copy(d1)
