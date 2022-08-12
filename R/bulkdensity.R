@@ -6126,7 +6126,7 @@ sptf_bd171 <- function(A_SOM_LOI, A_CLAY_MI) {
 sptf_bd172 <- function(A_SOM_LOI) {
   
   # Check input
-  checkmate::assert_numeric(A_SOM_LOI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
+  checkmate::assert_numeric(A_SOM_LOI, lower = 0, upper = 100, any.missing = FALSE)
   
   # Collect data into a table 
   dt <- data.table(A_SOM_LOI = A_SOM_LOI, value = NA_real_)
@@ -6157,7 +6157,7 @@ sptf_bd172 <- function(A_SOM_LOI) {
 sptf_bd173 <- function(A_SOM_LOI) {
   
   # Check input
-  checkmate::assert_numeric(A_SOM_LOI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
+  checkmate::assert_numeric(A_SOM_LOI, lower = 0, upper = 100, any.missing = FALSE)
   
   # Collect data into a table 
   dt <- data.table(A_SOM_LOI = A_SOM_LOI, value = NA_real_)
@@ -6188,7 +6188,7 @@ sptf_bd173 <- function(A_SOM_LOI) {
 sptf_bd174 <- function(A_SOM_LOI) {
   
   # Check input
-  checkmate::assert_numeric(A_SOM_LOI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
+  checkmate::assert_numeric(A_SOM_LOI, lower = 0, upper = 100, any.missing = FALSE)
   
   # Collect data into a table 
   dt <- data.table(A_SOM_LOI = A_SOM_LOI, value = NA_real_)
@@ -6216,7 +6216,7 @@ sptf_bd174 <- function(A_SOM_LOI) {
 sptf_bd175 <- function(A_SOM_LOI) {
   
   # Check input
-  checkmate::assert_numeric(A_SOM_LOI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
+  checkmate::assert_numeric(A_SOM_LOI, lower = 0, upper = 100, any.missing = FALSE)
   
   # Collect data into a table 
   dt <- data.table(A_SOM_LOI = A_SOM_LOI, value = NA_real_)
@@ -6244,7 +6244,7 @@ sptf_bd175 <- function(A_SOM_LOI) {
 sptf_bd176 <- function(A_SOM_LOI) {
   
   # Check input
-  checkmate::assert_numeric(A_SOM_LOI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
+  checkmate::assert_numeric(A_SOM_LOI, lower = 0, upper = 100, any.missing = FALSE)
   
   # Collect data into a table 
   dt <- data.table(A_SOM_LOI = A_SOM_LOI, value = NA_real_)
@@ -6273,6 +6273,9 @@ sptf_bd176 <- function(A_SOM_LOI) {
 #'
 #' @export
 sptf_bd177 <- function(A_SOM_LOI, A_CLAY_MI, A_SILT_MI, A_SAND_M50) {
+  
+  # add visual bindings
+  A_LEEM_MI = NULL
   
   # Check input
   arg.length <- max(length(A_SOM_LOI), length(A_CLAY_MI),length(A_SILT_MI),length(A_SAND_M50))
@@ -6355,7 +6358,7 @@ sptf_bd178 <- function(A_SOM_LOI, A_CLAY_MI) {
 sptf_bd179 <- function(A_SOM_LOI, A_C_OF = NA, A_CLAY_MI = NA, A_SILT_MI = NA, A_SAND_MI = NA, A_PH_WA = NA) {
   
   # add visual bindings
-  v1 = v2 = v3 = v4 = v5 = v6 = v7 = NULL
+  v1 = v2 = v3 = v4 = v5 = v6 = v7 = id = NULL
   
   # Check input
   arg.length <- max(length(A_SOM_LOI), length(A_C_OF),
@@ -6471,7 +6474,7 @@ sptf_bd180 <- function(A_SOM_LOI,A_SAND_MI,A_CLAY_MI) {
 sptf_bd181 <- function(A_SOM_LOI, A_CLAY_MI, A_SILT_MI) {
   
   # Check input
-  arg.length <- max(length(A_SOM_LOI), length(A_CLAY_MI),length(A_SILT_MI),length(A_SAND_M50))
+  arg.length <- max(length(A_SOM_LOI), length(A_CLAY_MI),length(A_SILT_MI))
   checkmate::assert_numeric(A_SOM_LOI, lower = 0, upper = 1000, any.missing = FALSE,len = arg.length)
   checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
   checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
@@ -6495,9 +6498,6 @@ sptf_bd181 <- function(A_SOM_LOI, A_CLAY_MI, A_SILT_MI) {
   return(value)
   
 }
-# leem = %lutum + 0,3*%silt
-# in kaur 2002, zit meerder funs
-# ruehlmann_2009 data uit duisland
-#  Shaykewich and M. A. Zwarich
+
 
 

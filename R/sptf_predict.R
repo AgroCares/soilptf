@@ -5,7 +5,7 @@ ptf <- function(country = 'NL',type = 'bulkdensity',...){
   obj <- list(...)
   
   # read in internal table
-  ptf.mods <- sptf_bulkdensity
+  ptf.mods <- soilptf::sptf_bulkdensity
   ptf.mods[,c('reference','url') := NULL]
   
   # add filter
