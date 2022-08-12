@@ -5174,7 +5174,7 @@ sptf_bd146 <- function(A_C_OF) {
   dt[, v1 := 1.62 - 0.1 * A_C_OF]
   dt[, v2 := 1.7 - 0.22 * A_C_OF^0.5]
   dt[, v3 := 1.62 * exp(-0.07 * A_C_OF)]
-  dt[, v4 := 1.46 - 0.08 * log(SOC)]
+  dt[, v4 := 1.46 - 0.08 * log(A_C_OF)]
   
   # estimate soil density in Mg m-3 = ton m-3
   dt[, value := (v1 + v2 + v3 + v4)/4]
@@ -5298,7 +5298,7 @@ sptf_bd149 <- function(A_C_OF) {
   dt[, v1 := 1.4856 - 0.0942 * A_C_OF]
   dt[, v2 := 1.5386 - 0.1452 * A_C_OF^0.5]
   dt[, v3 := 1.4869 * exp(-0.0664 * A_C_OF)]
-  dt[, v4 := 1.3985 - 0.04974 * log(SOC)]
+  dt[, v4 := 1.3985 - 0.04974 * log(A_C_OF)]
   dt[, v5 := 1.4936 - 0.1226 * A_C_OF + 0.0206 * A_C_OF^2]
   
   # estimate soil density in Mg m-3 = ton m-3
