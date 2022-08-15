@@ -3937,12 +3937,11 @@ sptf_bd114 <- function(A_C_OF) {
   # Check input
   checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000, any.missing = FALSE)
   
-  # Collect data into a table (set in units %)
-  dt <- data.table(A_C_OF = A_C_OF * 0.1, 
-                   value = NA_real_)
+  # Collect data into a table (units in %)
+  dt <- data.table(A_C_OF = A_C_OF * 0.1,value = NA_real_)
   
   # estimate soil density in Mg m-3 = ton m-3
-  dt[, value := 1.4842 - 01424 * A_C_OF]
+  dt[, value := 1.4842 - 0.1424 * A_C_OF]
   
   # convert to kg / m3
   dt[, value := value * 1000]
@@ -4325,7 +4324,7 @@ sptf_bd124 <- function(A_C_OF) {
                    value = NA_real_)
   
   # estimate soil density in Mg m-3 = ton m-3
-  dt[, value := 0.013 * 0.024 * 100 / A_C_OF]
+  dt[, value := 0.013 + 0.024 * 100 / A_C_OF]
   
   # convert to kg / m3
   dt[, value := value * 1000]
@@ -4357,7 +4356,7 @@ sptf_bd125 <- function(A_C_OF) {
                    value = NA_real_)
   
   # estimate soil density in Mg m-3 = ton m-3
-  dt[, value := 0.039 * 0.0193 * 100 / A_C_OF]
+  dt[, value := 0.039 + 0.0193 * 100 / A_C_OF]
   
   # convert to kg / m3
   dt[, value := value * 1000]
@@ -4738,8 +4737,8 @@ sptf_bd136 <- function(A_C_OF) {
   # Check input
   checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000, any.missing = FALSE)
   
-  # Collect data into a table (set in units %)
-  dt <- data.table(A_C_OF = A_C_OF, value = NA_real_)
+  # Collect data into a table (units in %)
+  dt <- data.table(A_C_OF = A_C_OF * 0.1, value = NA_real_)
   
   # add multiple estimates from this study
   dt[, v1 := 1.42 * exp(-0.08 * A_C_OF)]
@@ -4921,7 +4920,7 @@ sptf_bd140 <- function(A_SOM_LOI, A_CLAY_MI, A_SAND_MI,A_SILT_MI) {
                    value = NA_real_)
   
   # estimate soil density in Mg m-3 = ton m-3
-  dt[, value := 10^(-1.2628 + 0.01409 * A_SAND_MI + 00134 * A_SILT_MI + 0.01516 * A_CLAY_MI - 0.0675 * A_SOM_LOI * 1.724)]
+  dt[, value := 10^(-1.2628 + 0.01409 * A_SAND_MI + 0.0134 * A_SILT_MI + 0.01516 * A_CLAY_MI - 0.0675 * A_SOM_LOI * 1.724)]
   
   # convert to kg / m3
   dt[, value := value * 1000]
@@ -5213,12 +5212,12 @@ sptf_bd147 <- function(A_C_OF, A_CLAY_MI, A_SAND_MI,A_SILT_MI, B_DEPTH) {
   checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, len = arg.length)
   checkmate::assert_numeric(B_DEPTH, lower = 0, upper = 2, len = arg.length)
   
-  # Collect data into a table (set units in g/kg, depth in cm)
+  # Collect data into a table (set units in g/100 g, depth in cm)
   # silt should be coarse silt
-  dt <- data.table(A_C_OF = A_C_OF, 
-                   A_CLAY_MI = A_CLAY_MI * 10,
-                   A_SAND_MI = A_SAND_MI * 10,
-                   A_SILT_MI = A_SILT_MI * 10,
+  dt <- data.table(A_C_OF = A_C_OF * 0.1, 
+                   A_CLAY_MI = A_CLAY_MI,
+                   A_SAND_MI = A_SAND_MI,
+                   A_SILT_MI = A_SILT_MI,
                    B_DEPTH = B_DEPTH * 100,
                    value = NA_real_)
   
@@ -5591,7 +5590,7 @@ sptf_bd157 <- function(A_C_OF, A_CLAY_MI, A_SILT_MI) {
                    value = NA_real_)
   
   # estimate soil density in Mg m-3 = ton m-3
-  dt[, value := 0.6123 + 0.0067 * A_SILT_MI - 0.1123 * A_CLAY_MI - 0.1925 * A_C_OF]
+  dt[, value := pmin(1.9,pmax(0.8, 0.6123 + 0.0067 * A_SILT_MI - 0.1123 * A_CLAY_MI - 0.1925 * A_C_OF))]
   
   # convert to kg / m3
   dt[, value := value * 1000]
@@ -5634,7 +5633,7 @@ sptf_bd158 <- function(A_C_OF, A_CLAY_MI, A_SILT_MI) {
                    value = NA_real_)
   
   # estimate soil density in Mg m-3 = ton m-3
-  dt[, value := -0.0217 + 0.0076 * A_SILT_MI - 0.0747 * A_CLAY_MI - 0.3998 * A_C_OF + 0.1069 * B_ROCKS_FR]
+  dt[, value := pmin(1.9,pmax(0.8,-0.0217 + 0.0076 * A_SILT_MI - 0.0747 * A_CLAY_MI - 0.3998 * A_C_OF + 0.1069 * B_ROCKS_FR))]
   
   # convert to kg / m3
   dt[, value := value * 1000]
@@ -6395,7 +6394,7 @@ sptf_bd179 <- function(A_SOM_LOI, A_C_OF = NA, A_CLAY_MI = NA, A_SILT_MI = NA, A
   dt[, v7 := 0.639 - 0.075 * A_C_OF - 0.0006 * A_CLAY_MI - 0.004 * A_SAND_MI + 0.119 * A_PH_WA]
   
   # estimate soil density in Mg m-3 = ton m-3
-  dt <- melt(dt, id.vars = 'id')
+  dt <- melt(dt, id.vars = 'id',measure.vars = patterns("^v"))
   dt <- dt[,list(value = mean(value, na.rm=T)), by = id]
    
   # convert to kg / m3
@@ -6479,14 +6478,14 @@ sptf_bd181 <- function(A_SOM_LOI, A_CLAY_MI, A_SILT_MI) {
   checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
   checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, len = arg.length)
   
-  # Collect data into a table (OM in g/kg)
-  dt <- data.table(A_SOM_LOI = A_SOM_LOI * 10, 
+  # Collect data into a table (OM in g/kg, unit SOM differs from paper because otherwise negative numbers occcur)
+  dt <- data.table(A_SOM_LOI = A_SOM_LOI * 0.1, 
                    A_CLAY_MI = A_CLAY_MI,
                    A_SILT_MI = A_SILT_MI,
                    value = NA_real_)
   
   # estimate soil density in Mg m-3 = ton m-3
-  dt[, value := 1.817 - 0.730 * A_SOM_LOI - 0.002 * A_CLAY_MI - 0.001 * A_SILT_MI]
+  dt[, value := pmin(1.7,pmax(1.3,1.817 - 0.730 * A_SOM_LOI - 0.002 * A_CLAY_MI - 0.001 * A_SILT_MI))]
   
   # convert to kg / m3
   dt[, value := value * 1000]

@@ -7,6 +7,9 @@
   # load the csv file with pdtf for bulk density
   d1 <- fread('dev/sptf_bulkdensity.csv',na.strings=NULL, dec=',')
 
+  # set empty string to NA
+  d1$landuse[d1$landuse==''] <- NA_character_
+  
   # make copy for package table
   sptf_bulkdensity <- copy(d1)
   

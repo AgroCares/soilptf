@@ -279,11 +279,16 @@ ptf_bd <- function(A_SOM_LOI = NA, A_C_OF = NA,
   # select only relevant cases
   dt2 <- dt2[!is.na(value) & value > 500 & value < 3000]
   
-  # add applicability factor
+  # add applicability factor given country, continent, depth, land use, and soil type
   dt2[,ap := 0]
   dt2[B_LOC_COUNTRY == country_code, ap := ap + 1]
   dt2[B_LOC_CONT == continent_code, ap := ap + 1]
   dt2[B_LU_PTFCLASS == landuse | landuse == 'variable' | is.na(landuse),ap := ap + 1]
+  dt2[B_DEPTH < 30 & depth < 50, ap := ap + 0.5]
+  dt2[grepl('sand',B_SOILTYPE) & grepl('sand|variable',soiltype) | is.na(soiltype), ap := ap + 0.33]
+  dt2[grepl('clay',B_SOILTYPE) & grepl('clay|variable',soiltype) | is.na(soiltype), ap := ap + 0.33]
+  dt2[grepl('loam',B_SOILTYPE) & grepl('loam|variable',soiltype) | is.na(soiltype), ap := ap + 0.33]
+  dt2[A_SOM_LOI > 20 & grepl('peat|organic',soiltype), ap := ap + 1]
   
   # add default r2 for ptfs that are unknown
   dt2[is.na(r2), r2 := 0.7]
