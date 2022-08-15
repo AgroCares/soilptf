@@ -33,7 +33,7 @@ sptf_textureclass <- function(A_CLAY_MI, A_SILT_MI, A_SAND_MI){
     } else if (cl>27.5 & cl<=40   & sa<=20    & si>40  & si<=72.5){
       value="silty clay loam"
     } else if (cl<=27.5& sa<=50   & si>50     & si<=80){
-      value="Silty loam"
+      value="silty loam"
     } else if (cl<=20  & cl>12.5  & sa<=7.5   & si>80  & si<=87.5){
       value="silty loam"
     } else if (cl<=12.5& sa <=20  & si>80){
@@ -49,7 +49,7 @@ sptf_textureclass <- function(A_CLAY_MI, A_SILT_MI, A_SAND_MI){
     } else if (cl<=10  & si<=15   & sa>85     & cl<=10-si*10/15){
       value="sand"
     } else if (cl<=15  & si<=30   & sa>70     & cl> 10-si*10/15 & cl<=15-si*15/30){
-      value="Loamy sand"
+      value="loamy sand"
     } else if (cl<=20  & si<=50   & sa>70     & cl>15-si*15/30){
       value="sandy loam"
     } else {
