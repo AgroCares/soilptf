@@ -19,7 +19,7 @@ sptf_bd1 <- function(A_SOM_LOI, A_CLAY_MI) {
   # Check input
   arg.length <- max(length(A_SOM_LOI), length(A_CLAY_MI))
   checkmate::assert_numeric(A_SOM_LOI, lower = 0, upper = 100, any.missing = FALSE, len = arg.length)
-  checkmate::assert_numeric(A_CLAY_MI, lower = 0.1, upper = 75, any.missing = FALSE, len = arg.length)
+  checkmate::assert_numeric(A_CLAY_MI, lower = 0.1, upper = 75,  len = arg.length)
   
   # Collect data into a table
   dt <- data.table(A_SOM_LOI = A_SOM_LOI,
@@ -251,8 +251,8 @@ sptf_bd8 <- function(A_SOM_LOI) {
   # Check input
   checkmate::assert_numeric(A_SOM_LOI, lower = 0, upper = 100, any.missing = FALSE)
   
-  # Collect data into a table
-  dt <- data.table(A_SOM_LOI = A_SOM_LOI, value = NA_real_)
+  # Collect data into a table (unit in g/g)
+  dt <- data.table(A_SOM_LOI = A_SOM_LOI * 0.01, value = NA_real_)
   
   # estimate soil density in Mg m-3 = ton m-3
   dt[, value := exp(-2.39 - 1.316 * log(A_SOM_LOI) - 0.167 * log(A_SOM_LOI)^2)]
@@ -441,8 +441,8 @@ sptf_bd14 <- function(A_C_OF, A_CLAY_MI, A_SILT_MI) {
   # Check input
   arg.length <- max(length(A_C_OF), length(A_CLAY_MI),length(A_SILT_MI))
   checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
+  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, len = arg.length)
   
   # Collect data into a table (set in units %)
   dt <- data.table(A_C_OF = A_C_OF * 0.1, 
@@ -479,7 +479,7 @@ sptf_bd15 <- function(A_C_OF, A_CLAY_MI) {
   # Check input
   arg.length <- max(length(A_C_OF), length(A_CLAY_MI))
   checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
+  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
   
   # Collect data into a table (set in units %)
   dt <- data.table(A_C_OF = A_C_OF * 0.1, 
@@ -548,8 +548,8 @@ sptf_bd17 <- function(A_C_OF, A_CLAY_MI, A_SILT_MI) {
   # Check input
   arg.length <- max(length(A_C_OF), length(A_CLAY_MI),length(A_SILT_MI))
   checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
+  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, len = arg.length)
   
   # Collect data into a table (set in units %)
   dt <- data.table(A_C_OF = A_C_OF * 0.1, 
@@ -588,9 +588,9 @@ sptf_bd18 <- function(A_C_OF, A_CLAY_MI, A_SAND_MI, A_SILT_MI) {
   # Check input
   arg.length <- max(length(A_C_OF), length(A_CLAY_MI),length(A_SILT_MI),length(A_SAND_MI))
   checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(A_SAND_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
+  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_numeric(A_SAND_MI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, len = arg.length)
   
   # Collect data into a table (set in units %)
   dt <- data.table(A_C_OF = A_C_OF * 0.1, 
@@ -630,9 +630,9 @@ sptf_bd19 <- function(A_C_OF, A_CLAY_MI, A_SAND_MI, A_SILT_MI) {
   # Check input
   arg.length <- max(length(A_C_OF), length(A_CLAY_MI),length(A_SILT_MI),length(A_SAND_MI))
   checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(A_SAND_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
+  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_numeric(A_SAND_MI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, len = arg.length)
   
   # Collect data into a table (set in units %)
   dt <- data.table(A_C_OF = A_C_OF * 0.1, 
@@ -672,9 +672,9 @@ sptf_bd20 <- function(A_C_OF, A_CLAY_MI, A_SAND_MI, A_SILT_MI) {
   # Check input
   arg.length <- max(length(A_C_OF), length(A_CLAY_MI),length(A_SILT_MI),length(A_SAND_MI))
   checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(A_SAND_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
+  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_numeric(A_SAND_MI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, len = arg.length)
   
   # Collect data into a table (set in units %)
   dt <- data.table(A_C_OF = A_C_OF * 0.1, 
@@ -713,8 +713,8 @@ sptf_bd21 <- function(A_C_OF, A_CLAY_MI, A_SILT_MI) {
   # Check input
   arg.length <- max(length(A_C_OF), length(A_CLAY_MI),length(A_SILT_MI))
   checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
+  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, len = arg.length)
   
   # Collect data into a table (set in units %)
   dt <- data.table(A_C_OF = A_C_OF * 0.1, 
@@ -847,10 +847,10 @@ sptf_bd25 <- function(A_C_OF, A_CLAY_MI, A_SILT_MI,A_H2O_T105,B_DEPTH) {
   # Check input
   arg.length <- max(length(A_C_OF), length(A_CLAY_MI),length(A_SILT_MI),length(A_H2O_T105),length(B_DEPTH))
   checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(A_H2O_T105, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(B_DEPTH, lower = 0, upper = 2, any.missing = FALSE,len = arg.length)
+  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_numeric(A_H2O_T105, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_numeric(B_DEPTH, lower = 0, upper = 2, len = arg.length)
   
   # Collect data into a table (A_C_OF in units %, and DEPTH in units cm)
   dt <- data.table(A_C_OF = A_C_OF * 0.1, 
@@ -950,8 +950,8 @@ sptf_bd28 <- function(A_SAND_MI, B_DEPTH) {
   
   # Check input
   arg.length <- max(length(A_SAND_MI), length(B_DEPTH))
-  checkmate::assert_numeric(A_SAND_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(B_DEPTH, lower = 0, upper = 2, any.missing = FALSE,len = arg.length)
+  checkmate::assert_numeric(A_SAND_MI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_numeric(B_DEPTH, lower = 0, upper = 2, len = arg.length)
   
   # Collect data into a table (depth set in units cm)
   dt <- data.table(A_SAND_MI = A_SAND_MI, 
@@ -988,8 +988,8 @@ sptf_bd29 <- function(A_C_OF,A_SAND_MI, B_DEPTH) {
   # Check input
   arg.length <- max(length(A_C_OF),length(A_SAND_MI), length(B_DEPTH))
   checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(A_SAND_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(B_DEPTH, lower = 0, upper = 2, any.missing = FALSE,len = arg.length)
+  checkmate::assert_numeric(A_SAND_MI, lower = 0, upper = 100,len = arg.length)
+  checkmate::assert_numeric(B_DEPTH, lower = 0, upper = 2, len = arg.length)
   
   # Collect data into a table (depth set in units cm)
   dt <- data.table(A_SAND_MI = A_SAND_MI, 
@@ -998,7 +998,7 @@ sptf_bd29 <- function(A_C_OF,A_SAND_MI, B_DEPTH) {
                    value = NA_real_)
   
   # estimate soil density in Mg m-3 = ton m-3
-  dt[, value := 1.2 + 0.0021 * A_SAND_MI - 0.143 * A_C_OF/100 + (A_SAND_MI - 47.95)^2 + 6e-5 - 0.043 * log10(B_DEPTH)]
+  dt[, value := 1.2 + 0.0021 * A_SAND_MI - 0.143 * A_C_OF/100 + (A_SAND_MI - 47.95)^2 * 6e-5 - 0.043 * log10(B_DEPTH)]
   
   # convert to kg / m3
   dt[, value := value * 1000]
@@ -1026,7 +1026,7 @@ sptf_bd30 <- function(A_C_OF, A_CLAY_MI) {
   # Check input
   arg.length <- max(length(A_C_OF), length(A_CLAY_MI))
   checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
+  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100,len = arg.length)
   
   # Collect data into a table (set in units %)
   dt <- data.table(A_C_OF = A_C_OF * 0.1, 
@@ -1059,7 +1059,7 @@ sptf_bd30 <- function(A_C_OF, A_CLAY_MI) {
 sptf_bd31 <- function(A_CLAY_MI) {
   
   # Check input
-  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, any.missing = FALSE)
+  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100)
   
   # Collect data into a table (set in units %)
   dt <- data.table(A_CLAY_MI = A_CLAY_MI, value = NA_real_)
@@ -1126,9 +1126,9 @@ sptf_bd33 <- function(A_SOM_LOI, A_CLAY_MI, A_SAND_MI, A_SILT_MI) {
   # Check input
   arg.length <- max(length(A_SOM_LOI), length(A_CLAY_MI),length(A_SILT_MI),length(A_SAND_MI))
   checkmate::assert_numeric(A_SOM_LOI, lower = 0, upper = 1000, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(A_SAND_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
+  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_numeric(A_SAND_MI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, len = arg.length)
   
   # Collect data into a table (set in units %)
   dt <- data.table(A_SOM_LOI = A_SOM_LOI, 
@@ -1230,8 +1230,8 @@ sptf_bd36 <- function(A_C_OF, A_CLAY_MI, A_SAND_MI) {
   # Check input
   arg.length <- max(length(A_C_OF), length(A_CLAY_MI),length(A_SAND_MI))
   checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(A_SAND_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
+  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_numeric(A_SAND_MI, lower = 0, upper = 100, len = arg.length)
   
   # Collect data into a table (set in units %)
   dt <- data.table(A_C_OF = A_C_OF * 0.1, 
@@ -1300,8 +1300,8 @@ sptf_bd38 <- function(A_C_OF, A_CLAY_MI, A_SAND_MI) {
   # Check input
   arg.length <- max(length(A_C_OF), length(A_CLAY_MI),length(A_SAND_MI))
   checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(A_SAND_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
+  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_numeric(A_SAND_MI, lower = 0, upper = 100, len = arg.length)
   
   # Collect data into a table (set in units %)
   dt <- data.table(A_C_OF = A_C_OF * 0.1, 
@@ -1340,9 +1340,9 @@ sptf_bd39 <- function(A_C_OF, A_CLAY_MI, A_H2O_T105,B_DEPTH) {
   # Check input
   arg.length <- max(length(A_C_OF), length(A_CLAY_MI),length(A_H2O_T105),length(B_DEPTH))
   checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(A_H2O_T105, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(B_DEPTH, lower = 0, upper = 2, any.missing = FALSE,len = arg.length)
+  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_numeric(A_H2O_T105, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_numeric(B_DEPTH, lower = 0, upper = 2, len = arg.length)
   
   # Collect data into a table (A_C_OF in units %, and DEPTH in units cm)
   dt <- data.table(A_C_OF = A_C_OF * 0.1, 
@@ -1381,8 +1381,8 @@ sptf_bd40 <- function(A_SOM_LOI, A_SAND_MI,B_DEPTH) {
   # Check input
   arg.length <- max(length(A_SOM_LOI), length(A_SAND_MI),length(B_DEPTH))
   checkmate::assert_numeric(A_SOM_LOI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(A_SAND_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(B_DEPTH, lower = 0, upper = 2, any.missing = FALSE,len = arg.length)
+  checkmate::assert_numeric(A_SAND_MI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_numeric(B_DEPTH, lower = 0, upper = 2, len = arg.length)
   
   # Collect data into a table (DEPTH in units cm)
   dt <- data.table(A_SOM_LOI = A_SOM_LOI, 
@@ -1543,7 +1543,7 @@ sptf_bd45 <- function(A_C_OF, A_SAND_MI) {
   # Check input
   arg.length <- max(length(A_C_OF), length(A_SAND_MI))
   checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(A_SAND_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
+  checkmate::assert_numeric(A_SAND_MI, lower = 0, upper = 100, len = arg.length)
   
   # Collect data into a table (set in units %)
   dt <- data.table(A_C_OF = A_C_OF * 0.1, 
@@ -1579,7 +1579,7 @@ sptf_bd46 <- function(A_C_OF, A_SAND_MI) {
   # Check input
   arg.length <- max(length(A_C_OF), length(A_SAND_MI))
   checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(A_SAND_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
+  checkmate::assert_numeric(A_SAND_MI, lower = 0, upper = 100, len = arg.length)
   
   # Collect data into a table (set in units %)
   dt <- data.table(A_C_OF = A_C_OF * 0.1, 
@@ -1617,9 +1617,9 @@ sptf_bd47 <- function(A_C_OF, A_CLAY_MI, A_SAND_MI, A_SILT_MI) {
   # Check input
   arg.length <- max(length(A_C_OF), length(A_CLAY_MI),length(A_SILT_MI),length(A_SAND_MI))
   checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(A_SAND_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
+  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_numeric(A_SAND_MI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, len = arg.length)
   
   # Collect data into a table (set in units %)
   dt <- data.table(A_C_OF = A_C_OF * 0.1, 
@@ -2308,8 +2308,8 @@ sptf_bd69 <- function(A_CLAY_MI, B_DEPTH) {
   
   # Check input
   arg.length <- max(length(A_CLAY_MI), length(B_DEPTH))
-  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(B_DEPTH, lower = 0, upper = 2, any.missing = FALSE,len = arg.length)
+  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_numeric(B_DEPTH, lower = 0, upper = 2, len = arg.length)
   
   # Collect data into a table (depth set in units cm)
   dt <- data.table(A_CLAY_MI = A_CLAY_MI, 
@@ -2353,12 +2353,12 @@ sptf_bd70 <- function(A_C_OF,A_CLAY_MI, A_SILT_MI,B_DEPTH, B_ALTITUDE,B_SLOPE_DE
                     length(B_SLOPE_DEGREE),length(B_SLOPE_ASPECT))
   
   checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(B_DEPTH, lower = 0, upper = 2, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(B_ALTITUDE, lower = 0, upper = 10000, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(B_SLOPE_DEGREE, lower = 0, upper = 90, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(B_SLOPE_ASPECT, lower = 0, upper = 360, any.missing = FALSE,len = arg.length)
+  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100,len = arg.length)
+  checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_numeric(B_DEPTH, lower = 0, upper = 2, len = arg.length)
+  checkmate::assert_numeric(B_ALTITUDE, lower = 0, upper = 10000, len = arg.length)
+  checkmate::assert_numeric(B_SLOPE_DEGREE, lower = 0, upper = 90, len = arg.length)
+  checkmate::assert_numeric(B_SLOPE_ASPECT, lower = 0, upper = 360, len = arg.length)
   
   # Collect data into a table (depth set in units cm)
   dt <- data.table(A_C_OF = A_C_OF,
@@ -2403,9 +2403,9 @@ sptf_bd71 <- function(A_C_OF,A_CLAY_MI, A_SILT_MI,B_SLOPE_DEGREE) {
                     length(B_SLOPE_DEGREE))
   
   checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(B_SLOPE_DEGREE, lower = 0, upper = 90, any.missing = FALSE,len = arg.length)
+  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_numeric(B_SLOPE_DEGREE, lower = 0, upper = 90, len = arg.length)
   
   # Collect data into a table (depth set in units cm)
   dt <- data.table(A_C_OF = A_C_OF,
@@ -2635,9 +2635,9 @@ sptf_bd78 <- function(A_C_OF,A_CLAY_MI, A_SAND_MI,A_PH_WA) {
                     length(A_PH_WA))
   
   checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(A_SAND_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(A_PH_WA, lower = 2, upper = 10, any.missing = FALSE,len = arg.length)
+  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_numeric(A_SAND_MI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_numeric(A_PH_WA, lower = 2, upper = 10, len = arg.length)
   
   # Collect data into a table (OC in %)
   dt <- data.table(A_C_OF = A_C_OF * 0.1,
@@ -2679,9 +2679,9 @@ sptf_bd79 <- function(A_C_OF,A_SILT_MI, A_SAND_MI,A_PH_WA) {
                     length(A_PH_WA))
   
   checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(A_SAND_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(A_PH_WA, lower = 2, upper = 10, any.missing = FALSE,len = arg.length)
+  checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_numeric(A_SAND_MI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_numeric(A_PH_WA, lower = 2, upper = 10, len = arg.length)
   
   # Collect data into a table (OC in %)
   dt <- data.table(A_C_OF = A_C_OF * 0.1,
@@ -2721,8 +2721,8 @@ sptf_bd80 <- function(A_C_OF,A_CLAY_MI, A_CACO3_MI) {
   arg.length <- max(length(A_C_OF),length(A_CLAY_MI), length(A_CACO3_MI))
   
   checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(A_CACO3_MI, lower = 0, upper = 20, any.missing = FALSE,len = arg.length)
+  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_numeric(A_CACO3_MI, lower = 0, upper = 20, len = arg.length)
    
   # Collect data into a table (OC in %)
   dt <- data.table(A_C_OF = A_C_OF * 0.1,
@@ -2790,8 +2790,8 @@ sptf_bd82 <- function(A_SAND_MI,A_SILT_MI) {
   # Check input
   arg.length <- max(length(A_SAND_MI),length(A_SILT_MI))
   
-  checkmate::assert_numeric(A_SAND_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
+  checkmate::assert_numeric(A_SAND_MI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, len = arg.length)
 
   # Collect data into a table (OC in %)
   dt <- data.table(A_SAND_MI = A_SAND_MI,
@@ -2799,7 +2799,7 @@ sptf_bd82 <- function(A_SAND_MI,A_SILT_MI) {
                    value = NA_real_)
   
   # estimate soil density in Mg m-3 = ton m-3
-  dt[, value := 1.777 + 0.00263 * A_SAND_MI - 0.0439 * log10*A_SILT_MI + 0.00208* A_SILT_MI]
+  dt[, value := 1.777 + 0.00263 * A_SAND_MI - 0.0439 * log10(A_SILT_MI) + 0.00208* A_SILT_MI]
   
   # convert to kg / m3
   dt[, value := value * 1000]
@@ -2827,8 +2827,8 @@ sptf_bd83 <- function(A_SAND_MI,A_SILT_MI) {
   # Check input
   arg.length <- max(length(A_SAND_MI),length(A_SILT_MI))
   
-  checkmate::assert_numeric(A_SAND_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
+  checkmate::assert_numeric(A_SAND_MI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, len = arg.length)
   
   # Collect data into a table
   dt <- data.table(A_SAND_MI = A_SAND_MI,
@@ -2836,7 +2836,7 @@ sptf_bd83 <- function(A_SAND_MI,A_SILT_MI) {
                    value = NA_real_)
   
   # estimate soil density in Mg m-3 = ton m-3
-  dt[, value := 1.172 + 0.00250 * A_SAND_MI - 0.0341 * log10*A_SILT_MI + 0.000877* A_SILT_MI]
+  dt[, value := 1.172 + 0.00250 * A_SAND_MI - 0.0341 * log10(A_SILT_MI) + 0.000877* A_SILT_MI]
   
   # convert to kg / m3
   dt[, value := value * 1000]
@@ -2864,7 +2864,7 @@ sptf_bd84 <- function(A_C_OF, A_CLAY_MI) {
   # Check input
   arg.length <- max(length(A_C_OF), length(A_CLAY_MI))
   checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
+  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
   
   # Collect data into a table (clay in g / kg)
   dt <- data.table(A_C_OF = A_C_OF, 
@@ -2933,8 +2933,8 @@ sptf_bd86 <- function(A_C_OF,A_SAND_MI,A_CLAY_MI) {
   # Check input
   arg.length <- max(length(A_SAND_MI),length(A_CLAY_MI),length(A_C_OF))
   
-  checkmate::assert_numeric(A_SAND_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
+  checkmate::assert_numeric(A_SAND_MI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
   checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000, any.missing = FALSE,len = arg.length)
   
   # Collect data into a table (all units in %)
@@ -2973,8 +2973,8 @@ sptf_bd87 <- function(A_SOM_LOI,A_SAND_MI,B_DEPTH) {
   # Check input
   arg.length <- max(length(A_SAND_MI),length(B_DEPTH),length(A_SOM_LOI))
   
-  checkmate::assert_numeric(A_SAND_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(B_DEPTH, lower = 0, upper = 2, any.missing = FALSE,len = arg.length)
+  checkmate::assert_numeric(A_SAND_MI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_numeric(B_DEPTH, lower = 0, upper = 2, len = arg.length)
   checkmate::assert_numeric(A_SOM_LOI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
   
   # Collect data into a table (depth is in cm)
@@ -3015,9 +3015,9 @@ sptf_bd88 <- function(A_C_OF,A_CLAY_MI,A_CACO3_MI,A_PH_WA) {
   arg.length <- max(length(A_C_OF),length(A_CLAY_MI),length(A_CACO3_MI),length(A_PH_WA))
   
   checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(A_CACO3_MI, lower = 0, upper = 20, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(A_PH_WA, lower = 2, upper = 10, any.missing = FALSE,len = arg.length)
+  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_numeric(A_CACO3_MI, lower = 0, upper = 20, len = arg.length)
+  checkmate::assert_numeric(A_PH_WA, lower = 2, upper = 10, len = arg.length)
   
   # Collect data into a table
   dt <- data.table(A_C_OF = A_C_OF,
@@ -3058,8 +3058,8 @@ sptf_bd89 <- function(A_C_OF,A_CLAY_MI,A_SILT_MI) {
   arg.length <- max(length(A_C_OF),length(A_CLAY_MI),length(A_SILT_MI))
   
   checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
+  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, len = arg.length)
    
   # Collect data into a table (all units in %)
   dt <- data.table(A_C_OF = A_C_OF * 0.1,
@@ -3096,7 +3096,7 @@ sptf_bd90 <- function(A_SOM_LOI, A_CLAY_MI) {
   # Check input
   arg.length <- max(length(A_SOM_LOI), length(A_CLAY_MI))
   checkmate::assert_numeric(A_SOM_LOI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
+  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
   
   # Collect data into a table 
   dt <- data.table(A_SOM_LOI = A_SOM_LOI, 
@@ -3163,7 +3163,7 @@ sptf_bd92 <- function(A_SOM_LOI, A_CLAY_MI) {
   # Check input
   arg.length <- max(length(A_SOM_LOI), length(A_CLAY_MI))
   checkmate::assert_numeric(A_SOM_LOI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
+  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
   
   # Collect data into a table 
   dt <- data.table(A_SOM_LOI = A_SOM_LOI, 
@@ -3235,8 +3235,8 @@ sptf_bd94 <- function(A_SOM_LOI,A_SAND_MI,A_CLAY_MI) {
   # Check input
   arg.length <- max(length(A_SAND_MI),length(A_CLAY_MI),length(A_SOM_LOI))
   
-  checkmate::assert_numeric(A_SAND_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
+  checkmate::assert_numeric(A_SAND_MI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
   checkmate::assert_numeric(A_SOM_LOI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
   
   # Collect data into a table (all units in %)
@@ -3344,7 +3344,7 @@ sptf_bd97 <- function(A_C_OF, A_SAND_MI) {
   # Check input
   arg.length <- max(length(A_C_OF), length(A_SAND_MI))
   checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(A_SAND_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
+  checkmate::assert_numeric(A_SAND_MI, lower = 0, upper = 100, len = arg.length)
   
   # Collect data into a table (set in units %)
   dt <- data.table(A_C_OF = A_C_OF * 0.1, 
@@ -3439,7 +3439,7 @@ sptf_bd99 <- function(A_C_OF) {
 sptf_bd100 <- function(A_N_RT) {
   
   # Check input
-  checkmate::assert_numeric(A_N_RT, lower = 0, upper = 10000, any.missing = FALSE)
+  checkmate::assert_numeric(A_N_RT, lower = 0, upper = 10000)
   
   # Collect data into a table (set in units %)
   dt <- data.table(A_N_RT = A_N_RT * 0.001 * 0.1, value = NA_real_)
@@ -3473,7 +3473,7 @@ sptf_bd101 <- function(A_C_OF, A_SAND_MI) {
   # Check input
   arg.length <- max(length(A_C_OF), length(A_SAND_MI))
   checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(A_SAND_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
+  checkmate::assert_numeric(A_SAND_MI, lower = 0, upper = 100, len = arg.length)
   
   # Collect data into a table (set in units %)
   dt <- data.table(A_C_OF = A_C_OF * 0.1, 
@@ -3602,7 +3602,7 @@ sptf_bd105 <- function(A_C_OF, B_DEPTH) {
   # Check input
   arg.length <- max(length(A_C_OF), length(B_DEPTH))
   checkmate::assert_numeric(A_C_OF, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(B_DEPTH, lower = 0, upper = 2, any.missing = FALSE,len = arg.length)
+  checkmate::assert_numeric(B_DEPTH, lower = 0, upper = 2, len = arg.length)
   
   # Collect data into a table (depth set in units cm, and OC in %)
   dt <- data.table(A_C_OF = A_C_OF * 0.1, 
@@ -3638,7 +3638,7 @@ sptf_bd106 <- function(A_C_OF, B_DEPTH) {
   # Check input
   arg.length <- max(length(A_C_OF), length(B_DEPTH))
   checkmate::assert_numeric(A_C_OF, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(B_DEPTH, lower = 0, upper = 2, any.missing = FALSE,len = arg.length)
+  checkmate::assert_numeric(B_DEPTH, lower = 0, upper = 2, len = arg.length)
   
   # Collect data into a table (depth set in units cm, and OC in %)
   dt <- data.table(A_C_OF = A_C_OF * 0.1, 
@@ -3674,7 +3674,7 @@ sptf_bd107 <- function(A_C_OF, B_DEPTH) {
   # Check input
   arg.length <- max(length(A_C_OF), length(B_DEPTH))
   checkmate::assert_numeric(A_C_OF, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(B_DEPTH, lower = 0, upper = 2, any.missing = FALSE,len = arg.length)
+  checkmate::assert_numeric(B_DEPTH, lower = 0, upper = 2, len = arg.length)
   
   # Collect data into a table (depth set in units cm, and OC in %)
   dt <- data.table(A_C_OF = A_C_OF * 0.1, 
@@ -3710,7 +3710,7 @@ sptf_bd108 <- function(A_C_OF, B_DEPTH) {
   # Check input
   arg.length <- max(length(A_C_OF), length(B_DEPTH))
   checkmate::assert_numeric(A_C_OF, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(B_DEPTH, lower = 0, upper = 2, any.missing = FALSE,len = arg.length)
+  checkmate::assert_numeric(B_DEPTH, lower = 0, upper = 2, len = arg.length)
   
   # Collect data into a table (depth set in units cm, and OC in %)
   dt <- data.table(A_C_OF = A_C_OF * 0.1, 
@@ -3746,7 +3746,7 @@ sptf_bd109 <- function(A_C_OF, B_DEPTH) {
   # Check input
   arg.length <- max(length(A_C_OF), length(B_DEPTH))
   checkmate::assert_numeric(A_C_OF, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(B_DEPTH, lower = 0, upper = 2, any.missing = FALSE,len = arg.length)
+  checkmate::assert_numeric(B_DEPTH, lower = 0, upper = 2, len = arg.length)
   
   # Collect data into a table (depth set in units cm, and OC in %)
   dt <- data.table(A_C_OF = A_C_OF * 0.1, 
@@ -3782,7 +3782,7 @@ sptf_bd110 <- function(A_C_OF, B_DEPTH) {
   # Check input
   arg.length <- max(length(A_C_OF), length(B_DEPTH))
   checkmate::assert_numeric(A_C_OF, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(B_DEPTH, lower = 0, upper = 2, any.missing = FALSE,len = arg.length)
+  checkmate::assert_numeric(B_DEPTH, lower = 0, upper = 2, len = arg.length)
   
   # Collect data into a table (depth set in units cm, and OC in %)
   dt <- data.table(A_C_OF = A_C_OF * 0.1, 
@@ -3900,8 +3900,8 @@ sptf_bd113 <- function(A_C_OF,A_CLAY_MI,A_PH_WA) {
   # Check input
   arg.length <- max(length(A_C_OF), length(A_CLAY_MI), length(A_PH_WA))
   checkmate::assert_numeric(A_C_OF, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(A_PH_WA, lower = 2, upper = 10, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
+  checkmate::assert_numeric(A_PH_WA, lower = 2, upper = 10, len = arg.length)
+  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
   
   # Collect data into a table (set in units %)
   dt <- data.table(A_C_OF = A_C_OF * 0.1, 
@@ -4131,8 +4131,8 @@ sptf_bd120 <- function(A_C_OF, A_CLAY_MI, A_SILT_MI) {
   # Check input
   arg.length <- max(length(A_C_OF), length(A_CLAY_MI),length(A_SILT_MI))
   checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
+  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, len = arg.length)
   
   # Collect data into a table (set in units %)
   dt <- data.table(A_C_OF = A_C_OF * 0.1, 
@@ -4179,12 +4179,12 @@ sptf_bd121 <- function(A_C_OF, A_CLAY_MI, A_SAND_MI, A_CACO3_MI, A_PH_WA, B_ALTI
                     length(A_CACO3_MI), length(A_PH_WA),length(B_ALTITUDE),
                     length(B_SLOPE_DEGREE))
   checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(A_SAND_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(A_CACO3_MI, lower = 0, upper = 20, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(A_PH_WA, lower = 2, upper = 10, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(B_SLOPE_DEGREE, lower = 0, upper = 90, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(B_ALTITUDE, lower = 0, upper = 10000, any.missing = FALSE,len = arg.length)
+  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_numeric(A_SAND_MI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_numeric(A_CACO3_MI, lower = 0, upper = 20, len = arg.length)
+  checkmate::assert_numeric(A_PH_WA, lower = 2, upper = 10, len = arg.length)
+  checkmate::assert_numeric(B_SLOPE_DEGREE, lower = 0, upper = 90, len = arg.length)
+  checkmate::assert_numeric(B_ALTITUDE, lower = 0, upper = 10000, len = arg.length)
   
   # Collect data into a table (set in units %)
   dt <- data.table(A_C_OF = A_C_OF * 0.1, 
@@ -4229,8 +4229,8 @@ sptf_bd122 <- function(A_C_OF, A_CLAY_MI, A_SAND_MI) {
   # Check input
   arg.length <- max(length(A_C_OF), length(A_CLAY_MI),length(A_SAND_MI))
   checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(A_SAND_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
+  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_numeric(A_SAND_MI, lower = 0, upper = 100, len = arg.length)
   
   # Collect data into a table (set in units %)
   dt <- data.table(A_C_OF = A_C_OF * 0.1, 
@@ -4274,8 +4274,8 @@ sptf_bd123 <- function(A_C_OF, A_CLAY_MI, A_SAND_MI) {
   # Check input
   arg.length <- max(length(A_C_OF), length(A_CLAY_MI),length(A_SAND_MI))
   checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(A_SAND_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
+  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_numeric(A_SAND_MI, lower = 0, upper = 100, len = arg.length)
   
   # Collect data into a table (set in units %) 
   dt <- data.table(A_C_OF = A_C_OF * 0.1, 
@@ -4386,8 +4386,8 @@ sptf_bd126 <- function(A_C_OF, A_SILT_MI, B_DEPTH) {
   # Check input
   arg.length <- max(length(A_C_OF), length(A_SILT_MI), length(B_DEPTH))
   checkmate::assert_numeric(A_C_OF, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(B_DEPTH, lower = 0, upper = 2, any.missing = FALSE,len = arg.length)
+  checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_numeric(B_DEPTH, lower = 0, upper = 2, len = arg.length)
   
   # Collect data into a table (depth set in units cm, and OC in g/kg)
   dt <- data.table(A_C_OF = A_C_OF, 
@@ -4424,7 +4424,7 @@ sptf_bd127 <- function(A_C_OF, B_DEPTH) {
   # Check input
   arg.length <- max(length(A_C_OF), length(B_DEPTH))
   checkmate::assert_numeric(A_C_OF, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(B_DEPTH, lower = 0, upper = 2, any.missing = FALSE,len = arg.length)
+  checkmate::assert_numeric(B_DEPTH, lower = 0, upper = 2, len = arg.length)
   
   # Collect data into a table (depth set in units cm, and OC in g/kg)
   dt <- data.table(A_C_OF = A_C_OF, 
@@ -4495,9 +4495,9 @@ sptf_bd129 <- function(A_C_OF, A_CLAY_MI, A_SILT_MI, B_DEPTH) {
   # Check input
   arg.length <- max(length(A_C_OF), length(A_CLAY_MI),length(A_SILT_MI), length(B_DEPTH))
   checkmate::assert_numeric(A_C_OF, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(B_DEPTH, lower = 0, upper = 2, any.missing = FALSE,len = arg.length)
+  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_numeric(B_DEPTH, lower = 0, upper = 2, len = arg.length)
   
   # Collect data into a table (depth set in units cm, and OC in g/kg)
   dt <- data.table(A_C_OF = A_C_OF, 
@@ -4635,8 +4635,8 @@ sptf_bd133 <- function(A_C_OF, B_DEPTH, B_SLOPE_DEGREE) {
   # Check input
   arg.length <- max(length(A_C_OF), length(B_DEPTH),length(B_SLOPE_DEGREE))
   checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(B_SLOPE_DEGREE, lower = 0, upper = 90, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(B_DEPTH, lower = 0, upper = 2, any.missing = FALSE,len = arg.length)
+  checkmate::assert_numeric(B_SLOPE_DEGREE, lower = 0, upper = 90, len = arg.length)
+  checkmate::assert_numeric(B_DEPTH, lower = 0, upper = 2, len = arg.length)
   
   # Collect data into a table
   dt <- data.table(A_C_OF = A_C_OF, 
@@ -4784,9 +4784,9 @@ sptf_bd137 <- function(A_SOM_LOI, A_SILT_MI,A_PH_WA,B_DEPTH) {
   # Check input
   arg.length <- max(length(A_SOM_LOI), length(A_SILT_MI),length(A_PH_WA),length(B_DEPTH))
   checkmate::assert_numeric(A_SOM_LOI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(A_PH_WA, lower = 2, upper = 10, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(B_DEPTH, lower = 0, upper = 2, any.missing = FALSE,len = arg.length)
+  checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_numeric(A_PH_WA, lower = 2, upper = 10, len = arg.length)
+  checkmate::assert_numeric(B_DEPTH, lower = 0, upper = 2, len = arg.length)
   
   # Collect data into a table (OS in g/kg, depth in cm)
   dt <- data.table(A_SOM_LOI = A_SOM_LOI * 10, 
@@ -4832,7 +4832,7 @@ sptf_bd138 <- function(A_SOM_LOI, A_SILT_MI) {
   # Check input
   arg.length <- max(length(A_SOM_LOI), length(A_SILT_MI))
   checkmate::assert_numeric(A_SOM_LOI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
+  checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, len = arg.length)
  
   # Collect data into a table (OS in g/kg)
   dt <- data.table(A_SOM_LOI = A_SOM_LOI * 10, 
@@ -4869,8 +4869,8 @@ sptf_bd139 <- function(A_SOM_LOI, A_CLAY_MI, A_SAND_MI) {
   # Check input
   arg.length <- max(length(A_SOM_LOI), length(A_CLAY_MI),length(A_SAND_MI))
   checkmate::assert_numeric(A_SOM_LOI, lower = 0, upper = 1000, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(A_SAND_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
+  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_numeric(A_SAND_MI, lower = 0, upper = 100, len = arg.length)
   
   # Collect data into a table (set in units %)
   dt <- data.table(A_SOM_LOI = A_SOM_LOI, 
@@ -4909,9 +4909,9 @@ sptf_bd140 <- function(A_SOM_LOI, A_CLAY_MI, A_SAND_MI,A_SILT_MI) {
   # Check input
   arg.length <- max(length(A_SOM_LOI), length(A_CLAY_MI),length(A_SAND_MI),length(A_SILT_MI))
   checkmate::assert_numeric(A_SOM_LOI, lower = 0, upper = 1000, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(A_SAND_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
+  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_numeric(A_SAND_MI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, len = arg.length)
   
   # Collect data into a table (set in units %)
   dt <- data.table(A_SOM_LOI = A_SOM_LOI, 
@@ -4951,9 +4951,9 @@ sptf_bd141 <- function(A_C_OF, A_N_RT,A_CLAY_MI, A_SAND_MI) {
   # Check input
   arg.length <- max(length(A_C_OF), length(A_CLAY_MI),length(A_SAND_MI),length(A_N_RT))
   checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(A_N_RT, lower = 0, upper = 10000, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(A_SAND_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
+  checkmate::assert_numeric(A_N_RT, lower = 0, upper = 10000, len = arg.length)
+  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_numeric(A_SAND_MI, lower = 0, upper = 100, len = arg.length)
   
   # Collect data into a table (set in units %)
   dt <- data.table(A_C_OF = A_C_OF * 0.1, 
@@ -4991,8 +4991,8 @@ sptf_bd142 <- function(A_CLAY_MI, A_SAND_MI,A_SILT_MI) {
   
   # Check input
   arg.length <- max(length(A_CLAY_MI),length(A_SAND_MI),length(A_SILT_MI))
-  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(A_SAND_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
+  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_numeric(A_SAND_MI, lower = 0, upper = 100, len = arg.length)
   
   # Collect data into a table (set SOC in units %)
   dt <- data.table(A_CLAY_MI = A_CLAY_MI,
@@ -5031,9 +5031,9 @@ sptf_bd143 <- function(A_C_OF, A_CLAY_MI, A_SAND_MI,A_SILT_MI) {
   # Check input
   arg.length <- max(length(A_C_OF), length(A_CLAY_MI),length(A_SAND_MI),length(A_SILT_MI))
   checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(A_SAND_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
+  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_numeric(A_SAND_MI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, len = arg.length)
   
   # Collect data into a table (set SOC in units %)
   dt <- data.table(A_C_OF = A_C_OF * 0.1, 
@@ -5072,11 +5072,11 @@ sptf_bd144 <- function(A_C_OF, A_CLAY_MI, A_SAND_MI) {
   # Check input
   arg.length <- max(length(A_C_OF), length(A_CLAY_MI),length(A_SAND_MI))
   checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(A_SAND_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
+  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_numeric(A_SAND_MI, lower = 0, upper = 100, len = arg.length)
   
   # Collect data into a table (set units in g/kg)
-  dt <- data.table(A_C_OF = A_C_OF, 
+  dt <- data.table(A_C_OF = A_C_OF * 0.1, 
                    A_CLAY_MI = A_CLAY_MI * 10,
                    A_SAND_MI = A_SAND_MI * 10,
                    value = NA_real_)
@@ -5117,12 +5117,12 @@ sptf_bd145 <- function(A_C_OF, A_CLAY_MI, A_SAND_MI,A_SILT_MI) {
   # Check input
   arg.length <- max(length(A_C_OF), length(A_CLAY_MI),length(A_SAND_MI),length(A_SILT_MI))
   checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(A_SAND_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
+  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_numeric(A_SAND_MI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, len = arg.length)
   
   # Collect data into a table (set units in g/kg)
-  dt <- data.table(A_C_OF = A_C_OF, 
+  dt <- data.table(A_C_OF = A_C_OF * 0.1, 
                    A_CLAY_MI = A_CLAY_MI * 10,
                    A_SAND_MI = A_SAND_MI * 10,
                    A_SILT_MI = A_SILT_MI * 10,
@@ -5208,10 +5208,10 @@ sptf_bd147 <- function(A_C_OF, A_CLAY_MI, A_SAND_MI,A_SILT_MI, B_DEPTH) {
   # Check input
   arg.length <- max(length(A_C_OF), length(A_CLAY_MI),length(A_SAND_MI),length(A_SILT_MI),length(B_DEPTH))
   checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(A_SAND_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(B_DEPTH, lower = 0, upper = 2, any.missing = FALSE,len = arg.length)
+  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_numeric(A_SAND_MI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_numeric(B_DEPTH, lower = 0, upper = 2, len = arg.length)
   
   # Collect data into a table (set units in g/kg, depth in cm)
   # silt should be coarse silt
@@ -5251,7 +5251,7 @@ sptf_bd148 <- function(A_SOM_LOI, A_CLAY_MI) {
   # Check input
   arg.length <- max(length(A_SOM_LOI), length(A_CLAY_MI))
   checkmate::assert_numeric(A_SOM_LOI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
+  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
   
   # Collect data into a table (units in g/kg) 
   dt <- data.table(A_SOM_LOI = A_SOM_LOI * 10, 
@@ -5330,7 +5330,7 @@ sptf_bd150 <- function(A_C_OF, B_DEPTH) {
   # Check input
   arg.length <- max(length(A_C_OF), length(B_DEPTH))
   checkmate::assert_numeric(A_C_OF, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(B_DEPTH, lower = 0, upper = 2, any.missing = FALSE,len = arg.length)
+  checkmate::assert_numeric(B_DEPTH, lower = 0, upper = 2, len = arg.length)
   
   # Collect data into a table (depth set in units cm, and OC in %)
   dt <- data.table(A_C_OF = A_C_OF * 0.1, 
@@ -5366,9 +5366,9 @@ sptf_bd151 <- function(A_CLAY_MI, A_SAND_MI, A_SILT_MI) {
   
   # Check input
   arg.length <- max(length(A_CLAY_MI),length(A_SILT_MI),length(A_SAND_MI))
-  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(A_SAND_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
+  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_numeric(A_SAND_MI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, len = arg.length)
   
   # Collect data into a table (set in units %)
   dt <- data.table(A_CLAY_MI = A_CLAY_MI,
@@ -5436,7 +5436,7 @@ sptf_bd153 <- function(A_SOM_LOI, A_CLAY_MI) {
   # Check input
   arg.length <- max(length(A_SOM_LOI), length(A_CLAY_MI))
   checkmate::assert_numeric(A_SOM_LOI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
+  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
   
   # Collect data into a table 
   dt <- data.table(A_SOM_LOI = A_SOM_LOI, 
@@ -5472,7 +5472,7 @@ sptf_bd154 <- function(A_C_OF, A_PH_WA) {
   # Check input
   arg.length <- max(length(A_C_OF), length(A_PH_WA))
   checkmate::assert_numeric(A_C_OF, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(A_PH_WA, lower = 2, upper = 10, any.missing = FALSE,len = arg.length)
+  checkmate::assert_numeric(A_PH_WA, lower = 2, upper = 10, len = arg.length)
   
   # Collect data into a table (both in g/kg)
   dt <- data.table(A_C_OF = A_C_OF, 
@@ -5508,7 +5508,7 @@ sptf_bd155 <- function(A_C_OF, A_SILT_MI) {
   # Check input
   arg.length <- max(length(A_C_OF), length(A_SILT_MI))
   checkmate::assert_numeric(A_C_OF, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
+  checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, len = arg.length)
   
   # Collect data into a table (both in g/kg)
   dt <- data.table(A_C_OF = A_C_OF, 
@@ -5544,7 +5544,7 @@ sptf_bd156 <- function(A_C_OF, A_CLAY_MI) {
   # Check input
   arg.length <- max(length(A_C_OF), length(A_CLAY_MI))
   checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
+  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
   
   # Collect data into a table (set in units %)
   dt <- data.table(A_C_OF = A_C_OF * 0.1, 
@@ -5581,8 +5581,8 @@ sptf_bd157 <- function(A_C_OF, A_CLAY_MI, A_SILT_MI) {
   # Check input
   arg.length <- max(length(A_C_OF), length(A_CLAY_MI),length(A_SILT_MI))
   checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
+  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, len = arg.length)
   
   # Collect data into a table (set in units %)
   dt <- data.table(A_C_OF = A_C_OF * 0.1, 
@@ -5623,8 +5623,8 @@ sptf_bd158 <- function(A_C_OF, A_CLAY_MI, A_SILT_MI) {
   # Check input
   arg.length <- max(length(A_C_OF), length(A_CLAY_MI),length(A_SILT_MI))
   checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
+  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, len = arg.length)
   
   # Collect data into a table (set in units %)
   dt <- data.table(A_C_OF = A_C_OF * 0.1, 
@@ -5662,7 +5662,7 @@ sptf_bd159 <- function(A_C_OF, A_CLAY_MI) {
   # Check input
   arg.length <- max(length(A_C_OF), length(A_CLAY_MI))
   checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
+  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
   
   # Collect data into a table (SOC in %)
   dt <- data.table(A_C_OF = A_C_OF * 0.1, 
@@ -5846,9 +5846,9 @@ sptf_bd164 <- function(A_SOM_LOI, A_CLAY_MI, A_SAND_MI, A_SILT_MI) {
   # Check input
   arg.length <- max(length(A_SOM_LOI), length(A_CLAY_MI),length(A_SILT_MI),length(A_SAND_MI))
   checkmate::assert_numeric(A_SOM_LOI, lower = 0, upper = 1000, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(A_SAND_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
+  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_numeric(A_SAND_MI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, len = arg.length)
   
   # Collect data into a table (set in units %)
   dt <- data.table(A_SOM_LOI = A_SOM_LOI, 
@@ -5949,7 +5949,7 @@ sptf_bd167 <- function(A_SOM_LOI, A_CLAY_MI) {
   # Check input
   arg.length <- max(length(A_SOM_LOI), length(A_CLAY_MI))
   checkmate::assert_numeric(A_SOM_LOI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
+  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
   
   # Collect data into a table 
   dt <- data.table(A_SOM_LOI = A_SOM_LOI, 
@@ -5985,7 +5985,7 @@ sptf_bd168 <- function(A_SOM_LOI, A_CLAY_MI) {
   # Check input
   arg.length <- max(length(A_SOM_LOI), length(A_CLAY_MI))
   checkmate::assert_numeric(A_SOM_LOI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
+  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
   
   # Collect data into a table 
   dt <- data.table(A_SOM_LOI = A_SOM_LOI, 
@@ -6021,7 +6021,7 @@ sptf_bd169 <- function(A_SOM_LOI, A_CLAY_MI) {
   # Check input
   arg.length <- max(length(A_SOM_LOI), length(A_CLAY_MI))
   checkmate::assert_numeric(A_SOM_LOI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
+  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
   
   # Collect data into a table 
   dt <- data.table(A_SOM_LOI = A_SOM_LOI, 
@@ -6057,7 +6057,7 @@ sptf_bd170 <- function(A_SOM_LOI, A_CLAY_MI) {
   # Check input
   arg.length <- max(length(A_SOM_LOI), length(A_CLAY_MI))
   checkmate::assert_numeric(A_SOM_LOI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
+  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
   
   # Collect data into a table 
   dt <- data.table(A_SOM_LOI = A_SOM_LOI, 
@@ -6093,7 +6093,7 @@ sptf_bd171 <- function(A_SOM_LOI, A_CLAY_MI) {
   # Check input
   arg.length <- max(length(A_SOM_LOI), length(A_CLAY_MI))
   checkmate::assert_numeric(A_SOM_LOI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
+  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
   
   # Collect data into a table 
   dt <- data.table(A_SOM_LOI = A_SOM_LOI, 
@@ -6280,9 +6280,9 @@ sptf_bd177 <- function(A_SOM_LOI, A_CLAY_MI, A_SILT_MI, A_SAND_M50) {
   # Check input
   arg.length <- max(length(A_SOM_LOI), length(A_CLAY_MI),length(A_SILT_MI),length(A_SAND_M50))
   checkmate::assert_numeric(A_SOM_LOI, lower = 0, upper = 1000, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(A_SAND_M50, lower = 0, any.missing = FALSE,len = arg.length)
+  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_numeric(A_SAND_M50, lower = 0, len = arg.length)
   
   # Collect data into a table (set in units %)
   dt <- data.table(A_SOM_LOI = A_SOM_LOI, 
@@ -6320,7 +6320,7 @@ sptf_bd178 <- function(A_SOM_LOI, A_CLAY_MI) {
   # Check input
   arg.length <- max(length(A_SOM_LOI), length(A_CLAY_MI))
   checkmate::assert_numeric(A_SOM_LOI, lower = 0, upper = 1000, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
+  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
   
   # Collect data into a table (set in units %)
   dt <- data.table(A_SOM_LOI = A_SOM_LOI, 
@@ -6369,7 +6369,7 @@ sptf_bd179 <- function(A_SOM_LOI, A_C_OF = NA, A_CLAY_MI = NA, A_SILT_MI = NA, A
   checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
   checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, len = arg.length)
   checkmate::assert_numeric(A_SAND_MI, lower = 0, upper = 100, len = arg.length)
-  checkmate::assert_numeric(A_PH_WA, lower = 2, upper = 10, any.missing = FALSE,len = arg.length)
+  checkmate::assert_numeric(A_PH_WA, lower = 2, upper = 10, len = arg.length)
   
   # Collect data into a table (set in units %)
   dt <- data.table(id = 1:arg.length,
@@ -6428,8 +6428,8 @@ sptf_bd180 <- function(A_SOM_LOI,A_SAND_MI,A_CLAY_MI) {
   # Check input
   arg.length <- max(length(A_SAND_MI),length(A_CLAY_MI),length(A_SOM_LOI))
   
-  checkmate::assert_numeric(A_SAND_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
+  checkmate::assert_numeric(A_SAND_MI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
   checkmate::assert_numeric(A_SOM_LOI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
   
   # Collect data into a table (all units in %)
@@ -6476,8 +6476,8 @@ sptf_bd181 <- function(A_SOM_LOI, A_CLAY_MI, A_SILT_MI) {
   # Check input
   arg.length <- max(length(A_SOM_LOI), length(A_CLAY_MI),length(A_SILT_MI))
   checkmate::assert_numeric(A_SOM_LOI, lower = 0, upper = 1000, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
+  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, len = arg.length)
   
   # Collect data into a table (OM in g/kg)
   dt <- data.table(A_SOM_LOI = A_SOM_LOI * 10, 
