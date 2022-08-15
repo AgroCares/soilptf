@@ -1,4 +1,4 @@
-﻿id;country;continent;soiltype;landuse;depth;nsample;r2;soilproperties;reference;url
+﻿ptf_id;country_code;continent_code;soiltype;landuse;depth;nsample;r2;soilproperties;reference;url
 1;NL;EU;variable;agriculture;30;;;a_som_loi||a_clay_mi;cbgv_2022;https://edepot.wur.nl/413891
 2;US;NA;sandy loam;forest;30;103;0,96;a_som_loi;curtis_1964;https://doi.org/10.2136/sssaj1964.03615995002800020044x
 3;GB;EU;silty clay;forest;30;77;0,9;a_som_loi;adams_1973;https://doi.org/10.1111/j.1365-2389.1973.tb00737.x
