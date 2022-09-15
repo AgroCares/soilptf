@@ -3601,7 +3601,7 @@ sptf_bd105 <- function(A_C_OF, B_DEPTH) {
   
   # Check input
   arg.length <- max(length(A_C_OF), length(B_DEPTH))
-  checkmate::assert_numeric(A_C_OF, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
+  checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000, any.missing = FALSE,len = arg.length)
   checkmate::assert_numeric(B_DEPTH, lower = 0, upper = 2, len = arg.length)
   
   # Collect data into a table (depth set in units cm, and OC in %)
@@ -3637,7 +3637,7 @@ sptf_bd106 <- function(A_C_OF, B_DEPTH) {
   
   # Check input
   arg.length <- max(length(A_C_OF), length(B_DEPTH))
-  checkmate::assert_numeric(A_C_OF, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
+  checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000, any.missing = FALSE,len = arg.length)
   checkmate::assert_numeric(B_DEPTH, lower = 0, upper = 2, len = arg.length)
   
   # Collect data into a table (depth set in units cm, and OC in %)
@@ -3673,7 +3673,7 @@ sptf_bd107 <- function(A_C_OF, B_DEPTH) {
   
   # Check input
   arg.length <- max(length(A_C_OF), length(B_DEPTH))
-  checkmate::assert_numeric(A_C_OF, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
+  checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000, any.missing = FALSE,len = arg.length)
   checkmate::assert_numeric(B_DEPTH, lower = 0, upper = 2, len = arg.length)
   
   # Collect data into a table (depth set in units cm, and OC in %)
@@ -3709,7 +3709,7 @@ sptf_bd108 <- function(A_C_OF, B_DEPTH) {
   
   # Check input
   arg.length <- max(length(A_C_OF), length(B_DEPTH))
-  checkmate::assert_numeric(A_C_OF, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
+  checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000, any.missing = FALSE,len = arg.length)
   checkmate::assert_numeric(B_DEPTH, lower = 0, upper = 2, len = arg.length)
   
   # Collect data into a table (depth set in units cm, and OC in %)
@@ -3745,7 +3745,7 @@ sptf_bd109 <- function(A_C_OF, B_DEPTH) {
   
   # Check input
   arg.length <- max(length(A_C_OF), length(B_DEPTH))
-  checkmate::assert_numeric(A_C_OF, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
+  checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000, any.missing = FALSE,len = arg.length)
   checkmate::assert_numeric(B_DEPTH, lower = 0, upper = 2, len = arg.length)
   
   # Collect data into a table (depth set in units cm, and OC in %)
@@ -3781,7 +3781,7 @@ sptf_bd110 <- function(A_C_OF, B_DEPTH) {
   
   # Check input
   arg.length <- max(length(A_C_OF), length(B_DEPTH))
-  checkmate::assert_numeric(A_C_OF, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
+  checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000, any.missing = FALSE,len = arg.length)
   checkmate::assert_numeric(B_DEPTH, lower = 0, upper = 2, len = arg.length)
   
   # Collect data into a table (depth set in units cm, and OC in %)
@@ -3899,7 +3899,7 @@ sptf_bd113 <- function(A_C_OF,A_CLAY_MI,A_PH_WA) {
   
   # Check input
   arg.length <- max(length(A_C_OF), length(A_CLAY_MI), length(A_PH_WA))
-  checkmate::assert_numeric(A_C_OF, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
+  checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000, any.missing = FALSE,len = arg.length)
   checkmate::assert_numeric(A_PH_WA, lower = 2, upper = 10, len = arg.length)
   checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
   
@@ -4384,7 +4384,7 @@ sptf_bd126 <- function(A_C_OF, A_SILT_MI, B_DEPTH) {
   
   # Check input
   arg.length <- max(length(A_C_OF), length(A_SILT_MI), length(B_DEPTH))
-  checkmate::assert_numeric(A_C_OF, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
+  checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000, any.missing = FALSE,len = arg.length)
   checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, len = arg.length)
   checkmate::assert_numeric(B_DEPTH, lower = 0, upper = 2, len = arg.length)
   
@@ -4422,7 +4422,7 @@ sptf_bd127 <- function(A_C_OF, B_DEPTH) {
   
   # Check input
   arg.length <- max(length(A_C_OF), length(B_DEPTH))
-  checkmate::assert_numeric(A_C_OF, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
+  checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000, any.missing = FALSE,len = arg.length)
   checkmate::assert_numeric(B_DEPTH, lower = 0, upper = 2, len = arg.length)
   
   # Collect data into a table (depth set in units cm, and OC in g/kg)
@@ -4493,7 +4493,7 @@ sptf_bd129 <- function(A_C_OF, A_CLAY_MI, A_SILT_MI, B_DEPTH) {
   
   # Check input
   arg.length <- max(length(A_C_OF), length(A_CLAY_MI),length(A_SILT_MI), length(B_DEPTH))
-  checkmate::assert_numeric(A_C_OF, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
+  checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000, any.missing = FALSE,len = arg.length)
   checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
   checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, len = arg.length)
   checkmate::assert_numeric(B_DEPTH, lower = 0, upper = 2, len = arg.length)
@@ -5328,7 +5328,7 @@ sptf_bd150 <- function(A_C_OF, B_DEPTH) {
   
   # Check input
   arg.length <- max(length(A_C_OF), length(B_DEPTH))
-  checkmate::assert_numeric(A_C_OF, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
+  checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000, any.missing = FALSE,len = arg.length)
   checkmate::assert_numeric(B_DEPTH, lower = 0, upper = 2, len = arg.length)
   
   # Collect data into a table (depth set in units cm, and OC in %)
@@ -5470,7 +5470,7 @@ sptf_bd154 <- function(A_C_OF, A_PH_WA) {
   
   # Check input
   arg.length <- max(length(A_C_OF), length(A_PH_WA))
-  checkmate::assert_numeric(A_C_OF, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
+  checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000, any.missing = FALSE,len = arg.length)
   checkmate::assert_numeric(A_PH_WA, lower = 2, upper = 10, len = arg.length)
   
   # Collect data into a table (both in g/kg)
@@ -5506,7 +5506,7 @@ sptf_bd155 <- function(A_C_OF, A_SILT_MI) {
   
   # Check input
   arg.length <- max(length(A_C_OF), length(A_SILT_MI))
-  checkmate::assert_numeric(A_C_OF, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
+  checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000, any.missing = FALSE,len = arg.length)
   checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, len = arg.length)
   
   # Collect data into a table (both in g/kg)
