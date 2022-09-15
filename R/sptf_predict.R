@@ -22,9 +22,9 @@
 #' @import data.table
 #' 
 #' @export
-ptf_bd <- function(A_SOM_LOI = NA, A_C_OF = NA, 
-                   A_CLAY_MI = NA, A_SAND_MI = NA, A_SILT_MI = NA, 
-                   B_LU_PTFCLASS = NA,
+ptf_bd <- function(A_SOM_LOI = NA_real_, A_C_OF = NA_real_, 
+                   A_CLAY_MI = NA_real_, A_SAND_MI = NA_real_, A_SILT_MI = NA_real_, 
+                   B_LU_PTFCLASS = NA_real_,
                    B_DEPTH = 0.3, 
                    B_LOC_COUNTRY = 'NL', 
                    nmax = 5, ...){
@@ -32,6 +32,7 @@ ptf_bd <- function(A_SOM_LOI = NA, A_C_OF = NA,
   # combine all input objects not given as default function arguments
   obj <- list(...)
   obj <- as.data.table(obj)
+  if(length(obj)==0){obj <- NULL}
   
   # read in internal table
   ptf.mods <- as.data.table(soilptf::sptf_bulkdensity)
@@ -40,7 +41,7 @@ ptf_bd <- function(A_SOM_LOI = NA, A_C_OF = NA,
   
   # subset the table for the requested country
   cont.sel <- unique(ptf.countries[country_code %in% B_LOC_COUNTRY, continent_code])
-  ptf.mods <- ptf.mods[country %in% B_LOC_COUNTRY | continent %in% cont.sel]
+  ptf.mods <- ptf.mods[country_code %in% B_LOC_COUNTRY | continent_code %in% cont.sel]
   
   # number of sites to predict
   arg.length <- max(length(A_SOM_LOI), length(A_C_OF),length(A_CLAY_MI),length(A_SAND_MI),length(A_SILT_MI),
@@ -268,7 +269,7 @@ ptf_bd <- function(A_SOM_LOI = NA, A_C_OF = NA,
   
   # melt the data
   dt2 <- melt(dt, 
-             id.vars = c('id','B_LOC_COUNTRY','B_LOC_CONT','B_LU_PTFCLASS','B_SOILTYPE'),
+             id.vars = c('id','B_LOC_COUNTRY','B_LOC_CONT','B_LU_PTFCLASS','B_SOILTYPE','A_SOM_LOI'),
              measure = patterns('^p'),
              variable.name = 'ptf_id')
   dt2[,ptf_id := as.integer(gsub('p','',ptf_id))]
