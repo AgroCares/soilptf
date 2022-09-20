@@ -41,6 +41,11 @@ sptf_bd1 <- function(A_SOM_LOI, A_CLAY_MI) {
   # clay dependent density
   dt[, value := cf * dens.clay + (1-cf) * dens.sand]
   
+  # set max
+  dt[A_SOM_LOI > 20,value := 880]
+  
+  # set samples outside expected range on NA
+  dt[value < 400 | value > 2500, value := NA_real_]
   
   # return value
   value <- dt[, value]
@@ -385,6 +390,9 @@ sptf_bd12 <- function(A_SOM_LOI) {
   # convert to kg / m3
   dt[, value := value * 1000]
   
+  # set samples outside the range on NA
+  dt[value < 480 | value > 1840, value := NA_real_]
+  
   # return value
   value <- dt[, value]
   
@@ -415,6 +423,9 @@ sptf_bd13 <- function(A_SOM_LOI) {
   
   # convert to kg / m3
   dt[, value := value * 1000]
+  
+  # set samples outside the range on NA
+  dt[value < 520 | value > 1970, value := NA_real_]
   
   # return value
   value <- dt[, value]
@@ -455,6 +466,9 @@ sptf_bd14 <- function(A_C_OF, A_CLAY_MI, A_SILT_MI) {
   
   # convert to kg / m3
   dt[, value := value * 1000]
+  
+  # values outside measured range are set to NA
+  dt[value > 2500, value := NA_real_]
   
   # return value
   value <- dt[, value]
@@ -563,6 +577,9 @@ sptf_bd17 <- function(A_C_OF, A_CLAY_MI, A_SILT_MI) {
   # convert to kg / m3
   dt[, value := value * 1000]
   
+  # set min expert knowledge
+  dt[value < 300, value:= NA_real_]
+  
   # return value
   value <- dt[, value]
   
@@ -600,7 +617,7 @@ sptf_bd18 <- function(A_C_OF, A_CLAY_MI, A_SAND_MI, A_SILT_MI) {
                    value = NA_real_)
   
   # estimate soil density in Mg m-3 = ton m-3
-  dt[, value := 0.99915 - 0.00592 * log(A_SILT_MI) + 0.7712 * log(A_CLAY_MI) + 0.09371 * log(A_SAND_MI) - 0.08415 * log(A_C_OF)]
+  dt[, value := 0.99915 - 0.00592 * log(A_SILT_MI) + 0.07712 * log(A_CLAY_MI) + 0.09371 * log(A_SAND_MI) - 0.08415 * log(A_C_OF)]
   
   # convert to kg / m3
   dt[, value := value * 1000]
@@ -683,8 +700,8 @@ sptf_bd20 <- function(A_C_OF, A_CLAY_MI, A_SAND_MI, A_SILT_MI) {
                    A_SILT_MI = A_SILT_MI,
                    value = NA_real_)
   
-  # estimate soil density in Mg m-3 = ton m-3
-  dt[, value := 1.06727 + 0.01074 * log(A_SILT_MI) + 0.0807 * log(A_CLAY_MI) + 0.08759 * log(A_SAND_MI) + 0.0565 * log(A_C_OF)]
+  # estimate soil density in Mg m-3 = ton m-3 (in Reidy 2016)
+  dt[, value := 1.06727 + 0.01074 * log(A_SILT_MI) + 0.0807 * log(A_CLAY_MI) + 0.08759 * log(A_SAND_MI) - 0.05647 * log(A_C_OF)]
   
   # convert to kg / m3
   dt[, value := value * 1000]
@@ -1144,6 +1161,10 @@ sptf_bd33 <- function(A_SOM_LOI, A_CLAY_MI, A_SAND_MI, A_SILT_MI) {
   # convert to kg / m3
   dt[, value := value * 1000]
   
+  # set min and max given range in data
+  dt[value < 400, value := NA_real_]
+  dt[value > 1900, value := NA_real_]
+  
   # return value
   value <- dt[, value]
   
@@ -1337,6 +1358,9 @@ sptf_bd38 <- function(A_C_OF, A_CLAY_MI, A_SAND_MI) {
 #' @export
 sptf_bd39 <- function(A_C_OF, A_CLAY_MI, A_H2O_T105,B_DEPTH) {
   
+  # add visual binding
+  v0 = NULL
+  
   # Check input
   arg.length <- max(length(A_C_OF), length(A_CLAY_MI),length(A_H2O_T105),length(B_DEPTH))
   checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000, any.missing = FALSE,len = arg.length)
@@ -1351,11 +1375,22 @@ sptf_bd39 <- function(A_C_OF, A_CLAY_MI, A_H2O_T105,B_DEPTH) {
                    B_DEPTH = B_DEPTH * 100,
                    value = NA_real_)
   
-  # estimate soil density in Mg m-3 = ton m-3
-  dt[, value := 1.76 - 0.45/A_H2O_T105 - 0.004 * B_DEPTH - 0.08 * A_C_OF + 0.00004 * A_CLAY_MI^2 + 0.01 * A_CLAY_MI - 0.0002 * A_H2O_T105 / A_CLAY_MI]
+  # set moisture content (%) to mean value when missing
+  dt[is.na(A_H2O_T105), A_H2O_T105 := 17]
+  
+  # start value depends on depth
+  dt[, v0 := fifelse(B_DEPTH <20, 1.68, fifelse(B_DEPTH<30,1.76,1.77))]
+  
+  # estimate soil density in Mg m-3 = ton m-3 for 25 cm depth
+  dt[, value := v0 - 0.45/A_H2O_T105 - 0.004 * B_DEPTH - 0.08 * A_C_OF + 0.00004 * A_CLAY_MI^2 + 0.01 * A_CLAY_MI - 0.0002 * A_H2O_T105 * A_CLAY_MI]
   
   # convert to kg / m3
   dt[, value := value * 1000]
+  
+  # set min and max given the measured range
+  dt[value < 1200, value := NA_real_]
+  dt[value > 1800, value := NA_real_]
+  
   
   # return value
   value <- dt[, value]
@@ -1727,6 +1762,10 @@ sptf_bd50 <- function(A_SOM_LOI) {
   # convert to kg / m3
   dt[, value := value * 1000]
   
+  # set min and max given range in data
+  dt[value < 220, value := NA_real_]
+  dt[value > 1960, value := NA_real_]
+  
   # return value
   value <- dt[, value]
   
@@ -1757,6 +1796,10 @@ sptf_bd51 <- function(A_SOM_LOI) {
   
   # convert to kg / m3
   dt[, value := value * 1000]
+  
+  # set min and max given range in data
+  dt[value < 220, value := NA_real_]
+  dt[value > 1960, value := NA_real_]
   
   # return value
   value <- dt[, value]
@@ -1881,6 +1924,10 @@ sptf_bd55 <- function(A_SOM_LOI) {
   
   # convert to kg / m3
   dt[, value := value * 1000]
+  
+  # set min and max on the estimated density given range
+  dt[value < 300, value := NA_real_]
+  dt[value > 1870, value := NA_real_]
   
   # return value
   value <- dt[, value]
@@ -2453,6 +2500,9 @@ sptf_bd72 <- function(A_C_OF) {
   # convert to kg / m3
   dt[, value := value * 1000]
   
+  # set min and max
+  dt[value < 1000 | value > 1700, value:= NA_real_]
+  
   # return value
   value <- dt[, value]
   
@@ -2483,6 +2533,9 @@ sptf_bd73 <- function(A_C_OF) {
   
   # convert to kg / m3
   dt[, value := value * 1000]
+  
+  # set min and max
+  dt[value < 1000 | value > 1700, value:= NA_real_]
   
   # return value
   value <- dt[, value]
@@ -2515,6 +2568,9 @@ sptf_bd74 <- function(A_C_OF) {
   # convert to kg / m3
   dt[, value := value * 1000]
   
+  # set min and max
+  dt[value < 1000 | value > 1700, value:= NA_real_]
+  
   # return value
   value <- dt[, value]
   
@@ -2545,6 +2601,9 @@ sptf_bd75 <- function(A_C_OF) {
   
   # convert to kg / m3
   dt[, value := value * 1000]
+  
+  # set min and max
+  dt[value < 1000 | value > 1700, value:= NA_real_]
   
   # return value
   value <- dt[, value]
@@ -2577,6 +2636,9 @@ sptf_bd76 <- function(A_C_OF) {
   # convert to kg / m3
   dt[, value := value * 1000]
   
+  # set min and max
+  dt[value < 1000 | value > 1700, value:= NA_real_]
+  
   # return value
   value <- dt[, value]
   
@@ -2607,6 +2669,9 @@ sptf_bd77 <- function(A_C_OF) {
   
   # convert to kg / m3
   dt[, value := value * 1000]
+  
+  # set min and max
+  dt[value < 1000 | value > 1700, value:= NA_real_]
   
   # return value
   value <- dt[, value]
@@ -3207,6 +3272,9 @@ sptf_bd93 <- function(A_C_OF) {
   # convert to kg / m3
   dt[, value := value * 1000]
   
+  # set min and max
+  dt[A_C_OF > 3.6 | value < 200 | value > 1700, value:= NA_real_]
+  
   # return value
   value <- dt[, value]
   
@@ -3290,6 +3358,10 @@ sptf_bd95 <- function(A_C_OF) {
   # convert to kg / m3
   dt[, value := value * 1000]
   
+  # set min and max given variation in data
+  dt[value < 626,value := NA_real_]
+  dt[value > 1789, value := NA_real_]
+  
   # return value
   value <- dt[, value]
   
@@ -3320,6 +3392,9 @@ sptf_bd96 <- function(A_SOM_LOI) {
   
   # convert to kg / m3
   dt[, value := value * 1000]
+  
+  # set samples outside expected range on NA
+  dt[value < 400 | value > 2500, value := NA_real_]
   
   # return value
   value <- dt[, value]
@@ -3388,6 +3463,9 @@ sptf_bd98 <- function(A_C_OF) {
   # convert to kg / m3
   dt[, value := value * 1000]
   
+  # set samples outside expected range on NA
+  dt[value < 900 | value > 1740 | A_C_OF < 1 | A_C_OF > 3, value := NA_real_]
+  
   # return value
   value <- dt[, value]
   
@@ -3419,6 +3497,9 @@ sptf_bd99 <- function(A_C_OF) {
   # convert to kg / m3
   dt[, value := value * 1000]
   
+  # set samples outside the range on NA
+  dt[value < 1000 | value > 1500, value := NA_real_]
+  
   # return value
   value <- dt[, value]
   
@@ -3430,25 +3511,36 @@ sptf_bd99 <- function(A_C_OF) {
 #' Calculate the bulk density given the pedotransferfunction of Williams (1970)
 #'
 #' @param A_N_RT (numeric) The nitrogen content of the soil (mg / kg).
+#' @param A_C_OF (numeric) The fraction organic carbon in the soil (g / kg).
 #'
 #' @import data.table
 #' 
 #' @references Williams (1970).Relationships Between the Composition of Soils and Physical Measurements Made on Them
 #'
 #' @export
-sptf_bd100 <- function(A_N_RT) {
+sptf_bd100 <- function(A_N_RT,A_C_OF) {
   
   # Check input
-  checkmate::assert_numeric(A_N_RT, lower = 0, upper = 10000)
+  arg.length <- max(length(A_N_RT),length(A_C_OF))
+  checkmate::assert_numeric(A_N_RT, lower = 0, upper = 10000, len = arg.length)
+  checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000, len = arg.length)
   
   # Collect data into a table (set in units %)
-  dt <- data.table(A_N_RT = A_N_RT * 0.001 * 0.1, value = NA_real_)
+  dt <- data.table(A_N_RT = A_N_RT * 0.001 * 0.1, 
+                   A_C_OF = A_C_OF * 0.1,
+                   value = NA_real_)
+  
+  # set missing value for A_N_RT by averaged CN ratio of the data
+  dt[is.na(A_N_RT), A_N_RT := A_C_OF / 8.421]
   
   # estimate soil density in Mg m-3 = ton m-3
   dt[, value := 1.42 - 0.78 * A_N_RT]
   
   # convert to kg / m3
   dt[, value := value * 1000]
+  
+  # set samples outside the range on NA
+  dt[value < 1000 | value > 1500, value := NA_real_]
   
   # return value
   value <- dt[, value]
@@ -3485,6 +3577,9 @@ sptf_bd101 <- function(A_C_OF, A_SAND_MI) {
   
   # convert to kg / m3
   dt[, value := value * 1000]
+  
+  # set samples outside the range on NA
+  dt[value < 1000 | value > 1500, value := NA_real_]
   
   # return value
   value <- dt[, value]
@@ -3833,16 +3928,20 @@ sptf_bd111 <- function(A_C_OF) {
                    value = NA_real_)
   
   # estimate soil density in Mg m-3 = ton m-3
-  dt[, value1 := 1.658 - 0.228 * A_C_OF]
-  dt[, value2 := 1.419 -0.197 * log10(A_C_OF)]
-  dt[, value3 := 0.721 + 0.855 * exp(-0.172 * A_C_OF)]
-  dt[, value4 := 1/(0.635 + 0.059 * A_C_OF)]
-  dt[, value5 := exp(0.347 -0.092 * log(A_C_OF) -0.021 * log(A_C_OF)^2)]
-  dt[, value6 := 100 / (1.724 * A_C_OF / -5.259 + (100 - 1.724 * A_C_OF)/1.724)]
+  # and set min and max given the range of the data
+  dt[, value1 := pmax(0.32,pmin(2.5,1.658 - 0.228 * A_C_OF))]
+  dt[, value2 := pmax(0.32,pmin(2.5,1.419 -0.197 * log10(A_C_OF)))]
+  dt[, value3 := pmax(0.32,pmin(2.5,0.721 + 0.855 * exp(-0.172 * A_C_OF)))]
+  dt[, value4 := pmax(0.32,pmin(2.5,1/(0.635 + 0.059 * A_C_OF)))]
+  dt[, value5 := pmax(0.32,pmin(2.5,exp(0.347 -0.092 * log(A_C_OF) -0.021 * log(A_C_OF)^2)))]
+  dt[, value6 := pmax(0.32,pmin(2.5,100 / (1.724 * A_C_OF / -5.259 + (100 - 1.724 * A_C_OF)/1.724)))]
   dt[, value := (value1 + value2 + value3 + value5 + value6 + value6)/6]
   
   # convert to kg / m3
   dt[, value := value * 1000]
+  
+  # set samples outside expected range on NA
+  dt[value <=320 | value >= 2500, value := NA_real_]
   
   # return value
   value <- dt[, value]
@@ -3875,6 +3974,9 @@ sptf_bd112 <- function(A_C_OF) {
 
   # convert to kg / m3
   dt[, value := value * 1000]
+  
+  # set samples outside expected range on NA
+  dt[value <=320 | value >= 2500, value := NA_real_]
   
   # return value
   value <- dt[, value]
@@ -3946,6 +4048,9 @@ sptf_bd114 <- function(A_C_OF) {
   # convert to kg / m3
   dt[, value := value * 1000]
   
+  # set min and max
+  dt[A_C_OF > 3.6 | value < 200 | value > 1700, value:= NA_real_]
+  
   # return value
   value <- dt[, value]
   
@@ -3957,26 +4062,55 @@ sptf_bd114 <- function(A_C_OF) {
 #' Calculate the bulk density given the pedotransferfunction of Hallet et al. (1998)
 #'
 #' @param A_C_OF (numeric) The fraction organic carbon in the soil (g / kg).
+#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
+#' @param A_SAND_MI (numeric) The sand content of the soil (\%).
+#' @param A_SILT_MI (numeric) The silt content of the soil (\%).
 #'
 #' @import data.table
 #' 
 #' @references Hallet et al. (1998) Derivation and evaluation of a set of pedogenically-based empirical algorithms for predicting bulk density in British soils
 #'
 #' @export
-sptf_bd115 <- function(A_C_OF) {
+sptf_bd115 <- function(A_C_OF, A_CLAY_MI,A_SAND_MI,A_SILT_MI) {
   
+  # add visual bindings
+  v1 = v2 = v3 = v4 = v5 = NULL
+    
   # Check input
-  checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000, any.missing = FALSE)
+  arg.length <- max(length(A_C_OF), length(A_CLAY_MI),length(A_SILT_MI),length(A_SAND_MI))
+  checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000, any.missing = FALSE,len = arg.length)
+  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_numeric(A_SAND_MI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, len = arg.length)
   
   # Collect data into a table (set in units %)
-  dt <- data.table(A_C_OF = A_C_OF * 0.1, 
+  dt <- data.table(id = 1: arg.length,
+                   A_C_OF = A_C_OF * 0.1,
+                   A_CLAY_MI = A_CLAY_MI,
+                   A_SAND_MI = A_SAND_MI,
+                   A_SILT_MI = A_SILT_MI,
                    value = NA_real_)
   
   # estimate soil density in Mg m-3 = ton m-3
-  dt[, value := 0.47 + 0.61 * A_C_OF]
+  
+  # arable systems (A_ar), temporary grassland (A_le), permanaent gras (A_pg) and other nature areas (A_ot)
+  # and B horizon
+  dt[, v1 := 1.46 - 0.0254 * log(A_CLAY_MI) + 0.0279 * log(A_SAND_MI) - 0.261 * log(A_C_OF)]
+  dt[, v2 := 0.807 + 0.0989 * log(A_CLAY_MI) + 0.106 * log(A_SAND_MI) - 0.215 * log(A_C_OF)]
+  dt[, v3 := 0.999 + 0.0451 * log(A_CLAY_MI) + 0.0784 * log(A_SAND_MI) - 0.244 * log(A_C_OF)]
+  dt[, v4 := 0.870 + 0.0710 * log(A_CLAY_MI) + 0.930 * log(A_SAND_MI) - 0.254 * log(A_C_OF)]
+  dt[, v5 := 0.998 - 0.00067 * A_SILT_MI+0.00262 * A_CLAY_MI-0.139 * A_C_OF]
+  
+  # estimate soil density in Mg m-3 = ton m-3
+  dt <- melt(dt, id.vars = 'id',measure.vars = patterns("^v"))
+  dt <- dt[,list(value = mean(value, na.rm=T)), by = id]
   
   # convert to kg / m3
   dt[, value := value * 1000]
+  
+  # set min and max given measured range
+  dt[value > 1850, value := NA_real_]
+  dt[value < 800, value := NA_real_]
   
   # return value
   value <- dt[, value]
@@ -4193,8 +4327,14 @@ sptf_bd121 <- function(A_C_OF, A_CLAY_MI, A_SAND_MI, A_CACO3_MI, A_PH_WA, B_ALTI
                    A_PH_WA = A_PH_WA,
                    B_SLOPE_DEGREE = B_SLOPE_DEGREE,
                    B_ALTITUDE = B_ALTITUDE,
-                   B_ROCKS_FR = 0,
+                   B_ROCKS_FR = 2.69,
                    value = NA_real_)
+  
+  # replace missing values by the mean
+  dt[is.na(A_CACO3_MI), A_CACO3_MI := 7.24]
+  dt[is.na(A_PH_WA), A_PH_WA := 6.94]
+  dt[is.na(B_ALTITUDE), B_ALTITUDE := 1000]
+  dt[is.na(B_SLOPE_DEGREE), B_SLOPE_DEGREE := 5]
   
   # estimate soil density in Mg m-3 = ton m-3
   dt[, value := 1.124 + 0.002 * A_SAND_MI + 0.004 * A_CLAY_MI - 0.048 * A_C_OF +
@@ -4203,6 +4343,10 @@ sptf_bd121 <- function(A_C_OF, A_CLAY_MI, A_SAND_MI, A_CACO3_MI, A_PH_WA, B_ALTI
   
   # convert to kg / m3
   dt[, value := value * 1000]
+  
+  # set min and max given measured range
+  dt[value > 2000, value := NA_real_]
+  dt[value < 600, value := NA_real_]
   
   # return value
   value <- dt[, value]
@@ -4242,6 +4386,10 @@ sptf_bd122 <- function(A_C_OF, A_CLAY_MI, A_SAND_MI) {
   
   # convert to kg / m3
   dt[, value := value * 1000]
+  
+  # set min and max given measured range
+  dt[value > 2000, value := NA_real_]
+  dt[value < 600, value := NA_real_]
   
   # return value
   value <- dt[, value]
@@ -4296,6 +4444,10 @@ sptf_bd123 <- function(A_C_OF, A_CLAY_MI, A_SAND_MI) {
   
   # convert to kg / m3
   dt[, value := value * 1000]
+  
+  # set min and max given measured range
+  dt[value > 2000, value := NA_real_]
+  dt[value < 600, value := NA_real_]
   
   # return value
   value <- dt[, value]
@@ -4400,6 +4552,10 @@ sptf_bd126 <- function(A_C_OF, A_SILT_MI, B_DEPTH) {
   # convert to kg / m3
   dt[, value := value * 1000]
   
+  # set min and max given range in data
+  dt[value <= 300, value := NA_real_]
+  dt[value >= 2200, value := NA_real_]
+  
   # return value
   value <- dt[, value]
   
@@ -4436,6 +4592,10 @@ sptf_bd127 <- function(A_C_OF, B_DEPTH) {
   # convert to kg / m3
   dt[, value := value * 1000]
   
+  # set min and max given range in data
+  dt[value <= 300, value := NA_real_]
+  dt[value >= 2200, value := NA_real_]
+  
   # return value
   value <- dt[, value]
   
@@ -4468,6 +4628,10 @@ sptf_bd128 <- function(A_C_OF) {
   
   # convert to kg / m3
   dt[, value := value * 1000]
+  
+  # set min and max given range in data
+  dt[value <= 300, value := NA_real_]
+  dt[value >= 2200, value := NA_real_]
   
   # return value
   value <- dt[, value]
@@ -4511,6 +4675,10 @@ sptf_bd129 <- function(A_C_OF, A_CLAY_MI, A_SILT_MI, B_DEPTH) {
   # convert to kg / m3
   dt[, value := value * 1000]
   
+  # set min and max given range in data
+  dt[value <= 300, value := NA_real_]
+  dt[value >= 2200, value := NA_real_]
+  
   # return value
   value <- dt[, value]
   
@@ -4542,6 +4710,10 @@ sptf_bd130 <- function(A_C_OF) {
   
   # convert to kg / m3
   dt[, value := value * 1000]
+  
+  # set min and max given range in data
+  dt[value <= 300, value := NA_real_]
+  dt[value >= 2200, value := NA_real_]
   
   # return value
   value <- dt[, value]
@@ -4575,6 +4747,10 @@ sptf_bd131 <- function(A_C_OF) {
   # convert to kg / m3
   dt[, value := value * 1000]
   
+  # set min and max given range in data
+  dt[value <= 300, value := NA_real_]
+  dt[value >= 2200, value := NA_real_]
+  
   # return value
   value <- dt[, value]
   
@@ -4606,6 +4782,10 @@ sptf_bd132 <- function(A_C_OF) {
   
   # convert to kg / m3
   dt[, value := value * 1000]
+  
+  # set min and max given range in data
+  dt[value <= 300, value := NA_real_]
+  dt[value >= 2200, value := NA_real_]
   
   # return value
   value <- dt[, value]
@@ -4641,14 +4821,21 @@ sptf_bd133 <- function(A_C_OF, B_DEPTH, B_SLOPE_DEGREE) {
   dt <- data.table(A_C_OF = A_C_OF, 
                    B_DEPTH = B_DEPTH,
                    B_SLOPE_DEGREE = B_SLOPE_DEGREE,
-                   B_ROCKS_FR = 0,
+                   B_ROCKS_FR = 5,
                    value = NA_real_)
   
+  # set missing to mean values
+  dt[is.na(B_SLOPE_DEGREE), B_SLOPE_DEGREE := 28.5]
+  
   # estimate soil density in Mg m-3 = ton m-3
-  dt[, value := 0.948 - 0.002 * A_C_OF + 0.257 * B_DEPTH^0.5 - 0.025 * B_SLOPE_DEGREE - 0.002 * B_ROCKS_FR]
+  dt[, value := 0.948 - 0.002 * A_C_OF + 0.257 * B_DEPTH^0.5 - 0.025 * B_SLOPE_DEGREE^0.5 - 0.002 * B_ROCKS_FR]
   
   # convert to kg / m3
   dt[, value := value * 1000]
+  
+  # set min and max
+  dt[value < 150, value := NA_real_]
+  dt[value > 1840, value := NA_real_]
   
   # return value
   value <- dt[, value]
@@ -4878,10 +5065,14 @@ sptf_bd139 <- function(A_SOM_LOI, A_CLAY_MI, A_SAND_MI) {
                    value = NA_real_)
   
   # estimate soil density in Mg m-3 = ton m-3
-  dt[, value := 1.6776 - 1.2e-5 * A_CLAY_MI^2 - 0.00045 * A_SAND_MI + 0.2351 * A_SOM_LOI^0.5]
+  dt[, value := 1.6776 - 1.2e-5 * A_CLAY_MI^2 - 0.00045 * A_SAND_MI - 0.2351 * A_SOM_LOI^0.5]
   
   # convert to kg / m3
   dt[, value := value * 1000]
+  
+  # set min and max given range in data
+  dt[value < 530, value := NA_real_]
+  dt[value > 1980, value := NA_real_]
   
   # return value
   value <- dt[, value]
@@ -5047,6 +5238,9 @@ sptf_bd143 <- function(A_C_OF, A_CLAY_MI, A_SAND_MI,A_SILT_MI) {
   # convert to kg / m3
   dt[, value := value * 1000]
   
+  # set samples outside the range on NA via expert knowledge
+  dt[value < 300, value := NA_real_]
+  
   # return value
   value <- dt[, value]
   
@@ -5170,10 +5364,10 @@ sptf_bd146 <- function(A_C_OF) {
   dt <- data.table(A_C_OF = A_C_OF * 0.1, value = NA_real_)
   
   # estimate BD via multiple SOC funs
-  dt[, v1 := 1.62 - 0.1 * A_C_OF]
-  dt[, v2 := 1.7 - 0.22 * A_C_OF^0.5]
-  dt[, v3 := 1.62 * exp(-0.07 * A_C_OF)]
-  dt[, v4 := 1.46 - 0.08 * log(A_C_OF)]
+  dt[, v1 := pmax(1,pmin(2.01,1.62 - 0.1 * A_C_OF))]
+  dt[, v2 := pmax(1,pmin(2.01,1.7 - 0.22 * A_C_OF^0.5))]
+  dt[, v3 := pmax(1,pmin(2.01,1.62 * exp(-0.07 * A_C_OF)))]
+  dt[, v4 := pmax(1,pmin(2.01,1.46 - 0.08 * log(A_C_OF)))]
   
   # estimate soil density in Mg m-3 = ton m-3
   dt[, value := (v1 + v2 + v3 + v4)/4]
@@ -5226,6 +5420,10 @@ sptf_bd147 <- function(A_C_OF, A_CLAY_MI, A_SAND_MI,A_SILT_MI, B_DEPTH) {
   
   # convert to kg / m3
   dt[, value := value * 1000]
+  
+  # set min and max given range in data
+  dt[value < 1020, value := NA_real_]
+  dt[value > 2010, value := NA_real_]
   
   # return value
   value <- dt[, value]
@@ -5447,6 +5645,9 @@ sptf_bd153 <- function(A_SOM_LOI, A_CLAY_MI) {
   
   # convert to kg / m3
   dt[, value := value * 1000]
+  
+  # set samples outside the range on NA
+  dt[value < 750 | value > 1650, value := NA_real_]
   
   # return value
   value <- dt[, value]
@@ -5992,10 +6193,13 @@ sptf_bd168 <- function(A_SOM_LOI, A_CLAY_MI) {
                    value = NA_real_)
   
   # estimate soil density in Mg m-3 = ton m-3 for A horizont
-  dt[, value := 0.597 + 0.035 * A_SOM_LOI + 0.0009 * A_CLAY_MI]
+  dt[, value := 1/(0.597 + 0.035 * A_SOM_LOI + 0.0009 * A_CLAY_MI)]
   
   # convert to kg / m3
   dt[, value := value * 1000]
+  
+  # set samples outside expected range on NA
+  dt[value < 400 | value > 2500, value := NA_real_]
   
   # return value
   value <- dt[, value]
@@ -6028,7 +6232,7 @@ sptf_bd169 <- function(A_SOM_LOI, A_CLAY_MI) {
                    value = NA_real_)
   
   # estimate soil density in Mg m-3 = ton m-3 for C horizont
-  dt[, value := 0.628 + 0.0155 * A_SOM_LOI + 0.0024 * A_CLAY_MI]
+  dt[, value := 1/(0.628 + 0.0155 * A_SOM_LOI + 0.0024 * A_CLAY_MI)]
   
   # convert to kg / m3
   dt[, value := value * 1000]
@@ -6064,7 +6268,7 @@ sptf_bd170 <- function(A_SOM_LOI, A_CLAY_MI) {
                    value = NA_real_)
   
   # estimate soil density in Mg m-3 = ton m-3 for A horizont
-  dt[, value := 0.618 + 0.023 * A_SOM_LOI + 0.0007 * A_CLAY_MI]
+  dt[, value := 1/(0.618 + 0.023 * A_SOM_LOI + 0.0007 * A_CLAY_MI)]
   
   # convert to kg / m3
   dt[, value := value * 1000]
@@ -6100,7 +6304,7 @@ sptf_bd171 <- function(A_SOM_LOI, A_CLAY_MI) {
                    value = NA_real_)
   
   # estimate soil density in Mg m-3 = ton m-3 for C horizont
-  dt[, value := 0.572 + 0.0053 * A_SOM_LOI + 0.0039 * A_CLAY_MI]
+  dt[, value := 1/(0.572 + 0.0053 * A_SOM_LOI + 0.0039 * A_CLAY_MI)]
   
   # convert to kg / m3
   dt[, value := value * 1000]
@@ -6131,7 +6335,7 @@ sptf_bd172 <- function(A_SOM_LOI) {
   dt <- data.table(A_SOM_LOI = A_SOM_LOI, value = NA_real_)
   
   # estimate soil density in Mg m-3 = ton m-3 for A en B2horizont
-  dt[, value := 0.637 + 0.0257 * A_SOM_LOI]
+  dt[, value := 1/(0.637 + 0.0257 * A_SOM_LOI)]
   
   # convert to kg / m3
   dt[, value := value * 1000]
@@ -6162,10 +6366,13 @@ sptf_bd173 <- function(A_SOM_LOI) {
   dt <- data.table(A_SOM_LOI = A_SOM_LOI, value = NA_real_)
   
   # estimate soil density in Mg m-3 = ton m-3 for A en B2horizont
-  dt[, value := 0.598 + 0.0355 * A_SOM_LOI]
+  dt[, value := 1/(0.598 + 0.0355 * A_SOM_LOI)]
   
   # convert to kg / m3
   dt[, value := value * 1000]
+  
+  # set samples outside expected range on NA
+  dt[value < 400 | value > 2500, value := NA_real_]
   
   # return value
   value <- dt[, value]
@@ -6288,6 +6495,9 @@ sptf_bd177 <- function(A_SOM_LOI, A_CLAY_MI, A_SILT_MI, A_SAND_M50) {
                    A_LEEM_MI = A_CLAY_MI + 0.3 * A_SILT_MI,
                    A_SAND_M50 = A_SAND_M50,
                    value = NA_real_)
+  
+  # set missing M50 on average for sandy soils
+  dt[is.na(A_SAND_M50), A_SAND_M50 := 157.5]
   
   # estimate soil density in Mg m-3 = ton m-3
   dt[, value := 1 / (-1.984 + 0.01841 * A_SOM_LOI + 0.032 * 1 + 0.00003576 * A_LEEM_MI^2 +
