@@ -113,7 +113,7 @@
 112;FR;EU;variable;variable;295;7090;0,389;a_c_of;chen_2018;http://dx.doi.org/10.1016/j.geoderma.2017.10.009
 113;BR;SA;variable;variable;100;125;0,41;a_c_of||a_ph_wa||a_clay_mi;souza_2016;http://dx.doi.org/10.1590/0103-9016-2015-0485
 114;SI;EU;variable;forest;135;106;0,7958;a_c_of;urbancic_2011;
-115;GB;EU;variable;variable;100;1568;0,56;a_c_of||a_clay_mi||a_sand_mi;hallet_1998;
+115;GB;EU;variable;variable;100;1568;0,56;a_c_of||a_clay_mi||a_sand_mi||a_silt_mi;hallet_1998;
 116;CA;NA;mineral;forest;100;702;0,99;a_c_of;hossain_2015;https://doi.org/10.1016/j.inpa.2015.09.001
 117;CA;NA;organic;forest;100;674;0,93;a_c_of;hossain_2015;https://doi.org/10.1016/j.inpa.2015.09.001
 118;CA;NA;variable;forest;100;1376;0,984;a_c_of;hossain_2015;https://doi.org/10.1016/j.inpa.2015.09.001
