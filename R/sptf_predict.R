@@ -184,7 +184,7 @@ ptf_bd <- function(A_SOM_LOI = NA_real_, A_C_OF = NA_real_,
   dt[, p97 := sptf_bd97(A_C_OF = A_C_OF, A_SAND_MI = A_SAND_MI)]
   dt[, p98 := sptf_bd98(A_C_OF = A_C_OF)]
   dt[, p99 := sptf_bd99(A_C_OF = A_C_OF)]
-  dt[, p100 := sptf_bd100(A_N_RT = A_N_RT)]
+  dt[, p100 := sptf_bd100(A_N_RT = A_N_RT,A_C_OF = A_C_OF)]
   dt[, p101 := sptf_bd101(A_C_OF = A_C_OF, A_SAND_MI = A_SAND_MI)]
   dt[, p102 := sptf_bd102(A_C_OF = A_C_OF)]
   dt[, p103 := sptf_bd103(A_C_OF = A_C_OF)]
@@ -199,7 +199,7 @@ ptf_bd <- function(A_SOM_LOI = NA_real_, A_C_OF = NA_real_,
   dt[, p112 := sptf_bd112(A_C_OF = A_C_OF)]
   dt[, p113 := sptf_bd113(A_C_OF = A_C_OF,A_CLAY_MI = A_CLAY_MI, A_PH_WA = A_PH_WA)]
   dt[, p114 := sptf_bd114(A_C_OF = A_C_OF)]
-  dt[, p115 := sptf_bd115(A_C_OF = A_C_OF)]
+  dt[, p115 := sptf_bd115(A_C_OF = A_C_OF,A_CLAY_MI = A_CLAY_MI, A_SAND_MI = A_SAND_MI, A_SILT_MI = A_SILT_MI)]
   dt[, p116 := sptf_bd116(A_C_OF = A_C_OF)]
   dt[, p117 := sptf_bd117(A_C_OF = A_C_OF)]
   dt[, p118 := sptf_bd118(A_C_OF = A_C_OF)]
@@ -300,6 +300,283 @@ ptf_bd <- function(A_SOM_LOI = NA_real_, A_C_OF = NA_real_,
   # estimate the mean and SD of the bulk density for nmax models
   out <- dt2[oid <= nmax, list(bd.mean = weighted.mean(x = value, w = r2),
                                bd.sd = sd(x = value)), by = 'id']
+  
+  return(out)
+}
+
+
+# predict function
+
+#' Predict the bulk density with the best combination of existing ptfs from literature.
+#'
+#' @param B_DEPTH (numeric) The depth of the sampled soil layer (m)
+#' @param B_LU_PTFCLASS (character) The land use categorie (options: agriculture, grassland, cropland, forest, nature)
+#' @param B_LOC_COUNTRY (character) The country code 
+#' @param nboot (integer) the number of bootstrapped samples (x 1000) to predict soil density
+#'
+#' @details 
+#' Some of the ptfs require additional information. If given, the relevant ptf's are used, otherwise they are ignored.
+#' These include the total N content (A_N_RT, unit mg/kg), the pH (A_PH_WA), the carbonate content (A_CACO3_MI, unit \%), the moisture content (A_H2O_T105, \%), the slope (B_SLOPE_DEGREE, unit degrees), the aspect (B_SLOPE_ASPECT, unit degrees) and the altidue (B_ALTITUDE, unit m).
+#' When added, please ensure to use the correct element name and units. 
+#' 
+#' When depth is missing, the function assumes that topsoils are used.
+#' 
+#' @import data.table
+#' 
+#' @export
+ptf_bd_lm <- function(B_LU_PTFCLASS = NA_character_,
+                      B_DEPTH = 0.3, 
+                      B_LOC_COUNTRY = 'NL', 
+                      nboot = 10){
+  
+  # read in internal table
+  ptf.mods <- as.data.table(soilptf::sptf_bulkdensity)
+  ptf.mods[,c('reference','url','soilproperties') := NULL]
+  ptf.countries <- as.data.table(soilptf::sptf_countries)
+  
+  # subset the table for the requested country
+  cont.sel <- unique(ptf.countries[country_code %in% B_LOC_COUNTRY, continent_code])
+  ptf.mods <- ptf.mods[country_code %in% B_LOC_COUNTRY | continent_code %in% cont.sel]
+  
+  # make internal table
+  dt <- data.table(id = 1: 40,
+                   A_SOM_LOI = seq(0.1,20,0.5),
+                   A_CLAY_MI = 7.5,
+                   A_SAND_MI = 60,
+                   B_DEPTH = B_DEPTH,
+                   B_LOC_COUNTRY = B_LOC_COUNTRY,
+                   B_LU_PTFCLASS = B_LU_PTFCLASS
+  )
+  
+  # add USDA soil classification
+  dt[, B_SOILTYPE := sptf_textureclass(A_CLAY_MI = A_CLAY_MI,A_SILT_MI = A_SILT_MI,A_SAND_MI = A_SAND_MI)]
+  
+  # estimate missing variables
+  dt[!is.na(A_SOM_LOI), A_C_OF := A_SOM_LOI * 10 / 1.724]
+  dt[,A_SILT_MI := 100 - A_CLAY_MI - A_SAND_MI]
+  
+  # add continent
+  dt <- merge(dt,ptf.countries[,.(country_code,B_LOC_CONT = continent_code)], by.x = 'B_LOC_COUNTRY',by.y = 'country_code',all.x = TRUE)
+  
+  # add all possible inputs as NA when missing
+  cols <- c('A_PH_WA','A_CACO3_MI','A_N_RT','A_H2O_T105','A_SAND_M50','B_SLOPE_DEGREE','B_SLOPE_ASPECT','B_ALTITUDE')
+  cols <- cols[!cols %in% colnames(dt)]
+  dt[,c(cols) := NA_real_]
+  
+  # select all pedotransfer functions
+  nsampledb <- nboot * 1000
+  bd_all <- ptf.mods[,.(ptf_id,nsample,r2)]
+  bd_all[is.na(nsample), nsample := 50]
+  bd_all[is.na(r2), r2 := 0.7]
+  cf <- nsampledb / (sum(round(bd_all$nsample * bd_all$r2)) * nrow(dt))
+  bd_all[,nrep := pmax(1,round(nsample * bd_all$r2 * cf))]
+  bd_all <- bd_all[rep(bd_all[,.I],nrep)]
+  bd_all <- bd_all[,.(ptf_id,nsample,r2)]
+  
+  # make all options
+  cj = CJ(1:nrow(dt),1:nrow(bd_all))
+  dt <- cbind(dt[cj[[1]],],bd_all[cj[[2]],])
+  
+  # add bd predicted
+  dt[,value := NA_real_]
+  
+  # estimate the bulk density by the pedotransfer functions
+  dt[ptf_id==1, value := sptf_bd1(A_SOM_LOI = A_SOM_LOI, A_CLAY_MI = A_CLAY_MI)]
+  dt[ptf_id==2, value := sptf_bd2(A_SOM_LOI = A_SOM_LOI)]
+  dt[ptf_id==3, value := sptf_bd3(A_SOM_LOI = A_SOM_LOI)]
+  dt[ptf_id==4, value := sptf_bd4(A_C_OF = A_C_OF)]
+  dt[ptf_id==5, value := sptf_bd5(A_C_OF = A_C_OF)]
+  dt[ptf_id==6, value := sptf_bd6(A_SOM_LOI = A_SOM_LOI)]
+  dt[ptf_id==7, value := sptf_bd7(A_C_OF = A_C_OF)]
+  dt[ptf_id==8, value := sptf_bd8(A_SOM_LOI = A_SOM_LOI)]
+  dt[ptf_id==9, value := sptf_bd9(A_C_OF = A_C_OF)]
+  dt[ptf_id==10, value := sptf_bd10(A_C_OF = A_C_OF)]
+  dt[ptf_id==11, value := sptf_bd11(A_SOM_LOI = A_SOM_LOI)]
+  dt[ptf_id==12, value := sptf_bd12(A_SOM_LOI = A_SOM_LOI)]
+  dt[ptf_id==13, value := sptf_bd13(A_SOM_LOI = A_SOM_LOI)]
+  dt[ptf_id==14, value := sptf_bd14(A_C_OF = A_C_OF, A_CLAY_MI = A_CLAY_MI, A_SILT_MI = A_SILT_MI)]
+  dt[ptf_id==15, value := sptf_bd15(A_C_OF = A_C_OF, A_CLAY_MI = A_CLAY_MI)]
+  dt[ptf_id==16, value := sptf_bd16(A_SOM_LOI = A_SOM_LOI)]
+  dt[ptf_id==17, value := sptf_bd17(A_C_OF = A_C_OF, A_CLAY_MI = A_CLAY_MI, A_SILT_MI = A_SILT_MI)]
+  dt[ptf_id==18, value := sptf_bd18(A_C_OF = A_C_OF, A_CLAY_MI = A_CLAY_MI, A_SAND_MI = A_SAND_MI, A_SILT_MI = A_SILT_MI)]
+  dt[ptf_id==19, value := sptf_bd19(A_C_OF = A_C_OF, A_CLAY_MI = A_CLAY_MI, A_SAND_MI = A_SAND_MI, A_SILT_MI = A_SILT_MI)]
+  dt[ptf_id==20, value := sptf_bd20(A_C_OF = A_C_OF, A_CLAY_MI = A_CLAY_MI, A_SAND_MI = A_SAND_MI, A_SILT_MI = A_SILT_MI)]
+  dt[ptf_id==21, value := sptf_bd21(A_C_OF = A_C_OF, A_CLAY_MI = A_CLAY_MI, A_SILT_MI = A_SILT_MI)]
+  dt[ptf_id==22, value := sptf_bd22(A_SOM_LOI = A_SOM_LOI)]
+  dt[ptf_id==23, value := sptf_bd23(A_SOM_LOI = A_SOM_LOI)]
+  dt[ptf_id==24, value := sptf_bd24(A_SOM_LOI = A_SOM_LOI)]
+  dt[ptf_id==25, value := sptf_bd25(A_C_OF = A_C_OF, A_CLAY_MI = A_CLAY_MI,A_SILT_MI = A_SAND_MI,A_H2O_T105 = A_H2O_T105, B_DEPTH = B_DEPTH)]
+  dt[ptf_id==26, value := sptf_bd26(A_SOM_LOI = A_SOM_LOI)]
+  dt[ptf_id==27, value := sptf_bd27(A_SOM_LOI = A_SOM_LOI)]
+  dt[ptf_id==28, value := sptf_bd28(A_SAND_MI = A_SAND_MI, B_DEPTH = B_DEPTH)]
+  dt[ptf_id==29, value := sptf_bd29(A_C_OF = A_C_OF, A_SAND_MI = A_SAND_MI,B_DEPTH = B_DEPTH)]
+  dt[ptf_id==30, value := sptf_bd30(A_C_OF = A_C_OF, A_CLAY_MI = A_CLAY_MI)]
+  dt[ptf_id==31, value := sptf_bd31(A_CLAY_MI = A_CLAY_MI)]
+  dt[ptf_id==32, value := sptf_bd32(A_C_OF = A_C_OF)]
+  dt[ptf_id==33, value := sptf_bd33(A_SOM_LOI = A_SOM_LOI, A_CLAY_MI = A_CLAY_MI, A_SAND_MI = A_SAND_MI, A_SILT_MI = A_SILT_MI)]
+  dt[ptf_id==34, value := sptf_bd34(A_SOM_LOI = A_SOM_LOI)]
+  dt[ptf_id==35, value := sptf_bd35(A_SOM_LOI = A_SOM_LOI)]
+  dt[ptf_id==36, value := sptf_bd36(A_C_OF = A_C_OF, A_CLAY_MI = A_CLAY_MI, A_SAND_MI = A_SAND_MI)]
+  dt[ptf_id==37, value := sptf_bd37(A_C_OF = A_C_OF)]
+  dt[ptf_id==38, value := sptf_bd38(A_C_OF = A_C_OF,A_CLAY_MI = A_CLAY_MI,A_SAND_MI = A_SAND_MI)]
+  dt[ptf_id==39, value := sptf_bd39(A_C_OF = A_C_OF,A_CLAY_MI = A_CLAY_MI,A_H2O_T105 = A_H2O_T105,B_DEPTH = B_DEPTH)]
+  dt[ptf_id==40, value := sptf_bd40(A_SOM_LOI = A_SOM_LOI,A_SAND_MI = A_SAND_MI,B_DEPTH = B_DEPTH)]
+  dt[ptf_id==41, value := sptf_bd41(A_SOM_LOI = A_SOM_LOI)]
+  dt[ptf_id==42, value := sptf_bd42(A_C_OF = A_C_OF)]
+  dt[ptf_id==43, value := sptf_bd43(A_C_OF = A_C_OF)]
+  dt[ptf_id==44, value := sptf_bd44(A_C_OF = A_C_OF)]
+  dt[ptf_id==45, value := sptf_bd45(A_C_OF = A_C_OF,A_SAND_MI = A_SAND_MI)]
+  dt[ptf_id==46, value := sptf_bd46(A_C_OF = A_C_OF,A_SAND_MI = A_SAND_MI)]
+  dt[ptf_id==47, value := sptf_bd47(A_C_OF = A_C_OF,A_CLAY_MI = A_CLAY_MI,A_SAND_MI = A_SAND_MI,A_SILT_MI = A_SILT_MI)]
+  dt[ptf_id==48, value := sptf_bd48(A_C_OF = A_C_OF)]
+  dt[ptf_id==49, value := sptf_bd49(A_SOM_LOI = A_SOM_LOI)]
+  dt[ptf_id==50, value := sptf_bd50(A_SOM_LOI = A_SOM_LOI)]
+  dt[ptf_id==51, value := sptf_bd51(A_SOM_LOI = A_SOM_LOI)]
+  dt[ptf_id==52, value := sptf_bd52(A_SOM_LOI = A_SOM_LOI)]
+  dt[ptf_id==53, value := sptf_bd53(A_SOM_LOI = A_SOM_LOI)]
+  dt[ptf_id==54, value := sptf_bd54(A_SOM_LOI = A_SOM_LOI)]
+  dt[ptf_id==55, value := sptf_bd55(A_SOM_LOI = A_SOM_LOI)]
+  dt[ptf_id==56, value := sptf_bd56(A_SOM_LOI = A_SOM_LOI)]
+  dt[ptf_id==57, value := sptf_bd57(A_SOM_LOI = A_SOM_LOI)]
+  dt[ptf_id==58, value := sptf_bd58(A_SOM_LOI = A_SOM_LOI)]
+  dt[ptf_id==59, value := sptf_bd59(A_SOM_LOI = A_SOM_LOI)]
+  dt[ptf_id==60, value := sptf_bd60(A_SOM_LOI = A_SOM_LOI)]
+  dt[ptf_id==61, value := sptf_bd61(A_SOM_LOI = A_SOM_LOI)]
+  dt[ptf_id==62, value := sptf_bd62(A_SOM_LOI = A_SOM_LOI)]
+  dt[ptf_id==63, value := sptf_bd63(A_SOM_LOI = A_SOM_LOI)]
+  dt[ptf_id==64, value := sptf_bd64(A_SOM_LOI = A_SOM_LOI)]
+  dt[ptf_id==65, value := sptf_bd65(A_C_OF = A_C_OF)]
+  dt[ptf_id==66, value := sptf_bd66(A_C_OF = A_C_OF)]
+  dt[ptf_id==67, value := sptf_bd67(A_C_OF = A_C_OF)]
+  dt[ptf_id==68, value := sptf_bd68(A_C_OF = A_C_OF)]
+  dt[ptf_id==69, value := sptf_bd69(A_CLAY_MI = A_CLAY_MI,B_DEPTH = B_DEPTH)]
+  dt[ptf_id==70, value := sptf_bd70(A_C_OF = A_C_OF,A_CLAY_MI=A_CLAY_MI, A_SILT_MI=A_SILT_MI, B_DEPTH=B_DEPTH, B_ALTITUDE=B_ALTITUDE, B_SLOPE_DEGREE=B_SLOPE_DEGREE, B_SLOPE_ASPECT=B_SLOPE_ASPECT)]
+  dt[ptf_id==71, value := sptf_bd71(A_C_OF = A_C_OF,A_CLAY_MI = A_CLAY_MI,A_SILT_MI = A_SILT_MI,B_SLOPE_DEGREE = B_SLOPE_DEGREE)]
+  dt[ptf_id==72, value := sptf_bd72(A_C_OF = A_C_OF)]
+  dt[ptf_id==73, value := sptf_bd73(A_C_OF = A_C_OF)]
+  dt[ptf_id==74, value := sptf_bd74(A_C_OF = A_C_OF)]
+  dt[ptf_id==75, value := sptf_bd75(A_C_OF = A_C_OF)]
+  dt[ptf_id==76, value := sptf_bd76(A_C_OF = A_C_OF)]
+  dt[ptf_id==77, value := sptf_bd77(A_C_OF = A_C_OF)]
+  dt[ptf_id==78, value := sptf_bd78(A_C_OF = A_C_OF,A_CLAY_MI = A_CLAY_MI,A_SAND_MI = A_SAND_MI,A_PH_WA = A_PH_WA)]
+  dt[ptf_id==79, value := sptf_bd79(A_C_OF = A_C_OF,A_SILT_MI = A_SILT_MI,A_SAND_MI = A_SAND_MI,A_PH_WA = A_PH_WA)]
+  dt[ptf_id==80, value := sptf_bd80(A_C_OF = A_C_OF,A_CLAY_MI = A_CLAY_MI,A_CACO3_MI = A_CACO3_MI)]
+  dt[ptf_id==81, value := sptf_bd81(A_C_OF = A_C_OF)]
+  dt[ptf_id==82, value := sptf_bd82(A_SAND_MI = A_SAND_MI,A_SILT_MI = A_SILT_MI)]
+  dt[ptf_id==83, value := sptf_bd83(A_SAND_MI = A_SAND_MI,A_SILT_MI = A_SILT_MI)]
+  dt[ptf_id==84, value := sptf_bd84(A_C_OF = A_C_OF,A_CLAY_MI = A_CLAY_MI)]
+  dt[ptf_id==85, value := sptf_bd85(A_C_OF = A_C_OF)]
+  dt[ptf_id==86, value := sptf_bd86(A_C_OF = A_C_OF,A_SAND_MI = A_SAND_MI,A_CLAY_MI = A_CLAY_MI)]
+  dt[ptf_id==87, value := sptf_bd87(A_SOM_LOI = A_SOM_LOI,A_SAND_MI = A_SAND_MI,B_DEPTH = B_DEPTH)]
+  dt[ptf_id==88, value := sptf_bd88(A_C_OF = A_C_OF,A_CLAY_MI = A_CLAY_MI,A_CACO3_MI = A_CACO3_MI,A_PH_WA = A_PH_WA)]
+  dt[ptf_id==89, value := sptf_bd89(A_C_OF = A_C_OF,A_CLAY_MI = A_CLAY_MI,A_SILT_MI = A_SILT_MI)]
+  dt[ptf_id==90, value := sptf_bd90(A_SOM_LOI = A_SOM_LOI,A_CLAY_MI = A_CLAY_MI)]
+  dt[ptf_id==91, value := sptf_bd91(A_SOM_LOI = A_SOM_LOI)]
+  dt[ptf_id==92, value := sptf_bd92(A_SOM_LOI = A_SOM_LOI,A_CLAY_MI = A_CLAY_MI)]
+  dt[ptf_id==93, value := sptf_bd93(A_C_OF = A_C_OF)]
+  dt[ptf_id==94, value := sptf_bd94(A_SOM_LOI = A_SOM_LOI,A_SAND_MI = A_SAND_MI,A_CLAY_MI = A_CLAY_MI)]
+  dt[ptf_id==95, value := sptf_bd95(A_C_OF = A_C_OF)]
+  dt[ptf_id==96, value := sptf_bd96(A_SOM_LOI = A_SOM_LOI)]
+  dt[ptf_id==97, value := sptf_bd97(A_C_OF = A_C_OF, A_SAND_MI = A_SAND_MI)]
+  dt[ptf_id==98, value := sptf_bd98(A_C_OF = A_C_OF)]
+  dt[ptf_id==99, value := sptf_bd99(A_C_OF = A_C_OF)]
+  dt[ptf_id==100, value := sptf_bd100(A_N_RT = A_N_RT,A_C_OF = A_C_OF)]
+  dt[ptf_id==101, value := sptf_bd101(A_C_OF = A_C_OF, A_SAND_MI = A_SAND_MI)]
+  dt[ptf_id==102, value := sptf_bd102(A_C_OF = A_C_OF)]
+  dt[ptf_id==103, value := sptf_bd103(A_C_OF = A_C_OF)]
+  dt[ptf_id==104, value := sptf_bd104(A_C_OF = A_C_OF)]
+  dt[ptf_id==105, value := sptf_bd105(A_C_OF = A_C_OF, B_DEPTH = B_DEPTH)]
+  dt[ptf_id==106, value := sptf_bd106(A_C_OF = A_C_OF, B_DEPTH = B_DEPTH)]
+  dt[ptf_id==107, value := sptf_bd107(A_C_OF = A_C_OF, B_DEPTH = B_DEPTH)]
+  dt[ptf_id==108, value := sptf_bd108(A_C_OF = A_C_OF, B_DEPTH = B_DEPTH)]
+  dt[ptf_id==109, value := sptf_bd109(A_C_OF = A_C_OF, B_DEPTH = B_DEPTH)]
+  dt[ptf_id==110, value := sptf_bd110(A_C_OF = A_C_OF, B_DEPTH = B_DEPTH)]
+  dt[ptf_id==111, value := sptf_bd111(A_C_OF = A_C_OF)]
+  dt[ptf_id==112, value := sptf_bd112(A_C_OF = A_C_OF)]
+  dt[ptf_id==113, value := sptf_bd113(A_C_OF = A_C_OF,A_CLAY_MI = A_CLAY_MI, A_PH_WA = A_PH_WA)]
+  dt[ptf_id==114, value := sptf_bd114(A_C_OF = A_C_OF)]
+  dt[ptf_id==115, value := sptf_bd115(A_C_OF = A_C_OF,A_CLAY_MI = A_CLAY_MI, A_SAND_MI = A_SAND_MI, A_SILT_MI = A_SILT_MI)]
+  dt[ptf_id==116, value := sptf_bd116(A_C_OF = A_C_OF)]
+  dt[ptf_id==117, value := sptf_bd117(A_C_OF = A_C_OF)]
+  dt[ptf_id==118, value := sptf_bd118(A_C_OF = A_C_OF)]
+  dt[ptf_id==119, value := sptf_bd119(A_C_OF = A_C_OF)]
+  dt[ptf_id==120, value := sptf_bd120(A_C_OF = A_C_OF, A_CLAY_MI = A_CLAY_MI, A_SILT_MI = A_SILT_MI)]
+  dt[ptf_id==121, value := sptf_bd121(A_C_OF = A_C_OF, A_CLAY_MI = A_CLAY_MI, A_SAND_MI = A_SAND_MI, A_CACO3_MI = A_CACO3_MI, A_PH_WA = A_PH_WA,B_ALTITUDE = B_ALTITUDE,B_SLOPE_DEGREE = B_SLOPE_DEGREE)]
+  dt[ptf_id==122, value := sptf_bd122(A_C_OF = A_C_OF, A_CLAY_MI = A_CLAY_MI,A_SAND_MI = A_SAND_MI)]
+  dt[ptf_id==123, value := sptf_bd123(A_C_OF = A_C_OF, A_CLAY_MI = A_CLAY_MI,A_SAND_MI = A_SAND_MI)]
+  dt[ptf_id==124, value := sptf_bd124(A_C_OF = A_C_OF)]
+  dt[ptf_id==125, value := sptf_bd125(A_C_OF = A_C_OF)]
+  dt[ptf_id==126, value := sptf_bd126(A_C_OF = A_C_OF, A_SILT_MI = A_SILT_MI, B_DEPTH = B_DEPTH)]
+  dt[ptf_id==127, value := sptf_bd127(A_C_OF = A_C_OF, B_DEPTH = B_DEPTH)]
+  dt[ptf_id==128, value := sptf_bd128(A_C_OF = A_C_OF)]
+  dt[ptf_id==129, value := sptf_bd129(A_C_OF = A_C_OF, A_CLAY_MI = A_CLAY_MI, A_SILT_MI = A_SILT_MI,B_DEPTH = B_DEPTH)]
+  dt[ptf_id==130, value := sptf_bd130(A_C_OF = A_C_OF)]
+  dt[ptf_id==131, value := sptf_bd131(A_C_OF = A_C_OF)]
+  dt[ptf_id==132, value := sptf_bd132(A_C_OF = A_C_OF)]
+  dt[ptf_id==133, value := sptf_bd133(A_C_OF = A_C_OF, B_DEPTH = B_DEPTH, B_SLOPE_DEGREE = B_SLOPE_DEGREE)]
+  dt[ptf_id==134, value := sptf_bd134(A_SOM_LOI = A_SOM_LOI)]
+  dt[ptf_id==135, value := sptf_bd135(A_SOM_LOI = A_SOM_LOI)]
+  dt[ptf_id==136, value := sptf_bd136(A_C_OF = A_C_OF)]
+  dt[ptf_id==137, value := sptf_bd137(A_SOM_LOI = A_SOM_LOI,A_SILT_MI = A_SILT_MI,A_PH_WA = A_PH_WA,B_DEPTH = B_DEPTH)]
+  dt[ptf_id==138, value := sptf_bd138(A_SOM_LOI = A_SOM_LOI, A_SILT_MI = A_SILT_MI)]
+  dt[ptf_id==139, value := sptf_bd139(A_SOM_LOI = A_SOM_LOI, A_CLAY_MI = A_CLAY_MI,A_SAND_MI = A_SILT_MI)]
+  dt[ptf_id==140, value := sptf_bd140(A_SOM_LOI = A_SOM_LOI,A_CLAY_MI = A_CLAY_MI,A_SAND_MI = A_SAND_MI,A_SILT_MI = A_SILT_MI)]
+  dt[ptf_id==141, value := sptf_bd141(A_C_OF = A_C_OF, A_N_RT = A_N_RT,A_CLAY_MI = A_CLAY_MI,A_SAND_MI = A_SAND_MI)]
+  dt[ptf_id==142, value := sptf_bd142(A_CLAY_MI = A_CLAY_MI,A_SAND_MI = A_SAND_MI,A_SILT_MI = A_SILT_MI)]
+  dt[ptf_id==143, value := sptf_bd143(A_C_OF = A_C_OF,A_CLAY_MI = A_CLAY_MI,A_SAND_MI = A_SAND_MI,A_SILT_MI = A_SILT_MI)]
+  dt[ptf_id==144, value := sptf_bd144(A_C_OF = A_C_OF,A_CLAY_MI = A_CLAY_MI,A_SAND_MI = A_SAND_MI)]
+  dt[ptf_id==145, value := sptf_bd145(A_C_OF = A_C_OF,A_CLAY_MI = A_CLAY_MI,A_SAND_MI = A_SAND_MI,A_SILT_MI = A_SILT_MI)]
+  dt[ptf_id==146, value := sptf_bd146(A_C_OF = A_C_OF)]
+  dt[ptf_id==147, value := sptf_bd147(A_C_OF = A_C_OF,A_CLAY_MI = A_CLAY_MI,A_SAND_MI = A_SAND_MI,A_SILT_MI = A_SILT_MI,B_DEPTH = B_DEPTH)]
+  dt[ptf_id==148, value := sptf_bd148(A_SOM_LOI = A_SOM_LOI,A_CLAY_MI = A_CLAY_MI)]
+  dt[ptf_id==149, value := sptf_bd149(A_C_OF = A_C_OF)]
+  dt[ptf_id==150, value := sptf_bd150(A_C_OF = A_C_OF,B_DEPTH = B_DEPTH)]
+  dt[ptf_id==151, value := sptf_bd151(A_CLAY_MI = A_CLAY_MI,A_SAND_MI = A_SAND_MI,A_SILT_MI = A_SILT_MI)]
+  dt[ptf_id==152, value := sptf_bd152(A_SOM_LOI = A_SOM_LOI)]
+  dt[ptf_id==153, value := sptf_bd153(A_SOM_LOI = A_SOM_LOI, A_CLAY_MI = A_CLAY_MI)]
+  dt[ptf_id==154, value := sptf_bd154(A_C_OF = A_C_OF, A_PH_WA = A_PH_WA)]
+  dt[ptf_id==155, value := sptf_bd155(A_C_OF = A_C_OF, A_SILT_MI = A_SILT_MI)]
+  dt[ptf_id==156, value := sptf_bd156(A_C_OF = A_C_OF, A_CLAY_MI = A_CLAY_MI)]
+  dt[ptf_id==157, value := sptf_bd157(A_C_OF = A_C_OF, A_CLAY_MI = A_CLAY_MI,A_SILT_MI = A_SILT_MI)]
+  dt[ptf_id==158, value := sptf_bd158(A_C_OF = A_C_OF, A_CLAY_MI = A_CLAY_MI,A_SILT_MI = A_SILT_MI)]
+  dt[ptf_id==159, value := sptf_bd159(A_C_OF = A_C_OF, A_CLAY_MI = A_CLAY_MI)]
+  dt[ptf_id==160, value := sptf_bd160(A_SOM_LOI = A_SOM_LOI)]
+  dt[ptf_id==161, value := sptf_bd161(A_SOM_LOI = A_SOM_LOI)]
+  dt[ptf_id==162, value := sptf_bd162(A_C_OF = A_C_OF)]
+  dt[ptf_id==163, value := sptf_bd163(A_C_OF = A_C_OF)]
+  dt[ptf_id==164, value := sptf_bd164(A_SOM_LOI = A_SOM_LOI,A_CLAY_MI = A_CLAY_MI,A_SAND_MI = A_SAND_MI,A_SILT_MI = A_SILT_MI)]
+  dt[ptf_id==165, value := sptf_bd165(A_SOM_LOI = A_SOM_LOI)]
+  dt[ptf_id==166, value := sptf_bd166(A_C_OF = A_C_OF)]
+  dt[ptf_id==167, value := sptf_bd167(A_SOM_LOI = A_SOM_LOI,A_CLAY_MI = A_CLAY_MI)]
+  dt[ptf_id==168, value := sptf_bd168(A_SOM_LOI = A_SOM_LOI, A_CLAY_MI = A_CLAY_MI)]
+  dt[ptf_id==169, value := sptf_bd169(A_SOM_LOI = A_SOM_LOI,A_CLAY_MI = A_CLAY_MI)]
+  dt[ptf_id==170, value := sptf_bd170(A_SOM_LOI = A_SOM_LOI,A_CLAY_MI = A_CLAY_MI)]
+  dt[ptf_id==171, value := sptf_bd171(A_SOM_LOI = A_SOM_LOI,A_CLAY_MI = A_CLAY_MI)]
+  dt[ptf_id==172, value := sptf_bd172(A_SOM_LOI = A_SOM_LOI)]
+  dt[ptf_id==173, value := sptf_bd173(A_SOM_LOI = A_SOM_LOI)]
+  dt[ptf_id==174, value := sptf_bd174(A_SOM_LOI = A_SOM_LOI)]
+  dt[ptf_id==175, value := sptf_bd175(A_SOM_LOI = A_SOM_LOI)]
+  dt[ptf_id==176, value := sptf_bd176(A_SOM_LOI = A_SOM_LOI)]
+  dt[ptf_id==177, value := sptf_bd177(A_SOM_LOI = A_SOM_LOI,A_CLAY_MI = A_CLAY_MI,A_SILT_MI = A_SILT_MI,A_SAND_M50 = A_SAND_M50)]
+  dt[ptf_id==178, value := sptf_bd178(A_SOM_LOI = A_SOM_LOI,A_CLAY_MI = A_CLAY_MI)]
+  dt[ptf_id==179, value := sptf_bd179(A_SOM_LOI = A_SOM_LOI,A_C_OF = A_C_OF,A_CLAY_MI = A_CLAY_MI,A_SILT_MI = A_SILT_MI,A_SAND_MI = A_SAND_MI,A_PH_WA = A_PH_WA)]
+  dt[ptf_id==180, value := sptf_bd180(A_SOM_LOI = A_SOM_LOI,A_SAND_MI = A_SAND_MI,A_CLAY_MI = A_CLAY_MI)]
+  dt[ptf_id==181, value := sptf_bd181(A_SOM_LOI = A_SOM_LOI,A_CLAY_MI = A_CLAY_MI,A_SILT_MI = A_SILT_MI)]
+  
+  # update ptf_id
+  dt[,ptf_id := as.integer(gsub('p','',ptf_id))]
+  
+  # select only relevant cases
+  dt <- dt[!is.na(value) & value > 300 & value < 3000]
+  
+  # estimate 1-r2 = unexplained variance
+  dt[,error := sqrt((1-r2) * value)]
+  dt[,value := value + rnorm(.N,mean = 0, sd = error),by='ptf_id']
+  
+  # make a linear model for soil density
+  m1 <- lm(value~A_C_OF + I(A_C_OF^2),data=dt)
+  
+  out <- m1
   
   return(out)
 }
