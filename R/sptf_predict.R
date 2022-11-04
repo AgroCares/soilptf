@@ -580,3 +580,136 @@ ptf_bd_lm <- function(B_LU_PTFCLASS = NA_character_,
   
   return(out)
 }
+
+
+#' Predict the Water Holding Capacity with the best combination of existing ptfs from literature.
+#'
+#' @param A_SOM_LOI (numeric) The percentage of organic matter in the soil (\%).
+#' @param A_C_OF (numeric) The fraction organic carbon in the soil (g / kg).
+#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
+#' @param A_SAND_MI (numeric) The sand content of the soil (\%).
+#' @param A_SILT_MI (numeric) The silt content of the soil (\%).
+#' @param B_DEPTH (numeric) The depth of the sampled soil layer (m)
+#' @param B_LU_PTFCLASS (character) The land use categorie (options: agriculture, grassland, cropland, forest, nature)
+#' @param B_LOC_COUNTRY (character) The country code 
+#' @param topsoil (boolean) Whether top soil (1) or not (0)
+#' @param nmax (integer) the maximum number of ptfs to be included (default nmax = 5)
+#'
+#' @details 
+#' Some of the ptfs require additional information. If given, the relevant ptf's are used, otherwise they are ignored.
+#' These include the total N content (A_N_RT, unit mg/kg), the pH (A_PH_WA), the carbonate content (A_CACO3_MI, unit \%), the moisture content (A_H2O_T105, \%), the slope (B_SLOPE_DEGREE, unit degrees), the aspect (B_SLOPE_ASPECT, unit degrees) and the altidue (B_ALTITUDE, unit m).
+#' When added, please ensure to use the correct element name and units. 
+#' 
+#' When depth is missing, the function assumes that topsoils are used.
+#' 
+#' @import data.table
+#' 
+#' @export
+ptf_whc <- function(A_SOM_LOI = NA_real_, A_C_OF = NA_real_, 
+                   A_CLAY_MI = NA_real_, A_SAND_MI = NA_real_, A_SILT_MI = NA_real_, 
+                   B_LU_PTFCLASS = NA_real_,
+                   B_DEPTH = 0.3, 
+                   B_LOC_COUNTRY = 'NL', topsoil = 1,
+                   nmax = 5, ...){
+  
+  # combine all input objects not given as default function arguments
+  obj <- list(...)
+  obj <- as.data.table(obj)
+  if(length(obj)==0){obj <- NULL}
+  
+  # # read in internal table
+  # ptf.mods <- as.data.table(soilptf::sptf_bulkdensity)
+  # ptf.mods[,c('reference','url','soilproperties') := NULL]
+  # ptf.countries <- as.data.table(soilptf::sptf_countries)
+  
+  # # subset the table for the requested country
+  # cont.sel <- unique(ptf.countries[country_code %in% B_LOC_COUNTRY, continent_code])
+  # ptf.mods <- ptf.mods[country_code %in% B_LOC_COUNTRY | continent_code %in% cont.sel]
+  
+  # number of sites to predict
+  arg.length <- max(length(A_SOM_LOI), length(A_C_OF),length(A_CLAY_MI),length(A_SAND_MI),length(A_SILT_MI),
+                    length(B_DEPTH),length(B_LU_PTFCLASS),length(B_LOC_COUNTRY))
+  
+  # make internal table
+  dt <- data.table(id = 1: arg.length,
+                   A_SOM_LOI = A_SOM_LOI,
+                   A_C_OF = A_C_OF,
+                   A_CLAY_MI = A_CLAY_MI,
+                   A_SAND_MI = A_SAND_MI,
+                   A_SILT_MI = A_SILT_MI,
+                   B_DEPTH = B_DEPTH,
+                   B_LOC_COUNTRY = B_LOC_COUNTRY,
+                   B_LU_PTFCLASS = B_LU_PTFCLASS
+  )
+  
+  # estimate missing variables for texture being dependent on each other
+  dt[, num_obs := Reduce(`+`, lapply(.SD,function(x) !is.na(x))),.SDcols = c('A_CLAY_MI','A_SAND_MI','A_SILT_MI')]
+  dt[num_obs == 2 & is.na(A_CLAY_MI), A_CLAY_MI := 100 - A_SAND_MI - A_SILT_MI]
+  dt[num_obs == 2 & is.na(A_SAND_MI), A_SAND_MI := 100 - A_CLAY_MI - A_SILT_MI]
+  dt[num_obs == 2 & is.na(A_SILT_MI), A_SILT_MI := 100 - A_CLAY_MI - A_SAND_MI]
+  
+  # # add USDA soil classification
+  # dt[num_obs >= 2, B_SOILTYPE := sptf_textureclass(A_CLAY_MI = A_CLAY_MI,A_SILT_MI = A_SILT_MI,A_SAND_MI = A_SAND_MI)]
+  
+  # estimate missing SOM variables
+  dt[is.na(A_SOM_LOI) & !is.na(A_C_OF), A_SOM_LOI := A_C_OF * 0.1 * 1.724]
+  dt[!is.na(A_SOM_LOI) & is.na(A_C_OF), A_C_OF := A_SOM_LOI * 10 / 1.724]
+  
+  # estimate missing BD, using PTFs
+  
+  # add continent
+  dt <- merge(dt,ptf.countries[,.(country_code,B_LOC_CONT = continent_code)], by.x = 'B_LOC_COUNTRY',by.y = 'country_code',all.x = TRUE)
+  
+  # add extra variables given as input
+  checkmate::assert_data_table(obj,nrows = nrow(dt),null.ok = TRUE)
+  dt <- cbind(dt,obj)
+  
+  # add all possible inputs as NA when missing
+  cols <- c('A_PH_WA','A_CACO3_MI','A_N_RT','A_H2O_T105','A_SAND_M50','B_SLOPE_DEGREE','B_SLOPE_ASPECT','B_ALTITUDE')
+  cols <- cols[!cols %in% colnames(dt)]
+  dt[,c(cols) := NA_real_]
+  
+  # estimate the WHC by the pedotransfer functions
+  mp_wp = 1500
+  mp_fc = 33
+  #mp_fc = 10
+  
+  dt[, p1 := sptf_whc1(A_C_OF = A_C_OF, A_SAND_MI = A_SAND_MI, A_CLAY_MI = A_CLAY_MI)]
+  dt[, p2 := sptf_whc2(A_C_OF = A_C_OF, A_SAND_MI = A_SAND_MI, A_CLAY_MI = A_CLAY_MI)] 
+  dt[, p3 := sptf_whc3(A_SAND_MI = A_SAND_MI, A_CLAY_MI = A_CLAY_MI, mp_wp = mp_wp, mp_fc = mp_fc)] 
+  dt[, p4 := sptf_whc4(A_SAND_MI = A_SAND_MI, A_CLAY_MI = A_CLAY_MI, D_BDS = D_BDS, B_DEPTH = 30, mp_wp = mp_wp)] 
+  dt[, p5 := sptf_whc5(A_SILT_MI = A_SILT_MI, A_CLAY_MI = A_CLAY_MI, D_BDS = D_BDS, A_SOM_LOI = A_SOM_LOI, 
+                       topsoil = 1, mp_wp = mp_wp, mp_fc = mp_fc)] 
+  dt[, p6 := sptf_whc6(A_SAND_MI = A_SAND_MI, A_CLAY_MI = A_CLAY_MI, D_BDS = D_BDS, A_C_OF = A_C_OF,
+                       mp_wp = mp_wp, mp_fc = mp_fc)] 
+  # PTF7: This PTF uses the package 'euptf2'. The function 'euptf2::euptfFun' does not work when the data frame has only 1 row ?!
+  dt[, p7 := sptf_whc7(A_SAND_MI = A_SAND_MI, A_CLAY_MI = A_CLAY_MI, A_SILT_MI = A_SILT_MI,
+                       D_BDS = D_BDS, A_C_OF = A_C_OF, B_DEPTH = 30, mp_wp = mp_wp, mp_fc = mp_fc)] 
+  dt[, p8 := sptf_whc8(A_SAND_MI = A_SAND_MI, A_CLAY_MI = A_CLAY_MI,  D_BDS = D_BDS, A_C_OF = A_C_OF,
+                       mp_wp = mp_wp, mp_fc = mp_fc)] 
+  # PTF9: field capacity (mp_fc) should be either 33 or 10 kPa.
+  dt[, p9 := sptf_whc9(A_CLAY_MI = A_CLAY_MI, A_SILT_MI = A_SILT_MI, A_C_OF = A_C_OF,  mp_fc = mp_fc)] 
+  # PTF10: field capacity (mp_fc) should be either 33 or 10 kPa.
+  dt[, p10 := sptf_whc10(A_CLAY_MI = A_CLAY_MI, A_SILT_MI = A_SILT_MI, A_SAND_MI = A_SAND_MI, A_C_OF = A_C_OF,
+                         D_BDS = D_BDS, mp_fc = mp_fc)]
+  # # PTF11: Calculation of wrc parameters may be wrong. The calculated water content is out of normal range.
+  # dt[, p11 := sptf_whc11(A_CLAY_MI = A_CLAY_MI, A_SILT_MI = A_SILT_MI, D_BDS = D_BDS,
+  #                        mp_wp = mp_wp, mp_fc = mp_fc)] 
+  # # PTF12: Calculation of wrc parameters may be wrong. The calculated water content is out of normal range.
+  # dt[, p12 := sptf_whc12(A_CLAY_MI = A_CLAY_MI, A_SAND_MI = A_SAND_MI, D_BDS = D_BDS,
+  #                        mp_wp = mp_wp, mp_fc = mp_fc)]
+  dt[, p13 := sptf_whc13(A_SAND_MI = A_SAND_MI, A_CLAY_MI = A_CLAY_MI, D_BDS = D_BDS, A_C_OF = A_C_OF, 
+                         mp_wp = mp_wp, mp_fc = mp_fc)]
+  dt[, p14 := sptf_whc14(A_CLAY_MI = A_CLAY_MI, A_SILT_MI = A_SILT_MI, A_SOM_LOI = A_SOM_LOI, 
+                         M50 = 150, topsoil = 1, mp_wp = mp_wp, mp_fc = mp_fc)] 
+  dt[, p15 := sptf_whc15(A_CLAY_MI = A_CLAY_MI, A_SILT_MI = A_SILT_MI, A_SOM_LOI = A_SOM_LOI, 
+                         M50 = 150, topsoil = 1, mp_wp = mp_wp, mp_fc = mp_fc)] 
+  # # PTF16: table (soilptf::sptf_bouwsteen) is needed.
+  # dt[, p16 := sptf_whc16(A_CLAY_MI = A_CLAY_MI, A_SILT_MI = A_SILT_MI, A_SOM_LOI = A_SOM_LOI, 
+  #                        M50 = 150, mp_wp = mp_wp, mp_fc = mp_fc)] 
+
+  
+  
+}
+
+
