@@ -3522,7 +3522,7 @@ sptf_bd100 <- function(A_N_RT,A_C_OF) {
   
   # Check input
   arg.length <- max(length(A_N_RT),length(A_C_OF))
-  checkmate::assert_numeric(A_N_RT, lower = 0, upper = 10000, len = arg.length)
+  checkmate::assert_numeric(A_N_RT, lower = 0, upper = 1000000, len = arg.length)
   checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000, len = arg.length)
   
   # Collect data into a table (set in units %)
@@ -5141,7 +5141,7 @@ sptf_bd141 <- function(A_C_OF, A_N_RT,A_CLAY_MI, A_SAND_MI) {
   # Check input
   arg.length <- max(length(A_C_OF), length(A_CLAY_MI),length(A_SAND_MI),length(A_N_RT))
   checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(A_N_RT, lower = 0, upper = 10000, len = arg.length)
+  checkmate::assert_numeric(A_N_RT, lower = 0, upper = 1000000, len = arg.length)
   checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
   checkmate::assert_numeric(A_SAND_MI, lower = 0, upper = 100, len = arg.length)
   

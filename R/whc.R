@@ -308,9 +308,11 @@ sptf_whc6 <- function(A_SAND_MI, A_CLAY_MI, D_BDS, A_C_OF, mp_wp = 15000, mp_fc 
   
   # Calculate volumetric water content at field capacity (cm3/cm3)
   dt[, theta_fc := pF_curve(mp_fc * 10, theta_res, theta_sat, alfa, n)]
+  #dt[theta_fc > 1 | theta_fc < 0, theta_fc := NA]
   
   # Calculate volumetric water content at wilting point (cm3/cm3)
   dt[, theta_wp := pF_curve(mp_wp * 10, theta_res, theta_sat, alfa, n)]
+  #dt[theta_wp > 1 | theta_wp < 0, theta_wp := NA] # Soils with high clay & low SOM tend to have theta_wp higher than 1!
   
   # Calculate water holding capacity (cm3/cm3)
   dt[, value :=  theta_fc - theta_wp]
@@ -422,7 +424,7 @@ sptf_whc7 <- function(A_SAND_MI, A_CLAY_MI, A_SILT_MI, D_BDS, A_C_OF, B_DEPTH = 
 #' @param mp_wp (numeric) Water potential at wilting point (kPa).
 #' @param mp_fc (numeric) Water potential at field capacity (kPa).
 #' 
-#' @import data.tables
+#' @import data.table
 #' 
 #' @references Weynants et al (2009) Revisiting Vereecken Pedotransfer Functions: Introducing a Closed-Form Hydraulic Model
 #' 
@@ -475,7 +477,7 @@ sptf_whc8 <- function(A_SAND_MI, A_CLAY_MI, D_BDS, A_C_OF,
 #' @param A_C_OF (numeric) The soil organic carbon content (\%).
 #' @param mp_fc (numeric) Water potential at field capacity (kPa). 10 or 33
 #' 
-#' @import data.tables
+#' @import data.table
 #' 
 #' @references Tomasella & Hodnett (1998) Estimating soil water retention characteristics from limited data in Brazilian Amazonia. Soil Sci. 163, 190-202.
 #' 
@@ -533,7 +535,7 @@ sptf_whc9 <- function(A_CLAY_MI, A_SILT_MI, A_C_OF,
 #' @param D_BDS (numeric) The soil bulk density (g/cm3).
 #' @param mp_fc (numeric) Water potential at field capacity (kPa). 10 or 33
 #' 
-#' @import data.tables
+#' @import data.table
 #' 
 #' @references Rawls et al (1982) Estimation of soil water properties. Trans. ASAE 25, 1316–1320.
 #' 
@@ -597,7 +599,7 @@ sptf_whc10 <- function(A_CLAY_MI, A_SILT_MI, A_SAND_MI, A_C_OF, D_BDS,
 #' @param mp_wp (numeric) Water potential at wilting point (kPa).
 #' @param mp_fc (numeric) Water potential at field capacity (kPa). 10 or 33
 #'
-#' @import data.tables
+#' @import data.table
 #'
 #' @references Campbell & Shiozawa (1992) Prediction of hydraulic properties of soils using particle-size distribution and bulk density data
 
@@ -657,7 +659,7 @@ sptf_whc11 <- function(A_CLAY_MI, A_SILT_MI, D_BDS,
 #' @param mp_wp (numeric) Water potential at wilting point (kPa).
 #' @param mp_fc (numeric) Water potential at field capacity (kPa). 10 or 33
 #'
-#' @import data.tables
+#' @import data.table
 #'
 #' @references Rawls & Brakensiek (1985) Prediction of Soil Water Properties for Hydrologic Modeling
 #'
@@ -721,7 +723,7 @@ sptf_whc12 <- function(A_CLAY_MI, A_SAND_MI, D_BDS,
 #' @param mp_wp (numeric) Water potential at wilting point (kPa).
 #' @param mp_fc (numeric) Water potential at field capacity (kPa).
 #' 
-#' @import data.tables
+#' @import data.table
 #' 
 #' @references Tian et al. (2021) New pedotransfer functions for soil water retention curves that better account for bulk density effects
 #'  
@@ -742,18 +744,28 @@ sptf_whc13 <- function(A_SAND_MI, A_CLAY_MI, D_BDS, A_C_OF,
                    A_C_OF = A_C_OF * 0.1, 
                    value = NA_real_)
   
-  # Calculate water retention parameters
-  dt[, theta_sat := - 0.3334 * D_BDS + 0.0005 * A_CLAY_MI + 0.8945]
-  dt[, theta_res := 0.0115 * D_BDS * A_CLAY_MI ^ 0.7489]
-  dt[, alfa := (0.0012 * A_SAND_MI + 0.0001 * A_CLAY_MI + 0.0089 * A_C_OF + 0.0101) * D_BDS ^ (-2.5325)]
-  dt[, n := (-0.0034 * A_SAND_MI - 0.0186 * A_CLAY_MI - 0.0351 * A_C_OF + 1.1477) * D_BDS 
-            + (0.0068 * A_SAND_MI + 0.0217 * A_CLAY_MI + 0.0047 * A_C_OF + 0.0080)]
+  # # Calculate water retention parameters (inc. OC: Eq. 9-12) <- TThis was not used, as including OC failed to improve estimation accuracy (p. 6 right-bottom)
+  # dt[, theta_sat := - 0.3334 * D_BDS + 0.0005 * A_CLAY_MI + 0.8945]
+  # dt[, theta_res := 0.0115 * D_BDS * A_CLAY_MI ^ 0.7489]
+  # dt[, alfa := (0.0012 * A_SAND_MI + 0.0001 * A_CLAY_MI + 0.0089 * A_C_OF + 0.0101) * D_BDS ^ (-2.5325)]
+  # dt[, n := (-0.0034 * A_SAND_MI - 0.0186 * A_CLAY_MI - 0.0351 * A_C_OF + 1.1477) * D_BDS 
+  #           + (0.0068 * A_SAND_MI + 0.0217 * A_CLAY_MI + 0.0047 * A_C_OF + 0.0080)]
+  
+  # Calculate water retention parameters (exc. OC; Eq. 13-16)
+  dt[, theta_sat := - 0.3311 * D_BDS + 0.8916]
+  dt[, theta_res := 0.0112 * D_BDS * A_CLAY_MI ^ 0.7550]
+  dt[, alfa := (0.0014 * A_SAND_MI + 0.0001 * A_CLAY_MI + 0.0159) * D_BDS ^ (-2.8834)]
+  dt[, n := (-0.0046 * A_SAND_MI - 0.0212 * A_CLAY_MI + 1.3398) * D_BDS 
+     + (0.0079 * A_SAND_MI + 0.0250 * A_CLAY_MI - 0.2617)]
+
   
   # Calculate volumetric water content at field capacity (cm3/cm3)
   dt[, theta_fc := pF_curve(mp_fc * 10, theta_res, theta_sat, alfa, n)]
+  dt[theta_fc > 1 | theta_fc < 0, theta_fc := NA]
   
   # Calculate volumetric water content at wilting point (cm3/cm3)
   dt[, theta_wp := pF_curve(mp_wp * 10, theta_res, theta_sat, alfa, n)]
+  dt[theta_wp > 1 | theta_wp < 0, theta_wp := NA]
   
   # Calculate water holding capacity (cm3/cm3)
   dt[, value :=  theta_fc - theta_wp]
@@ -771,45 +783,45 @@ sptf_whc13 <- function(A_SAND_MI, A_CLAY_MI, D_BDS, A_C_OF,
 #' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
 #' @param A_SILT_MI (numeric) The clay content of the soil (\%).
 #' @param A_SOM_LOI (numeric) The soil organic matter content (\%).
-#' @param M50 (numeric) median size of sand fraction (um)
+#' @param A_SAND_M50 (numeric) median size of sand fraction (um)
 #' @param topsoil (boolean) Whether top soil (1) or sub-soil (0)
 #' @param mp_wp (numeric) Water potential at wilting point (kPa).
 #' @param mp_fc (numeric) Water potential at field capacity (kPa).
 #' 
-#' @import data.tables
+#' @import data.table
 #' 
 #' @references Wösten, J. H. M. (1997). Chapter 10 Pedotransfer functions to evaluate soil quality. In: Developments in Soil Science, Volume 25:221-245, Elsevier
 #'
 #' @export
 sptf_whc14 <- function(A_CLAY_MI, A_SILT_MI, A_SOM_LOI, 
-                       M50 = 150, topsoil = 1, mp_wp = 1500, mp_fc = 33) {
+                       A_SAND_M50 = 150, topsoil = 1, mp_wp = 1500, mp_fc = 33) {
   # Check input
-  arg.length <- max(length(A_CLAY_MI),length(A_SILT_MI), length(A_SOM_LOI), length(M50), length(topsoil))
+  arg.length <- max(length(A_CLAY_MI),length(A_SILT_MI), length(A_SOM_LOI), length(A_SAND_M50), length(topsoil))
   checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
   checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, len = arg.length)
   checkmate::assert_numeric(A_SOM_LOI, lower = 0, upper = 100, len = arg.length)
-  checkmate::assert_numeric(M50, lower = 0, upper = 2000)
+  checkmate::assert_numeric(A_SAND_M50, lower = 0, upper = 2000)
   
   # Collect data into a table 
   dt <- data.table(A_CLAY_MI = A_CLAY_MI,
                    A_SILT_MI = A_SILT_MI,
                    A_SOM_LOI = A_SOM_LOI,
-                   M50 = M50, 
+                   A_SAND_M50 = A_SAND_M50, 
                    topsoil = topsoil,
                    A_LOAM_MI = (A_CLAY_MI + A_SILT_MI), # loam content (< 50 um)
                    value = NA_real_)
   
   # For sandy soils
   dt[A_CLAY_MI<8, Dichtheid := 1 / (-1.984 + 0.01841 * A_SOM_LOI + 0.032 * topsoil + 0.00003576 * A_LOAM_MI ^ 2 +
-                                      67.5 / M50 + 0.424 * log(M50))]
+                                      67.5 / A_SAND_M50 + 0.424 * log(A_SAND_M50))]
   dt[A_CLAY_MI<8, theta_res    := 0.01]
   dt[A_CLAY_MI<8, theta_sat    := - 13.6 - 0.01533 * A_LOAM_MI + 0.0000836 * A_LOAM_MI ^ 2 - 0.0973 / A_LOAM_MI + 
-       0.708 / Dichtheid - 0.00703 * M50 + 225.3 / M50 + 2.614 * log(M50) +
+       0.708 / Dichtheid - 0.00703 * A_SAND_M50 + 225.3 / A_SAND_M50 + 2.614 * log(A_SAND_M50) +
        0.0084 / A_SOM_LOI + 0.02256 * log(A_SOM_LOI) + 0.00718 * Dichtheid * A_LOAM_MI]
   dt[A_CLAY_MI<8, alfa      := exp(146.9 - 0.0832 * A_SOM_LOI - 0.395 * topsoil - 102.1 * Dichtheid +
                                      22.61 * Dichtheid ^ 2  - 70.6 / Dichtheid - 1.872 / A_LOAM_MI - 0.3931 * log(A_LOAM_MI))]
-  dt[A_CLAY_MI<8, n         := exp(1092 + 0.0957 * A_LOAM_MI + 1.336 * M50 - 13229 / M50 - 0.001203 * M50 ^ 2 - 
-                                     234.6 * log(M50) - 2.67 / Dichtheid - 0.115 / A_SOM_LOI - 0.4129 * log(A_SOM_LOI) 
+  dt[A_CLAY_MI<8, n         := exp(1092 + 0.0957 * A_LOAM_MI + 1.336 * A_SAND_M50 - 13229 / A_SAND_M50 - 0.001203 * A_SAND_M50 ^ 2 - 
+                                     234.6 * log(A_SAND_M50) - 2.67 / Dichtheid - 0.115 / A_SOM_LOI - 0.4129 * log(A_SOM_LOI) 
                                    - 0.0721 * Dichtheid * A_LOAM_MI) + 1]
   
   # For clay and loamy soils
@@ -844,43 +856,43 @@ sptf_whc14 <- function(A_CLAY_MI, A_SILT_MI, A_SOM_LOI,
 #' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
 #' @param A_SILT_MI (numeric) The clay content of the soil (\%).
 #' @param A_SOM_LOI (numeric) The soil organic matter content (\%).
-#' @param M50 (numeric) median size of sand fraction (um)
+#' @param A_SAND_M50 (numeric) median size of sand fraction (um)
 #' @param topsoil (boolean) Whether top soil (1) or sub-soil (0)
 #' @param mp_wp (numeric) Water potential at wilting point (kPa).
 #' @param mp_fc (numeric) Water potential at field capacity (kPa).
 #' 
-#' @import data.tables
+#' @import data.table
 #' 
 #' @references Wösten, J. H. M., Veerman, G. ., de Groot, W. J., & Stolte, J. (2001). Waterretentie en doorlatendheidskarakteristieken van boven- en ondergronden in Nederland: de Staringreeks. Alterra Rapport, 153, 86. https://edepot.wur.nl/43272
 #'
 #' @export
 sptf_whc15 <- function(A_CLAY_MI, A_SILT_MI, A_SOM_LOI, 
-                       M50 = 150, topsoil = 1, mp_wp = 1500, mp_fc = 33) {
+                       A_SAND_M50 = 150, topsoil = 1, mp_wp = 1500, mp_fc = 33) {
   # Check input
-  arg.length <- max(length(A_CLAY_MI),length(A_SILT_MI), length(A_SOM_LOI), length(M50), length(topsoil))
+  arg.length <- max(length(A_CLAY_MI),length(A_SILT_MI), length(A_SOM_LOI), length(A_SAND_M50), length(topsoil))
   checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
   checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, len = arg.length)
   checkmate::assert_numeric(A_SOM_LOI, lower = 0, upper = 100, len = arg.length)
-  checkmate::assert_numeric(M50, lower = 0, upper = 2000)
+  checkmate::assert_numeric(A_SAND_M50, lower = 0, upper = 2000)
   
   # Collect data into a table 
   dt <- data.table(A_CLAY_MI = A_CLAY_MI,
                    A_SOM_LOI = A_SOM_LOI,
-                   M50 = M50, 
+                   A_SAND_M50 = A_SAND_M50, 
                    topsoil = topsoil,
                    A_LOAM_MI = (A_CLAY_MI + A_SILT_MI), # loam content (< 50 um)
                    value = NA_real_)
   
   # For sandy soils
-  dt[A_CLAY_MI<8, Dichtheid := 1/(-7.58+0.01791*A_SOM_LOI+0.0326*topsoil-0.00338*M50+0.00003937*A_LOAM_MI^2+
-                                157.7*(1/M50)+1.522*log(M50))]
+  dt[A_CLAY_MI<8, Dichtheid := 1/(-7.58+0.01791*A_SOM_LOI+0.0326*topsoil-0.00338*A_SAND_M50+0.00003937*A_LOAM_MI^2+
+                                157.7*(1/A_SAND_M50)+1.522*log(A_SAND_M50))]
   dt[A_CLAY_MI<8, theta_res    := 0.01]
-  dt[A_CLAY_MI<8, theta_sat    := -35.7-0.1843*Dichtheid - 0.03576*M50+0.0000261*M50^2-0.0564*(1/A_LOAM_MI)+
-       0.008*(1/A_SOM_LOI)+496*(1/M50)+0.02244*log(A_SOM_LOI)+7.56*log(M50)]
-  dt[A_CLAY_MI<8, alfa      := exp(13.66-5.91*Dichtheid-0.172*topsoil+0.003248*M50-
+  dt[A_CLAY_MI<8, theta_sat    := -35.7-0.1843*Dichtheid - 0.03576*A_SAND_M50+0.0000261*A_SAND_M50^2-0.0564*(1/A_LOAM_MI)+
+       0.008*(1/A_SOM_LOI)+496*(1/A_SAND_M50)+0.02244*log(A_SOM_LOI)+7.56*log(A_SAND_M50)]
+  dt[A_CLAY_MI<8, alfa      := exp(13.66-5.91*Dichtheid-0.172*topsoil+0.003248*A_SAND_M50-
                                  11.89*(1/Dichtheid)-2.121*(1/A_LOAM_MI)-0.3742*log(A_LOAM_MI))]
   dt[A_CLAY_MI<8, n         := exp(-1.057+0.1003*A_SOM_LOI+1.119*Dichtheid+0.000764*A_LOAM_MI^2 -
-                                 0.1397*(1/A_SOM_LOI)-57.2*(1/M50)-0.557*log(A_SOM_LOI)-0.02997*Dichtheid*A_LOAM_MI)+1]
+                                 0.1397*(1/A_SOM_LOI)-57.2*(1/A_SAND_M50)-0.557*log(A_SOM_LOI)-0.02997*Dichtheid*A_LOAM_MI)+1]
   
   # For clay and loamy soils
   dt[A_CLAY_MI>=8, Dichtheid := 1/(0.6117+0.003601*A_CLAY_MI+0.002172*A_SOM_LOI^2+0.01715*log(A_SOM_LOI))]
@@ -914,31 +926,33 @@ sptf_whc15 <- function(A_CLAY_MI, A_SILT_MI, A_SOM_LOI,
 #' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
 #' @param A_SILT_MI (numeric) The clay content of the soil (\%).
 #' @param A_SOM_LOI (numeric) The soil organic matter content (\%).
-#' @param M50 (numeric) median size of sand fraction (um)
+#' @param A_SAND_M50 (numeric) median size of sand fraction (um)
 #' @param mp_wp (numeric) Water potential at wilting point (kPa).
 #' @param mp_fc (numeric) Water potential at field capacity (kPa).
 #' 
-#' @import data.tables
+#' @import data.table
 #' 
 #' @references Wösten, J. H. M., Veerman, G. ., de Groot, W. J., & Stolte, J. (2001). Waterretentie en doorlatendheidskarakteristieken van boven- en ondergronden in Nederland: de Staringreeks. Alterra Rapport, 153, 86. https://edepot.wur.nl/43272
 #'
 #' @export
 sptf_whc16 <- function(A_CLAY_MI, A_SILT_MI, A_SOM_LOI, 
-                       M50 = 150, mp_wp = 1500, mp_fc = 33) {
+                       A_SAND_M50 = 150, mp_wp = 1500, mp_fc = 33) {
   # Check input
-  arg.length <- max(length(A_CLAY_MI),length(A_SILT_MI), length(A_SOM_LOI), length(M50))
+  arg.length <- max(length(A_CLAY_MI),length(A_SILT_MI), length(A_SOM_LOI), length(A_SAND_M50))
   checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
   checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, len = arg.length)
   checkmate::assert_numeric(A_SOM_LOI, lower = 0, upper = 100, len = arg.length)
-  checkmate::assert_numeric(M50, lower = 0, upper = 2000)
+  checkmate::assert_numeric(A_SAND_M50, lower = 0, upper = 2000)
   
   # load table of parameter values 
-  bouwsteen_tb <- as.data.table(soilptf::sptf_bouwsteen)
+  # bouwsteen_tb <- as.data.table(soilptf::sptf_bouwsteen) # <- this does not work
+  load("data/sptf_bouwsteen.rda") # <- quick&dirty solution. to be fixed.
+  bouwsteen_tb <- sptf_bouwsteen
   
   # Collect data into a table 
   dt <- data.table(A_CLAY_MI = A_CLAY_MI,
                    A_SOM_LOI = A_SOM_LOI,
-                   M50 = M50, 
+                   A_SAND_M50 = A_SAND_M50, 
                    A_LOAM_MI = (A_CLAY_MI + A_SILT_MI), # loam content (< 50 um)
                    value = NA_real_)
   
@@ -950,11 +964,11 @@ sptf_whc16 <- function(A_CLAY_MI, A_SILT_MI, A_SOM_LOI,
   
   # comment YF: B6 is missing: from the source table the definition is not clear
   dt[, SEL1 := "B20"]
-  dt[CF1==0&CF2==0&A_LOAM_MI>=00&A_LOAM_MI<10 &M50<210, SEL1 := "B1"]
-  dt[CF1==0&CF2==0&A_LOAM_MI>=10&A_LOAM_MI<18 &M50<210, SEL1 := "B2"]
-  dt[CF1==0&CF2==0&A_LOAM_MI>=18&A_LOAM_MI<33 &M50<210, SEL1 := "B3"]
-  dt[CF1==0&CF2==0&A_LOAM_MI>=33&A_LOAM_MI<50 &M50<210, SEL1 := "B4"]
-  dt[CF1==0&CF2==0&A_LOAM_MI<=50&M50>210&M50<=2000, SEL1 := "B5"]
+  dt[CF1==0&CF2==0&A_LOAM_MI>=00&A_LOAM_MI<10 &A_SAND_M50<210, SEL1 := "B1"]
+  dt[CF1==0&CF2==0&A_LOAM_MI>=10&A_LOAM_MI<18 &A_SAND_M50<210, SEL1 := "B2"]
+  dt[CF1==0&CF2==0&A_LOAM_MI>=18&A_LOAM_MI<33 &A_SAND_M50<210, SEL1 := "B3"]
+  dt[CF1==0&CF2==0&A_LOAM_MI>=33&A_LOAM_MI<50 &A_SAND_M50<210, SEL1 := "B4"]
+  dt[CF1==0&CF2==0&A_LOAM_MI<=50&A_SAND_M50>210&A_SAND_M50<=2000, SEL1 := "B5"]
   dt[CF1==1&CF2==0&A_CLAY_MI>=8  &A_CLAY_MI<12, SEL1 := "B7"]
   dt[CF1==1&CF2==0&A_CLAY_MI>=12 &A_CLAY_MI<18, SEL1 := "B8"]
   dt[CF1==1&CF2==0&A_CLAY_MI>=18 &A_CLAY_MI<25, SEL1 := "B9"]
@@ -963,10 +977,10 @@ sptf_whc16 <- function(A_CLAY_MI, A_SILT_MI, A_SOM_LOI,
   dt[CF1==1&CF2==0&A_CLAY_MI>=50 &A_CLAY_MI<=100, SEL1 := "B12"]
   dt[CF1==0&CF2==0&A_LOAM_MI>=50 &A_LOAM_MI<85, SEL1 := "B13"]
   dt[CF1==0&CF2==0&A_LOAM_MI>=85 &A_LOAM_MI<=100, SEL1 := "B14"]
-  dt[CF1==0&CF2==1&Psom>=15  &Psom<25, SEL1 := "B15"]
-  dt[CF1==0&CF2==1&Psom>=25  &Psom<=100, SEL1 := "B16"]
-  dt[CF1==1&CF2==1&Psom>=16  &Psom<35, SEL1 := "B17"]
-  dt[CF1==1&CF2==1&Psom>=35  &Psom<=70, SEL1 := "B18"]
+  dt[CF1==0&CF2==1&A_SOM_LOI>=15  &A_SOM_LOI<25, SEL1 := "B15"]
+  dt[CF1==0&CF2==1&A_SOM_LOI>=25  &A_SOM_LOI<=100, SEL1 := "B16"]
+  dt[CF1==1&CF2==1&A_SOM_LOI>=15  &A_SOM_LOI<35, SEL1 := "B17"]
+  dt[CF1==1&CF2==1&A_SOM_LOI>=35  &A_SOM_LOI<=70, SEL1 := "B18"]
   
   # merge table
   dt <- merge(dt, bouwsteen_tb, by.x = "SEL1", by.y = "bouwsteen", all.x = T,all.y = F)
