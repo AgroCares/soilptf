@@ -15,16 +15,17 @@ This table contains background information on the applicability of pedotransferf
 }
 \details{
 \describe{
-  \item{id}{an unique number for each pedotransfer function}
-  \item{country}{The country or region where the pedotransfer function can be applied,country codes from https://datahub.io/core/country-codes}
-  \item{continent}{The continent where the pedotransfer function can be applied,country codes from https://datahub.io/core/continent-codes}
+  \item{ptf_id}{an unique number for each pedotransfer function}
+  \item{country_code}{The country or region where the pedotransfer function can be applied,country codes from https://datahub.io/core/country-codes}
+  \item{continent_code}{The continent where the pedotransfer function can be applied,country codes from https://datahub.io/core/continent-codes}
   \item{soiltype}{Applicability of the ptf given USDA soil classifications}
   \item{landuse}{Applicability of the ptf given landuse}
   \item{depth}{Applicability of the ptf for topsoil (0-30cm) or subsoil (>30cm), given by the maximum depth observed in the datset}
+  \item{nsample}{the number of samples used to calibrate pedotransfunction}
+  \item{r2}{}
   \item{soilproperties}{The soil properties required to estimate the bulk density}
   \item{reference}{the paper describing the pedotransferfunction}
   \item{url}{weblink to reference}
-  \item{nsample}{the number of samples used to calibrate pedotransfunction}
   }
 }
 \keyword{datasets}
