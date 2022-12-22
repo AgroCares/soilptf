@@ -5,7 +5,15 @@
 \alias{sptf_bulkdensity}
 \title{Table with background information for bulkdensity pedotransferfunctions}
 \format{
-A data.frame with x rows and x columns:
+An object of class \code{data.table} (inherits from \code{data.frame}) with 181 rows and 11 columns.
+}
+\usage{
+sptf_bulkdensity
+}
+\description{
+This table contains background information on the applicability of pedotransferfunctions collected from literature
+}
+\details{
 \describe{
   \item{id}{an unique number for each pedotransfer function}
   \item{country}{The country or region where the pedotransfer function can be applied,country codes from https://datahub.io/core/country-codes}
@@ -18,11 +26,5 @@ A data.frame with x rows and x columns:
   \item{url}{weblink to reference}
   \item{nsample}{the number of samples used to calibrate pedotransfunction}
   }
-}
-\usage{
-sptf_bulkdensity
-}
-\description{
-This table contains background information on the applicability of pedotransferfunctions collected from literature
 }
 \keyword{datasets}

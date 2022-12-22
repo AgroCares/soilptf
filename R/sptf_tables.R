@@ -5,7 +5,6 @@
 #'
 #' This table contains background information on the applicability of pedotransferfunctions collected from literature
 #'
-#' @format A data.frame with x rows and x columns:
 #' \describe{
 #'   \item{id}{an unique number for each pedotransfer function}
 #'   \item{country}{The country or region where the pedotransfer function can be applied,country codes from https://datahub.io/core/country-codes}
@@ -24,7 +23,6 @@
 #'
 #' This table contains country names as used for the spatial extent where sptfs have been derived from.
 #'
-#' @format A data.frame with x rows and x columns:
 #' \describe{
 #'   \item{country_name}{the name of the country}
 #'   \item{country_code}{the country code;from https://datahub.io/core/country-codes}
