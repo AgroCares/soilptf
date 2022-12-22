@@ -1,4 +1,4 @@
-﻿ptf_id;country_code;continent_code;soiltype;landuse;depth;nsample;r2;soilproperties;reference;url
+ptf_id;country_code;continent_code;soiltype;landuse;depth;nsample;r2;soilproperties;reference;url
 1;NL;EU;variable;agriculture;30;;;a_som_loi||a_clay_mi;cbgv_2022;https://edepot.wur.nl/413891
 2;US;NA;sandy loam;forest;30;103;0,96;a_som_loi;curtis_1964;https://doi.org/10.2136/sssaj1964.03615995002800020044x
 3;GB;EU;silty clay;forest;30;77;0,9;a_som_loi;adams_1973;https://doi.org/10.1111/j.1365-2389.1973.tb00737.x
@@ -77,7 +77,7 @@
 76;SE;EU;peat;agriculture;30;49;;a_c_of;katterer_2006;https://doi.org/10.1080/09064710500310170
 77;SE;EU;variable;variable;100;1283;0,59;a_c_of;katterer_2006;https://doi.org/10.1080/09064710500310170
 78;TN;AF;variable;variable;100;707;0,55;a_c_of||a_clay_mi||a_sand_mi||a_ph_wa;brahim_2012;https::/doi.org/10.1016/j.jaridenv.2012.01.012
-79;TN;AF;variable;variable;40;141;0,58;a_c_of||a_sand_mi|Ia_silt_mi||a_ph_wa;brahim_2012;https::/doi.org/10.1016/j.jaridenv.2012.01.012
+79;TN;AF;variable;variable;40;141;0,58;a_c_of||a_sand_mi||ia_silt_mi||a_ph_wa;brahim_2012;https::/doi.org/10.1016/j.jaridenv.2012.01.012
 80;TN;AF;variable;variable;100;90;0,31;a_c_of||a_clay_mi||a_caco3_mi;brahim_2012;https::/doi.org/10.1016/j.jaridenv.2012.01.012
 81;US;NA;variable;variable;100;174339;0,682;a_c_of;abeldaki_2016;https://doi.org/10.1016/j.asej.2016.12.002
 82;NG;AF;variable;variable;100;1161;0,109;a_sand_mi||a_silt_mi;akpa_2016;https://doi.org/10.1111/sum.12310
@@ -120,8 +120,8 @@
 119;AU;OC;;;;;;a_c_of;merry_2005;
 120;CN;AS;variable;variable;;;;a_c_of||a_clay_mi||a_sand_mi;men_2008;
 121;IT;EU;variable;variable;15;3316;0,167;a_sand_mi||a_clay_mi||a_c_of||a_ph_wa||a_caco3_mi||b_slope_degree||b_altitude;palladino_2022;https://doi.org/10.1016/j.geoderma.2022.115726
-122;IT;EU;variable;variable;15;12019;0,07;a_c_of||a_clay_mi||a_sand|mi;palladino_2022;https://doi.org/10.1016/j.geoderma.2022.115726
-123;IT;EU;variable;variable;15;3316;0,07;a_c_of||a_clay_mi||a_sand|mi;palladino_2022;https://doi.org/10.1016/j.geoderma.2022.115726
+122;IT;EU;variable;variable;15;12019;0,07;a_c_of||a_clay_mi||a_sand||mi;palladino_2022;https://doi.org/10.1016/j.geoderma.2022.115726
+123;IT;EU;variable;variable;15;3316;0,07;a_c_of||a_clay_mi||a_sand||mi;palladino_2022;https://doi.org/10.1016/j.geoderma.2022.115726
 124;US;NA;variable;variable;60;193;0,74;a_c_of;gosselink_1984;
 125;US;NA;variable;variable;20;95;0,75;a_c_of;gosselink_1984;
 126;AT;EU;variable;variable;70;1732;0,58;a_c_of||a_silt_mi||b_depth;foldal_2020;https://doi.org/10.2478/boku-2020-0020
