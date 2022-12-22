@@ -120,8 +120,8 @@ ptf_id;country_code;continent_code;soiltype;landuse;depth;nsample;r2;soilpropert
 119;AU;OC;;;;;;a_c_of;merry_2005;
 120;CN;AS;variable;variable;;;;a_c_of||a_clay_mi||a_sand_mi;men_2008;
 121;IT;EU;variable;variable;15;3316;0,167;a_sand_mi||a_clay_mi||a_c_of||a_ph_wa||a_caco3_mi||b_slope_degree||b_altitude;palladino_2022;https://doi.org/10.1016/j.geoderma.2022.115726
-122;IT;EU;variable;variable;15;12019;0,07;a_c_of||a_clay_mi||a_sand||mi;palladino_2022;https://doi.org/10.1016/j.geoderma.2022.115726
-123;IT;EU;variable;variable;15;3316;0,07;a_c_of||a_clay_mi||a_sand||mi;palladino_2022;https://doi.org/10.1016/j.geoderma.2022.115726
+122;IT;EU;variable;variable;15;12019;0,07;a_c_of||a_clay_mi||a_sand_mi;palladino_2022;https://doi.org/10.1016/j.geoderma.2022.115726
+123;IT;EU;variable;variable;15;3316;0,07;a_c_of||a_clay_mi||a_sand_mi;palladino_2022;https://doi.org/10.1016/j.geoderma.2022.115726
 124;US;NA;variable;variable;60;193;0,74;a_c_of;gosselink_1984;
 125;US;NA;variable;variable;20;95;0,75;a_c_of;gosselink_1984;
 126;AT;EU;variable;variable;70;1732;0,58;a_c_of||a_silt_mi||b_depth;foldal_2020;https://doi.org/10.2478/boku-2020-0020
