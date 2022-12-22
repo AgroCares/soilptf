@@ -17,6 +17,7 @@ This table contains country names as used for the spatial extent where sptfs hav
 \describe{
   \item{country_name}{the name of the country}
   \item{country_code}{the country code;from https://datahub.io/core/country-codes}
+  \item{continent_code}{The continent where the pedotransfer function can be applied,country codes from https://datahub.io/core/continent-codes}
 }
 }
 \keyword{datasets}

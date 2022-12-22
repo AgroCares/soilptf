@@ -28,5 +28,6 @@
 #' \describe{
 #'   \item{country_name}{the name of the country}
 #'   \item{country_code}{the country code;from https://datahub.io/core/country-codes}
+#'   \item{continent_code}{The continent where the pedotransfer function can be applied,country codes from https://datahub.io/core/continent-codes}
 #'}
 "sptf_countries"
