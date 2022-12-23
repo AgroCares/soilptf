@@ -1187,7 +1187,13 @@ ptf_pmn_all <- function(dt){
                        A_SILT_MI = A_SILT_MI, A_PH_CC = A_PH_CC, t = 7, RES = 1)] 
   # Calculate Nmin (mg/kg) based on 1-pool model for t days
   dt[, p7 := sptf_pmn7(A_C_OF = A_C_OF, A_CLAY_MI = A_CLAY_MI, t = 7)] 
-
+  # Calculate Nmin (mg/kg) based on 1-pool model for t days
+  dt[, p8 := sptf_pmn8(A_N_RT = A_N_RT, A_CEC_CO = A_CEC_CO, A_SILT_MI = A_SILT_MI, t = 7)] 
+  # Calculate Nmin (mg/kg) based on 1-pool model for t days
+  dt[, p9 := sptf_pmn9(A_N_RT = A_N_RT,  CULT = 1, t = 7)] 
+  # Calculate Nmin (mg/kg) based on 1-pool model for t days
+  dt[, p10 := sptf_pmn10(A_N_RT = A_N_RT,  t = 7)] 
+  
   
   c('A_C_OF', 'A_CLAY_MI','A_SAND_MI','A_SILT_MI',
     'A_N_RT', 'A_PH_CC', 'A_CEC_CO')

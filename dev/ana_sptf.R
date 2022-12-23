@@ -273,23 +273,51 @@ dt_pmn <- ptf_pmn_all(dt)
 # check number of NA's
 dt_pmn[is.na(value), .N, by = 'ptf_id']
 
+
+## check type of PMN PTF's ---------
+ptf.pmn <- as.data.table(read_xlsx(paste0(projectdr, "sptf_PMN.xlsx"),
+                                   sheet = "data"))
+# count input parameters
+cols <- paste0("in", 1:7)
+ptf.pmn2 <- ptf.pmn[, (cols) := tstrsplit(soilproperties, '||', fixed=TRUE)][]
+ptf.pmn2 <- melt(ptf.pmn2, id.vars = c("ptf_id"), measure.vars = cols)
+ptf.pmn2 <- ptf.pmn2[!is.na(value)]
+# nr input parameters per PTF
+input_nr <- ptf.pmn2[, .N, by = ptf_id]
+table(input_nr$N)
+# nr PTF per input parameter
+tb <- ptf.pmn2[, .N, by = value]
+tb <- tb[order(N, decreasing = T)]
+
+
 ## scatter plot PMN vs total N--------
 # prepare facet labels
 ptf_label <- paste0("PTF ", unique(dt_pmn$ptf_id))
 names(ptf_label) <- unique(dt_pmn$ptf_id)
 
-ggplot(dt_pmn,
-       aes(y = value,
-           x = A_N_RT,
-           col = A_PH_CC)) +
-           #col = A_CLAY_MI)) +
-  geom_point() +
+ylim2u <- 1000
+#ylim2u <- 200
+ggplot() +
+  #col = A_CLAY_MI)) +
+  geom_point(data = dt_pmn,
+             aes(y = value,
+                 x = A_N_RT
+                 ,col = A_PH_CC
+                 )) +
+  #col = A_CLAY_MI)) +
   scale_color_viridis() +
   #geom_smooth(method = "loess", se = FALSE) + 
   ylab("PMN  (mg / kg / 7 days)") + xlab("N total (mg / kg)") +
-  facet_wrap(.~ ptf_id, ncol = 4, labeller = labeller(ptf_id=ptf_label)) + 
+  # add range of total N in original dataset
+  geom_segment(data = ptf.pmn,
+            aes(x = lowerrange_Ntotal_mgkg, xend = upperrange_Ntotal_mgkg,
+                y = ylim2u*0.9, yend = ylim2u*0.9),
+            arrow = arrow(length = unit(0.03, "inches"), angle = 90, ends = "both")) +
+facet_wrap(.~ ptf_id, ncol = 4, labeller = labeller(ptf_id=ptf_label)) +   
   labs(col = "pH") +
-  ylim(c(0,2000)) +
+  ylim(c(0,ylim2u)) +
+  #xlim(c(0,5000)) + # this is the range of most Dutch soils (81%)
   theme_minimal() +
-  theme(legend.position = "top")
+  theme(legend.position = "bottom")
 #ggsave(file = paste0(projectdr, "figs/pmn_vs_ntot.jpeg"),bg = "white", width = 8, height = 6)
+#ggsave(file = paste0(projectdr, "figs/pmn_vs_ntot_zoomup.jpeg"),bg = "white", width = 8, height = 6)

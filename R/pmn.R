@@ -200,7 +200,8 @@ sptf_pmn4 <- function(A_N_RT, A_CLAY_MI) {
 #' @import data.table
 #' 
 #' @references Rasiah (1995). Comparison of pedotransfer functions to predict nitrogen-mineralization parameters of one- and two-pool models. Communications in Soil Science and Plant Analysis 26, 1873–1884.
-#'
+#' @references Stanford and Smith (1972) Nitrogen mineralization potentials of soils. Soil Sci. Soc. Amer. J. 36:465-472.
+#' 
 #' @export
 sptf_pmn5 <- function(A_N_RT, A_C_OF, A_CEC_CO, t = 7) {
   # Check input
@@ -228,10 +229,11 @@ sptf_pmn5 <- function(A_N_RT, A_C_OF, A_CEC_CO, t = 7) {
   
   # Calculate Nmin (mg/kg) based on 1-pool model (dataset: Stanford and Smith 1972)
   # mineralizable N
+  # This becomes too large for Dutch soil??
   dt[, N0 := 1895.68 *  TN + 5.59 * CEC - 52.96 * CEC * TN - 16.33]
   dt[N0 < 0, N0 := 0]
   # rate constant
-  # this is often negative value?! ---> the range of CEC is too low. 
+  # this becomes often negative value for Dutch soil?! ---> the range of CEC is too low (Dutch median: 0.1 mol/kg). 
   # it's probably cmol/kg, instead of mol/kg (as described in table caption)
   dt[, k0 := 0.0713 - 0.00065 *  CEC - 0.0358 * OC + 0.236 * TN + 0.0023 * OC * CEC - 0.0196 * CEC * TN]
   dt[k0 < 0, k0 := 0] 
@@ -290,9 +292,9 @@ sptf_pmn6 <- function(A_N_RT, A_C_OF, A_CLAY_MI, A_SILT_MI, A_PH_CC, t = 7, RES 
   dt[, wk := t / 7]
   
   # Calculate Nmin (mg/kg) based on 2-pool model
-  # the original dataset is poor in toal N (0.05 - 0.13% -> 500-1300 mg/kg), 
-  # compared to dutch soil (median 2533 mgN.kg)
-  # The N1 and Nr are small for dutch soil, resulting in very low PMN.
+  # The N1 and k1 are small for dutch soil, resulting in very low PMN.
+  # the original dataset is poor in total N (0.05 - 0.13% -> 500-1300 mg/kg), 
+  # compared to dutch soil (median 2533 mgN/kg)
   dt[, N1 := 206.98 * TN + 37.73 * RES + 14.15 * A_PH_CC - 0.232 * A_CLAY_MI - 114.03]
   dt[N1 < 0, N1 := 0] 
   dt[, Nr := 5.345 + 19.46 * TN]
@@ -355,6 +357,150 @@ sptf_pmn7 <- function(A_C_OF, A_CLAY_MI, t = 7) {
 }
 
 
+#' Calculate the PMN given the pedo transfer function of Rasiah (1995), based on dataset of Herlihy (1979)
+#' 
+#' @param A_N_RT (numeric) The organic nitrogen content of the soil in mg N / kg
+#' @param A_CEC_CO (numeric) The cation exchange capacity of the soil (mmol+ / kg)
+#' @param A_SILT_MI (numeric) The silt content of the soil (\%).
+#' @param t (numeric) Length of incubation period (days). 
+#' 
+#' @import data.table
+#' 
+#' @references Herlihy (1979) Nitrogen mineralization in soils of varying texture, moisture and organic matter. Plant and Soil. 53:255-267.
+
+#'
+#' @export
+sptf_pmn8 <- function(A_N_RT, A_CEC_CO, A_SILT_MI, t = 7) {
+  # Check input
+  arg.length <- max(length(A_N_RT), length(A_CEC_CO), length(A_SILT_MI))
+  checkmate::assert_numeric(A_N_RT, lower = 0, upper = 30000, len = arg.length)
+  checkmate::assert_numeric(A_CEC_CO, lower = 0, upper = 10000, len = arg.length)
+  checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_numeric(t, lower = 0, upper = 100)
+  
+  # Collect data into a table
+  dt <- data.table(A_N_RT = A_N_RT,
+                   A_CEC_CO = A_CEC_CO, 
+                   A_SILT_MI = A_SILT_MI,
+                   value = NA_real_)
+  
+  # Calculate total N as %
+  dt[, TN :=  A_N_RT * 0.1 * 10^-3] # mg/kg to %
+  # calculate CEC as mol/kg
+  dt[, CEC := A_CEC_CO * 10^-3] # mmol/kg to mol/kg
+  #dt[, CEC := A_CEC_CO * 0.1] # mmol/kg to cmol/kg
+  # convert t (day) to wk (week)
+  dt[, wk := t / 7]
+  
+  # Calculate Nmin (mg/kg) based on 1-pool model 
+  # mineralizable N (mg/kg)
+  dt[, N0 := 12.01 - 34.55 * CEC + 5.22 * A_SILT_MI + 2272 * TN]
+  # rate constant (1/week)
+  # The regression model was NA. Average value of 6 soils are used.
+  dt[, k0 := 0.04533333]
+
+  
+  dt[, value := N0 * (1 - exp(-k0 * wk))]
+  
+  # return value
+  value <- dt[, value]
+  
+  # return value
+  return(value)
+  
+}
+
+#' Calculate the PMN given the pedo transfer function of Rasiah (1995), based on dataset of Campbel et al (1984)
+#' 
+#' @param A_N_RT (numeric) The organic nitrogen content of the soil in mg N / kg
+#' @param CULT (integer) whether cultivated (0) or virgin soil (0)
+#' @param t (numeric) Length of incubation period (days). 
+#' 
+#' @import data.table
+#' 
+#' @references Campbel et al (1984)  Mineralization rate constants and their use for estimating nitrogen mineralization in some Canadian prairie soils. Canadian J. Soil Sci. 64:333-343.
+#'
+#' @export
+sptf_pmn9 <- function(A_N_RT, CULT = 1, t = 7) {
+  # Check input
+  arg.length <- max(length(A_N_RT), length(CULT))
+  checkmate::assert_numeric(A_N_RT, lower = 0, upper = 30000, len = arg.length)
+  checkmate::assert_numeric(t, lower = 0, upper = 100)
+  
+  # Collect data into a table
+  dt <- data.table(A_N_RT = A_N_RT,
+                   CULT = CULT, 
+                   value = NA_real_)
+  
+  # Calculate total N as %
+  dt[, TN :=  A_N_RT * 0.1 * 10^-3] # mg/kg to %
+  # convert t (day) to wk (week)
+  dt[, wk := t / 7]
+  
+  # Calculate Nmin (mg/kg) based on 1-pool model 
+  # mineralizable N (mg/kg)
+  dt[, N0 := 177.81 + 290.61 * TN - 119.93 * CULT]
+  # rate constant (1/week)
+  # The regression model was NA. Average value of 33 soils (for 35 dC) are used. Column 6 of Table 1
+  #dt[, k0 := 0.109091]
+  # average values, separately calculated for cultivated and virgin
+  dt[CULT == 1, k0 := 0.120177778]
+  dt[CULT == 0, k0 := 0.095786667]
+  
+  
+  dt[, value := N0 * (1 - exp(-k0 * wk))]
+  
+  # return value
+  value <- dt[, value]
+  
+  # return value
+  return(value)
+  
+}
+
+
+#' Calculate the PMN given the pedo transfer function of Rasiah (1995), based on dataset of Simard & N'dayegamiye (1993)
+#' 
+#' @param A_N_RT (numeric) The organic nitrogen content of the soil in mg N / kg
+#' @param t (numeric) Length of incubation period (days). 
+#' 
+#' @import data.table
+#' 
+#' @references Cimard & N'dayegamiye (1993) Nitrogen -ninerahzation potential of meadow soils. Can. J. Soil Sci. 73:27-38
+#'
+#' @export
+sptf_pmn10 <- function(A_N_RT, t = 7) {
+  # Check input
+  arg.length <- max(length(A_N_RT))
+  checkmate::assert_numeric(A_N_RT, lower = 0, upper = 30000, len = arg.length)
+  checkmate::assert_numeric(t, lower = 0, upper = 100)
+  
+  # Collect data into a table
+  dt <- data.table(A_N_RT = A_N_RT,
+                   value = NA_real_)
+  
+  # Calculate total N as %
+  dt[, TN :=  A_N_RT * 0.1 * 10^-3] # mg/kg to %
+  # convert t (day) to wk (week)
+  dt[, wk := t / 7]
+  
+  # Calculate Nmin (mg/kg) based on 1-pool model 
+  # mineralizable N (mg/kg)
+  dt[, N0 := 65.73 + 224.4 * TN ]
+  # rate constant (1/week)
+  # The regression model was NA. Average value of 20 soils. Table 2
+  dt[, k0 := 0.041645]
+  
+  
+  dt[, value := N0 * (1 - exp(-k0 * wk))]
+  
+  # return value
+  value <- dt[, value]
+  
+  # return value
+  return(value)
+  
+}
 
 #' Empirical relationship to convert Nmin to 7 days (mgN/kg/7 days)
 #' 
@@ -371,3 +517,6 @@ correct_incubationperiod <- function(Nmin, t){
   return(Nmin_7d)
   
 }
+
+
+
