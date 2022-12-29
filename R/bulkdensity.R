@@ -4540,8 +4540,8 @@ sptf_bd126 <- function(A_C_OF, A_SILT_MI, B_DEPTH) {
   checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, len = arg.length)
   checkmate::assert_numeric(B_DEPTH, lower = 0, upper = 2, len = arg.length)
   
-  # Collect data into a table (depth set in units cm, and OC in g/kg)
-  dt <- data.table(A_C_OF = A_C_OF, 
+  # Collect data into a table (depth set in units cm, and OC in %)
+  dt <- data.table(A_C_OF = A_C_OF * 0.1, 
                    A_SILT_MI = A_SILT_MI,
                    B_DEPTH = B_DEPTH * 100,
                    value = NA_real_)
@@ -4581,8 +4581,8 @@ sptf_bd127 <- function(A_C_OF, B_DEPTH) {
   checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000, any.missing = FALSE,len = arg.length)
   checkmate::assert_numeric(B_DEPTH, lower = 0, upper = 2, len = arg.length)
   
-  # Collect data into a table (depth set in units cm, and OC in g/kg)
-  dt <- data.table(A_C_OF = A_C_OF, 
+  # Collect data into a table (depth set in units cm, and OC in %)
+  dt <- data.table(A_C_OF = A_C_OF * 0.1, 
                    B_DEPTH = B_DEPTH * 100,
                    value = NA_real_)
   
@@ -4619,8 +4619,8 @@ sptf_bd128 <- function(A_C_OF) {
   # Check input
   checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000, any.missing = FALSE)
   
-  # Collect data into a table (set in units g/kg)
-  dt <- data.table(A_C_OF = A_C_OF, 
+  # Collect data into a table (set in units %)
+  dt <- data.table(A_C_OF = A_C_OF * 0.1, 
                    value = NA_real_)
   
   # estimate soil density in Mg m-3 = ton m-3
@@ -4662,8 +4662,8 @@ sptf_bd129 <- function(A_C_OF, A_CLAY_MI, A_SILT_MI, B_DEPTH) {
   checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, len = arg.length)
   checkmate::assert_numeric(B_DEPTH, lower = 0, upper = 2, len = arg.length)
   
-  # Collect data into a table (depth set in units cm, and OC in g/kg)
-  dt <- data.table(A_C_OF = A_C_OF, 
+  # Collect data into a table (depth set in units cm, and OC in %)
+  dt <- data.table(A_C_OF = A_C_OF * 0.1, 
                    A_CLAY_MI = A_CLAY_MI,
                    A_SILT_MI = A_SILT_MI,
                    B_DEPTH = B_DEPTH * 100,
@@ -4701,8 +4701,8 @@ sptf_bd130 <- function(A_C_OF) {
   # Check input
   checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000, any.missing = FALSE)
   
-  # Collect data into a table (set in units g/kg)
-  dt <- data.table(A_C_OF = A_C_OF, 
+  # Collect data into a table (set in units %)
+  dt <- data.table(A_C_OF = A_C_OF * 0.1, 
                    value = NA_real_)
   
   # estimate soil density in Mg m-3 = ton m-3
@@ -4737,8 +4737,8 @@ sptf_bd131 <- function(A_C_OF) {
   # Check input
   checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000, any.missing = FALSE)
   
-  # Collect data into a table (set in units g/kg)
-  dt <- data.table(A_C_OF = A_C_OF, 
+  # Collect data into a table (set in units %)
+  dt <- data.table(A_C_OF = A_C_OF * 0.1, 
                    value = NA_real_)
   
   # estimate soil density in Mg m-3 = ton m-3
@@ -4773,8 +4773,8 @@ sptf_bd132 <- function(A_C_OF) {
   # Check input
   checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000, any.missing = FALSE)
   
-  # Collect data into a table (set in units g/kg)
-  dt <- data.table(A_C_OF = A_C_OF, 
+  # Collect data into a table (set in units %)
+  dt <- data.table(A_C_OF = A_C_OF * 0.1, 
                    value = NA_real_)
   
   # estimate soil density in Mg m-3 = ton m-3
