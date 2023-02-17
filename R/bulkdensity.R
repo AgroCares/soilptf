@@ -6135,6 +6135,7 @@ sptf_bd166 <- function(A_C_OF) {
 }
 
 #' Calculate the bulk density given the pedotransferfunction of Poelman (1975)
+#' note YF: this is the soil density (weight of soil without pore space), not bulk density!
 #'
 #' @param A_SOM_LOI (numeric) The percentage of organic matter in the soil (\%).
 #' @param A_CLAY_MI (numeric) The clay content of the soil (\%).

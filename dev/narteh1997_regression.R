@@ -1,5 +1,5 @@
 # This script makes regression model to predict PMN for Narteh and Sahrawat (1997)
-# Because the reported coefficient seems incorrect.
+# (I used the calculated regression coefficients for sptf_pmn1, because the reported coefficient values in the paper seems incorrect.)
 
 # Narteh and Sahrawat (1997) Potentially Mineralizable Nitrogen in West African Lowland Rice Soils. Geoderma, 76, 145-154
 
