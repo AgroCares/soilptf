@@ -102,7 +102,7 @@ ggplot(dt3[flag == "relevant"], aes(x = A_SOM_LOI, y = value,
   ylim(c(0,3000)) + ylab("Bulk density (kg / m3)") + xlab("SOM (%)") +
   theme_minimal() +
   theme(legend.position = "none")
-#ggsave(file = paste0(projectdr, "figs/bd_vs_som_perptf_fittedlines.jpg"), width = 5, height = 5)
+#ggsave(file = paste0(projectdr, "figs/bd_vs_som_perptf_fittedlines.jpg"), bg = "white", width = 5, height = 5)
   
 
 # All points with fitted line 
@@ -113,7 +113,6 @@ model1 <- lm(value ~ poly(A_SOM_LOI, 2), data=dt4)
 temp_var <- predict(model1, interval="prediction")
 dt4 <- cbind(dt4, temp_var)
 
-#ggplot(dt4[ptf_id<10],
 ggplot(dt4,
        aes(x = A_SOM_LOI, y = value)) +
   # add not-relevant points
@@ -125,7 +124,71 @@ ggplot(dt4,
   geom_smooth(method = "lm", formula = y ~ poly(x, 2), se = FALSE)+
   ylim(c(-1000,5000)) + ylab("Bulk density (kg / m3)") + xlab("SOM (%)") +
   theme_minimal() 
-#ggsave(file = paste0(projectdr, "figs/bd_vs_som_all.jpg"), width = 5, height = 5)
+#ggsave(file = paste0(projectdr, "figs/bd_vs_som_all.jpg"), bg = "white", width = 5, height = 5)
+
+
+## 5-95% of each interval
+# make intervals of SOM
+dt3[, SOM_int := cut(A_SOM_LOI, breaks = seq(min(A_SOM_LOI), max(A_SOM_LOI), length.out = 100),
+                     labels = seq(min(A_SOM_LOI), max(A_SOM_LOI), length.out = 100)[-1])]
+# median and percentiles of each SOM interval
+sum_int <- dt3[flag == "relevant", .(med = median(value, na.rm = T),
+                   q5 = quantile(value, probs = 0.05, na.rm = T),
+                   q95 = quantile(value, probs = 0.95, na.rm = T),
+                   N = .N), by = SOM_int]
+sum_int[, SOM_int := as.numeric(as.character(SOM_int))]
+
+ggplot(sum_int) +
+  # 5-95th percentile
+  geom_segment(aes(x = SOM_int, xend = SOM_int, y = q5, yend = q95)) +
+  # median
+  geom_line(aes(x = SOM_int, y = med), col = "red") +
+  # # fitted line
+  # geom_smooth(data = dt4, aes(x = A_SOM_LOI, y = value),
+  #             method = "lm", formula = y ~ poly(x, 2), se = FALSE)+
+  xlim(c(0, max(dt3$A_SOM_LOI))) + ylim(c(0,2000)) + 
+  xlab("SOM (%)") + ylab("Bulk density (kg / m3)") +
+  theme_minimal() 
+#ggsave(file = paste0(projectdr, "figs/bd_vs_som_interval.jpg"), bg = "white", width = 5, height = 5)
+
+
+## variation in BD by differnt PTF --------
+
+# quantify variation
+iqr <- dt3[value > 0, 
+              .(q1 = quantile(value, probs = 0.25, na.rm = T),
+                q3 = quantile(value, probs = 0.75, na.rm = T),
+                q2 = quantile(value, probs = 0.5, na.rm = T)), by = id]
+# interquartile range (IQR)
+iqr[, iqr := q3 - q1]
+# quartile coefficient of dispersion (QCD) 
+iqr[, qcd := iqr / (q3 + q1)]
+iqr <- merge(iqr, dt[, .(id, B_SOILTYPE_AGR, B_LU_BRP, A_SOM_LOI, A_CLAY_MI)], 
+             by = "id", all.x = T)
+
+# histogram QCD per soil type
+ggplot(iqr) + 
+  geom_histogram(aes(x = qcd)) + facet_grid(B_SOILTYPE_AGR ~ ., scale = "free_y") +
+  theme_minimal() 
+
+# som vs clay vs QCD-WCH
+gp1 <- ggplot(iqr) + 
+  geom_point(aes(x = A_SOM_LOI, y = A_CLAY_MI, col = qcd)) +
+  labs(col  = "QCD BD") + xlab("SOM (%)") + ylab("Clay (%)") + 
+  scale_color_viridis() +
+  theme_minimal() 
+
+# som vs clay vs median-WHC
+gp2 <- ggplot(iqr) + 
+  geom_point(aes(x = A_SOM_LOI, y = A_CLAY_MI, col = q2)) +
+  labs(col  = "median BD") + xlab("SOM (%)") + ylab("Clay (%)") + 
+  scale_color_viridis() +
+  theme_minimal() 
+
+ggpubr::ggarrange(gp2, gp1)
+#ggsave(file = paste0(projectdr, "figs/bd_vs_som_vs_clay_median_qcd.jpeg"),bg = "white", width = 8, height = 3)
+
+
 
 ## check types of Bulk density PTF's -----
 ptf.mods <- as.data.table(soilptf::sptf_bulkdensity)
@@ -243,6 +306,31 @@ ggpubr::ggarrange(gp2, gp1)
 #ggsave(file = paste0(projectdr, "figs/whc_vs_som_vs_clay_median_qcd.jpeg"),bg = "white", width = 8, height = 3)
 
 
+## 5-95% of each interval
+# make intervals of SOM
+dt_whc[, SOM_int := cut(A_SOM_LOI, breaks = seq(min(A_SOM_LOI), max(A_SOM_LOI), length.out = 100),
+                     labels = seq(min(A_SOM_LOI), max(A_SOM_LOI), length.out = 100)[-1])]
+# median and percentiles of each SOM interval
+sum_int <- dt_whc[, .(med = median(value, na.rm = T),
+                                     q5 = quantile(value, probs = 0.05, na.rm = T),
+                                     q95 = quantile(value, probs = 0.95, na.rm = T),
+                                     N = .N), by = SOM_int]
+sum_int[, SOM_int := as.numeric(as.character(SOM_int))]
+
+ggplot(sum_int) +
+  # 5-95th percentile
+  geom_segment(aes(x = SOM_int, xend = SOM_int, y = q5, yend = q95)) +
+  # median
+  geom_line(aes(x = SOM_int, y = med), col = "red") +
+  # fitted line
+  geom_smooth(data = dt_whc, aes(x = A_SOM_LOI, y = value),
+              method = "lm", formula = y ~ poly(x, 2), se = FALSE)+
+  #xlim(c(0, max(dt3$A_SOM_LOI))) + ylim(c(0,2000)) + 
+  xlab("SOM (%)") + ylab("Water Holding Capacity (cm3 / cm3)") +
+  theme_minimal() 
+#ggsave(file = paste0(projectdr, "figs/whc_vs_som_interval.jpg"), bg = "white", width = 5, height = 5)
+
+
 
 ## check types of WFC PTF's -----
 ptf.whc <- as.data.table(read_xlsx(paste0(projectdr, "sptf_WHC.xlsx"),
@@ -321,3 +409,29 @@ facet_wrap(.~ ptf_id, ncol = 4, labeller = labeller(ptf_id=ptf_label)) +
   theme(legend.position = "bottom")
 #ggsave(file = paste0(projectdr, "figs/pmn_vs_ntot.jpeg"),bg = "white", width = 8, height = 6)
 #ggsave(file = paste0(projectdr, "figs/pmn_vs_ntot_zoomup.jpeg"),bg = "white", width = 8, height = 6)
+
+
+## 5-95% of each interval
+# make intervals of Ntot
+dt_pmn[, PMN_int := cut(A_N_RT, breaks = seq(min(A_N_RT), max(A_N_RT), length.out = 100),
+                        labels = seq(min(A_N_RT), max(A_N_RT), length.out = 100)[-1])]
+# median and percentiles of each SOM interval
+sum_int <- dt_pmn[, .(med = median(value, na.rm = T),
+                      q5 = quantile(value, probs = 0.05, na.rm = T),
+                      q95 = quantile(value, probs = 0.95, na.rm = T),
+                      N = .N), by = PMN_int]
+sum_int[, PMN_int := as.numeric(as.character(PMN_int))]
+
+ggplot(sum_int) +
+  # 5-95th percentile
+  geom_segment(aes(x = PMN_int, xend = PMN_int, y = q5, yend = q95)) +
+  # median
+  geom_line(aes(x = PMN_int, y = med), col = "red") +
+  # # fitted line
+  # geom_smooth(data = dt_pmn, aes(x = PMN_int, y = value),
+  #             method = "lm", formula = y ~ poly(x, 2), se = FALSE)+
+  xlab("Total N (mg/kg)") + ylab("PMN  (mg / kg / 7 days)") +
+  #xlim(c(0,5000)) +
+  #ylim(c(0, 1000)) +
+  theme_minimal() 
+#ggsave(file = paste0(projectdr, "figs/pmn_vs_Ntot_interval.jpg"), bg = "white", width = 5, height = 5)
