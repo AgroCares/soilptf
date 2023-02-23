@@ -5,16 +5,19 @@
 \alias{sptf_countries}
 \title{Table with country codes used in the package}
 \format{
-A data.frame with x rows and x columns:
-\describe{
-  \item{country_name}{the name of the country}
-  \item{country_code}{the country code;from https://datahub.io/core/country-codes}
-}
+An object of class \code{data.table} (inherits from \code{data.frame}) with 249 rows and 3 columns.
 }
 \usage{
 sptf_countries
 }
 \description{
 This table contains country names as used for the spatial extent where sptfs have been derived from.
+}
+\details{
+\describe{
+  \item{country_name}{the name of the country}
+  \item{country_code}{the country code;from https://datahub.io/core/country-codes}
+  \item{continent_code}{The continent where the pedotransfer function can be applied,country codes from https://datahub.io/core/continent-codes}
+}
 }
 \keyword{datasets}
