@@ -142,11 +142,19 @@ enum_opts <- function(this.parameter) {
 #' 
 #' @export
 check_numeric <- function(this.parameter.name, this.parameter.value, anymissing = FALSE, arg.length = NULL){
-  checkmate::assert_numeric(this.parameter.value,
-                            lower = soilptf::get_minval(this.parameter.name),
-                            upper = soilptf::get_maxval(this.parameter.name),
-                            any.missing = anymissing,
-                            len = arg.length)
+  if(is.null(arg.length)){
+    checkmate::assert_numeric(this.parameter.value,
+                              lower = soilptf::get_minval(this.parameter.name),
+                              upper = soilptf::get_maxval(this.parameter.name),
+                              any.missing = anymissing)
+  } else{
+    checkmate::assert_numeric(this.parameter.value,
+                              lower = soilptf::get_minval(this.parameter.name),
+                              upper = soilptf::get_maxval(this.parameter.name),
+                              any.missing = anymissing,
+                              len = arg.length)
+  }
+
 }
 
 #' Check enum parameters
