@@ -1,4 +1,43 @@
 # functions to check function inputs
+#' Get value of a parameter
+#'
+#' This function retrieves the value of a parameter for a given column name in sptf_parameters
+#'
+#' @param this.parameter (character) Quoted name of the parameter code
+#' @param this.column (character) Quoted name of the column in sptf_parameters
+#' @param check.num (boolean) If TRUE, check whether the parameter is of data_type 'num' or 'int' in sptf_parameters
+#'
+#' @details
+#' Vectors of parameter codes are also possible
+get_parval <- function(this.parameter, this.column, check.num = FALSE) {
+  # add visual binding
+  out = code = test.pass = data_type = NULL
+  
+  # load sptf_parameters
+  sptf_parameters <- soilptf::sptf_parameters
+  
+  # check inputs
+  checkmate::assert_subset(this.parameter, choices = sptf_parameters$code)
+  checkmate::assert_subset(this.column, choices = names(sptf_parameters))
+  checkmate::assert_subset(check.num, choices = c(TRUE, FALSE))
+  
+  # check numeric if required
+  if(check.num) {
+    test.pass <- checkmate::test_subset(this.parameter,
+                                        choices = sptf_parameters[data_type %in%
+                                                                   c('num', 'int'), code])
+    
+    # raise error on fail
+    if(!test.pass) {
+      stop(paste0(this.parameter, ' is not a parameter of data_type "num" or "int"'))
+    }
+  }
+  
+  # get value
+  out <- sptf_parameters[code %in% this.parameter, get(this.column)]
+  
+  return(out)
+}
 #' Get minimum value of a parameter
 #'
 #' This function retrieves the value lowest acceptable value of a numeric parameter
