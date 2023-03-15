@@ -17,7 +17,8 @@ Encoding: UTF-8
 LazyData: true
 Imports: 
     checkmate,
-    data.table
+    data.table,
+    euptf2
 RoxygenNote: 7.2.3
 Suggests: 
     rmarkdown,
