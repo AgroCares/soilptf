@@ -4,7 +4,7 @@
 \alias{sptf_bd147}
 \title{Calculate the bulk density given the pedotransferfunction of Katuwal et al. (2020).}
 \usage{
-sptf_bd147(A_C_OF, A_CLAY_MI, A_SAND_MI, A_SILT_MI, B_DEPTH)
+sptf_bd147(A_C_OF, A_CLAY_MI, A_SAND_MI, A_SILT_MI, A_DEPTH)
 }
 \arguments{
 \item{A_C_OF}{(numeric) The organic C content of the soil (g / kg).}
@@ -15,7 +15,7 @@ sptf_bd147(A_C_OF, A_CLAY_MI, A_SAND_MI, A_SILT_MI, B_DEPTH)
 
 \item{A_SILT_MI}{(numeric) The silt content of the soil (\%).}
 
-\item{B_DEPTH}{(numeric) The depth of the sampled soil layer (m)}
+\item{A_DEPTH}{(numeric) The depth of the sampled soil layer (m)}
 }
 \description{
 Calculate the bulk density given the pedotransferfunction of Katuwal et al. (2020).

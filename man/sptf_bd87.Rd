@@ -4,14 +4,14 @@
 \alias{sptf_bd87}
 \title{Calculate the bulk density given the pedotransferfunction of Minasny & Hartemink (2011)}
 \usage{
-sptf_bd87(A_SOM_LOI, A_SAND_MI, B_DEPTH)
+sptf_bd87(A_SOM_LOI, A_SAND_MI, A_DEPTH)
 }
 \arguments{
 \item{A_SOM_LOI}{(numeric) The organic matter content of the soil (\%).}
 
 \item{A_SAND_MI}{(numeric) The sand content of the soil (\%).}
 
-\item{B_DEPTH}{(numeric) The depth of the sampled soil layer (m).}
+\item{A_DEPTH}{(numeric) The depth of the sampled soil layer (m).}
 }
 \description{
 Calculate the bulk density given the pedotransferfunction of Minasny & Hartemink (2011)

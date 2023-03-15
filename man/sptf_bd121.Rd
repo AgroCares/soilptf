@@ -8,7 +8,7 @@ sptf_bd121(
   A_C_OF,
   A_CLAY_MI,
   A_SAND_MI,
-  A_CACO3_MI,
+  A_CACO3_IF,
   A_PH_WA,
   B_ALTITUDE,
   B_SLOPE_DEGREE
@@ -21,7 +21,7 @@ sptf_bd121(
 
 \item{A_SAND_MI}{(numeric) The sand content of the soil (\%).}
 
-\item{A_CACO3_MI}{(numeric) The calcium carbonate content of the soil (\%)}
+\item{A_CACO3_IF}{(numeric) The calcium carbonate content of the soil (\%)}
 
 \item{A_PH_WA}{(numeric) The acidity of the soil, pH in water (-)}
 
