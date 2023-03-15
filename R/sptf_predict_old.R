@@ -17,7 +17,7 @@
 #'
 #' @details 
 #' Some of the ptfs require additional information. If given, the relevant ptf's are used, otherwise they are ignored.
-#' These include the total N content (A_N_RT, unit mg/kg), the pH (A_PH_WA), the carbonate content (A_CACO3_MI, unit \%), the moisture content (A_H2O_T105, \%), the slope (B_SLOPE_DEGREE, unit degrees), the aspect (B_SLOPE_ASPECT, unit degrees) and the altidue (B_ALTITUDE, unit m).
+#' These include the total N content (A_N_RT, unit mg/kg), the pH (A_PH_WA), the carbonate content (A_CACO3_IF, unit \%), the moisture content (A_H2O_T105, \%), the slope (B_SLOPE_DEGREE, unit degrees), the aspect (B_SLOPE_ASPECT, unit degrees) and the altidue (B_ALTITUDE, unit m).
 #' When added, please ensure to use the correct element name and units. 
 #' 
 #' When depth is missing, the function assumes that topsoils are used.
@@ -83,7 +83,7 @@ ptf_bd <- function(A_SOM_LOI = NA_real_, A_C_OF = NA_real_,
   dt <- cbind(dt,obj)
   
   # add all possible inputs as NA when missing
-  cols <- c('A_PH_WA','A_CACO3_MI','A_N_RT','A_H2O_T105','A_SAND_M50','B_SLOPE_DEGREE','B_SLOPE_ASPECT','B_ALTITUDE')
+  cols <- c('A_PH_WA','A_CACO3_IF','A_N_RT','A_H2O_T105','A_SAND_M50','B_SLOPE_DEGREE','B_SLOPE_ASPECT','B_ALTITUDE')
   cols <- cols[!cols %in% colnames(dt)]
   dt[,c(cols) := NA_real_]
   
@@ -167,7 +167,7 @@ ptf_bd <- function(A_SOM_LOI = NA_real_, A_C_OF = NA_real_,
   dt[, p77 := sptf_bd77(A_C_OF = A_C_OF)]
   dt[, p78 := sptf_bd78(A_C_OF = A_C_OF,A_CLAY_MI = A_CLAY_MI,A_SAND_MI = A_SAND_MI,A_PH_WA = A_PH_WA)]
   dt[, p79 := sptf_bd79(A_C_OF = A_C_OF,A_SILT_MI = A_SILT_MI,A_SAND_MI = A_SAND_MI,A_PH_WA = A_PH_WA)]
-  dt[, p80 := sptf_bd80(A_C_OF = A_C_OF,A_CLAY_MI = A_CLAY_MI,A_CACO3_MI = A_CACO3_MI)]
+  dt[, p80 := sptf_bd80(A_C_OF = A_C_OF,A_CLAY_MI = A_CLAY_MI,A_CACO3_IF = A_CACO3_IF)]
   dt[, p81 := sptf_bd81(A_C_OF = A_C_OF)]
   dt[, p82 := sptf_bd82(A_SAND_MI = A_SAND_MI,A_SILT_MI = A_SILT_MI)]
   dt[, p83 := sptf_bd83(A_SAND_MI = A_SAND_MI,A_SILT_MI = A_SILT_MI)]
@@ -175,7 +175,7 @@ ptf_bd <- function(A_SOM_LOI = NA_real_, A_C_OF = NA_real_,
   dt[, p85 := sptf_bd85(A_C_OF = A_C_OF)]
   dt[, p86 := sptf_bd86(A_C_OF = A_C_OF,A_SAND_MI = A_SAND_MI,A_CLAY_MI = A_CLAY_MI)]
   dt[, p87 := sptf_bd87(A_SOM_LOI = A_SOM_LOI,A_SAND_MI = A_SAND_MI,A_DEPTH = A_DEPTH)]
-  dt[, p88 := sptf_bd88(A_C_OF = A_C_OF,A_CLAY_MI = A_CLAY_MI,A_CACO3_MI = A_CACO3_MI,A_PH_WA = A_PH_WA)]
+  dt[, p88 := sptf_bd88(A_C_OF = A_C_OF,A_CLAY_MI = A_CLAY_MI,A_CACO3_IF = A_CACO3_IF,A_PH_WA = A_PH_WA)]
   dt[, p89 := sptf_bd89(A_C_OF = A_C_OF,A_CLAY_MI = A_CLAY_MI,A_SILT_MI = A_SILT_MI)]
   dt[, p90 := sptf_bd90(A_SOM_LOI = A_SOM_LOI,A_CLAY_MI = A_CLAY_MI)]
   dt[, p91 := sptf_bd91(A_SOM_LOI = A_SOM_LOI)]
@@ -208,7 +208,7 @@ ptf_bd <- function(A_SOM_LOI = NA_real_, A_C_OF = NA_real_,
   dt[, p118 := sptf_bd118(A_C_OF = A_C_OF)]
   dt[, p119 := sptf_bd119(A_C_OF = A_C_OF)]
   dt[, p120 := sptf_bd120(A_C_OF = A_C_OF, A_CLAY_MI = A_CLAY_MI, A_SILT_MI = A_SILT_MI)]
-  dt[, p121 := sptf_bd121(A_C_OF = A_C_OF, A_CLAY_MI = A_CLAY_MI, A_SAND_MI = A_SAND_MI, A_CACO3_MI = A_CACO3_MI, A_PH_WA = A_PH_WA,B_ALTITUDE = B_ALTITUDE,B_SLOPE_DEGREE = B_SLOPE_DEGREE)]
+  dt[, p121 := sptf_bd121(A_C_OF = A_C_OF, A_CLAY_MI = A_CLAY_MI, A_SAND_MI = A_SAND_MI, A_CACO3_IF = A_CACO3_IF, A_PH_WA = A_PH_WA,B_ALTITUDE = B_ALTITUDE,B_SLOPE_DEGREE = B_SLOPE_DEGREE)]
   dt[, p122 := sptf_bd122(A_C_OF = A_C_OF, A_CLAY_MI = A_CLAY_MI,A_SAND_MI = A_SAND_MI)]
   dt[, p123 := sptf_bd123(A_C_OF = A_C_OF, A_CLAY_MI = A_CLAY_MI,A_SAND_MI = A_SAND_MI)]
   dt[, p124 := sptf_bd124(A_C_OF = A_C_OF)]
@@ -319,7 +319,7 @@ ptf_bd <- function(A_SOM_LOI = NA_real_, A_C_OF = NA_real_,
 #'
 #' @details 
 #' Some of the ptfs require additional information. If given, the relevant ptf's are used, otherwise they are ignored.
-#' These include the total N content (A_N_RT, unit mg/kg), the pH (A_PH_WA), the carbonate content (A_CACO3_MI, unit \%), the moisture content (A_H2O_T105, \%), the slope (B_SLOPE_DEGREE, unit degrees), the aspect (B_SLOPE_ASPECT, unit degrees) and the altidue (B_ALTITUDE, unit m).
+#' These include the total N content (A_N_RT, unit mg/kg), the pH (A_PH_WA), the carbonate content (A_CACO3_IF, unit \%), the moisture content (A_H2O_T105, \%), the slope (B_SLOPE_DEGREE, unit degrees), the aspect (B_SLOPE_ASPECT, unit degrees) and the altidue (B_ALTITUDE, unit m).
 #' When added, please ensure to use the correct element name and units. 
 #' 
 #' When depth is missing, the function assumes that topsoils are used.
@@ -362,7 +362,7 @@ ptf_bd_lm <- function(B_LU_PTFCLASS = NA_character_,
   dt <- merge(dt,ptf.countries[,.(country_code,B_LOC_CONT = continent_code)], by.x = 'B_LOC_COUNTRY',by.y = 'country_code',all.x = TRUE)
   
   # add all possible inputs as NA when missing
-  cols <- c('A_PH_WA','A_CACO3_MI','A_N_RT','A_H2O_T105','A_SAND_M50','B_SLOPE_DEGREE','B_SLOPE_ASPECT','B_ALTITUDE')
+  cols <- c('A_PH_WA','A_CACO3_IF','A_N_RT','A_H2O_T105','A_SAND_M50','B_SLOPE_DEGREE','B_SLOPE_ASPECT','B_ALTITUDE')
   cols <- cols[!cols %in% colnames(dt)]
   dt[,c(cols) := NA_real_]
   
@@ -463,7 +463,7 @@ ptf_bd_lm <- function(B_LU_PTFCLASS = NA_character_,
   dt[ptf_id==77, value := sptf_bd77(A_C_OF = A_C_OF)]
   dt[ptf_id==78, value := sptf_bd78(A_C_OF = A_C_OF,A_CLAY_MI = A_CLAY_MI,A_SAND_MI = A_SAND_MI,A_PH_WA = A_PH_WA)]
   dt[ptf_id==79, value := sptf_bd79(A_C_OF = A_C_OF,A_SILT_MI = A_SILT_MI,A_SAND_MI = A_SAND_MI,A_PH_WA = A_PH_WA)]
-  dt[ptf_id==80, value := sptf_bd80(A_C_OF = A_C_OF,A_CLAY_MI = A_CLAY_MI,A_CACO3_MI = A_CACO3_MI)]
+  dt[ptf_id==80, value := sptf_bd80(A_C_OF = A_C_OF,A_CLAY_MI = A_CLAY_MI,A_CACO3_IF = A_CACO3_IF)]
   dt[ptf_id==81, value := sptf_bd81(A_C_OF = A_C_OF)]
   dt[ptf_id==82, value := sptf_bd82(A_SAND_MI = A_SAND_MI,A_SILT_MI = A_SILT_MI)]
   dt[ptf_id==83, value := sptf_bd83(A_SAND_MI = A_SAND_MI,A_SILT_MI = A_SILT_MI)]
@@ -471,7 +471,7 @@ ptf_bd_lm <- function(B_LU_PTFCLASS = NA_character_,
   dt[ptf_id==85, value := sptf_bd85(A_C_OF = A_C_OF)]
   dt[ptf_id==86, value := sptf_bd86(A_C_OF = A_C_OF,A_SAND_MI = A_SAND_MI,A_CLAY_MI = A_CLAY_MI)]
   dt[ptf_id==87, value := sptf_bd87(A_SOM_LOI = A_SOM_LOI,A_SAND_MI = A_SAND_MI,A_DEPTH = A_DEPTH)]
-  dt[ptf_id==88, value := sptf_bd88(A_C_OF = A_C_OF,A_CLAY_MI = A_CLAY_MI,A_CACO3_MI = A_CACO3_MI,A_PH_WA = A_PH_WA)]
+  dt[ptf_id==88, value := sptf_bd88(A_C_OF = A_C_OF,A_CLAY_MI = A_CLAY_MI,A_CACO3_IF = A_CACO3_IF,A_PH_WA = A_PH_WA)]
   dt[ptf_id==89, value := sptf_bd89(A_C_OF = A_C_OF,A_CLAY_MI = A_CLAY_MI,A_SILT_MI = A_SILT_MI)]
   dt[ptf_id==90, value := sptf_bd90(A_SOM_LOI = A_SOM_LOI,A_CLAY_MI = A_CLAY_MI)]
   dt[ptf_id==91, value := sptf_bd91(A_SOM_LOI = A_SOM_LOI)]
@@ -504,7 +504,7 @@ ptf_bd_lm <- function(B_LU_PTFCLASS = NA_character_,
   dt[ptf_id==118, value := sptf_bd118(A_C_OF = A_C_OF)]
   dt[ptf_id==119, value := sptf_bd119(A_C_OF = A_C_OF)]
   dt[ptf_id==120, value := sptf_bd120(A_C_OF = A_C_OF, A_CLAY_MI = A_CLAY_MI, A_SILT_MI = A_SILT_MI)]
-  dt[ptf_id==121, value := sptf_bd121(A_C_OF = A_C_OF, A_CLAY_MI = A_CLAY_MI, A_SAND_MI = A_SAND_MI, A_CACO3_MI = A_CACO3_MI, A_PH_WA = A_PH_WA,B_ALTITUDE = B_ALTITUDE,B_SLOPE_DEGREE = B_SLOPE_DEGREE)]
+  dt[ptf_id==121, value := sptf_bd121(A_C_OF = A_C_OF, A_CLAY_MI = A_CLAY_MI, A_SAND_MI = A_SAND_MI, A_CACO3_IF = A_CACO3_IF, A_PH_WA = A_PH_WA,B_ALTITUDE = B_ALTITUDE,B_SLOPE_DEGREE = B_SLOPE_DEGREE)]
   dt[ptf_id==122, value := sptf_bd122(A_C_OF = A_C_OF, A_CLAY_MI = A_CLAY_MI,A_SAND_MI = A_SAND_MI)]
   dt[ptf_id==123, value := sptf_bd123(A_C_OF = A_C_OF, A_CLAY_MI = A_CLAY_MI,A_SAND_MI = A_SAND_MI)]
   dt[ptf_id==124, value := sptf_bd124(A_C_OF = A_C_OF)]

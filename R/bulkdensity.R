@@ -2773,30 +2773,30 @@ sptf_bd79 <- function(A_C_OF,A_SILT_MI, A_SAND_MI,A_PH_WA) {
 #'
 #' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
 #' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
-#' @param A_CACO3_MI (numeric) The calcium carbonate content of the soil (\%)
+#' @param A_CACO3_IF (numeric) The calcium carbonate content of the soil (\%)
 #'
 #' @import data.table
 #' 
 #' @references Brahim et al. (2012). Pedotransfer functions to estimate soil bulk density for Northern Africa: Tunisia case
 #'
 #' @export
-sptf_bd80 <- function(A_C_OF,A_CLAY_MI, A_CACO3_MI) {
+sptf_bd80 <- function(A_C_OF,A_CLAY_MI, A_CACO3_IF) {
   
   # Check input
-  arg.length <- max(length(A_C_OF),length(A_CLAY_MI), length(A_CACO3_MI))
+  arg.length <- max(length(A_C_OF),length(A_CLAY_MI), length(A_CACO3_IF))
   
   checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000, any.missing = FALSE,len = arg.length)
   checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
-  checkmate::assert_numeric(A_CACO3_MI, lower = 0, upper = 20, len = arg.length)
+  checkmate::assert_numeric(A_CACO3_IF, lower = 0, upper = 20, len = arg.length)
    
   # Collect data into a table (OC in %)
   dt <- data.table(A_C_OF = A_C_OF * 0.1,
                    A_CLAY_MI = A_CLAY_MI, 
-                   A_CACO3_MI = A_CACO3_MI,
+                   A_CACO3_IF = A_CACO3_IF,
                    value = NA_real_)
   
   # estimate soil density in Mg m-3 = ton m-3
-  dt[, value := 1.9 - 0.08 * A_C_OF + 0.0031 * A_CLAY_MI - 0.0023 * A_CACO3_MI]
+  dt[, value := 1.9 - 0.08 * A_C_OF + 0.0031 * A_CLAY_MI - 0.0023 * A_CACO3_IF]
   
   # convert to kg / m3
   dt[, value := value * 1000]
@@ -3066,7 +3066,7 @@ sptf_bd87 <- function(A_SOM_LOI,A_SAND_MI,A_DEPTH) {
 #'
 #' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
 #' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
-#' @param A_CACO3_MI (numeric) The calcium carbonate content of the soil (\%)
+#' @param A_CACO3_IF (numeric) The calcium carbonate content of the soil (\%)
 #' @param A_PH_WA (numeric) The acidity of the soil, pH in water (-)
 #'
 #' @import data.table
@@ -3074,26 +3074,26 @@ sptf_bd87 <- function(A_SOM_LOI,A_SAND_MI,A_DEPTH) {
 #' @references Shiri et al. (2017) Modeling soil bulk density through a complete data scanning procedure: Heuristic alternatives
 #'
 #' @export
-sptf_bd88 <- function(A_C_OF,A_CLAY_MI,A_CACO3_MI,A_PH_WA) {
+sptf_bd88 <- function(A_C_OF,A_CLAY_MI,A_CACO3_IF,A_PH_WA) {
   
   # Check input
-  arg.length <- max(length(A_C_OF),length(A_CLAY_MI),length(A_CACO3_MI),length(A_PH_WA))
+  arg.length <- max(length(A_C_OF),length(A_CLAY_MI),length(A_CACO3_IF),length(A_PH_WA))
   
   checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000, any.missing = FALSE,len = arg.length)
   checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
-  checkmate::assert_numeric(A_CACO3_MI, lower = 0, upper = 20, len = arg.length)
+  checkmate::assert_numeric(A_CACO3_IF, lower = 0, upper = 20, len = arg.length)
   checkmate::assert_numeric(A_PH_WA, lower = 2, upper = 10, len = arg.length)
   
   # Collect data into a table
   dt <- data.table(A_C_OF = A_C_OF,
                    A_CLAY_MI = A_CLAY_MI, 
                    A_PH_WA = A_PH_WA,
-                   A_CACO3_MI = A_CACO3_MI,
+                   A_CACO3_IF = A_CACO3_IF,
                    value = NA_real_)
   
   # estimate soil density in Mg m-3 = ton m-3
-  dt[, value := -0.247 * A_C_OF * atan(A_CLAY_MI/(A_CACO3_MI + 7.00216)) + 
-                A_C_OF * atan(A_PH_WA)/(A_CACO3_MI + 10.505) + 1.53433]
+  dt[, value := -0.247 * A_C_OF * atan(A_CLAY_MI/(A_CACO3_IF + 7.00216)) + 
+                A_C_OF * atan(A_PH_WA)/(A_CACO3_IF + 10.505) + 1.53433]
   
   # convert to kg / m3
   dt[, value := value * 1000]
@@ -4292,7 +4292,7 @@ sptf_bd120 <- function(A_C_OF, A_CLAY_MI, A_SILT_MI) {
 #' @param A_C_OF (numeric) The fraction organic carbon in the soil (g / kg).
 #' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
 #' @param A_SAND_MI (numeric) The sand content of the soil (\%).
-#' @param A_CACO3_MI (numeric) The calcium carbonate content of the soil (\%)
+#' @param A_CACO3_IF (numeric) The calcium carbonate content of the soil (\%)
 #' @param A_PH_WA (numeric) The acidity of the soil, pH in water (-)
 #' @param B_ALTITUDE (numeric) The altitude (m)
 #' @param B_SLOPE_DEGREE (numeric) The slope of the field (degrees)
@@ -4302,19 +4302,19 @@ sptf_bd120 <- function(A_C_OF, A_CLAY_MI, A_SILT_MI) {
 #' @references Palladino et al. (2022).Developing pedotransfer functions for predicting soil bulk density in Campania 
 #'
 #' @export
-sptf_bd121 <- function(A_C_OF, A_CLAY_MI, A_SAND_MI, A_CACO3_MI, A_PH_WA, B_ALTITUDE, B_SLOPE_DEGREE) {
+sptf_bd121 <- function(A_C_OF, A_CLAY_MI, A_SAND_MI, A_CACO3_IF, A_PH_WA, B_ALTITUDE, B_SLOPE_DEGREE) {
   
   # add visual binding
   B_ROCKS_FR = NULL
   
   # Check input
   arg.length <- max(length(A_C_OF), length(A_CLAY_MI),length(A_SAND_MI),
-                    length(A_CACO3_MI), length(A_PH_WA),length(B_ALTITUDE),
+                    length(A_CACO3_IF), length(A_PH_WA),length(B_ALTITUDE),
                     length(B_SLOPE_DEGREE))
   checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000, any.missing = FALSE,len = arg.length)
   checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
   checkmate::assert_numeric(A_SAND_MI, lower = 0, upper = 100, len = arg.length)
-  checkmate::assert_numeric(A_CACO3_MI, lower = 0, upper = 20, len = arg.length)
+  checkmate::assert_numeric(A_CACO3_IF, lower = 0, upper = 20, len = arg.length)
   checkmate::assert_numeric(A_PH_WA, lower = 2, upper = 10, len = arg.length)
   checkmate::assert_numeric(B_SLOPE_DEGREE, lower = 0, upper = 90, len = arg.length)
   checkmate::assert_numeric(B_ALTITUDE, lower = 0, upper = 10000, len = arg.length)
@@ -4323,7 +4323,7 @@ sptf_bd121 <- function(A_C_OF, A_CLAY_MI, A_SAND_MI, A_CACO3_MI, A_PH_WA, B_ALTI
   dt <- data.table(A_C_OF = A_C_OF * 0.1, 
                    A_CLAY_MI = A_CLAY_MI,
                    A_SAND_MI = A_SAND_MI,
-                   A_CACO3_MI = A_CACO3_MI,
+                   A_CACO3_IF = A_CACO3_IF,
                    A_PH_WA = A_PH_WA,
                    B_SLOPE_DEGREE = B_SLOPE_DEGREE,
                    B_ALTITUDE = B_ALTITUDE,
@@ -4331,14 +4331,14 @@ sptf_bd121 <- function(A_C_OF, A_CLAY_MI, A_SAND_MI, A_CACO3_MI, A_PH_WA, B_ALTI
                    value = NA_real_)
   
   # replace missing values by the mean
-  dt[is.na(A_CACO3_MI), A_CACO3_MI := 7.24]
+  dt[is.na(A_CACO3_IF), A_CACO3_IF := 7.24]
   dt[is.na(A_PH_WA), A_PH_WA := 6.94]
   dt[is.na(B_ALTITUDE), B_ALTITUDE := 1000]
   dt[is.na(B_SLOPE_DEGREE), B_SLOPE_DEGREE := 5]
   
   # estimate soil density in Mg m-3 = ton m-3
   dt[, value := 1.124 + 0.002 * A_SAND_MI + 0.004 * A_CLAY_MI - 0.048 * A_C_OF +
-                0.002 * A_PH_WA + 0.007 * A_CACO3_MI - 1.09e-5 * B_ALTITUDE - 
+                0.002 * A_PH_WA + 0.007 * A_CACO3_IF - 1.09e-5 * B_ALTITUDE - 
                 0.002 * B_SLOPE_DEGREE + 0.005 * B_ROCKS_FR]
   
   # convert to kg / m3
