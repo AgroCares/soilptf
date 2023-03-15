@@ -482,8 +482,7 @@ sptf_whc8 <- function(A_SAND_MI, A_CLAY_MI, D_BDS, A_C_OF,
 #' @references Tomasella & Hodnett (1998) Estimating soil water retention characteristics from limited data in Brazilian Amazonia. Soil Sci. 163, 190-202.
 #' 
 #' @export
-sptf_whc9 <- function(A_CLAY_MI, A_SILT_MI, A_C_OF,
-                      mp_fc = 33) {
+sptf_whc9 <- function(A_CLAY_MI, A_SILT_MI, A_C_OF, mp_fc = 33) {
   # Check input
   arg.length <- max(length(A_CLAY_MI),length(A_SILT_MI), length(A_C_OF))
   checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
