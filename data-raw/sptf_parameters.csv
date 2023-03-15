@@ -1,0 +1,16 @@
+code;parameter;unit;product;element;method1;method2;data_type;value_min;value_max;explanation;enum;options
+A_CACO3_MI;;;;;;;;;;;;
+A_CLAY_MI;Clay content;%;A;CLAY;MI;"";num;0.1;75;"";FALSE;""
+A_C_OF;Organic Carbon Content;g / kg;A;C;OF;"";num;0.1;600;"";FALSE;""
+A_DENSITY;;;;;;;;;;;;
+A_H20_T105;;;;;;;;;;;;
+A_N_RT;Total nitrogen content;mg N/ kg;A;N;RT;"";num;1;30000;"";FALSE;""
+A_PH_WA;Acidity in water;-;A;PH;WA;"";num;3;10;"";FALSE;""
+A_SAND_M50;Mediaan van de zandfractie;um;A;SAND;M50;"";num;;;"";FALSE;""
+A_SAND_MI;Sand content;%;A;SAND;MI;"";num;0.1;100;"";FALSE;""
+A_SILT_MI;Silt content;%;A;SILT;MI;"";num;0.1;100;"";FALSE;""
+A_SOM_LOI;Organic matter content;%;A;SOM;LOI;"";num;0.5;75;"";FALSE;""
+B_ALTITUDE;;;;;;;;;;;;
+B_ROCKS_FR;;;;;;;;;;;;
+B_SLOPE_ASPECT;;;;;;;;;;;;
+B_SLOPE_DEGREE;Slope of the field;degrees;B;SLOPE;DEGREE;"";num;0;30;"";FALSE;""
