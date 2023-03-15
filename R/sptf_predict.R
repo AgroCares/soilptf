@@ -3,7 +3,7 @@
 #' @param dt (data table) Data table which includes at least:
 #' A_SOM_LOI or A_C_OF
 #' 2 of A_CLAY_MI, A_SAND_MI, A_SILT_MI
-#' B_DEPTH
+#' A_DEPTH
 #' id
 #'
 #' @details 
@@ -18,7 +18,7 @@ ptf_bd_all <- function(dt){
   dt <- copy(dt)
   
   # add all possible inputs as NA when missing
-  cols <- c('A_CLAY_MI','A_SAND_MI','A_SILT_MI', 'A_C_OF', 'B_DEPTH',
+  cols <- c('A_CLAY_MI','A_SAND_MI','A_SILT_MI', 'A_C_OF', 'A_DEPTH',
             'A_PH_WA','A_CACO3_IF','A_N_RT','A_H2O_T105','A_SAND_M50','B_SLOPE_DEGREE','B_SLOPE_ASPECT','B_ALTITUDE')
   cols <- cols[!cols %in% colnames(dt)]
   dt[,c(cols) := NA_real_]
@@ -59,11 +59,11 @@ ptf_bd_all <- function(dt){
   dt[, p22 := sptf_bd22(A_SOM_LOI = A_SOM_LOI)]
   dt[, p23 := sptf_bd23(A_SOM_LOI = A_SOM_LOI)]
   dt[, p24 := sptf_bd24(A_SOM_LOI = A_SOM_LOI)]
-  dt[, p25 := sptf_bd25(A_C_OF = A_C_OF, A_CLAY_MI = A_CLAY_MI,A_SILT_MI = A_SAND_MI,A_H2O_T105 = A_H2O_T105, B_DEPTH = B_DEPTH)]
+  dt[, p25 := sptf_bd25(A_C_OF = A_C_OF, A_CLAY_MI = A_CLAY_MI,A_SILT_MI = A_SAND_MI,A_H2O_T105 = A_H2O_T105, A_DEPTH = A_DEPTH)]
   dt[, p26 := sptf_bd26(A_SOM_LOI = A_SOM_LOI)]
   dt[, p27 := sptf_bd27(A_SOM_LOI = A_SOM_LOI)]
-  dt[, p28 := sptf_bd28(A_SAND_MI = A_SAND_MI, B_DEPTH = B_DEPTH)]
-  dt[, p29 := sptf_bd29(A_C_OF = A_C_OF, A_SAND_MI = A_SAND_MI,B_DEPTH = B_DEPTH)]
+  dt[, p28 := sptf_bd28(A_SAND_MI = A_SAND_MI, A_DEPTH = A_DEPTH)]
+  dt[, p29 := sptf_bd29(A_C_OF = A_C_OF, A_SAND_MI = A_SAND_MI,A_DEPTH = A_DEPTH)]
   dt[, p30 := sptf_bd30(A_C_OF = A_C_OF, A_CLAY_MI = A_CLAY_MI)]
   dt[, p31 := sptf_bd31(A_CLAY_MI = A_CLAY_MI)]
   dt[, p32 := sptf_bd32(A_C_OF = A_C_OF)]
@@ -73,8 +73,8 @@ ptf_bd_all <- function(dt){
   dt[, p36 := sptf_bd36(A_C_OF = A_C_OF, A_CLAY_MI = A_CLAY_MI, A_SAND_MI = A_SAND_MI)]
   dt[, p37 := sptf_bd37(A_C_OF = A_C_OF)]
   dt[, p38 := sptf_bd38(A_C_OF = A_C_OF,A_CLAY_MI = A_CLAY_MI,A_SAND_MI = A_SAND_MI)]
-  dt[, p39 := sptf_bd39(A_C_OF = A_C_OF,A_CLAY_MI = A_CLAY_MI,A_H2O_T105 = A_H2O_T105,B_DEPTH = B_DEPTH)]
-  dt[, p40 := sptf_bd40(A_SOM_LOI = A_SOM_LOI,A_SAND_MI = A_SAND_MI,B_DEPTH = B_DEPTH)]
+  dt[, p39 := sptf_bd39(A_C_OF = A_C_OF,A_CLAY_MI = A_CLAY_MI,A_H2O_T105 = A_H2O_T105,A_DEPTH = A_DEPTH)]
+  dt[, p40 := sptf_bd40(A_SOM_LOI = A_SOM_LOI,A_SAND_MI = A_SAND_MI,A_DEPTH = A_DEPTH)]
   dt[, p41 := sptf_bd41(A_SOM_LOI = A_SOM_LOI)]
   dt[, p42 := sptf_bd42(A_C_OF = A_C_OF)]
   dt[, p43 := sptf_bd43(A_C_OF = A_C_OF)]
@@ -103,8 +103,8 @@ ptf_bd_all <- function(dt){
   dt[, p66 := sptf_bd66(A_C_OF = A_C_OF)]
   dt[, p67 := sptf_bd67(A_C_OF = A_C_OF)]
   dt[, p68 := sptf_bd68(A_C_OF = A_C_OF)]
-  dt[, p69 := sptf_bd69(A_CLAY_MI = A_CLAY_MI,B_DEPTH = B_DEPTH)]
-  dt[, p70 := sptf_bd70(A_C_OF = A_C_OF,A_CLAY_MI=A_CLAY_MI, A_SILT_MI=A_SILT_MI, B_DEPTH=B_DEPTH, B_ALTITUDE=B_ALTITUDE, B_SLOPE_DEGREE=B_SLOPE_DEGREE, B_SLOPE_ASPECT=B_SLOPE_ASPECT)]
+  dt[, p69 := sptf_bd69(A_CLAY_MI = A_CLAY_MI,A_DEPTH = A_DEPTH)]
+  dt[, p70 := sptf_bd70(A_C_OF = A_C_OF,A_CLAY_MI=A_CLAY_MI, A_SILT_MI=A_SILT_MI, A_DEPTH=A_DEPTH, B_ALTITUDE=B_ALTITUDE, B_SLOPE_DEGREE=B_SLOPE_DEGREE, B_SLOPE_ASPECT=B_SLOPE_ASPECT)]
   dt[, p71 := sptf_bd71(A_C_OF = A_C_OF,A_CLAY_MI = A_CLAY_MI,A_SILT_MI = A_SILT_MI,B_SLOPE_DEGREE = B_SLOPE_DEGREE)]
   dt[, p72 := sptf_bd72(A_C_OF = A_C_OF)]
   dt[, p73 := sptf_bd73(A_C_OF = A_C_OF)]
@@ -121,7 +121,7 @@ ptf_bd_all <- function(dt){
   dt[, p84 := sptf_bd84(A_C_OF = A_C_OF,A_CLAY_MI = A_CLAY_MI)]
   dt[, p85 := sptf_bd85(A_C_OF = A_C_OF)]
   dt[, p86 := sptf_bd86(A_C_OF = A_C_OF,A_SAND_MI = A_SAND_MI,A_CLAY_MI = A_CLAY_MI)]
-  dt[, p87 := sptf_bd87(A_SOM_LOI = A_SOM_LOI,A_SAND_MI = A_SAND_MI,B_DEPTH = B_DEPTH)]
+  dt[, p87 := sptf_bd87(A_SOM_LOI = A_SOM_LOI,A_SAND_MI = A_SAND_MI,A_DEPTH = A_DEPTH)]
   dt[, p88 := sptf_bd88(A_C_OF = A_C_OF,A_CLAY_MI = A_CLAY_MI,A_CACO3_IF = A_CACO3_IF,A_PH_WA = A_PH_WA)]
   dt[, p89 := sptf_bd89(A_C_OF = A_C_OF,A_CLAY_MI = A_CLAY_MI,A_SILT_MI = A_SILT_MI)]
   dt[, p90 := sptf_bd90(A_SOM_LOI = A_SOM_LOI,A_CLAY_MI = A_CLAY_MI)]
@@ -139,12 +139,12 @@ ptf_bd_all <- function(dt){
   dt[, p102 := sptf_bd102(A_C_OF = A_C_OF)]
   dt[, p103 := sptf_bd103(A_C_OF = A_C_OF)]
   dt[, p104 := sptf_bd104(A_C_OF = A_C_OF)]
-  dt[, p105 := sptf_bd105(A_C_OF = A_C_OF, B_DEPTH = B_DEPTH)]
-  dt[, p106 := sptf_bd106(A_C_OF = A_C_OF, B_DEPTH = B_DEPTH)]
-  dt[, p107 := sptf_bd107(A_C_OF = A_C_OF, B_DEPTH = B_DEPTH)]
-  dt[, p108 := sptf_bd108(A_C_OF = A_C_OF, B_DEPTH = B_DEPTH)]
-  dt[, p109 := sptf_bd109(A_C_OF = A_C_OF, B_DEPTH = B_DEPTH)]
-  dt[, p110 := sptf_bd110(A_C_OF = A_C_OF, B_DEPTH = B_DEPTH)]
+  dt[, p105 := sptf_bd105(A_C_OF = A_C_OF, A_DEPTH = A_DEPTH)]
+  dt[, p106 := sptf_bd106(A_C_OF = A_C_OF, A_DEPTH = A_DEPTH)]
+  dt[, p107 := sptf_bd107(A_C_OF = A_C_OF, A_DEPTH = A_DEPTH)]
+  dt[, p108 := sptf_bd108(A_C_OF = A_C_OF, A_DEPTH = A_DEPTH)]
+  dt[, p109 := sptf_bd109(A_C_OF = A_C_OF, A_DEPTH = A_DEPTH)]
+  dt[, p110 := sptf_bd110(A_C_OF = A_C_OF, A_DEPTH = A_DEPTH)]
   dt[, p111 := sptf_bd111(A_C_OF = A_C_OF)]
   dt[, p112 := sptf_bd112(A_C_OF = A_C_OF)]
   dt[, p113 := sptf_bd113(A_C_OF = A_C_OF,A_CLAY_MI = A_CLAY_MI, A_PH_WA = A_PH_WA)]
@@ -160,18 +160,18 @@ ptf_bd_all <- function(dt){
   dt[, p123 := sptf_bd123(A_C_OF = A_C_OF, A_CLAY_MI = A_CLAY_MI,A_SAND_MI = A_SAND_MI)]
   dt[, p124 := sptf_bd124(A_C_OF = A_C_OF)]
   dt[, p125 := sptf_bd125(A_C_OF = A_C_OF)]
-  dt[, p126 := sptf_bd126(A_C_OF = A_C_OF, A_SILT_MI = A_SILT_MI, B_DEPTH = B_DEPTH)]
-  dt[, p127 := sptf_bd127(A_C_OF = A_C_OF, B_DEPTH = B_DEPTH)]
+  dt[, p126 := sptf_bd126(A_C_OF = A_C_OF, A_SILT_MI = A_SILT_MI, A_DEPTH = A_DEPTH)]
+  dt[, p127 := sptf_bd127(A_C_OF = A_C_OF, A_DEPTH = A_DEPTH)]
   dt[, p128 := sptf_bd128(A_C_OF = A_C_OF)]
-  dt[, p129 := sptf_bd129(A_C_OF = A_C_OF, A_CLAY_MI = A_CLAY_MI, A_SILT_MI = A_SILT_MI,B_DEPTH = B_DEPTH)]
+  dt[, p129 := sptf_bd129(A_C_OF = A_C_OF, A_CLAY_MI = A_CLAY_MI, A_SILT_MI = A_SILT_MI,A_DEPTH = A_DEPTH)]
   dt[, p130 := sptf_bd130(A_C_OF = A_C_OF)]
   dt[, p131 := sptf_bd131(A_C_OF = A_C_OF)]
   dt[, p132 := sptf_bd132(A_C_OF = A_C_OF)]
-  dt[, p133 := sptf_bd133(A_C_OF = A_C_OF, B_DEPTH = B_DEPTH, B_SLOPE_DEGREE = B_SLOPE_DEGREE)]
+  dt[, p133 := sptf_bd133(A_C_OF = A_C_OF, A_DEPTH = A_DEPTH, B_SLOPE_DEGREE = B_SLOPE_DEGREE)]
   dt[, p134 := sptf_bd134(A_SOM_LOI = A_SOM_LOI)]
   dt[, p135 := sptf_bd135(A_SOM_LOI = A_SOM_LOI)]
   dt[, p136 := sptf_bd136(A_C_OF = A_C_OF)]
-  dt[, p137 := sptf_bd137(A_SOM_LOI = A_SOM_LOI,A_SILT_MI = A_SILT_MI,A_PH_WA = A_PH_WA,B_DEPTH = B_DEPTH)]
+  dt[, p137 := sptf_bd137(A_SOM_LOI = A_SOM_LOI,A_SILT_MI = A_SILT_MI,A_PH_WA = A_PH_WA,A_DEPTH = A_DEPTH)]
   dt[, p138 := sptf_bd138(A_SOM_LOI = A_SOM_LOI, A_SILT_MI = A_SILT_MI)]
   dt[, p139 := sptf_bd139(A_SOM_LOI = A_SOM_LOI, A_CLAY_MI = A_CLAY_MI,A_SAND_MI = A_SILT_MI)]
   dt[, p140 := sptf_bd140(A_SOM_LOI = A_SOM_LOI,A_CLAY_MI = A_CLAY_MI,A_SAND_MI = A_SAND_MI,A_SILT_MI = A_SILT_MI)]
@@ -181,10 +181,10 @@ ptf_bd_all <- function(dt){
   dt[, p144 := sptf_bd144(A_C_OF = A_C_OF,A_CLAY_MI = A_CLAY_MI,A_SAND_MI = A_SAND_MI)]
   dt[, p145 := sptf_bd145(A_C_OF = A_C_OF,A_CLAY_MI = A_CLAY_MI,A_SAND_MI = A_SAND_MI,A_SILT_MI = A_SILT_MI)]
   dt[, p146 := sptf_bd146(A_C_OF = A_C_OF)]
-  dt[, p147 := sptf_bd147(A_C_OF = A_C_OF,A_CLAY_MI = A_CLAY_MI,A_SAND_MI = A_SAND_MI,A_SILT_MI = A_SILT_MI,B_DEPTH = B_DEPTH)]
+  dt[, p147 := sptf_bd147(A_C_OF = A_C_OF,A_CLAY_MI = A_CLAY_MI,A_SAND_MI = A_SAND_MI,A_SILT_MI = A_SILT_MI,A_DEPTH = A_DEPTH)]
   dt[, p148 := sptf_bd148(A_SOM_LOI = A_SOM_LOI,A_CLAY_MI = A_CLAY_MI)]
   dt[, p149 := sptf_bd149(A_C_OF = A_C_OF)]
-  dt[, p150 := sptf_bd150(A_C_OF = A_C_OF,B_DEPTH = B_DEPTH)]
+  dt[, p150 := sptf_bd150(A_C_OF = A_C_OF,A_DEPTH = A_DEPTH)]
   dt[, p151 := sptf_bd151(A_CLAY_MI = A_CLAY_MI,A_SAND_MI = A_SAND_MI,A_SILT_MI = A_SILT_MI)]
   dt[, p152 := sptf_bd152(A_SOM_LOI = A_SOM_LOI)]
   dt[, p153 := sptf_bd153(A_SOM_LOI = A_SOM_LOI, A_CLAY_MI = A_CLAY_MI)]
@@ -220,7 +220,7 @@ ptf_bd_all <- function(dt){
   
   # melt the data
   dt2 <- melt(dt, 
-              id.vars = c('id','A_SOM_LOI', "A_C_OF", "A_CLAY_MI", "A_SAND_MI", "A_SILT_MI", "B_DEPTH"),
+              id.vars = c('id','A_SOM_LOI', "A_C_OF", "A_CLAY_MI", "A_SAND_MI", "A_SILT_MI", "A_DEPTH"),
               measure = patterns('^p'),
               variable.name = 'ptf_id')
   dt2[,ptf_id := as.integer(gsub('p','',ptf_id))]
@@ -241,7 +241,7 @@ ptf_bd_all <- function(dt){
 #' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
 #' @param A_SAND_MI (numeric) The sand content of the soil (\%).
 #' @param A_SILT_MI (numeric) The silt content of the soil (\%).
-#' @param B_DEPTH (numeric) The depth of the sampled soil layer (m)
+#' @param A_DEPTH (numeric) The depth of the sampled soil layer (m)
 #' @param B_LU_PTFCLASS (character) The land use categorie (options: agriculture, grassland, cropland, forest, nature)
 #' @param B_LOC_COUNTRY (character) The country code 
 #' @param nmax (integer) the maximum number of ptfs to be included (default nmax = 5)
@@ -259,7 +259,7 @@ ptf_bd_all <- function(dt){
 ptf_bd <- function(A_SOM_LOI = NA_real_, A_C_OF = NA_real_, 
                    A_CLAY_MI = NA_real_, A_SAND_MI = NA_real_, A_SILT_MI = NA_real_, 
                    B_LU_PTFCLASS = NA_real_,
-                   B_DEPTH = 0.3, 
+                   A_DEPTH = 0.3, 
                    B_LOC_COUNTRY = 'NL', 
                    nmax = 5, ...){
   
@@ -277,7 +277,7 @@ ptf_bd <- function(A_SOM_LOI = NA_real_, A_C_OF = NA_real_,
   
   # number of sites to predict
   arg.length <- max(length(A_SOM_LOI), length(A_C_OF),length(A_CLAY_MI),length(A_SAND_MI),length(A_SILT_MI),
-                    length(B_DEPTH),length(B_LU_PTFCLASS),length(B_LOC_COUNTRY))
+                    length(A_DEPTH),length(B_LU_PTFCLASS),length(B_LOC_COUNTRY))
   
   # make internal table
   dt <- data.table(id = 1: arg.length,
@@ -286,7 +286,7 @@ ptf_bd <- function(A_SOM_LOI = NA_real_, A_C_OF = NA_real_,
                    A_CLAY_MI = A_CLAY_MI,
                    A_SAND_MI = A_SAND_MI,
                    A_SILT_MI = A_SILT_MI,
-                   B_DEPTH = B_DEPTH,
+                   A_DEPTH = A_DEPTH,
                    B_LOC_COUNTRY = B_LOC_COUNTRY,
                    B_LU_PTFCLASS = B_LU_PTFCLASS
   )
@@ -323,7 +323,7 @@ ptf_bd <- function(A_SOM_LOI = NA_real_, A_C_OF = NA_real_,
   dt2[B_LOC_COUNTRY == country_code, ap := ap + 1]
   dt2[B_LOC_CONT == continent_code, ap := ap + 1]
   dt2[B_LU_PTFCLASS == landuse | landuse == 'variable' | is.na(landuse),ap := ap + 1]
-  dt2[B_DEPTH < 30 & depth < 50, ap := ap + 0.5]
+  dt2[A_DEPTH < 30 & depth < 50, ap := ap + 0.5]
   dt2[grepl('sand',B_SOILTYPE) & grepl('sand|variable',soiltype) | is.na(soiltype), ap := ap + 0.33]
   dt2[grepl('clay',B_SOILTYPE) & grepl('clay|variable',soiltype) | is.na(soiltype), ap := ap + 0.33]
   dt2[grepl('loam',B_SOILTYPE) & grepl('loam|variable',soiltype) | is.na(soiltype), ap := ap + 0.33]
@@ -346,7 +346,7 @@ ptf_bd <- function(A_SOM_LOI = NA_real_, A_C_OF = NA_real_,
 #' Predict the bulk density with the best combination of existing ptfs from literature.
 #'  (modified version, using the support function ptf_bd_all)
 #'
-#' @param B_DEPTH (numeric) The depth of the sampled soil layer (m)
+#' @param A_DEPTH (numeric) The depth of the sampled soil layer (m)
 #' @param B_LU_PTFCLASS (character) The land use categorie (options: agriculture, grassland, cropland, forest, nature)
 #' @param B_LOC_COUNTRY (character) The country code 
 #' @param nboot (integer) the number of bootstrapped samples (x 1000) to predict soil density
@@ -362,7 +362,7 @@ ptf_bd <- function(A_SOM_LOI = NA_real_, A_C_OF = NA_real_,
 #' 
 #' @export
 ptf_bd_lm <- function(B_LU_PTFCLASS = NA_character_,
-                      B_DEPTH = 0.3, 
+                      A_DEPTH = 0.3, 
                       B_LOC_COUNTRY = 'NL', 
                       nboot = 10){
   
@@ -380,7 +380,7 @@ ptf_bd_lm <- function(B_LU_PTFCLASS = NA_character_,
                    A_SOM_LOI = seq(0.1,20,0.5),
                    A_CLAY_MI = 7.5,
                    A_SAND_MI = 60,
-                   B_DEPTH = B_DEPTH,
+                   A_DEPTH = A_DEPTH,
                    B_LOC_COUNTRY = B_LOC_COUNTRY,
                    B_LU_PTFCLASS = B_LU_PTFCLASS
   )
@@ -454,7 +454,7 @@ ptf_bd_lm <- function(B_LU_PTFCLASS = NA_character_,
 #' @param A_SAND_MI (numeric) The sand content of the soil (\%).
 #' @param A_SILT_MI (numeric) The silt content of the soil (\%).
 #' @param D_BDS (numeric) Soil bulk density (kg/m3)
-#' @param B_DEPTH (numeric) The depth of the sampled soil layer (m)
+#' @param A_DEPTH (numeric) The depth of the sampled soil layer (m)
 #' @param topsoil (boolean) Whether top soil (1) or not (0)
 #' 
 #' 
@@ -471,7 +471,7 @@ ptf_whc_all <- function(dt){
   
   # add all possible inputs as NA when missing
   cols <- c('A_SOM_LOI', 'A_C_OF', 'A_CLAY_MI','A_SAND_MI','A_SILT_MI', 'D_BDS',
-            'B_DEPTH', 'topsoil')
+            'A_DEPTH', 'topsoil')
   cols <- cols[!cols %in% colnames(dt)]
   dt[,c(cols) := NA_real_]
   
@@ -485,8 +485,8 @@ ptf_whc_all <- function(dt){
   dt[is.na(A_SOM_LOI) & !is.na(A_C_OF), A_SOM_LOI := A_C_OF * 0.1 * 1.724]
   dt[!is.na(A_SOM_LOI) & is.na(A_C_OF), A_C_OF := A_SOM_LOI * 10 / 1.724]
   
-  # insert default value for topsoil and B_DEPTH, when missing
-  dt[is.na(B_DEPTH), B_DEPTH := 0.3]
+  # insert default value for topsoil and A_DEPTH, when missing
+  dt[is.na(A_DEPTH), A_DEPTH := 0.3]
   dt[is.na(topsoil), topsoil := 1]
   
   
@@ -498,14 +498,14 @@ ptf_whc_all <- function(dt){
   dt[, p1 := sptf_whc1(A_C_OF = A_C_OF, A_SAND_MI = A_SAND_MI, A_CLAY_MI = A_CLAY_MI)]
   dt[, p2 := sptf_whc2(A_C_OF = A_C_OF, A_SAND_MI = A_SAND_MI, A_CLAY_MI = A_CLAY_MI)] 
   dt[, p3 := sptf_whc3(A_SAND_MI = A_SAND_MI, A_CLAY_MI = A_CLAY_MI, mp_wp = mp_wp, mp_fc = mp_fc)] 
-  dt[, p4 := sptf_whc4(A_SAND_MI = A_SAND_MI, A_CLAY_MI = A_CLAY_MI, D_BDS = D_BDS, B_DEPTH = 30, mp_wp = mp_wp)] 
+  dt[, p4 := sptf_whc4(A_SAND_MI = A_SAND_MI, A_CLAY_MI = A_CLAY_MI, D_BDS = D_BDS, A_DEPTH = 30, mp_wp = mp_wp)] 
   dt[, p5 := sptf_whc5(A_SILT_MI = A_SILT_MI, A_CLAY_MI = A_CLAY_MI, D_BDS = D_BDS, A_SOM_LOI = A_SOM_LOI, 
                        topsoil = 1, mp_wp = mp_wp, mp_fc = mp_fc)] 
   dt[, p6 := sptf_whc6(A_SAND_MI = A_SAND_MI, A_CLAY_MI = A_CLAY_MI, D_BDS = D_BDS, A_C_OF = A_C_OF,
                        mp_wp = mp_wp, mp_fc = mp_fc)] 
   # PTF7: This PTF uses the package 'euptf2'. The function 'euptf2::euptfFun' does not work when the data frame has only 1 row ?!
   dt[, p7 := sptf_whc7(A_SAND_MI = A_SAND_MI, A_CLAY_MI = A_CLAY_MI, A_SILT_MI = A_SILT_MI,
-                       D_BDS = D_BDS, A_C_OF = A_C_OF, B_DEPTH = 30, mp_wp = mp_wp, mp_fc = mp_fc)] 
+                       D_BDS = D_BDS, A_C_OF = A_C_OF, A_DEPTH = 30, mp_wp = mp_wp, mp_fc = mp_fc)] 
   dt[, p8 := sptf_whc8(A_SAND_MI = A_SAND_MI, A_CLAY_MI = A_CLAY_MI,  D_BDS = D_BDS, A_C_OF = A_C_OF,
                        mp_wp = mp_wp, mp_fc = mp_fc)] 
   # PTF9: field capacity (mp_fc) should be either 33 or 10 kPa.
@@ -533,7 +533,7 @@ ptf_whc_all <- function(dt){
   
   # melt the data
   dt2 <- melt(dt, 
-              id.vars = c('id','A_SOM_LOI', "A_C_OF", "A_CLAY_MI", "A_SAND_MI", "A_SILT_MI", "D_BDS", "B_DEPTH"),
+              id.vars = c('id','A_SOM_LOI', "A_C_OF", "A_CLAY_MI", "A_SAND_MI", "A_SILT_MI", "D_BDS", "A_DEPTH"),
               measure = patterns('^p'),
               variable.name = 'ptf_id')
   dt2[,ptf_id := as.integer(gsub('p','',ptf_id))]
