@@ -15,10 +15,10 @@
 sptf_pmn1 <- function(A_C_OF, A_CLAY_MI, A_N_RT, A_PH_CC) {
   # Check input
   arg.length <- max(length(A_C_OF), length(A_CLAY_MI), length(A_N_RT), length(A_PH_CC))
-  checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
-  checkmate::assert_numeric(A_N_RT, lower = 0, upper = 30000, len = arg.length)
-  checkmate::assert_numeric(A_PH_CC, lower = 0, upper = 10, len = arg.length)
+  check_numeric('A_C_OF', A_C_OF, FALSE, arg.length)
+  check_numeric('A_CLAY_MI', A_CLAY_MI, FALSE, arg.length)
+  check_numeric('A_N_RT', A_N_RT, FALSE, arg.length)
+  check_numeric('A_PH_CC', A_PH_CC, FALSE, arg.length)
   
   
   # Collect data into a table
@@ -77,10 +77,10 @@ sptf_pmn1 <- function(A_C_OF, A_CLAY_MI, A_N_RT, A_PH_CC) {
 sptf_pmn2 <- function(A_C_OF, A_SILT_MI, A_N_RT, A_PH_CC, t = 7) {
   # Check input
   arg.length <- max(length(A_C_OF), length(A_SILT_MI), length(A_N_RT), length(A_PH_CC), length(t))
-  checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, len = arg.length)
-  checkmate::assert_numeric(A_N_RT, lower = 0, upper = 30000, len = arg.length)
-  checkmate::assert_numeric(A_PH_CC, lower = 0, upper = 10, len = arg.length)
+  check_numeric('A_C_OF', A_C_OF, FALSE, arg.length)
+  check_numeric('A_SILT_MI', A_SILT_MI, FALSE, arg.length)
+  check_numeric('A_N_RT', A_N_RT, FALSE, arg.length)
+  check_numeric('A_PH_CC', A_PH_CC, FALSE, arg.length)
   checkmate::assert_numeric(t, lower = 0, upper = 35)
   
   # Collect data into a table
@@ -133,8 +133,8 @@ sptf_pmn2 <- function(A_C_OF, A_SILT_MI, A_N_RT, A_PH_CC, t = 7) {
 sptf_pmn3 <- function(A_N_RT, A_CLAY_MI) {
   # Check input
   arg.length <- max(length(A_N_RT), length(A_CLAY_MI))
-  checkmate::assert_numeric(A_N_RT, lower = 0, upper = 30000, len = arg.length)
-  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
+  check_numeric('A_N_RT', A_N_RT, FALSE, arg.length)
+  check_numeric('A_CLAY_MI', A_CLAY_MI, FALSE, arg.length)
   
   # Collect data into a table
   dt <- data.table(A_N_RT = A_N_RT,
@@ -168,8 +168,8 @@ sptf_pmn3 <- function(A_N_RT, A_CLAY_MI) {
 sptf_pmn4 <- function(A_N_RT, A_CLAY_MI) {
   # Check input
   arg.length <- max(length(A_N_RT), length(A_CLAY_MI))
-  checkmate::assert_numeric(A_N_RT, lower = 0, upper = 30000, len = arg.length)
-  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
+  check_numeric('A_N_RT', A_N_RT, FALSE, arg.length)
+  check_numeric('A_CLAY_MI', A_CLAY_MI, FALSE, arg.length)
   
   # Collect data into a table
   dt <- data.table(A_N_RT = A_N_RT,
@@ -206,9 +206,9 @@ sptf_pmn4 <- function(A_N_RT, A_CLAY_MI) {
 sptf_pmn5 <- function(A_N_RT, A_C_OF, A_CEC_CO, t = 7) {
   # Check input
   arg.length <- max(length(A_N_RT), length(A_C_OF), length(A_CEC_CO))
-  checkmate::assert_numeric(A_N_RT, lower = 0, upper = 30000, len = arg.length)
-  checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000, any.missing = FALSE,len = arg.length)
-  checkmate::assert_numeric(A_CEC_CO, lower = 0, upper = 10000, len = arg.length)
+  check_numeric('A_N_RT', A_N_RT, FALSE, arg.length)
+  check_numeric('A_C_OF', A_C_OF, FALSE, arg.length)
+  check_numeric('A_CEC_CO', A_CEC_CO, FALSE, arg.length)
   checkmate::assert_numeric(t, lower = 0, upper = 100)
   
   # Collect data into a table
@@ -266,11 +266,11 @@ sptf_pmn5 <- function(A_N_RT, A_C_OF, A_CEC_CO, t = 7) {
 sptf_pmn6 <- function(A_N_RT, A_C_OF, A_CLAY_MI, A_SILT_MI, A_PH_CC, t = 7, RES = 1) {
   # Check input
   arg.length <- max(length(A_N_RT), length(A_C_OF), length(A_CLAY_MI), length(A_SILT_MI), length(A_PH_CC))
-  checkmate::assert_numeric(A_N_RT, lower = 0, upper = 30000, len = arg.length)
-  checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000, len = arg.length)
-  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
-  checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, len = arg.length)
-  checkmate::assert_numeric(A_PH_CC, lower = 2, upper = 10, len = arg.length)
+  check_numeric('A_N_RT', A_N_RT, FALSE, arg.length)
+  check_numeric('A_C_OF', A_C_OF, FALSE, arg.length)
+  check_numeric('A_CLAY_MI', A_CLAY_MI, FALSE, arg.length)
+  check_numeric('A_SILT_MI', A_SILT_MI, FALSE, arg.length)
+  check_numeric('A_PH_CC', A_PH_CC, FALSE, arg.length)
   checkmate::assert_numeric(t, lower = 0, upper = 100)
   checkmate::assert_numeric(RES,lower = 0, upper = 1)
   
@@ -327,8 +327,8 @@ sptf_pmn6 <- function(A_N_RT, A_C_OF, A_CLAY_MI, A_SILT_MI, A_PH_CC, t = 7, RES 
 sptf_pmn7 <- function(A_C_OF, A_CLAY_MI, t = 7) {
   # Check input
   arg.length <- max(length(A_C_OF), length(A_CLAY_MI))
-  checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000, len = arg.length)
-  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
+  check_numeric('A_C_OF', A_C_OF, FALSE, arg.length)
+  check_numeric('A_CLAY_MI', A_CLAY_MI, FALSE, arg.length)
   checkmate::assert_numeric(t, lower = 0, upper = 100)
 
   
@@ -373,9 +373,9 @@ sptf_pmn7 <- function(A_C_OF, A_CLAY_MI, t = 7) {
 sptf_pmn8 <- function(A_N_RT, A_CEC_CO, A_SILT_MI, t = 7) {
   # Check input
   arg.length <- max(length(A_N_RT), length(A_CEC_CO), length(A_SILT_MI))
-  checkmate::assert_numeric(A_N_RT, lower = 0, upper = 30000, len = arg.length)
-  checkmate::assert_numeric(A_CEC_CO, lower = 0, upper = 10000, len = arg.length)
-  checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, len = arg.length)
+  check_numeric('A_N_RT', A_N_RT, FALSE, arg.length)
+  check_numeric('A_CEC_CO', A_CEC_CO, FALSE, arg.length)
+  check_numeric('A_SILT_MI', A_SILT_MI, FALSE, arg.length)
   checkmate::assert_numeric(t, lower = 0, upper = 100)
   
   # Collect data into a table
@@ -424,7 +424,7 @@ sptf_pmn8 <- function(A_N_RT, A_CEC_CO, A_SILT_MI, t = 7) {
 sptf_pmn9 <- function(A_N_RT, CULT = 1, t = 7) {
   # Check input
   arg.length <- max(length(A_N_RT), length(CULT))
-  checkmate::assert_numeric(A_N_RT, lower = 0, upper = 30000, len = arg.length)
+  check_numeric('A_N_RT', A_N_RT, FALSE, arg.length)
   checkmate::assert_numeric(t, lower = 0, upper = 100)
   
   # Collect data into a table
@@ -472,7 +472,7 @@ sptf_pmn9 <- function(A_N_RT, CULT = 1, t = 7) {
 sptf_pmn10 <- function(A_N_RT, t = 7) {
   # Check input
   arg.length <- max(length(A_N_RT))
-  checkmate::assert_numeric(A_N_RT, lower = 0, upper = 30000, len = arg.length)
+  check_numeric('A_N_RT', A_N_RT, FALSE, arg.length)
   checkmate::assert_numeric(t, lower = 0, upper = 100)
   
   # Collect data into a table
