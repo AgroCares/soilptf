@@ -4,7 +4,12 @@
 \alias{check_numeric}
 \title{Check numeric sptf_parameters}
 \usage{
-check_numeric(this.parameter.name, this.parameter.value, anymissing = FALSE)
+check_numeric(
+  this.parameter.name,
+  this.parameter.value,
+  anymissing = FALSE,
+  arg.length = NULL
+)
 }
 \arguments{
 \item{this.parameter.name}{(character) Quoted name of the variable to check}
@@ -12,6 +17,8 @@ check_numeric(this.parameter.name, this.parameter.value, anymissing = FALSE)
 \item{this.parameter.value}{(numeric) Value or vector of values to check}
 
 \item{anymissing}{(boolean) are missing values allowed (TRUE) or not (FALSE)}
+
+\item{arg.length}{(numeric) length of the vector}
 }
 \description{
 Check numeric sptf_parameters

@@ -50,6 +50,7 @@ get_parval <- function(this.parameter, this.column, check.num = FALSE) {
 #' @details
 #' This function retrieves the value in column `value_min` of `sptf_parameters`
 #' Vectors of parameter codes are also possible
+#' @export
 get_minval <- function(this.parameter) {
   # add visual binding
   data_type = code = NULL
@@ -75,6 +76,7 @@ get_minval <- function(this.parameter) {
 #' @details
 #' This function retrieves the value in column `value_max` of `sptf_parameters`
 #' Vectors of parameter codes are also possible
+#' @export
 get_maxval <- function(this.parameter) {
   # add visual binding
   data_type = code = NULL
@@ -102,6 +104,7 @@ get_maxval <- function(this.parameter) {
 #' @details This function wraps unlist(strsplit(sptf_parameters[code == this.parameter, options]))
 #' to return a vector of allowed values for parameters of data_type 'enum'. If the
 #' data is numeric or integer, options will be given as numeric/integer instead of strings
+#' @export
 enum_opts <- function(this.parameter) {
   # add visual binding
   data_type = enum = code = NULL
@@ -135,18 +138,22 @@ enum_opts <- function(this.parameter) {
 #' @param this.parameter.name (character) Quoted name of the variable to check
 #' @param this.parameter.value (numeric) Value or vector of values to check
 #' @param anymissing (boolean) are missing values allowed (TRUE) or not (FALSE)
+#' @param arg.length (numeric) length of the vector
 #' 
-check_numeric <- function(this.parameter.name, this.parameter.value, anymissing = FALSE){
+#' @export
+check_numeric <- function(this.parameter.name, this.parameter.value, anymissing = FALSE, arg.length = NULL){
   checkmate::assert_numeric(this.parameter.value,
                             lower = soilptf::get_minval(this.parameter.name),
                             upper = soilptf::get_maxval(this.parameter.name),
-                            any.missing = anymissing)
+                            any.missing = anymissing,
+                            len = arg.length)
 }
 
 #' Check enum parameters
 #' 
 #' @param this.parameter.name (character) Quoted name of the variable to check
 #' @param this.parameter.value (numeric) Value or vector of values to check
+#' 
 check_enum <- function(this.parameter.name, this.parameter.value){
   checkmate::assert_subset(this.parameter.value,
                            choices = soilptf::enum_opts(this.parameter.name))
