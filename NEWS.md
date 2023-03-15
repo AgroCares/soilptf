@@ -1,5 +1,12 @@
 # Changelog carboncastr
 
+# Version 0.1.0.9000 2023-03-15
+## Added
+* `sptf_parameters` a table with data on parameters used within the package
+* functions to facilitate checkmates with `sptf_parameters` (`check_enum()`, 
+`check_numeric`, `get_minval()`, `get_maxval()`, `enum_opts()`)
+
+
 ## Version 0.1.0  2022-08-15
 First start of pedotransferfunction for bulk density
 

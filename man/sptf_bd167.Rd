@@ -2,7 +2,8 @@
 % Please edit documentation in R/bulkdensity.R
 \name{sptf_bd167}
 \alias{sptf_bd167}
-\title{Calculate the bulk density given the pedotransferfunction of Poelman (1975)}
+\title{Calculate the bulk density given the pedotransferfunction of Poelman (1975)
+note YF: this is the soil density (weight of soil without pore space), not bulk density!}
 \usage{
 sptf_bd167(A_SOM_LOI, A_CLAY_MI)
 }
@@ -13,6 +14,7 @@ sptf_bd167(A_SOM_LOI, A_CLAY_MI)
 }
 \description{
 Calculate the bulk density given the pedotransferfunction of Poelman (1975)
+note YF: this is the soil density (weight of soil without pore space), not bulk density!
 }
 \references{
 Poelman (1975) Dichtheid van de vaste delen van rivierkleigronden. In: https://edepot.wur.nl/299664.
