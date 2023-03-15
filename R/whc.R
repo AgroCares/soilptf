@@ -149,7 +149,7 @@ sptf_whc3 <- function(A_SAND_MI, A_CLAY_MI, mp_wp = 1500, mp_fc = 33) {
 #' @param A_SAND_MI (numeric) The sand content of the soil (\%).
 #' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
 #' @param D_BDS (numeric) The soil bulk density (g/cm3).
-#' @param B_DEPTH (numeric) The mean depth of soil sample (cm). This should range within 8 - 180 cm.
+#' @param A_DEPTH (numeric) The mean depth of soil sample (cm). This should range within 8 - 180 cm.
 #' @param mp_wp (numeric) Water potential at wilting point (kPa).
 #' 
 #' @import data.table
@@ -157,20 +157,20 @@ sptf_whc3 <- function(A_SAND_MI, A_CLAY_MI, mp_wp = 1500, mp_fc = 33) {
 #' @references Oosterveld and Chang (1980) Empirical relations between laboratory determinations of soil texture and moisture retention
 #'
 #' @export
-sptf_whc4 <- function(A_SAND_MI, A_CLAY_MI, D_BDS, B_DEPTH = 15, mp_wp = 1500) {
+sptf_whc4 <- function(A_SAND_MI, A_CLAY_MI, D_BDS, A_DEPTH = 15, mp_wp = 1500) {
   # Check input
   arg.length <- max(length(A_SAND_MI),length(A_CLAY_MI))
   checkmate::assert_numeric(A_SAND_MI, lower = 0, upper = 100, len = arg.length)
   checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
   checkmate::assert_numeric(D_BDS, lower = 0, upper = 100, len = arg.length)
-  checkmate::assert_numeric(B_DEPTH, lower = 8, upper = 180)
+  checkmate::assert_numeric(A_DEPTH, lower = 8, upper = 180)
   
   
   # Collect data into a table (set in units %)
   dt <- data.table(A_SAND_MI = A_SAND_MI,
                    A_CLAY_MI = A_CLAY_MI,
                    D_BDS = D_BDS,
-                   B_DEPTH = B_DEPTH,
+                   A_DEPTH = A_DEPTH,
                    value = NA_real_)
   
   # Water tention at field capacity (kPa)
@@ -179,12 +179,12 @@ sptf_whc4 <- function(A_SAND_MI, A_CLAY_MI, D_BDS, B_DEPTH = 15, mp_wp = 1500) {
   
   # Calculate volumetric water content at field capacity (cm3/cm3)
   dt[, theta_fc := 0.01 * D_BDS * 
-       (35.367 + 0.644 * A_CLAY_MI - 0.251 * A_SAND_MI - 0.045 * B_DEPTH) *
+       (35.367 + 0.644 * A_CLAY_MI - 0.251 * A_SAND_MI - 0.045 * A_DEPTH) *
        mp_fc ^ (-0.19)]
   
   # Calculate volumetric water content at wilting point (cm3/cm3)
   dt[, theta_wp := 0.01 * D_BDS * 
-       (35.367 + 0.644 * A_CLAY_MI - 0.251 * A_SAND_MI - 0.045 * B_DEPTH) *
+       (35.367 + 0.644 * A_CLAY_MI - 0.251 * A_SAND_MI - 0.045 * A_DEPTH) *
        mp_wp ^ (-0.19)]
   
   # Calculate water holding capacity (cm3/cm3)
@@ -336,7 +336,7 @@ sptf_whc6 <- function(A_SAND_MI, A_CLAY_MI, D_BDS, A_C_OF, mp_wp = 15000, mp_fc 
 #' @param A_SILT_MI (numeric) The clay content of the soil (\%).
 #' @param D_BDS (numeric) The soil bulk density (g/cm3).
 #' @param A_C_OF (numeric) The soil organic carbon content (g/kg).
-#' @param B_DEPTH (numeric) The depth of soil (cm)
+#' @param A_DEPTH (numeric) The depth of soil (cm)
 #' @param mp_wp (numeric) Water potential at wilting point (kPa).
 #' @param mp_fc (numeric) Water potential at field capacity (kPa).
 #' 
@@ -346,11 +346,11 @@ sptf_whc6 <- function(A_SAND_MI, A_CLAY_MI, D_BDS, A_C_OF, mp_wp = 15000, mp_fc 
 #' @references Szabó et al (2021) Updated European hydraulic pedotransfer functions with communicated uncertainties in the predicted variables (euptfv2)
 #' 
 #' @export
-sptf_whc7 <- function(A_SAND_MI, A_CLAY_MI, A_SILT_MI, D_BDS, A_C_OF, B_DEPTH = 15,
+sptf_whc7 <- function(A_SAND_MI, A_CLAY_MI, A_SILT_MI, D_BDS, A_C_OF, A_DEPTH = 15,
                       mp_wp = 1500, mp_fc = 33) {
   # Check input
   arg.length <- max(length(A_SAND_MI),length(A_CLAY_MI), length(A_SILT_MI), length(D_BDS),
-                    length(A_C_OF), length(B_DEPTH))
+                    length(A_C_OF), length(A_DEPTH))
   checkmate::assert_numeric(A_SAND_MI, lower = 0, upper = 100, len = arg.length)
   checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
   checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, len = arg.length)
@@ -363,12 +363,12 @@ sptf_whc7 <- function(A_SAND_MI, A_CLAY_MI, A_SILT_MI, D_BDS, A_C_OF, B_DEPTH = 
                    A_SILT_MI = A_SILT_MI,
                    D_BDS = D_BDS,
                    A_C_OF = A_C_OF * 0.1, 
-                   B_DEPTH = B_DEPTH,
+                   A_DEPTH = A_DEPTH,
                    value = NA_real_)
   
   # Estimate water retention parameters, using functions of the R package 'euptf2'
   # store necessary predictor as data frame
-  dt2 <- as.data.frame(data.table(DEPTH_M = dt$B_DEPTH, # compulsory
+  dt2 <- as.data.frame(data.table(DEPTH_M = dt$A_DEPTH, # compulsory
                     USSAND = dt$A_SAND_MI, # compulsory
                     USSILT = dt$A_SILT_MI, # compulsory
                     USCLAY = dt$A_CLAY_MI, # compulsory
