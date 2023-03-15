@@ -24,5 +24,6 @@ Suggests:
     rmarkdown,
     knitr,
     ggplot2,
-    testthat
+    testthat (>= 3.0.0)
 VignetteBuilder: knitr
+Config/testthat/edition: 3
