@@ -22,9 +22,7 @@ sptf_vg1 <- function(A_CLAY_MI,A_SILT_MI,A_SOM_LOI,B_DEPTH) {
   arg.length <- max(length(A_CLAY_MI), length(A_SILT_MI), length(A_SOM_LOI), length(B_DEPTH))
   check_numeric('A_CLAY_MI', A_CLAY_MI, FALSE, arg.length)
   check_numeric('A_SILT_MI', A_SILT_MI, FALSE, arg.length)
-  checkmate::assert_numeric(A_SOM_LOI, lower = get_minval('A_SOM_LOI'),
-                            upper = get_maxval('A_SOM_LOI'),
-                            any.missing = FALSE, min.len = 1)
+  check_numeric('A_SOM_LOI', A_SOM_LOI, FALSE, arg.length)
   check_numeric('A_DEPTH', A_DEPTH, FALSE, arg.length)
   
   # Collect data in a table
@@ -97,12 +95,8 @@ sptf_vg1 <- function(A_CLAY_MI, A_SILT_MI, A_SOM_LOI, A_SAND_M50, B_DEPTH){
   arg.length <- max(length(A_CLAY_MI), length(A_SILT_MI), length(A_SOM_LOI), length(A_SAND_M50), length(B_DEPTH))
   check_numeric('A_CLAY_MI', A_CLAY_MI, FALSE, arg.length)
   check_numeric('A_SILT_MI', A_SILT_MI, FALSE, arg.length)
-  checkmate::assert_numeric(A_SOM_LOI, lower = get_minval('A_SOM_LOI'),
-                            upper = get_maxval('A_SOM_LOI'),
-                            any.missing = FALSE, min.len = 1)
-  checkmate::assert_numeric(A_SAND_M50, lower = get_minval('A_SAND_M50'),
-                            upper = get_maxval('A_SOM_LOI'),
-                            any.missing = FALSE, min.len = 1)
+  check_numeric('A_SOM_LOI', A_SOM_LOI, FALSE, arg.length)
+  check_numeric('A_SAND_M50', A_SAND_M50, FALSE, arg.length)
   check_numeric('A_DEPTH', A_DEPTH, FALSE, arg.length)
   
   # Collect data in a table
