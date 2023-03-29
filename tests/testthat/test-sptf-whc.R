@@ -1,5 +1,6 @@
 # test bulk density functions
 require(testthat)
+require(euptf2)
 
 # dynamic file location
 tloc <- if(length(list.files("../testdata/"))>0){"../testdata/"} else {'tests/testdata/'}
@@ -32,7 +33,7 @@ dt[, p3 := sptf_whc3(A_SAND_MI = A_SAND_MI, A_CLAY_MI = A_CLAY_MI, mp_wp = mp_wp
 dt[, p4 := sptf_whc4(A_SAND_MI = A_SAND_MI, A_CLAY_MI = A_CLAY_MI, D_BDS = D_BDS, A_DEPTH = 30, mp_wp = mp_wp)] 
 dt[, p5 := sptf_whc5(A_SILT_MI = A_SILT_MI, A_CLAY_MI = A_CLAY_MI, D_BDS = D_BDS, A_SOM_LOI = A_SOM_LOI, topsoil = 1, mp_wp = mp_wp, mp_fc = mp_fc)] 
 dt[, p6 := sptf_whc6(A_SAND_MI = A_SAND_MI, A_CLAY_MI = A_CLAY_MI, D_BDS = D_BDS, A_C_OF = A_C_OF, mp_wp = mp_wp, mp_fc = mp_fc)] 
-dt[, p7 := sptf_whc7(A_SAND_MI = A_SAND_MI, A_CLAY_MI = A_CLAY_MI, A_SILT_MI = A_SILT_MI, D_BDS = D_BDS, A_C_OF = A_C_OF, A_DEPTH = 30, mp_wp = mp_wp, mp_fc = mp_fc)] 
+dt[, p7 := sptf_whc7(A_SAND_MI = A_SAND_MI, A_CLAY_MI = A_CLAY_MI, A_SILT_MI = A_SILT_MI, D_BDS = D_BDS, A_C_OF = A_C_OF, A_DEPTH = 30, mp_wp = mp_wp, mp_fc = mp_fc)]
 dt[, p8 := sptf_whc8(A_SAND_MI = A_SAND_MI, A_CLAY_MI = A_CLAY_MI,  D_BDS = D_BDS, A_C_OF = A_C_OF, mp_wp = mp_wp, mp_fc = mp_fc)] 
 dt[, p9 := sptf_whc9(A_CLAY_MI = A_CLAY_MI, A_SILT_MI = A_SILT_MI, A_C_OF = A_C_OF,  mp_fc = mp_fc)] 
 dt[, p10 := sptf_whc10(A_CLAY_MI = A_CLAY_MI, A_SILT_MI = A_SILT_MI, A_SAND_MI = A_SAND_MI, A_C_OF = A_C_OF, D_BDS = D_BDS, mp_fc = mp_fc)]
@@ -46,6 +47,9 @@ dt[, p16 := sptf_whc16(A_CLAY_MI = A_CLAY_MI, A_SILT_MI = A_SILT_MI, A_SOM_LOI =
 # select only collumns with density predictions
 cols <- colnames(dt)[grep('^p', names(dt))]
 dt <- dt[, ..cols] 
+
+# temp solution: 
+dt[is.na(dt), ] = 0
 
 # write to testdata
 # dt |> fwrite('tests/testdata/whc.csv')

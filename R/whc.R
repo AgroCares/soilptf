@@ -381,6 +381,7 @@ sptf_whc7 <- function(A_SAND_MI, A_CLAY_MI, A_SILT_MI, D_BDS, A_C_OF, A_DEPTH = 
   euptfres <- as.data.table(euptf2::euptfFun(ptf = "PTF07", 
                        predictor = dt2,
                        target = c("VG")))
+  
   cols <- c("THS_PTF07", "THR_PTF07", "ALP_PTF07", "N_PTF07")
   cols2 <- c("theta_sat", "theta_res", "alfa", "n")
   setnames(euptfres, cols, cols2)
