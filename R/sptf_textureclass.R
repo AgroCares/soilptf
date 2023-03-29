@@ -46,3 +46,7 @@ sptf_textureclass <- function(A_CLAY_MI, A_SILT_MI, A_SAND_MI){
   return(value)
   
 }
+
+# add soil texture class of NL
+
+# add organic matter class
