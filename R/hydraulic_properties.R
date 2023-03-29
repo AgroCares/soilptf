@@ -86,7 +86,7 @@ sptf_vg1 <- function(A_CLAY_MI,A_SILT_MI,A_SOM_LOI,A_DEPTH) {
 #' @references Wösten, J. H. M., Veerman, G. ., de Groot, W. J., & Stolte, J. (2001). Waterretentie en doorlatendheidskarakteristieken van boven- en ondergronden in Nederland: de Staringreeks. Alterra Rapport, 153, 86. https://doi.org/153
 #'
 #' @export 
-sptf_vg1 <- function(A_CLAY_MI, A_SILT_MI, A_SOM_LOI, A_SAND_M50, A_DEPTH){
+sptf_vg2 <- function(A_CLAY_MI, A_SILT_MI, A_SOM_LOI, A_SAND_M50, A_DEPTH){
   
   # add visual bindings
   A_DENSITY = ThetaR = ThetaS = Ksat = alfa = l = n =  id = NULL
