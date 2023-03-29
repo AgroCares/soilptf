@@ -945,9 +945,7 @@ sptf_whc16 <- function(A_CLAY_MI, A_SILT_MI, A_SOM_LOI,
   checkmate::assert_numeric(A_SAND_M50, lower = 0, upper = 2000)
   
   # load table of parameter values 
-  # bouwsteen_tb <- as.data.table(soilptf::sptf_bouwsteen) # <- this does not work
-  load("data/sptf_bouwsteen.rda") # <- quick&dirty solution. to be fixed.
-  bouwsteen_tb <- sptf_bouwsteen
+  bouwsteen_tb <- soilptf::sptf_bouwsteen |> setDT()
   
   # Collect data into a table 
   dt <- data.table(A_CLAY_MI = A_CLAY_MI,
