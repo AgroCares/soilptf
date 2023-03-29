@@ -5,6 +5,12 @@
 * `sptf_parameters` a table with data on parameters used within the package
 * functions to facilitate checkmates with `sptf_parameters` (`check_enum()`, 
 `check_numeric`, `get_minval()`, `get_maxval()`, `enum_opts()`)
+* manuals for whc and pmn functions
+
+## Changed
+* checkmates to use `sptf_parameters` instead of hardcoding min and maxvalues in
+each function
+* export whc and pmn ptf's in NAMESPACE
 
 
 ## Version 0.1.0  2022-08-15
