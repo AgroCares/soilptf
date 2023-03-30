@@ -6,14 +6,14 @@
 #' @param A_CLAY_MI (numeric) The clay content of the soil (\%)
 #' @param A_SILT_MI (numeric) The silt content of the soil (\%)
 #' @param A_SOM_LOI (numeric) The organic matter content of the soil (\%)
-#' @param B_DEPTH (numeric) The depth of the sampled soil layer (m)
+#' @param A_DEPTH (numeric) The depth of the sampled soil layer (m)
 #'
 #' @references Wösten, J.H.M , Lilly, A., Nemes, A., Le Bas, C. (1999) Development and use of a database of hydraulic properties of European soils. Geoderma 90 (3-4): 169-185.
 #'
 #' @import data.table  
 #'
 #' @export
-sptf_vg1 <- function(A_CLAY_MI,A_SILT_MI,A_SOM_LOI,B_DEPTH) {
+sptf_vg1 <- function(A_CLAY_MI,A_SILT_MI,A_SOM_LOI,A_DEPTH) {
   
   # add visual bindings
   A_DENSITY = ThetaR = ThetaS = alfa = n = ksat = id = NULL
@@ -30,7 +30,7 @@ sptf_vg1 <- function(A_CLAY_MI,A_SILT_MI,A_SOM_LOI,B_DEPTH) {
                    A_CLAY_MI = A_CLAY_MI,
                    A_SILT_MI = A_SILT_MI,
                    A_SOM_LOI = A_SOM_LOI,
-                   TOPSOIL = fifelse(B_DEPTH <= 50, 1,0),
+                   TOPSOIL = fifelse(A_DEPTH <= 50, 1,0),
                    A_DENSITY = NA_real_,
                    ThetaR = NA_real_,
                    ThetaS = NA_real_, 
@@ -81,12 +81,12 @@ sptf_vg1 <- function(A_CLAY_MI,A_SILT_MI,A_SOM_LOI,B_DEPTH) {
 #' @param A_SILT_MI (numeric) The silt content of the soil (\%) 
 #' @param A_SOM_LOI (numeric) The organic matter content of the soil (\%)
 #' @param A_SAND_M50 (numeric) the size of sand fraction (um)
-#' @param B_DEPTH (numeric) The depth of the sampled soil layer (m)
+#' @param A_DEPTH (numeric) The depth of the sampled soil layer (m)
 #' 
 #' @references Wösten, J. H. M., Veerman, G. ., de Groot, W. J., & Stolte, J. (2001). Waterretentie en doorlatendheidskarakteristieken van boven- en ondergronden in Nederland: de Staringreeks. Alterra Rapport, 153, 86. https://doi.org/153
 #'
 #' @export 
-sptf_vg1 <- function(A_CLAY_MI, A_SILT_MI, A_SOM_LOI, A_SAND_M50, B_DEPTH){
+sptf_vg1 <- function(A_CLAY_MI, A_SILT_MI, A_SOM_LOI, A_SAND_M50, A_DEPTH){
   
   # add visual bindings
   A_DENSITY = ThetaR = ThetaS = Ksat = alfa = l = n =  id = NULL
@@ -104,7 +104,7 @@ sptf_vg1 <- function(A_CLAY_MI, A_SILT_MI, A_SOM_LOI, A_SAND_M50, B_DEPTH){
                    A_CLAY_MI = A_CLAY_MI,
                    A_SILT_MI = A_SILT_MI,
                    A_SOM_LOI = A_SOM_LOI,
-                   TOPSOIL = fifelse(B_DEPTH <= 50, 1,0),
+                   TOPSOIL = fifelse(A_DEPTH <= 50, 1,0),
                    A_LOAM_MI = A_SILT_MI + A_CLAY_MI,
                    A_SAND_M50 = A_SAND_M50,
                    ThetaR = NA_real_,

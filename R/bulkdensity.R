@@ -864,6 +864,7 @@ sptf_bd25 <- function(A_C_OF, A_CLAY_MI, A_SILT_MI,A_H2O_T105,A_DEPTH) {
   
   # Check input
   arg.length <- max(length(A_C_OF), length(A_CLAY_MI),length(A_SILT_MI),length(A_H2O_T105),length(A_DEPTH))
+
   check_numeric('A_C_OF', A_C_OF, FALSE, arg.length)
   check_numeric('A_CLAY_MI', A_CLAY_MI, FALSE, arg.length)
   check_numeric('A_SILT_MI', A_SILT_MI, FALSE, arg.length)
@@ -968,6 +969,7 @@ sptf_bd28 <- function(A_SAND_MI, A_DEPTH) {
   
   # Check input
   arg.length <- max(length(A_SAND_MI), length(A_DEPTH))
+
   check_numeric('A_SAND_MI', A_SAND_MI, FALSE, arg.length)
   check_numeric('A_DEPTH', A_DEPTH, FALSE, arg.length)
   
@@ -1005,6 +1007,7 @@ sptf_bd29 <- function(A_C_OF,A_SAND_MI, A_DEPTH) {
   
   # Check input
   arg.length <- max(length(A_C_OF),length(A_SAND_MI), length(A_DEPTH))
+
   check_numeric('A_C_OF', A_C_OF, FALSE, arg.length)
   check_numeric('A_SAND_MI', A_SAND_MI, FALSE, arg.length)
   check_numeric('A_DEPTH', A_DEPTH, FALSE, arg.length)
@@ -1364,6 +1367,7 @@ sptf_bd39 <- function(A_C_OF, A_CLAY_MI, A_H2O_T105,A_DEPTH) {
   
   # Check input
   arg.length <- max(length(A_C_OF), length(A_CLAY_MI),length(A_H2O_T105),length(A_DEPTH))
+
   check_numeric('A_C_OF', A_C_OF, FALSE, arg.length)
   check_numeric('A_CLAY_MI', A_CLAY_MI, FALSE, arg.length)
   check_numeric('A_H2O_T105', A_H2O_T105, FALSE, arg.length)
@@ -1416,6 +1420,7 @@ sptf_bd40 <- function(A_SOM_LOI, A_SAND_MI,A_DEPTH) {
   
   # Check input
   arg.length <- max(length(A_SOM_LOI), length(A_SAND_MI),length(A_DEPTH))
+
   check_numeric('A_SOM_LOI', A_SOM_LOI, FALSE, arg.length)
   check_numeric('A_DEPTH', A_DEPTH, FALSE, arg.length)
   check_numeric('A_SAND_MI', A_SAND_MI, FALSE, arg.length)
@@ -2356,6 +2361,7 @@ sptf_bd69 <- function(A_CLAY_MI, A_DEPTH) {
   
   # Check input
   arg.length <- max(length(A_CLAY_MI), length(A_DEPTH))
+
   check_numeric('A_CLAY_MI', A_CLAY_MI, FALSE, arg.length)
   check_numeric('A_DEPTH', A_DEPTH, FALSE, arg.length)
   
@@ -2400,6 +2406,7 @@ sptf_bd70 <- function(A_C_OF,A_CLAY_MI, A_SILT_MI,A_DEPTH, B_ALTITUDE,B_SLOPE_DE
                     length(A_DEPTH),length(B_ALTITUDE),
                     length(B_SLOPE_DEGREE),length(B_SLOPE_ASPECT))
   
+
   check_numeric('A_C_OF', A_C_OF, FALSE, arg.length)
   check_numeric('A_CLAY_MI', A_CLAY_MI, FALSE, arg.length)
   check_numeric('A_SILT_MI', A_SILT_MI, FALSE, arg.length)
@@ -2785,6 +2792,7 @@ sptf_bd80 <- function(A_C_OF,A_CLAY_MI, A_CACO3_IF) {
   # Check input
   arg.length <- max(length(A_C_OF),length(A_CLAY_MI), length(A_CACO3_IF))
   
+
   check_numeric('A_C_OF', A_C_OF, FALSE, arg.length)
   check_numeric('A_CLAY_MI', A_CLAY_MI, FALSE, arg.length)
   check_numeric('A_CACO3_IF', A_CACO3_IF, FALSE, arg.length)
@@ -3038,6 +3046,7 @@ sptf_bd87 <- function(A_SOM_LOI,A_SAND_MI,A_DEPTH) {
   # Check input
   arg.length <- max(length(A_SAND_MI),length(A_DEPTH),length(A_SOM_LOI))
   
+
   check_numeric('A_SAND_MI', A_SAND_MI, FALSE, arg.length)
   check_numeric('A_DEPTH', A_DEPTH, FALSE, arg.length)
   check_numeric('A_SOM_LOI', A_SOM_LOI, FALSE, arg.length)
@@ -3079,6 +3088,7 @@ sptf_bd88 <- function(A_C_OF,A_CLAY_MI,A_CACO3_IF,A_PH_WA) {
   # Check input
   arg.length <- max(length(A_C_OF),length(A_CLAY_MI),length(A_CACO3_IF),length(A_PH_WA))
   
+
   check_numeric('A_C_OF', A_C_OF, FALSE, arg.length)
   check_numeric('A_CLAY_MI', A_CLAY_MI, FALSE, arg.length)
   check_numeric('A_CACO3_IF', A_CACO3_IF, FALSE, arg.length)
@@ -3696,6 +3706,7 @@ sptf_bd105 <- function(A_C_OF, A_DEPTH) {
   
   # Check input
   arg.length <- max(length(A_C_OF), length(A_DEPTH))
+
   check_numeric('A_C_OF', A_C_OF, FALSE, arg.length)
   check_numeric('A_DEPTH', A_DEPTH, FALSE, arg.length)
   
@@ -3732,6 +3743,7 @@ sptf_bd106 <- function(A_C_OF, A_DEPTH) {
   
   # Check input
   arg.length <- max(length(A_C_OF), length(A_DEPTH))
+
   check_numeric('A_C_OF', A_C_OF, FALSE, arg.length)
   check_numeric('A_DEPTH', A_DEPTH, FALSE, arg.length)
   
@@ -3768,6 +3780,7 @@ sptf_bd107 <- function(A_C_OF, A_DEPTH) {
   
   # Check input
   arg.length <- max(length(A_C_OF), length(A_DEPTH))
+
   check_numeric('A_C_OF', A_C_OF, FALSE, arg.length)
   check_numeric('A_DEPTH', A_DEPTH, FALSE, arg.length)
   
@@ -3804,6 +3817,7 @@ sptf_bd108 <- function(A_C_OF, A_DEPTH) {
   
   # Check input
   arg.length <- max(length(A_C_OF), length(A_DEPTH))
+
   check_numeric('A_C_OF', A_C_OF, FALSE, arg.length)
   check_numeric('A_DEPTH', A_DEPTH, FALSE, arg.length)
   
@@ -3840,6 +3854,7 @@ sptf_bd109 <- function(A_C_OF, A_DEPTH) {
   
   # Check input
   arg.length <- max(length(A_C_OF), length(A_DEPTH))
+
   check_numeric('A_C_OF', A_C_OF, FALSE, arg.length)
   check_numeric('A_DEPTH', A_DEPTH, FALSE, arg.length)
   
@@ -3876,6 +3891,7 @@ sptf_bd110 <- function(A_C_OF, A_DEPTH) {
   
   # Check input
   arg.length <- max(length(A_C_OF), length(A_DEPTH))
+
   check_numeric('A_C_OF', A_C_OF, FALSE, arg.length)
   check_numeric('A_DEPTH', A_DEPTH, FALSE, arg.length)
   
@@ -4311,6 +4327,7 @@ sptf_bd121 <- function(A_C_OF, A_CLAY_MI, A_SAND_MI, A_CACO3_IF, A_PH_WA, B_ALTI
   arg.length <- max(length(A_C_OF), length(A_CLAY_MI),length(A_SAND_MI),
                     length(A_CACO3_IF), length(A_PH_WA),length(B_ALTITUDE),
                     length(B_SLOPE_DEGREE))
+
   check_numeric('A_C_OF', A_C_OF, FALSE, arg.length)
   check_numeric('A_CLAY_MI', A_CLAY_MI, FALSE, arg.length)
   check_numeric('A_SAND_MI', A_SAND_MI, FALSE, arg.length)
@@ -4536,6 +4553,7 @@ sptf_bd126 <- function(A_C_OF, A_SILT_MI, A_DEPTH) {
   
   # Check input
   arg.length <- max(length(A_C_OF), length(A_SILT_MI), length(A_DEPTH))
+
   check_numeric('A_C_OF', A_C_OF, FALSE, arg.length)
   check_numeric('A_SILT_MI', A_SILT_MI, FALSE, arg.length)
   check_numeric('A_DEPTH', A_DEPTH, FALSE, arg.length)
@@ -4578,6 +4596,7 @@ sptf_bd127 <- function(A_C_OF, A_DEPTH) {
   
   # Check input
   arg.length <- max(length(A_C_OF), length(A_DEPTH))
+
   check_numeric('A_C_OF', A_C_OF, FALSE, arg.length)
   check_numeric('A_DEPTH', A_DEPTH, FALSE, arg.length)
   
@@ -4657,6 +4676,7 @@ sptf_bd129 <- function(A_C_OF, A_CLAY_MI, A_SILT_MI, A_DEPTH) {
   
   # Check input
   arg.length <- max(length(A_C_OF), length(A_CLAY_MI),length(A_SILT_MI), length(A_DEPTH))
+
   check_numeric('A_C_OF', A_C_OF, FALSE, arg.length)
   check_numeric('A_CLAY_MI', A_CLAY_MI, FALSE, arg.length)
   check_numeric('A_SILT_MI', A_SILT_MI, FALSE, arg.length)
@@ -4813,6 +4833,7 @@ sptf_bd133 <- function(A_C_OF, A_DEPTH, B_SLOPE_DEGREE) {
   
   # Check input
   arg.length <- max(length(A_C_OF), length(A_DEPTH),length(B_SLOPE_DEGREE))
+
   check_numeric('A_C_OF', A_C_OF, FALSE, arg.length)
   check_numeric('B_SLOPE_DEGREE', B_SLOPE_DEGREE, FALSE, arg.length)
   check_numeric('A_DEPTH', A_DEPTH, FALSE, arg.length)
@@ -4969,6 +4990,7 @@ sptf_bd137 <- function(A_SOM_LOI, A_SILT_MI,A_PH_WA,A_DEPTH) {
   
   # Check input
   arg.length <- max(length(A_SOM_LOI), length(A_SILT_MI),length(A_PH_WA),length(A_DEPTH))
+
   check_numeric('A_SOM_LOI', A_SOM_LOI, FALSE, arg.length)
   check_numeric('A_SILT_MI', A_SILT_MI, FALSE, arg.length)
   check_numeric('A_PH_WA', A_PH_WA, FALSE, arg.length)
@@ -5405,6 +5427,7 @@ sptf_bd147 <- function(A_C_OF, A_CLAY_MI, A_SAND_MI,A_SILT_MI, A_DEPTH) {
   
   # Check input
   arg.length <- max(length(A_C_OF), length(A_CLAY_MI),length(A_SAND_MI),length(A_SILT_MI),length(A_DEPTH))
+
   check_numeric('A_C_OF', A_C_OF, FALSE, arg.length)
   check_numeric('A_CLAY_MI', A_CLAY_MI, FALSE, arg.length)
   check_numeric('A_SAND_MI', A_SAND_MI, FALSE, arg.length)
@@ -5532,6 +5555,7 @@ sptf_bd150 <- function(A_C_OF, A_DEPTH) {
   
   # Check input
   arg.length <- max(length(A_C_OF), length(A_DEPTH))
+
   check_numeric('A_C_OF', A_C_OF, FALSE, arg.length)
   check_numeric('A_DEPTH', A_DEPTH, FALSE, arg.length)
   

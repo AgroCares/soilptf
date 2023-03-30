@@ -160,6 +160,7 @@ sptf_whc3 <- function(A_SAND_MI, A_CLAY_MI, mp_wp = 1500, mp_fc = 33) {
 sptf_whc4 <- function(A_SAND_MI, A_CLAY_MI, D_BDS, A_DEPTH = 15, mp_wp = 1500) {
   # Check input
   arg.length <- max(length(A_SAND_MI),length(A_CLAY_MI))
+
   check_numeric('A_SAND_MI', A_SAND_MI, FALSE, arg.length)
   check_numeric('A_CLAY_MI', A_CLAY_MI, FALSE, arg.length)
   check_numeric('D_BDS', D_BDS, FALSE, arg.length)
@@ -352,6 +353,7 @@ sptf_whc7 <- function(A_SAND_MI, A_CLAY_MI, A_SILT_MI, D_BDS, A_C_OF, A_DEPTH = 
   # Check input
   arg.length <- max(length(A_SAND_MI),length(A_CLAY_MI), length(A_SILT_MI), length(D_BDS),
                     length(A_C_OF), length(A_DEPTH))
+
   check_numeric('A_SAND_MI', A_SAND_MI, FALSE, arg.length)
   check_numeric('A_CLAY_MI', A_CLAY_MI, FALSE, arg.length)
   check_numeric('A_SILT_MI', A_SILT_MI, FALSE, arg.length)
