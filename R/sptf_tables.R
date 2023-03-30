@@ -31,27 +31,27 @@
 #'}
 "sptf_countries"
 
-
-#' Table with water retention properties of 'bouwstenen'
+#' Table with variables that functions may use
 #' 
-#' This table contains water retention curve parameters and typical mineral composition of 18 'bouwstenen'
-#' ref: Wösten, J. H. M., Veerman, G. ., de Groot, W. J., & Stolte, J. (2001). Waterretentie en doorlatendheidskarakteristieken van boven- en ondergronden in Nederland: de Staringreeks. Alterra Rapport, 153, 86. https://edepot.wur.nl/43272
+#' This table contains the codes for variables used by soilptf functions as well
+#' as a description, unit, and minimum and maximum values.
 #' 
-#' @format A data.frame with 36 rows and 14 columns:
 #' \describe{
-#'   \item{bouwsteen}{soil type bouwsteen}
-#'   \item{omschrijving}{description of 'bouwsteen'}
-#'   \item{thres}{residual water content (cm3/cm3). Table 3 of Wosten 2001}
-#'   \item{thsat}{water content at saturation (cm3/cm3). Table 3 of Wosten 2001}
-#'   \item{Ks}{saturated hydraulic conductivity (cm/d). Table 3 of Wosten 2001}
-#'   \item{alpha}{parameter alpha of pF curve (1/cm) Table 3 of Wosten 2001}
-#'   \item{l}{parameter l of pF curve (-). Table 3 of Wosten 2001}
-#'   \item{n}{parameter n of pF curve (-). Table 3 of Wosten 2001}
-#'   \item{sand\%}{sand content (\%) within soil mineral parts. Middle value of Table 1 of Wosten 2001}
-#'   \item{silt\%}{silt content (\%) within soil mineral parts. Middle value of Table 1 of Wosten 2001}
-#'   \item{clay\%}{clay content (\%) within soil mineral parts. Middle value of Table 1 of Wosten 2001}
-#'   \item{OM\%}{organic matter content (\%). Middle value of Table 1 of Wosten 2001}
-#'   \item{bulkdensity}{soil bulk density (g/cm3). Middle value of Table 2 of Wosten 2001}
-#'   \item{M50}{size of sand particles (um). Middle value of Table 2 of Wosten 2001}
+#'  \item{code}{The parameter code}
+#'  \item{parameter}{Brief description of the parameter}
+#'  \item{unit}{The unit of the parameter if applicable}
+#'  \item{product}{Data classifier, A = Soil measurements, B = Environmental characteristics,
+#'   D = Soil or feed characteristics derived from soil/feed measurements,
+#'   M = Soil management measures, S = Scores, RM = Recommendations (measures/gifts),
+#'   I = Indicators, F = Feed measurements, P = soil amendment product}
+#'  \item{element}{Indicates the chemical element or parameter name}
+#'  \item{method1}{Method used to determine value}
+#'  \item{method2}{Additional details on method}
+#'  \item{data_type}{Type of data the parameter pertains to: numeric, integer, char, bool, geom, enum}
+#'  \item{value_min}{Lowest possible value the parameter may have if numeric or integer}
+#'  \item{value_max}{Highest possible value the parameter may have if numeric or integer}
+#'  \item{explanation}{Some additional explanation}
+#'  \item{enum}{boolean whether parameter values are drawn from a limited set}
+#'  \item{options}{Allowed values for a parameter of type enum seperated by "||"}
 #' }
-"sptf_bouwsteen"
+"sptf_parameters"
