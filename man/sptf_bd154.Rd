@@ -7,9 +7,9 @@
 sptf_bd154(A_C_OF, A_PH_WA)
 }
 \arguments{
-\item{A_C_OF}{(numeric) The fraction organic carbon in the soil (g / kg).}
+\item{A_C_OF}{(numeric) Organic Carbon Content (g / kg)}
 
-\item{A_PH_WA}{(numeric) The acidity of the soil, pH in water (-)}
+\item{A_PH_WA}{(numeric) Acidity in water (-)}
 }
 \description{
 Calculate the bulk density given the pedotransferfunction of Gomes et al. (2017).

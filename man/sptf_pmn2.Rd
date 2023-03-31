@@ -7,13 +7,13 @@
 sptf_pmn2(A_C_OF, A_SILT_MI, A_N_RT, A_PH_CC, t = 7)
 }
 \arguments{
-\item{A_C_OF}{(numeric) The fraction organic carbon in the soil (g / kg).}
+\item{A_C_OF}{(numeric) Organic Carbon Content (g / kg)}
 
-\item{A_SILT_MI}{(numeric) The silt content of the soil (\%).}
+\item{A_SILT_MI}{(numeric) Silt content (\%)}
 
-\item{A_N_RT}{(numeric) The organic nitrogen content of the soil in mg N / kg}
+\item{A_N_RT}{(numeric) Total nitrogen content (mg N/ kg)}
 
-\item{A_PH_CC}{(numeric) The acidity of the soil, measured in 0.01M CaCl2 (-)}
+\item{A_PH_CC}{(numeric) Acidity in CaCl2 (-)}
 
 \item{t}{(numeric) Length of incubation period (days). The empirical data is ~35 days, thus it should not exceed this value too much.}
 }

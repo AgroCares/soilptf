@@ -2,7 +2,7 @@
 % Please edit documentation in R/whc.R
 \name{sptf_whc7}
 \alias{sptf_whc7}
-\title{Calculate the WHC given the pedotransferfunction of Szabo et al 2021
+\title{Calculate the water holding capacity given the pedotransferfunction of Szabo et al.2021
 The RF-model based prediction can be calculated using the R package euptf2 (https://github.com/tkdweber/euptf2/)
 Note YF 20220928: It may be better to copy-paste codes and RF model results from euptf2,
 # so that we have no dependency on euptf2 package?
@@ -14,35 +14,33 @@ sptf_whc7(
   A_SILT_MI,
   D_BDS,
   A_C_OF,
-  A_DEPTH = 15,
+  A_DEPTH = 0.15,
   mp_wp = 1500,
   mp_fc = 33
 )
 }
 \arguments{
-\item{A_SAND_MI}{(numeric) The sand content of the soil (\%).}
+\item{A_SAND_MI}{(numeric) Sand content (\%)}
 
-\item{A_CLAY_MI}{(numeric) The clay content of the soil (\%).}
+\item{A_CLAY_MI}{(numeric) The clay content of the mineral soil fraction (\%).}
 
-\item{A_SILT_MI}{(numeric) The clay content of the soil (\%).}
+\item{A_SILT_MI}{(numeric) Silt content (\%)}
 
-\item{D_BDS}{(numeric) The soil bulk density (g/cm3).}
+\item{A_C_OF}{(numeric) Organic Carbon Content (g / kg)}
 
-\item{A_C_OF}{(numeric) The soil organic carbon content (g/kg).}
-
-\item{A_DEPTH}{(numeric) The depth of soil (cm)}
+\item{A_DEPTH}{(numeric) The depth of the sampled soil layer (m)}
 
 \item{mp_wp}{(numeric) Water potential at wilting point (kPa).}
 
 \item{mp_fc}{(numeric) Water potential at field capacity (kPa).}
 }
 \description{
-Calculate the WHC given the pedotransferfunction of Szabo et al 2021
+Calculate the water holding capacity given the pedotransferfunction of Szabo et al.2021
 The RF-model based prediction can be calculated using the R package euptf2 (https://github.com/tkdweber/euptf2/)
 Note YF 20220928: It may be better to copy-paste codes and RF model results from euptf2,
 # so that we have no dependency on euptf2 package?
 Note YF 20220929: The function 'euptfFun' does not work when the data frame has only 1 row ?!
 }
 \references{
-Szabó et al (2021) Updated European hydraulic pedotransfer functions with communicated uncertainties in the predicted variables (euptfv2)
+Szabó et al.(2021) Updated European hydraulic pedotransfer functions with communicated uncertainties in the predicted variables (euptfv2)
 }

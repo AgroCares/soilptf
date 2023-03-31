@@ -1,12 +1,11 @@
 # function for hydraulic properties
 
+#' Calculate water retention indices given the pedotransferfunctions of Wösten et al. (1999)
+#' 
 #' This function calculates different kind of Water Retention Indices given the continuous pedotransferfunctions of Wosten et al. (1999)
 #' These include : 'wilting point','field capacity','water holding capacity','plant available water' and 'Ksat'
 #' 
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%)
-#' @param A_SILT_MI (numeric) The silt content of the soil (\%)
-#' @param A_SOM_LOI (numeric) The organic matter content of the soil (\%)
-#' @param A_DEPTH (numeric) The depth of the sampled soil layer (m)
+#' @inheritParams sptf_bd0
 #'
 #' @references Wösten, J.H.M , Lilly, A., Nemes, A., Le Bas, C. (1999) Development and use of a database of hydraulic properties of European soils. Geoderma 90 (3-4): 169-185.
 #'
@@ -77,11 +76,7 @@ sptf_vg1 <- function(A_CLAY_MI,A_SILT_MI,A_SOM_LOI,A_DEPTH) {
 #'
 #' This function estimates water retention curve parameters using Pedo transfer function of Wosten (2001)
 #' 
-#' @param A_CLAY_MI (numeric) The clay (<2um) content of the soil (\%) 
-#' @param A_SILT_MI (numeric) The silt content of the soil (\%) 
-#' @param A_SOM_LOI (numeric) The organic matter content of the soil (\%)
-#' @param A_SAND_M50 (numeric) the size of sand fraction (um)
-#' @param A_DEPTH (numeric) The depth of the sampled soil layer (m)
+#' @inheritParams sptf_bd0
 #' 
 #' @references Wösten, J. H. M., Veerman, G. ., de Groot, W. J., & Stolte, J. (2001). Waterretentie en doorlatendheidskarakteristieken van boven- en ondergronden in Nederland: de Staringreeks. Alterra Rapport, 153, 86. https://doi.org/153
 #'
@@ -92,7 +87,7 @@ sptf_vg2 <- function(A_CLAY_MI, A_SILT_MI, A_SOM_LOI, A_SAND_M50, A_DEPTH){
   A_DENSITY = ThetaR = ThetaS = Ksat = alfa = l = n =  id = NULL
   
   # Check input
-  arg.length <- max(length(A_CLAY_MI), length(A_SILT_MI), length(A_SOM_LOI), length(A_SAND_M50), length(B_DEPTH))
+  arg.length <- max(length(A_CLAY_MI), length(A_SILT_MI), length(A_SOM_LOI), length(A_SAND_M50), length(A_DEPTH))
   check_numeric('A_CLAY_MI', A_CLAY_MI, FALSE, arg.length)
   check_numeric('A_SILT_MI', A_SILT_MI, FALSE, arg.length)
   check_numeric('A_SOM_LOI', A_SOM_LOI, FALSE, arg.length)

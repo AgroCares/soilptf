@@ -7,11 +7,11 @@
 sptf_textureclass(A_CLAY_MI, A_SILT_MI, A_SAND_MI)
 }
 \arguments{
-\item{A_CLAY_MI}{(numeric) Clay content (\%)}
+\item{A_CLAY_MI}{(numeric) The clay content of the mineral soil fraction (\%).}
 
 \item{A_SILT_MI}{(numeric) Silt content (\%)}
 
-\item{A_SAND_MI}{(numeric) Silt content (\%)}
+\item{A_SAND_MI}{(numeric) Sand content (\%)}
 }
 \value{
 Texture according to the USDA classification

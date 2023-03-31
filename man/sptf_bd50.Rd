@@ -7,7 +7,7 @@
 sptf_bd50(A_SOM_LOI)
 }
 \arguments{
-\item{A_SOM_LOI}{(numeric) The percentage organic matter in the soil (\%).}
+\item{A_SOM_LOI}{(numeric) The percentage organic matter in the soil determined by loss on ignition (\%)}
 }
 \description{
 Calculate the bulk density given the pedotransferfunction of De Vos et al. (2005).

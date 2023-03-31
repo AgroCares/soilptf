@@ -7,7 +7,7 @@
 sptf_bd150(A_C_OF, A_DEPTH)
 }
 \arguments{
-\item{A_C_OF}{(numeric) The fraction organic carbon in the soil (g / kg).}
+\item{A_C_OF}{(numeric) Organic Carbon Content (g / kg)}
 
 \item{A_DEPTH}{(numeric) The depth of the sampled soil layer (m)}
 }

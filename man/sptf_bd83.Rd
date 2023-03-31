@@ -7,9 +7,9 @@
 sptf_bd83(A_SAND_MI, A_SILT_MI)
 }
 \arguments{
-\item{A_SAND_MI}{(numeric) The sand content of the soil (\%).}
+\item{A_SAND_MI}{(numeric) Sand content (\%)}
 
-\item{A_SILT_MI}{(numeric) The silt content of the soil (\%).}
+\item{A_SILT_MI}{(numeric) Silt content (\%)}
 }
 \description{
 Calculate the bulk density given the pedotransferfunction of Apka et al. (2016)

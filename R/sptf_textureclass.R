@@ -1,8 +1,6 @@
 #' Estimate soil texture class B_TEXTURE_USDA 
 #' 
-#' @param A_CLAY_MI (numeric) Clay content (\%)
-#' @param A_SILT_MI (numeric) Silt content (\%)
-#' @param A_SAND_MI (numeric) Silt content (\%)
+#' @inheritParams sptf_bd0
 #' 
 #' @return Texture according to the USDA classification
 #' 

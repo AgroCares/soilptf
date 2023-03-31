@@ -7,7 +7,7 @@
 sptf_bd69(A_CLAY_MI, A_DEPTH)
 }
 \arguments{
-\item{A_CLAY_MI}{(numeric) The clay content of the soil (\%).}
+\item{A_CLAY_MI}{(numeric) The clay content of the mineral soil fraction (\%).}
 
 \item{A_DEPTH}{(numeric) The depth of the sampled soil layer (m)}
 }

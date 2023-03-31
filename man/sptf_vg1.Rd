@@ -2,17 +2,16 @@
 % Please edit documentation in R/hydraulic_properties.R
 \name{sptf_vg1}
 \alias{sptf_vg1}
-\title{This function calculates different kind of Water Retention Indices given the continuous pedotransferfunctions of Wosten et al. (1999)
-These include : 'wilting point','field capacity','water holding capacity','plant available water' and 'Ksat'}
+\title{Calculate water retention indices given the pedotransferfunctions of Wösten et al. (1999)}
 \usage{
 sptf_vg1(A_CLAY_MI, A_SILT_MI, A_SOM_LOI, A_DEPTH)
 }
 \arguments{
-\item{A_CLAY_MI}{(numeric) The clay content of the soil (\%)}
+\item{A_CLAY_MI}{(numeric) The clay content of the mineral soil fraction (\%).}
 
-\item{A_SILT_MI}{(numeric) The silt content of the soil (\%)}
+\item{A_SILT_MI}{(numeric) Silt content (\%)}
 
-\item{A_SOM_LOI}{(numeric) The organic matter content of the soil (\%)}
+\item{A_SOM_LOI}{(numeric) The percentage organic matter in the soil determined by loss on ignition (\%)}
 
 \item{A_DEPTH}{(numeric) The depth of the sampled soil layer (m)}
 }

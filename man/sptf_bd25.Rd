@@ -7,13 +7,11 @@
 sptf_bd25(A_C_OF, A_CLAY_MI, A_SILT_MI, A_H2O_T105, A_DEPTH)
 }
 \arguments{
-\item{A_C_OF}{(numeric) The fraction organic carbon in the soil (g / kg).}
+\item{A_C_OF}{(numeric) Organic Carbon Content (g / kg)}
 
-\item{A_CLAY_MI}{(numeric) The clay content of the soil (\%).}
+\item{A_CLAY_MI}{(numeric) The clay content of the mineral soil fraction (\%).}
 
-\item{A_SILT_MI}{(numeric) The silt content of the soil (\%).}
-
-\item{A_H2O_T105}{(numeric) The volumetric moisture content of the soil (\%)}
+\item{A_SILT_MI}{(numeric) Silt content (\%)}
 
 \item{A_DEPTH}{(numeric) The depth of the sampled soil layer (m)}
 }

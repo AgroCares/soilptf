@@ -7,9 +7,9 @@
 sptf_bd40(A_SOM_LOI, A_SAND_MI, A_DEPTH)
 }
 \arguments{
-\item{A_SOM_LOI}{(numeric) The percentage of organic matter in the soil (\%).}
+\item{A_SOM_LOI}{(numeric) The percentage organic matter in the soil determined by loss on ignition (\%)}
 
-\item{A_SAND_MI}{(numeric) The sand content of the soil (\%).}
+\item{A_SAND_MI}{(numeric) Sand content (\%)}
 
 \item{A_DEPTH}{(numeric) The depth of the sampled soil layer (m)}
 }
