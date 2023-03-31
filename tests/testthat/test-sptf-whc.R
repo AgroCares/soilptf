@@ -1,6 +1,5 @@
 # test bulk density functions
 require(testthat)
-# require(euptf2)
 
 test_that("water holding capacity functions returns the correct values", {
   
@@ -83,20 +82,6 @@ test_that("water holding capacity functions returns the correct values", {
     expected = c(0, 0),
     tolerance = 0.01
   )
-  
-  # expect_equal(
-  #   sptf_whc7(
-  #     A_SAND_MI = A_SAND_MI,
-  #     A_CLAY_MI = A_CLAY_MI,
-  #     A_SILT_MI = A_SILT_MI,
-  #     D_BDS = D_BDS,
-  #     A_C_OF = A_C_OF,
-  #     A_DEPTH = c(.15, .15),
-  #     mp_wp = c(1500, 1500),
-  #     mp_fc = c(33, 33)),
-  #     expected = c(,),
-  #     tolerance = 0.01
-  #   )
   
   expect_equal(
     sptf_whc8(
