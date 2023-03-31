@@ -490,21 +490,20 @@ ptf_whc_all <- function(dt){
   
   
   # estimate the WHC by the pedotransfer functions
-  mp_wp = 1500
   mp_fc = 33
   #mp_fc = 10
   
   dt[, p1 := sptf_whc1(A_C_OF = A_C_OF, A_SAND_MI = A_SAND_MI, A_CLAY_MI = A_CLAY_MI)]
   dt[, p2 := sptf_whc2(A_C_OF = A_C_OF, A_SAND_MI = A_SAND_MI, A_CLAY_MI = A_CLAY_MI)] 
-  dt[, p3 := sptf_whc3(A_SAND_MI = A_SAND_MI, A_CLAY_MI = A_CLAY_MI, mp_wp = mp_wp, mp_fc = mp_fc)] 
-  dt[, p4 := sptf_whc4(A_SAND_MI = A_SAND_MI, A_CLAY_MI = A_CLAY_MI, D_BDS = D_BDS, A_DEPTH = 30, mp_wp = mp_wp)] 
+  dt[, p3 := sptf_whc3(A_SAND_MI = A_SAND_MI, A_CLAY_MI = A_CLAY_MI, mp_fc = mp_fc)] 
+  dt[, p4 := sptf_whc4(A_SAND_MI = A_SAND_MI, A_CLAY_MI = A_CLAY_MI, D_BDS = D_BDS, A_DEPTH = 30)] 
   dt[, p5 := sptf_whc5(A_SILT_MI = A_SILT_MI, A_CLAY_MI = A_CLAY_MI, D_BDS = D_BDS, A_SOM_LOI = A_SOM_LOI, 
-                       topsoil = 1, mp_wp = mp_wp, mp_fc = mp_fc)] 
+                       topsoil = 1, mp_fc = mp_fc)] 
   dt[, p6 := sptf_whc6(A_SAND_MI = A_SAND_MI, A_CLAY_MI = A_CLAY_MI, D_BDS = D_BDS, A_C_OF = A_C_OF,
                        mp_wp = mp_wp, mp_fc = mp_fc)] 
   # PTF7: This PTF uses the package 'euptf2'. The function 'euptf2::euptfFun' does not work when the data frame has only 1 row ?!
   dt[, p7 := sptf_whc7(A_SAND_MI = A_SAND_MI, A_CLAY_MI = A_CLAY_MI, A_SILT_MI = A_SILT_MI,
-                       D_BDS = D_BDS, A_C_OF = A_C_OF, A_DEPTH = 30, mp_wp = mp_wp, mp_fc = mp_fc)] 
+                       D_BDS = D_BDS, A_C_OF = A_C_OF, A_DEPTH = 30, mp_fc = mp_fc)] 
   dt[, p8 := sptf_whc8(A_SAND_MI = A_SAND_MI, A_CLAY_MI = A_CLAY_MI,  D_BDS = D_BDS, A_C_OF = A_C_OF,
                        mp_wp = mp_wp, mp_fc = mp_fc)] 
   # PTF9: field capacity (mp_fc) should be either 33 or 10 kPa.
@@ -521,12 +520,12 @@ ptf_whc_all <- function(dt){
   dt[, p13 := sptf_whc13(A_SAND_MI = A_SAND_MI, A_CLAY_MI = A_CLAY_MI, D_BDS = D_BDS, A_C_OF = A_C_OF, 
                          mp_wp = mp_wp, mp_fc = mp_fc)]
   dt[, p14 := sptf_whc14(A_CLAY_MI = A_CLAY_MI, A_SILT_MI = A_SILT_MI, A_SOM_LOI = A_SOM_LOI, 
-                         A_SAND_M50 = 150, topsoil = 1, mp_wp = mp_wp, mp_fc = mp_fc)] 
+                         A_SAND_M50 = 150, topsoil = 1, mp_fc = mp_fc)] 
   dt[, p15 := sptf_whc15(A_CLAY_MI = A_CLAY_MI, A_SILT_MI = A_SILT_MI, A_SOM_LOI = A_SOM_LOI, 
-                         A_SAND_M50 = 150, topsoil = 1, mp_wp = mp_wp, mp_fc = mp_fc)] 
+                         A_SAND_M50 = 150, topsoil = 1, mp_fc = mp_fc)] 
   # # PTF16: table (soilptf::sptf_bouwsteen) is not properly loaded within the function. To be fixed.
   dt[, p16 := sptf_whc16(A_CLAY_MI = A_CLAY_MI, A_SILT_MI = A_SILT_MI, A_SOM_LOI = A_SOM_LOI,
-                         A_SAND_M50 = 150, mp_wp = mp_wp, mp_fc = mp_fc)]
+                         A_SAND_M50 = 150, mp_fc = mp_fc)]
 
   
   

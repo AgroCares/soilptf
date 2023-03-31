@@ -608,7 +608,6 @@ sptf_whc12 <- function(A_CLAY_MI, A_SAND_MI, D_BDS, mp_fc = 33) {
   check_numeric('A_SAND_MI', A_SAND_MI, FALSE, arg.length)
   check_numeric('D_BDS', D_BDS, FALSE, arg.length)
   checkmate::assert_subset(mp_fc, choices = c(10, 33), any.missing = FALSE)
-  checkmate::assert_numeric(mp_wp, any.missing = FALSE)
   
   # Collect data into a table
   dt <- data.table(
