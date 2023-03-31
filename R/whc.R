@@ -1,6 +1,6 @@
 # Functions for water holding capacity (WHC)
 
-#' Calculate the WHC given the pedotransferfunction of Bagdal et al 2022 for non-calcareous soil
+#' Calculate the water holding capacity given the pedotransferfunction of Bagdal et al 2022 for non-calcareous soil
 #' 
 #' @inheritParams sptf_bd0
 #'
@@ -46,7 +46,7 @@ sptf_whc1 <- function(A_C_OF, A_SAND_MI, A_CLAY_MI) {
   
 }
 
-#' Calculate the WHC given the pedotransferfunction of Bagdal et al 2022 for calcareous soil
+#' Calculate the water holding capacity given the pedotransferfunction of Bagdal et al 2022 for calcareous soil
 #' 
 #' @inheritParams sptf_bd0
 #'
@@ -92,7 +92,7 @@ sptf_whc2 <- function(A_C_OF, A_SAND_MI, A_CLAY_MI) {
   
 }
 
-#' Calculate the WHC given the pedotransferfunction of Saxton et al 1986 
+#' Calculate the water holding capacity given the pedotransferfunction of Saxton et al 1986 
 #' This PTF is applicable for water potential larger than 10
 #' 
 #' @inheritParams sptf_bd0
@@ -139,12 +139,9 @@ sptf_whc3 <- function(A_SAND_MI, A_CLAY_MI, mp_wp = 1500, mp_fc = 33) {
   
 }
 
-#' Calculate the WHC given the pedotransferfunction of Oosterveld and Chang (1980)
+#' Calculate the waterholding capacity given the pedotransferfunction of Oosterveld and Chang (1980)
 #' 
-#' @param A_SAND_MI (numeric) The sand content of the soil (\%).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
-#' @param D_BDS (numeric) The soil bulk density (g/cm3).
-#' @param A_DEPTH (numeric) The mean depth of soil sample (cm). This should range within 8 - 180 cm.
+#' @inheritParams sptf_bd0
 #' @param mp_wp (numeric) Water potential at wilting point (kPa).
 #' 
 #' @import data.table
@@ -202,12 +199,9 @@ sptf_whc4 <- function(A_SAND_MI, A_CLAY_MI, D_BDS, A_DEPTH = 15, mp_wp = 1500) {
 }
 
 
-#' Calculate the WHC given the pedotransferfunction of Wosten et al. 1999
+#' Calculate the waterholding capacity given the pedotransferfunction of Wösten et al. 1999
 #' 
-#' @param A_SILT_MI (numeric) The silt content of the soil (\%).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
-#' @param D_BDS (numeric) The soil bulk density (g/cm3).
-#' @param A_SOM_LOI (numeric) The soil organic matter content (\%).
+#' @inheritParams sptf_bd0
 #' @param topsoil (boolean) Whether top soil (1) or sub-soil (0)
 #' @param mp_wp (numeric) Water potential at wilting point (kPa).
 #' @param mp_fc (numeric) Water potential at field capacity (kPa).
@@ -274,7 +268,7 @@ sptf_whc5 <- function(A_SILT_MI, A_CLAY_MI, D_BDS, A_SOM_LOI, topsoil = 1, mp_wp
 
 
 
-#' Calculate the WHC given the pedotransferfunction of Vereecken et al. 1989
+#' Calculate the water holding capacity given the pedotransferfunction of Vereecken et al. 1989
 #' 
 #' @param A_SAND_MI (numeric) The sand content of the soil (\%).
 #' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
@@ -328,7 +322,7 @@ sptf_whc6 <- function(A_SAND_MI, A_CLAY_MI, D_BDS, A_C_OF, mp_wp = 15000, mp_fc 
   
 }
 
-#' Calculate the WHC given the pedotransferfunction of Szabo et al 2021
+#' Calculate the water holding capacity given the pedotransferfunction of Szabo et al 2021
 #' The RF-model based prediction can be calculated using the R package euptf2 (https://github.com/tkdweber/euptf2/)
 #' Note YF 20220928: It may be better to copy-paste codes and RF model results from euptf2,
 #' # so that we have no dependency on euptf2 package?
@@ -419,7 +413,7 @@ sptf_whc7 <- function(A_SAND_MI, A_CLAY_MI, A_SILT_MI, D_BDS, A_C_OF, A_DEPTH = 
   
 }
 
-#' Calculate the WHC given the pedotransferfunction of Weynants et al 2009
+#' Calculate the water holding capacity given the pedotransferfunction of Weynants et al 2009
 #' 
 #' @param A_SAND_MI (numeric) The sand content of the soil (\%).
 #' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
@@ -474,7 +468,7 @@ sptf_whc8 <- function(A_SAND_MI, A_CLAY_MI, D_BDS, A_C_OF,
   
 }
 
-#' Calculate the WHC given the pedotransferfunction of Tomasella & Hodnett 1998
+#' Calculate the water holding capacity given the pedotransferfunction of Tomasella & Hodnett 1998
 #' 
 #' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
 #' @param A_SILT_MI (numeric) The silt content of the soil (\%).
@@ -530,7 +524,7 @@ sptf_whc9 <- function(A_CLAY_MI, A_SILT_MI, A_C_OF,
   
 }
 
-#' Calculate the WHC given the pedotransferfunction of Rawls et al 1982
+#' Calculate the water holding capacity given the pedotransferfunction of Rawls et al 1982
 #' 
 #' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
 #' @param A_SILT_MI (numeric) The silt content of the soil (\%).
@@ -594,7 +588,7 @@ sptf_whc10 <- function(A_CLAY_MI, A_SILT_MI, A_SAND_MI, A_C_OF, D_BDS,
   
 }
 
-#' Calculate the WHC given the pedotransferfunction of Campbell & Shiozawa 1992
+#' Calculate the water holding capacity given the pedotransferfunction of Campbell & Shiozawa 1992
 #' Note: Calculation of wrc parameters may be wrong. The calculated water content is out of normal range. Original literature can not be found on web.
 #'
 #' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
@@ -656,7 +650,7 @@ sptf_whc11 <- function(A_CLAY_MI, A_SILT_MI, D_BDS,
 
 
 
-#' Calculate the WHC given the pedotransferfunction of Rawls & Brakensiek 1985
+#' Calculate the water holding capacity given the pedotransferfunction of Rawls & Brakensiek 1985
 #' Note: Calculation of wrc parameters may be wrong. The calculated water content is out of normal range. Original literature can not be found on web.
 #'
 #' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
@@ -722,7 +716,7 @@ sptf_whc12 <- function(A_CLAY_MI, A_SAND_MI, D_BDS,
 }
 
 
-#' Calculate the WHC given the pedotransferfunction of Tian et al. 2021
+#' Calculate the water holding capacity given the pedotransferfunction of Tian et al. 2021
 #' 
 #' @param A_SAND_MI (numeric) The sand content of the soil (\%).
 #' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
@@ -788,7 +782,7 @@ sptf_whc13 <- function(A_SAND_MI, A_CLAY_MI, D_BDS, A_C_OF,
   
 }
 
-#' Calculate the WHC given the pedotransferfunction of Wosten 1997
+#' Calculate the water holding capacity given the pedotransferfunction of Wosten 1997
 #' 
 #' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
 #' @param A_SILT_MI (numeric) The clay content of the soil (\%).
@@ -863,7 +857,7 @@ sptf_whc14 <- function(A_CLAY_MI, A_SILT_MI, A_SOM_LOI,
   return(value)
 }
 
-#' Calculate the WHC given the pedotransferfunction of Wosten et al 2001
+#' Calculate the water holding capacity given the pedotransferfunction of Wosten et al 2001
 #' 
 #' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
 #' @param A_SILT_MI (numeric) The clay content of the soil (\%).
@@ -935,7 +929,7 @@ sptf_whc15 <- function(A_CLAY_MI, A_SILT_MI, A_SOM_LOI,
 }
 
 
-#'  the WHC given the pedotransferfunction of Wosten et al 2001 (Table 3), for each soil class
+#'  the water holding capacity given the pedotransferfunction of Wosten et al 2001 (Table 3), for each soil class
 #' 
 #' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
 #' @param A_SILT_MI (numeric) The clay content of the soil (\%).
