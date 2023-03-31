@@ -10,7 +10,6 @@ sptf_whc15(
   A_SOM_LOI,
   A_SAND_M50 = 150,
   topsoil = 1,
-  mp_wp = 1500,
   mp_fc = 33
 )
 }
@@ -24,8 +23,6 @@ sptf_whc15(
 \item{A_SAND_M50}{(numeric) description (µm)}
 
 \item{topsoil}{(boolean) Whether top soil (1) or sub-soil (0)}
-
-\item{mp_wp}{(numeric) Water potential at wilting point (kPa).}
 
 \item{mp_fc}{(numeric) Water potential at field capacity (kPa).}
 }

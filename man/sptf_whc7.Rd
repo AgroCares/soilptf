@@ -15,7 +15,6 @@ sptf_whc7(
   D_BDS,
   A_C_OF,
   A_DEPTH = 0.15,
-  mp_wp = 1500,
   mp_fc = 33
 )
 }
@@ -29,8 +28,6 @@ sptf_whc7(
 \item{A_C_OF}{(numeric) Organic Carbon Content (g / kg)}
 
 \item{A_DEPTH}{(numeric) The depth of the sampled soil layer (m)}
-
-\item{mp_wp}{(numeric) Water potential at wilting point (kPa).}
 
 \item{mp_fc}{(numeric) Water potential at field capacity (kPa).}
 }

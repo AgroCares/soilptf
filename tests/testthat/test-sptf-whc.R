@@ -42,7 +42,6 @@ test_that("water holding capacity functions returns the correct values", {
     sptf_whc3(
       A_SAND_MI = A_SAND_MI,
       A_CLAY_MI = A_CLAY_MI,
-      mp_wp = 1500,
       mp_fc = 33
     ),
     expected = c(0.1972271 , 0.1654625),
@@ -54,8 +53,7 @@ test_that("water holding capacity functions returns the correct values", {
       A_SAND_MI = A_SAND_MI,
       A_CLAY_MI = A_CLAY_MI,
       D_BDS = D_BDS,
-      A_DEPTH = c(.16, .16),
-      mp_wp = 1500
+      A_DEPTH = c(.16, .16)
     ),
     expected = c(159.2110, 146.5118),
     tolerance = 0.01
@@ -68,7 +66,6 @@ test_that("water holding capacity functions returns the correct values", {
       D_BDS = D_BDS,
       A_SOM_LOI = A_SOM_LOI,
       topsoil = 1,
-      mp_wp = 1500,
       mp_fc = 33
     ),
     expected = c(0 , 0),
@@ -81,7 +78,6 @@ test_that("water holding capacity functions returns the correct values", {
       A_CLAY_MI = A_CLAY_MI,
       D_BDS = D_BDS,
       A_C_OF = A_C_OF,
-      mp_wp = 1500,
       mp_fc = 33
     ),
     expected = c(0, 0),
@@ -108,7 +104,6 @@ test_that("water holding capacity functions returns the correct values", {
       A_CLAY_MI = A_CLAY_MI,
       D_BDS = D_BDS,
       A_C_OF = A_C_OF,
-      mp_wp =  1500,
       mp_fc =  33
     ),
     expected = c(-79.39869,-71.52744),
@@ -159,7 +154,6 @@ test_that("water holding capacity functions returns the correct values", {
       A_SOM_LOI = A_SOM_LOI,
       A_SAND_M50 = A_SAND_M50,
       topsoil = 1,
-      mp_wp = 1500,
       mp_fc = 33
     ),
     expected = c(0.1162968 , 0.1336105),
@@ -173,7 +167,6 @@ test_that("water holding capacity functions returns the correct values", {
       A_SOM_LOI = A_SOM_LOI,
       A_SAND_M50 = A_SAND_M50,
       topsoil = 1,
-      mp_wp = 1500,
       mp_fc = 33
     ),
     expected = c(0.1202259 , 0.1384599),
@@ -186,7 +179,6 @@ test_that("water holding capacity functions returns the correct values", {
       A_SILT_MI = A_SILT_MI,
       A_SOM_LOI = A_SOM_LOI,
       A_SAND_M50 = A_SAND_M50,
-      mp_wp = 1500,
       mp_fc = 33
     ),
     expected = c(0.1499688, 0.2139534),

@@ -4,15 +4,7 @@
 \alias{sptf_whc5}
 \title{Calculate the waterholding capacity given the pedotransferfunction of Wösten et al. 1999}
 \usage{
-sptf_whc5(
-  A_SILT_MI,
-  A_CLAY_MI,
-  D_BDS,
-  A_SOM_LOI,
-  topsoil = 1,
-  mp_wp = 1500,
-  mp_fc = 33
-)
+sptf_whc5(A_SILT_MI, A_CLAY_MI, D_BDS, A_SOM_LOI, topsoil = 1, mp_fc = 33)
 }
 \arguments{
 \item{A_SILT_MI}{(numeric) Silt content (\%)}
@@ -22,8 +14,6 @@ sptf_whc5(
 \item{A_SOM_LOI}{(numeric) The percentage organic matter in the soil determined by loss on ignition (\%)}
 
 \item{topsoil}{(boolean) Whether top soil (1) or sub-soil (0)}
-
-\item{mp_wp}{(numeric) Water potential at wilting point (kPa).}
 
 \item{mp_fc}{(numeric) Water potential at field capacity (kPa).}
 }
