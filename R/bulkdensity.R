@@ -5106,7 +5106,7 @@ sptf_bd142 <- function(A_CLAY_MI, A_SAND_MI,A_SILT_MI) {
   check_numeric('A_CLAY_MI', A_CLAY_MI, FALSE, arg.length)
   check_numeric('A_SAND_MI', A_SAND_MI, FALSE, arg.length)
   check_numeric('A_SILT_MI', A_SILT_MI, FALSE, arg.length)
-  checkmate::assert_true(sum(A_CLAY_MI, A_SAND_MI, A_SILT_MI) <= 100)
+  checkmate::assert_true(all(rowSums(data.table(A_CLAY_MI, A_SAND_MI, A_SILT_MI)) <= 100))
   
   # Collect data into a table (set SOC in units %)
   dt <- data.table(A_CLAY_MI = A_CLAY_MI,
@@ -5145,7 +5145,7 @@ sptf_bd143 <- function(A_C_OF, A_CLAY_MI, A_SAND_MI,A_SILT_MI) {
   check_numeric('A_CLAY_MI', A_CLAY_MI, FALSE, arg.length)
   check_numeric('A_SAND_MI', A_SAND_MI, FALSE, arg.length)
   check_numeric('A_SILT_MI', A_SILT_MI, FALSE, arg.length)
-  checkmate::assert_true(sum(A_CLAY_MI, A_SAND_MI, A_SILT_MI) <= 100)
+  checkmate::assert_true(all(rowSums(data.table(A_CLAY_MI, A_SAND_MI, A_SILT_MI)) <= 100))
   
   # Collect data into a table (set SOC in units %)
   dt <- data.table(A_C_OF = A_C_OF * 0.1, 
@@ -5231,7 +5231,7 @@ sptf_bd145 <- function(A_C_OF, A_CLAY_MI, A_SAND_MI,A_SILT_MI) {
   check_numeric('A_CLAY_MI', A_CLAY_MI, FALSE, arg.length)
   check_numeric('A_SAND_MI', A_SAND_MI, FALSE, arg.length)
   check_numeric('A_SILT_MI', A_SILT_MI, FALSE, arg.length)
-  checkmate::assert_true(sum(A_CLAY_MI, A_SAND_MI, A_SILT_MI) <= 100)
+  checkmate::assert_true(all(rowSums(data.table(A_CLAY_MI, A_SAND_MI, A_SILT_MI)) <= 100))
   
   # Collect data into a table (set units in g/kg)
   dt <- data.table(A_C_OF = A_C_OF * 0.1, 
@@ -5321,7 +5321,7 @@ sptf_bd147 <- function(A_C_OF, A_CLAY_MI, A_SAND_MI,A_SILT_MI, A_DEPTH) {
   check_numeric('A_SAND_MI', A_SAND_MI, FALSE, arg.length)
   check_numeric('A_SILT_MI', A_SILT_MI, FALSE, arg.length)
   check_numeric('A_DEPTH', A_DEPTH, FALSE, arg.length)
-  checkmate::assert_true(sum(A_CLAY_MI, A_SAND_MI, A_SILT_MI) <= 100)
+  checkmate::assert_true(all(rowSums(data.table(A_CLAY_MI, A_SAND_MI, A_SILT_MI)) <= 100))
   
   # Collect data into a table (set units in g/100 g, depth in cm)
   # silt should be coarse silt
@@ -5480,7 +5480,7 @@ sptf_bd151 <- function(A_CLAY_MI, A_SAND_MI, A_SILT_MI) {
   check_numeric('A_CLAY_MI', A_CLAY_MI, FALSE, arg.length)
   check_numeric('A_SAND_MI', A_SAND_MI, FALSE, arg.length)
   check_numeric('A_SILT_MI', A_SILT_MI, FALSE, arg.length)
-  checkmate::assert_true(sum(A_CLAY_MI, A_SAND_MI, A_SILT_MI) <= 100)
+  checkmate::assert_true(all(rowSums(data.table(A_CLAY_MI, A_SAND_MI, A_SILT_MI)) <= 100))
   
   # Collect data into a table (set in units %)
   dt <- data.table(A_CLAY_MI = A_CLAY_MI,
@@ -5953,7 +5953,7 @@ sptf_bd164 <- function(A_SOM_LOI, A_CLAY_MI, A_SAND_MI, A_SILT_MI) {
   check_numeric('A_CLAY_MI', A_CLAY_MI, FALSE, arg.length)
   check_numeric('A_SAND_MI', A_SAND_MI, FALSE, arg.length)
   check_numeric('A_SILT_MI', A_SILT_MI, FALSE, arg.length)
-  checkmate::assert_true(sum(A_CLAY_MI, A_SAND_MI, A_SILT_MI) <= 100)
+  checkmate::assert_true(all(rowSums(data.table(A_CLAY_MI, A_SAND_MI, A_SILT_MI)) <= 100))
   
   # Collect data into a table (set in units %)
   dt <- data.table(A_SOM_LOI = A_SOM_LOI, 
