@@ -208,7 +208,7 @@ sptf_whc4 <- function(A_SAND_MI, A_CLAY_MI, D_BDS, A_DEPTH = 15, mp_wp = 1500) {
 #' 
 #' @import data.table
 #' 
-#' @references Wosten et al. (1999) Development and use of a database of hydraulic properties of European soils
+#' @references Wösten et al. (1999) Development and use of a database of hydraulic properties of European soils
 #' 
 #' @export
 sptf_whc5 <- function(A_SILT_MI, A_CLAY_MI, D_BDS, A_SOM_LOI, topsoil = 1, mp_wp = 1500, mp_fc = 33) {
@@ -270,10 +270,7 @@ sptf_whc5 <- function(A_SILT_MI, A_CLAY_MI, D_BDS, A_SOM_LOI, topsoil = 1, mp_wp
 
 #' Calculate the water holding capacity given the pedotransferfunction of Vereecken et al. 1989
 #' 
-#' @param A_SAND_MI (numeric) The sand content of the soil (\%).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
-#' @param D_BDS (numeric) The soil bulk density (g/cm3).
-#' @param A_C_OF (numeric) The soil organic carbon content (g/kg).
+#' @inheritParams sptf_bd0
 #' @param mp_wp (numeric) Water potential at wilting point (kPa).
 #' @param mp_fc (numeric) Water potential at field capacity (kPa).
 #' 
@@ -343,7 +340,7 @@ sptf_whc6 <- function(A_SAND_MI, A_CLAY_MI, D_BDS, A_C_OF, mp_wp = 15000, mp_fc 
 #' @references Szabó et al (2021) Updated European hydraulic pedotransfer functions with communicated uncertainties in the predicted variables (euptfv2)
 #' 
 #' @export
-sptf_whc7 <- function(A_SAND_MI, A_CLAY_MI, A_SILT_MI, D_BDS, A_C_OF, A_DEPTH = 15,
+sptf_whc7 <- function(A_SAND_MI, A_CLAY_MI, A_SILT_MI, D_BDS, A_C_OF, A_DEPTH = 0.15,
                       mp_wp = 1500, mp_fc = 33) {
   # Check input
   arg.length <- max(length(A_SAND_MI),length(A_CLAY_MI), length(A_SILT_MI), length(D_BDS),
@@ -354,6 +351,10 @@ sptf_whc7 <- function(A_SAND_MI, A_CLAY_MI, A_SILT_MI, D_BDS, A_C_OF, A_DEPTH = 
   check_numeric('A_SILT_MI', A_SILT_MI, FALSE, arg.length)
   check_numeric('A_C_OF', A_C_OF, FALSE, arg.length)
   check_numeric('D_BDS', D_BDS, FALSE, arg.length)
+  check_numeric('A_DEPTH', A_DEPTH, FALSE, arg.length)
+  
+  # internally use A_DEPTH in cm
+  A_DEPTH <- A_DEPTH*100
   
   # Collect data into a table (set in units %)
   dt <- data.table(A_SAND_MI = A_SAND_MI,
@@ -782,7 +783,7 @@ sptf_whc13 <- function(A_SAND_MI, A_CLAY_MI, D_BDS, A_C_OF,
   
 }
 
-#' Calculate the water holding capacity given the pedotransferfunction of Wosten 1997
+#' Calculate the water holding capacity given the pedotransferfunction of Wösten 1997
 #' 
 #' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
 #' @param A_SILT_MI (numeric) The clay content of the soil (\%).
@@ -857,7 +858,7 @@ sptf_whc14 <- function(A_CLAY_MI, A_SILT_MI, A_SOM_LOI,
   return(value)
 }
 
-#' Calculate the water holding capacity given the pedotransferfunction of Wosten et al 2001
+#' Calculate the water holding capacity given the pedotransferfunction of Wösten et al 2001
 #' 
 #' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
 #' @param A_SILT_MI (numeric) The clay content of the soil (\%).
@@ -929,7 +930,7 @@ sptf_whc15 <- function(A_CLAY_MI, A_SILT_MI, A_SOM_LOI,
 }
 
 
-#'  the water holding capacity given the pedotransferfunction of Wosten et al 2001 (Table 3), for each soil class
+#'  the water holding capacity given the pedotransferfunction of Wösten et al 2001 (Table 3), for each soil class
 #' 
 #' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
 #' @param A_SILT_MI (numeric) The clay content of the soil (\%).
