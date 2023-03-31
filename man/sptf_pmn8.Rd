@@ -7,11 +7,11 @@
 sptf_pmn8(A_N_RT, A_CEC_CO, A_SILT_MI, t = 7)
 }
 \arguments{
-\item{A_N_RT}{(numeric) The organic nitrogen content of the soil in mg N / kg}
+\item{A_N_RT}{(numeric) Total nitrogen content (mg N/ kg)}
 
-\item{A_CEC_CO}{(numeric) The cation exchange capacity of the soil (mmol+ / kg)}
+\item{A_CEC_CO}{(numeric) Cation Exchange Capacity (mmol+/kg)}
 
-\item{A_SILT_MI}{(numeric) The silt content of the soil (\%).}
+\item{A_SILT_MI}{(numeric) Silt content (\%)}
 
 \item{t}{(numeric) Length of incubation period (days).}
 }

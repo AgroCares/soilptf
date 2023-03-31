@@ -7,7 +7,7 @@
 sptf_pmn10(A_N_RT, t = 7)
 }
 \arguments{
-\item{A_N_RT}{(numeric) The organic nitrogen content of the soil in mg N / kg}
+\item{A_N_RT}{(numeric) Total nitrogen content (mg N/ kg)}
 
 \item{t}{(numeric) Length of incubation period (days).}
 }
