@@ -19,11 +19,11 @@ sptf_vg1 <- function(A_CLAY_MI,A_SILT_MI,A_SOM_LOI,A_DEPTH) {
   A_DENSITY = ThetaR = ThetaS = alfa = n = ksat = id = NULL
   
   # Check input
-  arg.length <- max(length(A_CLAY_MI), length(A_SILT_MI), length(A_SOM_LOI), length(A_DEPTH))
-  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, any.missing = FALSE, min.len = 1)
-  checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, any.missing = FALSE, min.len = 1)
-  checkmate::assert_numeric(A_SOM_LOI, lower = 0, upper = 100, any.missing = FALSE, min.len = 1)
-  checkmate::assert_numeric(A_DEPTH, lower = 0, upper = 2, len = arg.length)
+  arg.length <- max(length(A_CLAY_MI), length(A_SILT_MI), length(A_SOM_LOI), length(B_DEPTH))
+  check_numeric('A_CLAY_MI', A_CLAY_MI, FALSE, arg.length)
+  check_numeric('A_SILT_MI', A_SILT_MI, FALSE, arg.length)
+  check_numeric('A_SOM_LOI', A_SOM_LOI, FALSE, arg.length)
+  check_numeric('A_DEPTH', A_DEPTH, FALSE, arg.length)
   
   # Collect data in a table
   dt <- data.table(id = 1:arg.length,
@@ -92,12 +92,12 @@ sptf_vg2 <- function(A_CLAY_MI, A_SILT_MI, A_SOM_LOI, A_SAND_M50, A_DEPTH){
   A_DENSITY = ThetaR = ThetaS = Ksat = alfa = l = n =  id = NULL
   
   # Check input
-  arg.length <- max(length(A_CLAY_MI), length(A_SILT_MI), length(A_SOM_LOI), length(A_SAND_M50), length(A_DEPTH))
-  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, any.missing = FALSE, min.len = 1)
-  checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, any.missing = FALSE, min.len = 1)
-  checkmate::assert_numeric(A_SOM_LOI, lower = 0, upper = 100, any.missing = FALSE, min.len = 1)
-  checkmate::assert_numeric(A_SAND_M50, lower = 0, upper = 2000, any.missing = FALSE, min.len = 1)
-  checkmate::assert_numeric(A_DEPTH, lower = 0, upper = 2, len = arg.length)
+  arg.length <- max(length(A_CLAY_MI), length(A_SILT_MI), length(A_SOM_LOI), length(A_SAND_M50), length(B_DEPTH))
+  check_numeric('A_CLAY_MI', A_CLAY_MI, FALSE, arg.length)
+  check_numeric('A_SILT_MI', A_SILT_MI, FALSE, arg.length)
+  check_numeric('A_SOM_LOI', A_SOM_LOI, FALSE, arg.length)
+  check_numeric('A_SAND_M50', A_SAND_M50, FALSE, arg.length)
+  check_numeric('A_DEPTH', A_DEPTH, FALSE, arg.length)
   
   # Collect data in a table
   dt <- data.table(id = 1:arg.length,
