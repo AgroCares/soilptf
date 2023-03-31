@@ -7,7 +7,7 @@
 sptf_pmn9(A_N_RT, CULT = 1, t = 7)
 }
 \arguments{
-\item{A_N_RT}{(numeric) The organic nitrogen content of the soil in mg N / kg}
+\item{A_N_RT}{(numeric) Total nitrogen content (mg N/ kg)}
 
 \item{CULT}{(integer) whether cultivated (0) or virgin soil (0)}
 

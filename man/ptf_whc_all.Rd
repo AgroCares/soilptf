@@ -21,7 +21,7 @@ ptf_whc_all(dt)
 
 \item{D_BDS}{(numeric) Soil bulk density (kg/m3)}
 
-\item{B_DEPTH}{(numeric) The depth of the sampled soil layer (m)}
+\item{A_DEPTH}{(numeric) The depth of the sampled soil layer (m)}
 
 \item{topsoil}{(boolean) Whether top soil (1) or not (0)}
 }

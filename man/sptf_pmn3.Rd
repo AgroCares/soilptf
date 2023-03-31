@@ -7,9 +7,9 @@
 sptf_pmn3(A_N_RT, A_CLAY_MI)
 }
 \arguments{
-\item{A_N_RT}{(numeric) The organic nitrogen content of the soil in mg N / kg}
+\item{A_N_RT}{(numeric) Total nitrogen content (mg N/ kg)}
 
-\item{A_CLAY_MI}{(numeric) The clay content of the soil (\%).}
+\item{A_CLAY_MI}{(numeric) The clay content of the mineral soil fraction (\%).}
 }
 \description{
 Calculate the PMN given the pedo transfer function of Ros & Fujita 2020 for Dutch soils

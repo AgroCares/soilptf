@@ -8,9 +8,9 @@ note YF: this is the soil density (weight of soil without pore space), not bulk 
 sptf_bd167(A_SOM_LOI, A_CLAY_MI)
 }
 \arguments{
-\item{A_SOM_LOI}{(numeric) The percentage of organic matter in the soil (\%).}
+\item{A_SOM_LOI}{(numeric) The percentage organic matter in the soil determined by loss on ignition (\%)}
 
-\item{A_CLAY_MI}{(numeric) The clay content of the soil (\%).}
+\item{A_CLAY_MI}{(numeric) The clay content of the mineral soil fraction (\%).}
 }
 \description{
 Calculate the bulk density given the pedotransferfunction of Poelman (1975)

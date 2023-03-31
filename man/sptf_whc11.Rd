@@ -2,25 +2,24 @@
 % Please edit documentation in R/whc.R
 \name{sptf_whc11}
 \alias{sptf_whc11}
-\title{Calculate the WHC given the pedotransferfunction of Campbell & Shiozawa 1992
-Note: Calculation of wrc parameters may be wrong. The calculated water content is out of normal range. Original literature can not be found on web.}
+\title{Calculate the water holding capacity given the pedotransferfunction of Campbell & Shiozawa 1992
+Note: Calculation of whc parameters may be wrong. The calculated water content is out of normal range. Original literature can not be found on web.}
 \usage{
-sptf_whc11(A_CLAY_MI, A_SILT_MI, D_BDS, mp_wp = 1500, mp_fc = 33)
+sptf_whc11(A_CLAY_MI, A_SILT_MI, D_BDS, mp_fc = 33)
 }
 \arguments{
-\item{A_CLAY_MI}{(numeric) The clay content of the soil (\%).}
+\item{A_CLAY_MI}{(numeric) The clay content of the mineral soil fraction (\%).}
 
-\item{A_SILT_MI}{(numeric) The silt content of the soil (\%).}
+\item{A_SILT_MI}{(numeric) Silt content (\%)}
 
-\item{D_BDS}{(numeric) The soil bulk density (g/cm3).}
-
-\item{mp_wp}{(numeric) Water potential at wilting point (kPa).}
-
-\item{mp_fc}{(numeric) Water potential at field capacity (kPa). 10 or 33}
+\item{mp_fc}{(numeric) Water potential at field capacity (kPa).}
 }
 \description{
-Calculate the WHC given the pedotransferfunction of Campbell & Shiozawa 1992
-Note: Calculation of wrc parameters may be wrong. The calculated water content is out of normal range. Original literature can not be found on web.
+Calculate the water holding capacity given the pedotransferfunction of Campbell & Shiozawa 1992
+Note: Calculation of whc parameters may be wrong. The calculated water content is out of normal range. Original literature can not be found on web.
+}
+\details{
+mp_fc must be either 10 or 33
 }
 \references{
 Campbell & Shiozawa (1992) Prediction of hydraulic properties of soils using particle-size distribution and bulk density data

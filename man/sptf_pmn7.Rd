@@ -7,9 +7,9 @@
 sptf_pmn7(A_C_OF, A_CLAY_MI, t = 7)
 }
 \arguments{
-\item{A_C_OF}{(numeric) The fraction organic carbon in the soil (g / kg).}
+\item{A_C_OF}{(numeric) Organic Carbon Content (g / kg)}
 
-\item{A_CLAY_MI}{(numeric) The clay content of the soil (\%).}
+\item{A_CLAY_MI}{(numeric) The clay content of the mineral soil fraction (\%).}
 
 \item{t}{(numeric) Length of incubation period (days).}
 }

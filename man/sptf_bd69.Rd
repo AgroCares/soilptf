@@ -4,12 +4,12 @@
 \alias{sptf_bd69}
 \title{Calculate the bulk density given the pedotransferfunction of Qiao et al. (2019)}
 \usage{
-sptf_bd69(A_CLAY_MI, B_DEPTH)
+sptf_bd69(A_CLAY_MI, A_DEPTH)
 }
 \arguments{
-\item{A_CLAY_MI}{(numeric) The clay content of the soil (\%).}
+\item{A_CLAY_MI}{(numeric) The clay content of the mineral soil fraction (\%).}
 
-\item{B_DEPTH}{(numeric) The depth of the sampled soil layer (m)}
+\item{A_DEPTH}{(numeric) The depth of the sampled soil layer (m)}
 }
 \description{
 Calculate the bulk density given the pedotransferfunction of Qiao et al. (2019)

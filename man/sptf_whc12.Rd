@@ -2,26 +2,23 @@
 % Please edit documentation in R/whc.R
 \name{sptf_whc12}
 \alias{sptf_whc12}
-\title{Calculate the WHC given the pedotransferfunction of Rawls & Brakensiek 1985
-Note: Calculation of wrc parameters may be wrong. The calculated water content is out of normal range. Original literature can not be found on web.}
+\title{Calculate the water holding capacity given the pedotransferfunction of Rawls & Brakensiek 1985}
 \usage{
-sptf_whc12(A_CLAY_MI, A_SAND_MI, D_BDS, mp_wp = 1500, mp_fc = 33)
+sptf_whc12(A_CLAY_MI, A_SAND_MI, D_BDS, mp_fc = 33)
 }
 \arguments{
-\item{A_CLAY_MI}{(numeric) The clay content of the soil (\%).}
+\item{A_CLAY_MI}{(numeric) The clay content of the mineral soil fraction (\%).}
 
-\item{A_SAND_MI}{(numeric) The sand content of the soil (\%).}
+\item{A_SAND_MI}{(numeric) Sand content (\%)}
 
-\item{D_BDS}{(numeric) The soil bulk density (g/cm3).}
-
-\item{mp_wp}{(numeric) Water potential at wilting point (kPa).}
-
-\item{mp_fc}{(numeric) Water potential at field capacity (kPa). 10 or 33}
+\item{mp_fc}{(numeric) Water potential at field capacity (kPa).}
 }
 \description{
-Calculate the WHC given the pedotransferfunction of Rawls & Brakensiek 1985
-Note: Calculation of wrc parameters may be wrong. The calculated water content is out of normal range. Original literature can not be found on web.
+Note: Calculation of whc parameters may be wrong. The calculated water content is out of normal range. Original literature cannot be found on web.
+}
+\details{
+mp_fc must be either 10 or 33
 }
 \references{
-Rawls & Brakensiek (1985) Prediction of Soil Water Properties for Hydrologic Modeling
+Rawls & Brakensiek (1985) Prediction of Soil Water Properties for Hydrologic Modelling
 }

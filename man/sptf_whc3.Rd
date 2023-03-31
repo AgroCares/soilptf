@@ -2,24 +2,23 @@
 % Please edit documentation in R/whc.R
 \name{sptf_whc3}
 \alias{sptf_whc3}
-\title{Calculate the WHC given the pedotransferfunction of Saxton et al 1986 
-This PTF is applicable for water potential larger than 10}
+\title{Calculate the water holding capacity given the pedotransferfunction of Saxton et al.1986}
 \usage{
-sptf_whc3(A_SAND_MI, A_CLAY_MI, mp_wp = 1500, mp_fc = 33)
+sptf_whc3(A_SAND_MI, A_CLAY_MI, mp_fc = 33)
 }
 \arguments{
-\item{A_SAND_MI}{(numeric) The sand content of the soil (\%).}
+\item{A_SAND_MI}{(numeric) Sand content (\%)}
 
-\item{A_CLAY_MI}{(numeric) The clay content of the soil (\%).}
+\item{A_CLAY_MI}{(numeric) The clay content of the mineral soil fraction (\%).}
 
-\item{mp_wp}{(numeric) Water potential at wilting point (kPa).}
-
-\item{mp_fc}{(numeric) Water potential at field capacity (kPa). This should be larger than 10.}
+\item{mp_fc}{(numeric) Water potential at field capacity (kPa).}
 }
 \description{
-Calculate the WHC given the pedotransferfunction of Saxton et al 1986 
-This PTF is applicable for water potential larger than 10
+Calculate the water holding capacity given the pedotransferfunction of Saxton et al.1986
+}
+\details{
+mp_fc must be larger than 10
 }
 \references{
-Saxton et al (1986) Estimating Generalized Soil-water Characteristics from Texture
+Saxton et al.(1986) Estimating Generalized Soil-water Characteristics from Texture
 }

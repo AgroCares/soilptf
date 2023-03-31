@@ -2,10 +2,7 @@
 
 #' Calculate the PMN given the pedo transfer function of Narteh and Sahrawat (1997) 
 #' 
-#' @param A_C_OF (numeric) The fraction organic carbon in the soil (g / kg).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
-#' @param A_N_RT (numeric) The organic nitrogen content of the soil in mg N / kg
-#' @param A_PH_CC (numeric) The acidity of the soil, measured in 0.01M CaCl2 (-)
+#' @inheritParams sptf_bd0
 #'
 #' @import data.table
 #' 
@@ -63,10 +60,7 @@ sptf_pmn1 <- function(A_C_OF, A_CLAY_MI, A_N_RT, A_PH_CC) {
 
 #' Calculate the PMN given the pedo transfer function of Zou et al (2018) 
 #' 
-#' @param A_C_OF (numeric) The fraction organic carbon in the soil (g / kg).
-#' @param A_SILT_MI (numeric) The silt content of the soil (\%).
-#' @param A_N_RT (numeric) The organic nitrogen content of the soil in mg N / kg
-#' @param A_PH_CC (numeric) The acidity of the soil, measured in 0.01M CaCl2 (-)
+#' @inheritParams sptf_bd0
 #' @param t (numeric) Length of incubation period (days). The empirical data is ~35 days, thus it should not exceed this value too much.
 #'
 #' @import data.table
@@ -122,8 +116,7 @@ sptf_pmn2 <- function(A_C_OF, A_SILT_MI, A_N_RT, A_PH_CC, t = 7) {
 
 #' Calculate the PMN given the pedo transfer function of Ros & Fujita 2020 for Dutch soils
 #' 
-#' @param A_N_RT (numeric) The organic nitrogen content of the soil in mg N / kg
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
+#' @inheritParams sptf_bd0
 #' 
 #' @import data.table
 #' 
@@ -157,8 +150,7 @@ sptf_pmn3 <- function(A_N_RT, A_CLAY_MI) {
 
 #' Calculate the PMN given the pedo transfer function of Ros & Fujita 2020 for global soils
 #' 
-#' @param A_N_RT (numeric) The organic nitrogen content of the soil in mg N / kg
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
+#' @inheritParams sptf_bd0
 #' 
 #' @import data.table
 #' 
@@ -192,9 +184,7 @@ sptf_pmn4 <- function(A_N_RT, A_CLAY_MI) {
 
 #' Calculate the PMN given the pedo transfer function of Rasiah (1995), based on dataset of Stanford and Smith (1972)
 #' 
-#' @param A_N_RT (numeric) The organic nitrogen content of the soil in mg N / kg
-#' @param A_C_OF (numeric) The fraction organic carbon in the soil (g / kg).
-#' @param A_CEC_CO (numeric) The cation exchange capacity of the soil (mmol+ / kg)
+#' @inheritParams sptf_bd0
 #' @param t (numeric) Length of incubation period (days). 
 #' 
 #' @import data.table
@@ -250,11 +240,7 @@ sptf_pmn5 <- function(A_N_RT, A_C_OF, A_CEC_CO, t = 7) {
 
 #' Calculate the PMN given the pedo transfer function of Rasiah (1995), based on Cabrera & Kissel (1988)
 #' 
-#' @param A_N_RT (numeric) The organic nitrogen content of the soil in mg N / kg
-#' @param A_C_OF (numeric) The fraction organic carbon in the soil (g / kg).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
-#' @param A_SILT_MI (numeric) The silt content of the soil (\%).
-#' @param A_PH_CC (numeric) The pH-CaCl2 of the soil
+#' @inheritParams sptf_bd0
 #' @param t (numeric) Length of incubation period (days). 
 #' @param RES (numeric) whether residue is not removed (1) or removed (0)
 #' 
@@ -315,8 +301,7 @@ sptf_pmn6 <- function(A_N_RT, A_C_OF, A_CLAY_MI, A_SILT_MI, A_PH_CC, t = 7, RES 
 
 #' Calculate the PMN given the pedo transfer function of Haer & Benbi (2003)
 #' 
-#' @param A_C_OF (numeric) The fraction organic carbon in the soil (g / kg).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
+#' @inheritParams sptf_bd0
 #' @param t (numeric) Length of incubation period (days). 
 #' 
 #' @import data.table
@@ -359,9 +344,7 @@ sptf_pmn7 <- function(A_C_OF, A_CLAY_MI, t = 7) {
 
 #' Calculate the PMN given the pedo transfer function of Rasiah (1995), based on dataset of Herlihy (1979)
 #' 
-#' @param A_N_RT (numeric) The organic nitrogen content of the soil in mg N / kg
-#' @param A_CEC_CO (numeric) The cation exchange capacity of the soil (mmol+ / kg)
-#' @param A_SILT_MI (numeric) The silt content of the soil (\%).
+#' @inheritParams sptf_bd0
 #' @param t (numeric) Length of incubation period (days). 
 #' 
 #' @import data.table
@@ -412,7 +395,7 @@ sptf_pmn8 <- function(A_N_RT, A_CEC_CO, A_SILT_MI, t = 7) {
 
 #' Calculate the PMN given the pedo transfer function of Rasiah (1995), based on dataset of Campbel et al (1984)
 #' 
-#' @param A_N_RT (numeric) The organic nitrogen content of the soil in mg N / kg
+#' @inheritParams sptf_bd0
 #' @param CULT (integer) whether cultivated (0) or virgin soil (0)
 #' @param t (numeric) Length of incubation period (days). 
 #' 
@@ -461,7 +444,7 @@ sptf_pmn9 <- function(A_N_RT, CULT = 1, t = 7) {
 
 #' Calculate the PMN given the pedo transfer function of Rasiah (1995), based on dataset of Simard & N'dayegamiye (1993)
 #' 
-#' @param A_N_RT (numeric) The organic nitrogen content of the soil in mg N / kg
+#' @inheritParams sptf_bd0
 #' @param t (numeric) Length of incubation period (days). 
 #' 
 #' @import data.table

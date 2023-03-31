@@ -2,36 +2,24 @@
 % Please edit documentation in R/whc.R
 \name{sptf_whc5}
 \alias{sptf_whc5}
-\title{Calculate the WHC given the pedotransferfunction of Wosten et al. 1999}
+\title{Calculate the waterholding capacity given the pedotransferfunction of Wösten et al. 1999}
 \usage{
-sptf_whc5(
-  A_SILT_MI,
-  A_CLAY_MI,
-  D_BDS,
-  A_SOM_LOI,
-  topsoil = 1,
-  mp_wp = 1500,
-  mp_fc = 33
-)
+sptf_whc5(A_SILT_MI, A_CLAY_MI, D_BDS, A_SOM_LOI, topsoil = 1, mp_fc = 33)
 }
 \arguments{
-\item{A_SILT_MI}{(numeric) The silt content of the soil (\%).}
+\item{A_SILT_MI}{(numeric) Silt content (\%)}
 
-\item{A_CLAY_MI}{(numeric) The clay content of the soil (\%).}
+\item{A_CLAY_MI}{(numeric) The clay content of the mineral soil fraction (\%).}
 
-\item{D_BDS}{(numeric) The soil bulk density (g/cm3).}
-
-\item{A_SOM_LOI}{(numeric) The soil organic matter content (\%).}
+\item{A_SOM_LOI}{(numeric) The percentage organic matter in the soil determined by loss on ignition (\%)}
 
 \item{topsoil}{(boolean) Whether top soil (1) or sub-soil (0)}
-
-\item{mp_wp}{(numeric) Water potential at wilting point (kPa).}
 
 \item{mp_fc}{(numeric) Water potential at field capacity (kPa).}
 }
 \description{
-Calculate the WHC given the pedotransferfunction of Wosten et al. 1999
+Calculate the waterholding capacity given the pedotransferfunction of Wösten et al. 1999
 }
 \references{
-Wosten et al. (1999) Development and use of a database of hydraulic properties of European soils
+Wösten et al. (1999) Development and use of a database of hydraulic properties of European soils
 }

@@ -2,20 +2,20 @@
 % Please edit documentation in R/whc.R
 \name{sptf_whc2}
 \alias{sptf_whc2}
-\title{Calculate the WHC given the pedotransferfunction of Bagdal et al 2022 for calcareous soil}
+\title{Calculate the water holding capacity given the pedotransferfunction of Bagdal et al.2022 for calcareous soil}
 \usage{
 sptf_whc2(A_C_OF, A_SAND_MI, A_CLAY_MI)
 }
 \arguments{
-\item{A_C_OF}{(numeric) The fraction organic carbon in the soil (g / kg).}
+\item{A_C_OF}{(numeric) Organic Carbon Content (g / kg)}
 
-\item{A_SAND_MI}{(numeric) The sand content of the soil (\%).}
+\item{A_SAND_MI}{(numeric) Sand content (\%)}
 
-\item{A_CLAY_MI}{(numeric) The clay content of the soil (\%).}
+\item{A_CLAY_MI}{(numeric) The clay content of the mineral soil fraction (\%).}
 }
 \description{
-Calculate the WHC given the pedotransferfunction of Bagdal et al 2022 for calcareous soil
+Calculate the water holding capacity given the pedotransferfunction of Bagdal et al.2022 for calcareous soil
 }
 \references{
-Bagdal et al (2022) Carbon-sensitive pedotransfer functions for plant available water
+Bagdal et al.(2022) Carbon-sensitive pedotransfer functions for plant available water
 }

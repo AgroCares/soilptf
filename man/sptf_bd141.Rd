@@ -7,13 +7,13 @@
 sptf_bd141(A_C_OF, A_N_RT, A_CLAY_MI, A_SAND_MI)
 }
 \arguments{
-\item{A_C_OF}{(numeric) The organic C content of the soil (g / kg).}
+\item{A_C_OF}{(numeric) Organic Carbon Content (g / kg)}
 
-\item{A_N_RT}{(numeric) The total N content of the soil (mg / kg).}
+\item{A_N_RT}{(numeric) Total nitrogen content (mg N/ kg)}
 
-\item{A_CLAY_MI}{(numeric) The clay content of the soil (\%).}
+\item{A_CLAY_MI}{(numeric) The clay content of the mineral soil fraction (\%).}
 
-\item{A_SAND_MI}{(numeric) The sand content of the soil (\%).}
+\item{A_SAND_MI}{(numeric) Sand content (\%)}
 }
 \description{
 Calculate the bulk density given the pedotransferfunction of Mello (2007).

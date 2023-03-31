@@ -4,12 +4,12 @@
 \alias{sptf_bd28}
 \title{Calculate the bulk density given the pedotransferfunction of Tranter et al. (2007)}
 \usage{
-sptf_bd28(A_SAND_MI, B_DEPTH)
+sptf_bd28(A_SAND_MI, A_DEPTH)
 }
 \arguments{
-\item{A_SAND_MI}{(numeric) The sand content of the soil (\%).}
+\item{A_SAND_MI}{(numeric) Sand content (\%)}
 
-\item{B_DEPTH}{(numeric) The depth of the sampled soil layer (m)}
+\item{A_DEPTH}{(numeric) The depth of the sampled soil layer (m)}
 }
 \description{
 Calculate the bulk density given the pedotransferfunction of Tranter et al. (2007)

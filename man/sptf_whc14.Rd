@@ -2,7 +2,7 @@
 % Please edit documentation in R/whc.R
 \name{sptf_whc14}
 \alias{sptf_whc14}
-\title{Calculate the WHC given the pedotransferfunction of Wosten 1997}
+\title{Calculate the water holding capacity given the pedotransferfunction of Wösten 1997}
 \usage{
 sptf_whc14(
   A_CLAY_MI,
@@ -10,27 +10,24 @@ sptf_whc14(
   A_SOM_LOI,
   A_SAND_M50 = 150,
   topsoil = 1,
-  mp_wp = 1500,
   mp_fc = 33
 )
 }
 \arguments{
-\item{A_CLAY_MI}{(numeric) The clay content of the soil (\%).}
+\item{A_CLAY_MI}{(numeric) The clay content of the mineral soil fraction (\%).}
 
-\item{A_SILT_MI}{(numeric) The clay content of the soil (\%).}
+\item{A_SILT_MI}{(numeric) Silt content (\%)}
 
-\item{A_SOM_LOI}{(numeric) The soil organic matter content (\%).}
+\item{A_SOM_LOI}{(numeric) The percentage organic matter in the soil determined by loss on ignition (\%)}
 
-\item{A_SAND_M50}{(numeric) median size of sand fraction (um)}
+\item{A_SAND_M50}{(numeric) description (µm)}
 
 \item{topsoil}{(boolean) Whether top soil (1) or sub-soil (0)}
-
-\item{mp_wp}{(numeric) Water potential at wilting point (kPa).}
 
 \item{mp_fc}{(numeric) Water potential at field capacity (kPa).}
 }
 \description{
-Calculate the WHC given the pedotransferfunction of Wosten 1997
+Calculate the water holding capacity given the pedotransferfunction of Wösten 1997
 }
 \references{
 Wösten, J. H. M. (1997). Chapter 10 Pedotransfer functions to evaluate soil quality. In: Developments in Soil Science, Volume 25:221-245, Elsevier
