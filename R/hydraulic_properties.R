@@ -19,7 +19,7 @@ sptf_vg1 <- function(A_CLAY_MI,A_SILT_MI,A_SOM_LOI,A_DEPTH) {
   A_DENSITY = ThetaR = ThetaS = alfa = n = ksat = id = NULL
   
   # Check input
-  arg.length <- max(length(A_CLAY_MI), length(A_SILT_MI), length(A_SOM_LOI), length(B_DEPTH))
+  arg.length <- max(length(A_CLAY_MI), length(A_SILT_MI), length(A_SOM_LOI), length(A_DEPTH))
   check_numeric('A_CLAY_MI', A_CLAY_MI, FALSE, arg.length)
   check_numeric('A_SILT_MI', A_SILT_MI, FALSE, arg.length)
   check_numeric('A_SOM_LOI', A_SOM_LOI, FALSE, arg.length)
