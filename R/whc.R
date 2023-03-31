@@ -102,7 +102,7 @@ sptf_whc2 <- function(A_C_OF, A_SAND_MI, A_CLAY_MI) {
 #'
 #' @inheritParams sptf_bd0
 #' @param mp_wp (numeric) Water potential at wilting point (kPa).
-#' 
+#'
 #' @details
 #' mp_fc must be larger than 10
 #'
@@ -198,8 +198,7 @@ sptf_whc4 <-
     
     
     # Calculate volumetric water content at field capacity (cm3/cm3)
-    dt[, theta_fc := 0.01 * D_BDS *
-         (35.367 + 0.644 * A_CLAY_MI - 0.251 * A_SAND_MI - 0.045 * A_DEPTH) *
+    dt[, theta_fc := 0.01 * D_BDS * (35.367 + 0.644 * A_CLAY_MI - 0.251 * A_SAND_MI - 0.045 * A_DEPTH) *
          mp_fc ^ (-0.19)]
     
     # Calculate volumetric water content at wilting point (cm3/cm3)
@@ -542,7 +541,7 @@ sptf_whc8 <- function(A_SAND_MI,
 #' Calculate the water holding capacity given the pedotransferfunction of Tomasella & Hodnett 1998
 #'
 #' @inheritParams sptf_bd0
-#' 
+#'
 #' @details
 #' mp_fc must be either 10 or 33
 #'
@@ -553,8 +552,7 @@ sptf_whc8 <- function(A_SAND_MI,
 #' @export
 sptf_whc9 <- function(A_CLAY_MI, A_SILT_MI, A_C_OF, mp_fc = 33) {
   # Check input
-  arg.length <-
-    max(length(A_CLAY_MI), length(A_SILT_MI), length(A_C_OF))
+  arg.length <- max(length(A_CLAY_MI), length(A_SILT_MI), length(A_C_OF))
   check_numeric('A_CLAY_MI', A_CLAY_MI, FALSE, arg.length)
   check_numeric('A_SILT_MI', A_SILT_MI, FALSE, arg.length)
   check_numeric('A_C_OF', A_C_OF, FALSE, arg.length)
@@ -602,10 +600,10 @@ sptf_whc9 <- function(A_CLAY_MI, A_SILT_MI, A_C_OF, mp_fc = 33) {
 #' Calculate the water holding capacity given the pedotransferfunction of Rawls et al.1982
 #'
 #' @inheritParams sptf_bd0
-#' 
+#'
 #' @details
 #' mp_fc must be either 10 or 33
-#' 
+#'
 #' @import data.table
 #'
 #' @references Rawls et al.(1982) Estimation of soil water properties. Trans. ASAE 25, 1316–1320.
@@ -648,7 +646,7 @@ sptf_whc10 <-
     tb <- data.table(
       mp = c(10, 33, 1500),
       a = c(0.4118, 0.2576, 0.0260),
-      b = c(-0.0030,-0.0020, 0),
+      b = c(-0.0030, -0.0020, 0),
       c = c(0, 0, 0),
       d = c(0.0023, 0.0036, 0.0050),
       e = c(0.0317, 0.0299, 0.0158),
@@ -681,7 +679,7 @@ sptf_whc10 <-
 #' Note: Calculation of whc parameters may be wrong. The calculated water content is out of normal range. Original literature can not be found on web.
 #'
 #' @inheritParams sptf_bd0
-#' 
+#'
 #' @details
 #' mp_fc must be either 10 or 33
 #'
@@ -753,7 +751,7 @@ sptf_whc11 <- function(A_CLAY_MI,
 #'
 #' @details
 #' mp_fc must be either 10 or 33
-#' 
+#'
 #'
 #' @import data.table
 #'
@@ -840,12 +838,7 @@ sptf_whc12 <- function(A_CLAY_MI,
 #' @references Tian et al. (2021) New pedotransfer functions for soil water retention curves that better account for bulk density effects
 #'
 #' @export
-sptf_whc13 <- function(A_SAND_MI,
-                       A_CLAY_MI,
-                       D_BDS,
-                       A_C_OF,
-                       mp_wp = 1500,
-                       mp_fc = 33) {
+sptf_whc13 <- function(A_SAND_MI, A_CLAY_MI, D_BDS, A_C_OF, mp_wp = 1500, mp_fc = 33) {
   # Check input
   arg.length <-
     max(length(A_SAND_MI),
@@ -856,7 +849,7 @@ sptf_whc13 <- function(A_SAND_MI,
   check_numeric('A_CLAY_MI', A_CLAY_MI, FALSE, arg.length)
   check_numeric('A_C_OF', A_C_OF, FALSE, arg.length)
   check_numeric('D_BDS', D_BDS, FALSE, arg.length)
-  checkmate::assert_subset(mp_fc, choices = c(10, 33), any.missing = FALSE)
+  checkmate::assert_subset(mp_fc, choices = c(10, 33))
   checkmate::assert_numeric(mp_wp, any.missing = FALSE)
   
   # Collect data into a table (set in units %)
@@ -1128,7 +1121,7 @@ sptf_whc16 <- function(A_CLAY_MI,
   checkmate::assert_numeric(mp_fc, any.missing = FALSE)
   checkmate::assert_numeric(mp_wp, any.missing = FALSE)
   
-  # load table of parameter values 
+  # load table of parameter values
   bouwsteen_tb <- soilptf::sptf_bouwsteen |> setDT()
   
   # Collect data into a table
@@ -1163,7 +1156,8 @@ sptf_whc16 <- function(A_CLAY_MI,
        A_LOAM_MI < 50 & A_SAND_M50 < 210, SEL1 := "B4"]
   dt[CF1 == 0 &
        CF2 == 0 &
-       A_LOAM_MI <= 50 & A_SAND_M50 > 210 & A_SAND_M50 <= 2000, SEL1 := "B5"]
+       A_LOAM_MI <= 50 &
+       A_SAND_M50 > 210 & A_SAND_M50 <= 2000, SEL1 := "B5"]
   dt[CF1 == 1 & CF2 == 0 & A_CLAY_MI >= 8  &
        A_CLAY_MI < 12, SEL1 := "B7"]
   dt[CF1 == 1 & CF2 == 0 & A_CLAY_MI >= 12 &
@@ -1235,8 +1229,9 @@ sptf_whc16 <- function(A_CLAY_MI,
 #'
 #' @export
 pF_curve <- function(head, thetaR, thetaS, alfa, n) {
-  theta <- thetaR + (thetaS - thetaR) / (1 + abs(alfa * head) ^ n) ^ (1 -
-                                                                        1 / n)
+  theta <-
+    thetaR + (thetaS - thetaR) / (1 + abs(alfa * head) ^ n) ^ (1 -
+                                                                 1 / n)
   
   return(theta)
 }
