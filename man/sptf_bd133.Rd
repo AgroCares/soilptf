@@ -4,14 +4,14 @@
 \alias{sptf_bd133}
 \title{Calculate the bulk density given the pedotransferfunction of Nussbaum et al. (2016).}
 \usage{
-sptf_bd133(A_C_OF, B_DEPTH, B_SLOPE_DEGREE)
+sptf_bd133(A_C_OF, A_DEPTH, B_SLOPE_DEGREE)
 }
 \arguments{
-\item{A_C_OF}{(numeric) The fraction organic carbon in the soil (g / kg).}
+\item{A_C_OF}{(numeric) Organic Carbon Content (g / kg)}
 
-\item{B_DEPTH}{(numeric) The depth of the sampled soil layer (m)}
+\item{A_DEPTH}{(numeric) The depth of the sampled soil layer (m)}
 
-\item{B_SLOPE_DEGREE}{(numeric) The slope of the field (degrees)}
+\item{B_SLOPE_DEGREE}{(numeric) Slope of the field (degrees)}
 }
 \description{
 Calculate the bulk density given the pedotransferfunction of Nussbaum et al. (2016).

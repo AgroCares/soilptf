@@ -4,10 +4,12 @@
 \alias{sptf_bd100}
 \title{Calculate the bulk density given the pedotransferfunction of Williams (1970)}
 \usage{
-sptf_bd100(A_N_RT)
+sptf_bd100(A_N_RT, A_C_OF)
 }
 \arguments{
-\item{A_N_RT}{(numeric) The nitrogen content of the soil (mg / kg).}
+\item{A_N_RT}{(numeric) Total nitrogen content (mg N/ kg)}
+
+\item{A_C_OF}{(numeric) Organic Carbon Content (g / kg)}
 }
 \description{
 Calculate the bulk density given the pedotransferfunction of Williams (1970)

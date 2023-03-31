@@ -14,17 +14,17 @@ sptf_bd179(
 )
 }
 \arguments{
-\item{A_SOM_LOI}{(numeric) The percentage of organic matter in the soil (\%).}
+\item{A_SOM_LOI}{(numeric) The percentage organic matter in the soil determined by loss on ignition (\%)}
 
-\item{A_C_OF}{(numeric) The carbon content of the soil (g / kg).}
+\item{A_C_OF}{(numeric) Organic Carbon Content (g / kg)}
 
-\item{A_CLAY_MI}{(numeric) The clay content of the soil (\%).}
+\item{A_CLAY_MI}{(numeric) The clay content of the mineral soil fraction (\%).}
 
-\item{A_SILT_MI}{(numeric) The silt content of the soil (\%).}
+\item{A_SILT_MI}{(numeric) Silt content (\%)}
 
-\item{A_SAND_MI}{(numeric) The sand content of the soil (\%).}
+\item{A_SAND_MI}{(numeric) Sand content (\%)}
 
-\item{A_PH_WA}{(numeric) The acidity of the soil, pH in water (-)}
+\item{A_PH_WA}{(numeric) Acidity in water (-)}
 }
 \description{
 Calculate the bulk density given the pedotransferfunction of Melendez (2017).

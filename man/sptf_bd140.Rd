@@ -7,13 +7,13 @@
 sptf_bd140(A_SOM_LOI, A_CLAY_MI, A_SAND_MI, A_SILT_MI)
 }
 \arguments{
-\item{A_SOM_LOI}{(numeric) The percentage of organic matter in the soil (\%).}
+\item{A_SOM_LOI}{(numeric) The percentage organic matter in the soil determined by loss on ignition (\%)}
 
-\item{A_CLAY_MI}{(numeric) The clay content of the soil (\%).}
+\item{A_CLAY_MI}{(numeric) The clay content of the mineral soil fraction (\%).}
 
-\item{A_SAND_MI}{(numeric) The sand content of the soil (\%).}
+\item{A_SAND_MI}{(numeric) Sand content (\%)}
 
-\item{A_SILT_MI}{(numeric) The silt content of the soil (\%).}
+\item{A_SILT_MI}{(numeric) Silt content (\%)}
 }
 \description{
 Calculate the bulk density given the pedotransferfunction of Patil et al (2012).

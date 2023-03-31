@@ -1,36 +1,35 @@
 # function for hydraulic properties
 
+#' Calculate water retention indices given the pedotransferfunctions of Wösten et al. (1999)
+#' 
 #' This function calculates different kind of Water Retention Indices given the continuous pedotransferfunctions of Wosten et al. (1999)
 #' These include : 'wilting point','field capacity','water holding capacity','plant available water' and 'Ksat'
 #' 
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%)
-#' @param A_SILT_MI (numeric) The silt content of the soil (\%)
-#' @param A_SOM_LOI (numeric) The organic matter content of the soil (\%)
-#' @param B_DEPTH (numeric) The depth of the sampled soil layer (m)
+#' @inheritParams sptf_bd0
 #'
 #' @references Wösten, J.H.M , Lilly, A., Nemes, A., Le Bas, C. (1999) Development and use of a database of hydraulic properties of European soils. Geoderma 90 (3-4): 169-185.
 #'
 #' @import data.table  
 #'
 #' @export
-sptf_vg1 <- function(A_CLAY_MI,A_SILT_MI,A_SOM_LOI,B_DEPTH) {
+sptf_vg1 <- function(A_CLAY_MI,A_SILT_MI,A_SOM_LOI,A_DEPTH) {
   
   # add visual bindings
   A_DENSITY = ThetaR = ThetaS = alfa = n = ksat = id = NULL
   
   # Check input
-  arg.length <- max(length(A_CLAY_MI), length(A_SILT_MI), length(A_SOM_LOI), length(B_DEPTH))
-  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, any.missing = FALSE, min.len = 1)
-  checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, any.missing = FALSE, min.len = 1)
-  checkmate::assert_numeric(A_SOM_LOI, lower = 0, upper = 100, any.missing = FALSE, min.len = 1)
-  checkmate::assert_numeric(B_DEPTH, lower = 0, upper = 2, len = arg.length)
+  arg.length <- max(length(A_CLAY_MI), length(A_SILT_MI), length(A_SOM_LOI), length(A_DEPTH))
+  check_numeric('A_CLAY_MI', A_CLAY_MI, FALSE, arg.length)
+  check_numeric('A_SILT_MI', A_SILT_MI, FALSE, arg.length)
+  check_numeric('A_SOM_LOI', A_SOM_LOI, FALSE, arg.length)
+  check_numeric('A_DEPTH', A_DEPTH, FALSE, arg.length)
   
   # Collect data in a table
   dt <- data.table(id = 1:arg.length,
                    A_CLAY_MI = A_CLAY_MI,
                    A_SILT_MI = A_SILT_MI,
                    A_SOM_LOI = A_SOM_LOI,
-                   TOPSOIL = fifelse(B_DEPTH <= 50, 1,0),
+                   TOPSOIL = fifelse(A_DEPTH <= 50, 1,0),
                    A_DENSITY = NA_real_,
                    ThetaR = NA_real_,
                    ThetaS = NA_real_, 
@@ -77,34 +76,30 @@ sptf_vg1 <- function(A_CLAY_MI,A_SILT_MI,A_SOM_LOI,B_DEPTH) {
 #'
 #' This function estimates water retention curve parameters using Pedo transfer function of Wosten (2001)
 #' 
-#' @param A_CLAY_MI (numeric) The clay (<2um) content of the soil (\%) 
-#' @param A_SILT_MI (numeric) The silt content of the soil (\%) 
-#' @param A_SOM_LOI (numeric) The organic matter content of the soil (\%)
-#' @param A_SAND_M50 (numeric) the size of sand fraction (um)
-#' @param B_DEPTH (numeric) The depth of the sampled soil layer (m)
+#' @inheritParams sptf_bd0
 #' 
 #' @references Wösten, J. H. M., Veerman, G. ., de Groot, W. J., & Stolte, J. (2001). Waterretentie en doorlatendheidskarakteristieken van boven- en ondergronden in Nederland: de Staringreeks. Alterra Rapport, 153, 86. https://doi.org/153
 #'
 #' @export 
-sptf_vg1 <- function(A_CLAY_MI, A_SILT_MI, A_SOM_LOI, A_SAND_M50, B_DEPTH){
+sptf_vg2 <- function(A_CLAY_MI, A_SILT_MI, A_SOM_LOI, A_SAND_M50, A_DEPTH){
   
   # add visual bindings
   A_DENSITY = ThetaR = ThetaS = Ksat = alfa = l = n =  id = NULL
   
   # Check input
-  arg.length <- max(length(A_CLAY_MI), length(A_SILT_MI), length(A_SOM_LOI), length(A_SAND_M50), length(B_DEPTH))
-  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, any.missing = FALSE, min.len = 1)
-  checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, any.missing = FALSE, min.len = 1)
-  checkmate::assert_numeric(A_SOM_LOI, lower = 0, upper = 100, any.missing = FALSE, min.len = 1)
-  checkmate::assert_numeric(A_SAND_M50, lower = 0, upper = 2000, any.missing = FALSE, min.len = 1)
-  checkmate::assert_numeric(B_DEPTH, lower = 0, upper = 2, len = arg.length)
+  arg.length <- max(length(A_CLAY_MI), length(A_SILT_MI), length(A_SOM_LOI), length(A_SAND_M50), length(A_DEPTH))
+  check_numeric('A_CLAY_MI', A_CLAY_MI, FALSE, arg.length)
+  check_numeric('A_SILT_MI', A_SILT_MI, FALSE, arg.length)
+  check_numeric('A_SOM_LOI', A_SOM_LOI, FALSE, arg.length)
+  check_numeric('A_SAND_M50', A_SAND_M50, FALSE, arg.length)
+  check_numeric('A_DEPTH', A_DEPTH, FALSE, arg.length)
   
   # Collect data in a table
   dt <- data.table(id = 1:arg.length,
                    A_CLAY_MI = A_CLAY_MI,
                    A_SILT_MI = A_SILT_MI,
                    A_SOM_LOI = A_SOM_LOI,
-                   TOPSOIL = fifelse(B_DEPTH <= 50, 1,0),
+                   TOPSOIL = fifelse(A_DEPTH <= 50, 1,0),
                    A_LOAM_MI = A_SILT_MI + A_CLAY_MI,
                    A_SAND_M50 = A_SAND_M50,
                    ThetaR = NA_real_,

@@ -4,10 +4,16 @@
 \alias{sptf_bd115}
 \title{Calculate the bulk density given the pedotransferfunction of Hallet et al. (1998)}
 \usage{
-sptf_bd115(A_C_OF)
+sptf_bd115(A_C_OF, A_CLAY_MI, A_SAND_MI, A_SILT_MI)
 }
 \arguments{
-\item{A_C_OF}{(numeric) The fraction organic carbon in the soil (g / kg).}
+\item{A_C_OF}{(numeric) Organic Carbon Content (g / kg)}
+
+\item{A_CLAY_MI}{(numeric) The clay content of the mineral soil fraction (\%).}
+
+\item{A_SAND_MI}{(numeric) Sand content (\%)}
+
+\item{A_SILT_MI}{(numeric) Silt content (\%)}
 }
 \description{
 Calculate the bulk density given the pedotransferfunction of Hallet et al. (1998)

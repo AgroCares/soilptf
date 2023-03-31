@@ -4,16 +4,14 @@
 \alias{sptf_bd88}
 \title{Calculate the bulk density given the pedotransferfunction of Shiri et al. (2017)}
 \usage{
-sptf_bd88(A_C_OF, A_CLAY_MI, A_CACO3_MI, A_PH_WA)
+sptf_bd88(A_C_OF, A_CLAY_MI, A_CACO3_IF, A_PH_WA)
 }
 \arguments{
-\item{A_C_OF}{(numeric) The carbon content of the soil (g / kg).}
+\item{A_C_OF}{(numeric) Organic Carbon Content (g / kg)}
 
-\item{A_CLAY_MI}{(numeric) The clay content of the soil (\%).}
+\item{A_CLAY_MI}{(numeric) The clay content of the mineral soil fraction (\%).}
 
-\item{A_CACO3_MI}{(numeric) The calcium carbonate content of the soil (\%)}
-
-\item{A_PH_WA}{(numeric) The acidity of the soil, pH in water (-)}
+\item{A_PH_WA}{(numeric) Acidity in water (-)}
 }
 \description{
 Calculate the bulk density given the pedotransferfunction of Shiri et al. (2017)
