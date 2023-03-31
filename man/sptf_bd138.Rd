@@ -7,9 +7,9 @@
 sptf_bd138(A_SOM_LOI, A_SILT_MI)
 }
 \arguments{
-\item{A_SOM_LOI}{(numeric) The percentage of organic matter in the soil (\%).}
+\item{A_SOM_LOI}{(numeric) The percentage organic matter in the soil determined by loss on ignition (\%)}
 
-\item{A_SILT_MI}{(numeric) The silt content of the soil (\%).}
+\item{A_SILT_MI}{(numeric) Silt content (\%)}
 }
 \description{
 Calculate the bulk density given the pedotransferfunction of Sun et al. (2019)

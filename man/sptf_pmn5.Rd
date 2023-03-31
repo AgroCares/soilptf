@@ -7,11 +7,11 @@
 sptf_pmn5(A_N_RT, A_C_OF, A_CEC_CO, t = 7)
 }
 \arguments{
-\item{A_N_RT}{(numeric) The organic nitrogen content of the soil in mg N / kg}
+\item{A_N_RT}{(numeric) Total nitrogen content (mg N/ kg)}
 
-\item{A_C_OF}{(numeric) The fraction organic carbon in the soil (g / kg).}
+\item{A_C_OF}{(numeric) Organic Carbon Content (g / kg)}
 
-\item{A_CEC_CO}{(numeric) The cation exchange capacity of the soil (mmol+ / kg)}
+\item{A_CEC_CO}{(numeric) Cation Exchange Capacity (mmol+/kg)}
 
 \item{t}{(numeric) Length of incubation period (days).}
 }

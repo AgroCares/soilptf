@@ -2,7 +2,7 @@
 % Please edit documentation in R/whc.R
 \name{sptf_whc16}
 \alias{sptf_whc16}
-\title{the WHC given the pedotransferfunction of Wosten et al 2001 (Table 3), for each soil class}
+\title{the water holding capacity given the pedotransferfunction of Wösten et al.2001 (Table 3), for each soil class}
 \usage{
 sptf_whc16(
   A_CLAY_MI,
@@ -14,20 +14,20 @@ sptf_whc16(
 )
 }
 \arguments{
-\item{A_CLAY_MI}{(numeric) The clay content of the soil (\%).}
+\item{A_CLAY_MI}{(numeric) The clay content of the mineral soil fraction (\%).}
 
-\item{A_SILT_MI}{(numeric) The clay content of the soil (\%).}
+\item{A_SILT_MI}{(numeric) Silt content (\%)}
 
-\item{A_SOM_LOI}{(numeric) The soil organic matter content (\%).}
+\item{A_SOM_LOI}{(numeric) The percentage organic matter in the soil determined by loss on ignition (\%)}
 
-\item{A_SAND_M50}{(numeric) median size of sand fraction (um)}
+\item{A_SAND_M50}{(numeric) description (µm)}
 
 \item{mp_wp}{(numeric) Water potential at wilting point (kPa).}
 
 \item{mp_fc}{(numeric) Water potential at field capacity (kPa).}
 }
 \description{
-the WHC given the pedotransferfunction of Wosten et al 2001 (Table 3), for each soil class
+the water holding capacity given the pedotransferfunction of Wösten et al.2001 (Table 3), for each soil class
 }
 \references{
 Wösten, J. H. M., Veerman, G. ., de Groot, W. J., & Stolte, J. (2001). Waterretentie en doorlatendheidskarakteristieken van boven- en ondergronden in Nederland: de Staringreeks. Alterra Rapport, 153, 86. https://edepot.wur.nl/43272

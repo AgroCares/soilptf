@@ -10,7 +10,7 @@ ptf_bd_all(dt)
 \item{dt}{(data table) Data table which includes at least:
 A_SOM_LOI or A_C_OF
 2 of A_CLAY_MI, A_SAND_MI, A_SILT_MI
-B_DEPTH
+A_DEPTH
 id}
 }
 \description{

@@ -7,9 +7,9 @@
 sptf_bd15(A_C_OF, A_CLAY_MI)
 }
 \arguments{
-\item{A_C_OF}{(numeric) The fraction organic carbon in the soil (g / kg).}
+\item{A_C_OF}{(numeric) Organic Carbon Content (g / kg)}
 
-\item{A_CLAY_MI}{(numeric) The clay content of the soil (\%).}
+\item{A_CLAY_MI}{(numeric) The clay content of the mineral soil fraction (\%).}
 }
 \description{
 Calculate the bulk density given the pedotransferfunction of Bernoux et al. (1998)
