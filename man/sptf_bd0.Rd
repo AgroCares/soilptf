@@ -7,41 +7,41 @@
 sptf_bd0()
 }
 \arguments{
-\item{A_CACO3_MI}{description}
+\item{A_CACO3_MI}{(numeric) The calcium carbonate content of the soil (\%)}
 
-\item{A_CEC_CO}{Cation Exchange Capacity (mmol+/kg)}
+\item{A_CEC_CO}{(numeric) Cation Exchange Capacity (mmol+/kg)}
 
-\item{A_CLAY_MI}{(numeric) The clay content of the soil (\%).}
+\item{A_CLAY_MI}{(numeric) The clay content of the mineral soil fraction (\%).}
 
-\item{A_C_OF}{Organic Carbon Content (g / kg)}
+\item{A_C_OF}{(numeric) Organic Carbon Content (g / kg)}
 
 \item{A_DEPTH}{(numeric) The depth of the sampled soil layer (m)}
 
-\item{A_DENSITY}{description}
+\item{A_DENSITY}{(numeric) Soil density (g / kg)}
 
 \item{A_H20_T105}{(numeric) The volumetric moisture content of the soil (\%)}
 
-\item{A_N_RT}{Total nitrogen content (mg N/ kg)}
+\item{A_N_RT}{(numeric) Total nitrogen content (mg N/ kg)}
 
-\item{A_PH_CC}{Acidity in CaCl2 (-)}
+\item{A_PH_CC}{(numeric) Acidity in CaCl2 (-)}
 
-\item{A_PH_WA}{Acidity in water (-)}
+\item{A_PH_WA}{(numeric) Acidity in water (-)}
 
-\item{A_SAND_M50}{description (um)}
+\item{A_SAND_M50}{(numeric) description (µm)}
 
-\item{A_SAND_MI}{Sand content (%)}
+\item{A_SAND_MI}{(numeric) Sand content (\%)}
 
-\item{A_SILT_MI}{Silt content (%)}
+\item{A_SILT_MI}{(numeric) Silt content (\%)}
 
-\item{A_SOM_LOI}{(numeric) The percentage organic matter in the soil (\%)}
+\item{A_SOM_LOI}{(numeric) The percentage organic matter in the soil determined by loss on ignition (\%)}
 
 \item{B_ALTITUDE}{(numeric) The altitude (m)}
 
-\item{B_ROCKS_FR}{description}
+\item{B_ROCKS_FR}{(numeric) description}
 
 \item{B_SLOPE_ASPECT}{(numeric) The slope aspect (degrees)}
 
-\item{B_SLOPE_DEGREE}{Slope of the field (degrees)}
+\item{B_SLOPE_DEGREE}{(numeric) Slope of the field (degrees)}
 }
 \description{
 Documentation of all possible bulk density pedotransfer function inputs

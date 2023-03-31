@@ -7,9 +7,9 @@
 sptf_bd155(A_C_OF, A_SILT_MI)
 }
 \arguments{
-\item{A_C_OF}{(numeric) The fraction organic carbon in the soil (g / kg).}
+\item{A_C_OF}{(numeric) Organic Carbon Content (g / kg)}
 
-\item{A_SILT_MI}{(numeric) The silt content of the soil (\%).}
+\item{A_SILT_MI}{(numeric) Silt content (\%)}
 }
 \description{
 Calculate the bulk density given the pedotransferfunction of Gomes et al. (2017).

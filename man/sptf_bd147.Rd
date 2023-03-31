@@ -7,13 +7,13 @@
 sptf_bd147(A_C_OF, A_CLAY_MI, A_SAND_MI, A_SILT_MI, A_DEPTH)
 }
 \arguments{
-\item{A_C_OF}{(numeric) The organic C content of the soil (g / kg).}
+\item{A_C_OF}{(numeric) Organic Carbon Content (g / kg)}
 
-\item{A_CLAY_MI}{(numeric) The clay content of the soil (\%).}
+\item{A_CLAY_MI}{(numeric) The clay content of the mineral soil fraction (\%).}
 
-\item{A_SAND_MI}{(numeric) The sand content of the soil (\%).}
+\item{A_SAND_MI}{(numeric) Sand content (\%)}
 
-\item{A_SILT_MI}{(numeric) The silt content of the soil (\%).}
+\item{A_SILT_MI}{(numeric) Silt content (\%)}
 
 \item{A_DEPTH}{(numeric) The depth of the sampled soil layer (m)}
 }

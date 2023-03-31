@@ -7,7 +7,7 @@
 sptf_bd128(A_C_OF)
 }
 \arguments{
-\item{A_C_OF}{(numeric) The fraction organic carbon in the soil (g / kg).}
+\item{A_C_OF}{(numeric) Organic Carbon Content (g / kg)}
 }
 \description{
 Calculate the bulk density given the pedotransferfunction of Foldal et al. (2020).

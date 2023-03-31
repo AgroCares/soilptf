@@ -7,9 +7,9 @@
 sptf_bd100(A_N_RT, A_C_OF)
 }
 \arguments{
-\item{A_N_RT}{(numeric) The nitrogen content of the soil (mg / kg).}
+\item{A_N_RT}{(numeric) Total nitrogen content (mg N/ kg)}
 
-\item{A_C_OF}{(numeric) The fraction organic carbon in the soil (g / kg).}
+\item{A_C_OF}{(numeric) Organic Carbon Content (g / kg)}
 }
 \description{
 Calculate the bulk density given the pedotransferfunction of Williams (1970)

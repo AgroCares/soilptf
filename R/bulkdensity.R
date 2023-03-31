@@ -3,24 +3,23 @@
 #' Documentation of all possible bulk density pedotransfer function inputs
 #' 
 #' @param A_CACO3_MI (numeric) The calcium carbonate content of the soil (\%)
-#' @param A_CEC_CO Cation Exchange Capacity (mmol+/kg)
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
-#' @param A_C_OF  Organic Carbon Content (g / kg)
+#' @param A_CEC_CO (numeric) Cation Exchange Capacity (mmol+/kg)
+#' @param A_CLAY_MI (numeric) The clay content of the mineral soil fraction (\%).
+#' @param A_C_OF  (numeric) Organic Carbon Content (g / kg)
 #' @param A_DEPTH (numeric) The depth of the sampled soil layer (m)
-#' @param A_DENSITY description
+#' @param A_DENSITY (numeric) Soil density (g / kg)
 #' @param A_H20_T105 (numeric) The volumetric moisture content of the soil (\%)
-#' @param A_N_RT Total nitrogen content (mg N/ kg)
-#' @param A_PH_CC Acidity in CaCl2 (-)
-#' @param A_PH_WA Acidity in water (-)
-#' @param A_SAND_M50 description (um)
-#' @param A_SAND_MI Sand content (%)
-#' @param A_SILT_MI Silt content (%)
-#' @param A_SOM_LOI (numeric) The percentage organic matter in the soil (\%)
+#' @param A_N_RT (numeric) Total nitrogen content (mg N/ kg)
+#' @param A_PH_CC (numeric) Acidity in CaCl2 (-)
+#' @param A_PH_WA (numeric) Acidity in water (-)
+#' @param A_SAND_M50 (numeric) description (µm)
+#' @param A_SAND_MI (numeric) Sand content (\%)
+#' @param A_SILT_MI (numeric) Silt content (\%)
+#' @param A_SOM_LOI (numeric) The percentage organic matter in the soil determined by loss on ignition (\%)
 #' @param B_ALTITUDE (numeric) The altitude (m)
-#' @param B_ROCKS_FR description
+#' @param B_ROCKS_FR (numeric) description
 #' @param B_SLOPE_ASPECT (numeric) The slope aspect (degrees)
-#' @param B_SLOPE_DEGREE Slope of the field (degrees)
-#' 
+#' @param B_SLOPE_DEGREE (numeric) Slope of the field (degrees)
 sptf_bd0 <- function(){}
 
 #' Calculate the bulk density given the pedotransferfunction in Dutch Fertilizer Recommendation
@@ -1099,7 +1098,7 @@ sptf_bd31 <- function(A_CLAY_MI) {
 
 #' Calculate the bulk density given the pedotransferfunction of Ruehlmann & Korschens (2009)
 #'
-#' @inheritParams sptf_bd0.
+#' @inheritParams sptf_bd0
 #'
 #' @import data.table
 #' 
@@ -3109,7 +3108,7 @@ sptf_bd89 <- function(A_C_OF,A_CLAY_MI,A_SILT_MI) {
 
 #' Calculate the bulk density given the pedotransferfunction of Dexter (2004)
 #'
-#' @inheritParams sptf_bd0.
+#' @inheritParams sptf_bd0
 #'
 #' @import data.table
 #' 
