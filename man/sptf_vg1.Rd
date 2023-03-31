@@ -5,9 +5,9 @@
 \title{This function calculates different kind of Water Retention Indices given the continuous pedotransferfunctions of Wosten et al. (1999)
 These include : 'wilting point','field capacity','water holding capacity','plant available water' and 'Ksat'}
 \usage{
-sptf_vg1(A_CLAY_MI, A_SILT_MI, A_SOM_LOI, A_SAND_M50, B_DEPTH)
+sptf_vg1(A_CLAY_MI, A_SILT_MI, A_SOM_LOI, A_SAND_M50, A_DEPTH)
 
-sptf_vg1(A_CLAY_MI, A_SILT_MI, A_SOM_LOI, A_SAND_M50, B_DEPTH)
+sptf_vg1(A_CLAY_MI, A_SILT_MI, A_SOM_LOI, A_SAND_M50, A_DEPTH)
 }
 \arguments{
 \item{A_CLAY_MI}{(numeric) The clay (<2um) content of the soil (\%)}
@@ -18,7 +18,7 @@ sptf_vg1(A_CLAY_MI, A_SILT_MI, A_SOM_LOI, A_SAND_M50, B_DEPTH)
 
 \item{A_SAND_M50}{(numeric) the size of sand fraction (um)}
 
-\item{B_DEPTH}{(numeric) The depth of the sampled soil layer (m)}
+\item{A_DEPTH}{(numeric) The depth of the sampled soil layer (m)}
 }
 \description{
 This function estimates water retention curve parameters using Pedo transfer function of Wosten (2001)

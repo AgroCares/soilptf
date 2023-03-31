@@ -14,7 +14,7 @@ sptf_whc7(
   A_SILT_MI,
   D_BDS,
   A_C_OF,
-  B_DEPTH = 15,
+  A_DEPTH = 15,
   mp_wp = 1500,
   mp_fc = 33
 )
@@ -30,7 +30,7 @@ sptf_whc7(
 
 \item{A_C_OF}{(numeric) The soil organic carbon content (g/kg).}
 
-\item{B_DEPTH}{(numeric) The depth of soil (cm)}
+\item{A_DEPTH}{(numeric) The depth of soil (cm)}
 
 \item{mp_wp}{(numeric) Water potential at wilting point (kPa).}
 

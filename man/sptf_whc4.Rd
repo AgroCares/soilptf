@@ -4,7 +4,7 @@
 \alias{sptf_whc4}
 \title{Calculate the WHC given the pedotransferfunction of Oosterveld and Chang (1980)}
 \usage{
-sptf_whc4(A_SAND_MI, A_CLAY_MI, D_BDS, B_DEPTH = 15, mp_wp = 1500)
+sptf_whc4(A_SAND_MI, A_CLAY_MI, D_BDS, A_DEPTH = 15, mp_wp = 1500)
 }
 \arguments{
 \item{A_SAND_MI}{(numeric) The sand content of the soil (\%).}
@@ -13,7 +13,7 @@ sptf_whc4(A_SAND_MI, A_CLAY_MI, D_BDS, B_DEPTH = 15, mp_wp = 1500)
 
 \item{D_BDS}{(numeric) The soil bulk density (g/cm3).}
 
-\item{B_DEPTH}{(numeric) The mean depth of soil sample (cm). This should range within 8 - 180 cm.}
+\item{A_DEPTH}{(numeric) The mean depth of soil sample (cm). This should range within 8 - 180 cm.}
 
 \item{mp_wp}{(numeric) Water potential at wilting point (kPa).}
 }

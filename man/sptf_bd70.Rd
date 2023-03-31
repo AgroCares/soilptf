@@ -8,7 +8,7 @@ sptf_bd70(
   A_C_OF,
   A_CLAY_MI,
   A_SILT_MI,
-  B_DEPTH,
+  A_DEPTH,
   B_ALTITUDE,
   B_SLOPE_DEGREE,
   B_SLOPE_ASPECT
@@ -21,7 +21,7 @@ sptf_bd70(
 
 \item{A_SILT_MI}{(numeric) The silt content of the soil (\%)}
 
-\item{B_DEPTH}{(numeric) The depth of the sampled soil layer (m)}
+\item{A_DEPTH}{(numeric) The depth of the sampled soil layer (m)}
 
 \item{B_ALTITUDE}{(numeric) The altitude (m)}
 

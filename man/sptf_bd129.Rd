@@ -4,7 +4,7 @@
 \alias{sptf_bd129}
 \title{Calculate the bulk density given the pedotransferfunction of Foldal et al. (2020).}
 \usage{
-sptf_bd129(A_C_OF, A_CLAY_MI, A_SILT_MI, B_DEPTH)
+sptf_bd129(A_C_OF, A_CLAY_MI, A_SILT_MI, A_DEPTH)
 }
 \arguments{
 \item{A_C_OF}{(numeric) The fraction organic carbon in the soil (g / kg).}
@@ -13,7 +13,7 @@ sptf_bd129(A_C_OF, A_CLAY_MI, A_SILT_MI, B_DEPTH)
 
 \item{A_SILT_MI}{(numeric) The silt content of the soil (\%).}
 
-\item{B_DEPTH}{(numeric) The depth of the sampled soil layer (m)}
+\item{A_DEPTH}{(numeric) The depth of the sampled soil layer (m)}
 }
 \description{
 Calculate the bulk density given the pedotransferfunction of Foldal et al. (2020).
