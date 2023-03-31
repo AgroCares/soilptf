@@ -1,0 +1,4 @@
+﻿ptf_id;ptf_type;country_code;continent_code;soiltype;landuse;depth;nsample;r2;soilproperties;reference;url
+1;cec;NL;EU;sand;variable;220;89;99;a_som_loi||a_clay_mi;wosten_1997;https://edepot.wur.nl/299664
+2;ph;NL;EU;peat;variable;220;88;92,6;a_ph_kcl;wosten_1997;https://edepot.wur.nl/299664
+3;ph;NL;EU;sand||clay;variable;220;88;90,7;a_ph_kcl||a_som_loi;wosten_1997;https://edepot.wur.nl/299664
