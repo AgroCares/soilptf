@@ -42,6 +42,10 @@ sptf_bd0()
 \item{B_SLOPE_ASPECT}{(numeric) The slope aspect (degrees)}
 
 \item{B_SLOPE_DEGREE}{(numeric) Slope of the field (degrees)}
+
+\item{mp_wp}{(numeric) Water potential at wilting point (kPa).}
+
+\item{mp_fc}{(numeric) Water potential at field capacity (kPa).}
 }
 \description{
 Documentation of all possible bulk density pedotransfer function inputs

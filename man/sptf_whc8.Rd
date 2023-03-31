@@ -2,26 +2,24 @@
 % Please edit documentation in R/whc.R
 \name{sptf_whc8}
 \alias{sptf_whc8}
-\title{Calculate the WHC given the pedotransferfunction of Weynants et al 2009}
+\title{Calculate the water holding capacity given the pedotransferfunction of Weynants et al. 2009}
 \usage{
 sptf_whc8(A_SAND_MI, A_CLAY_MI, D_BDS, A_C_OF, mp_wp = 1500, mp_fc = 33)
 }
 \arguments{
-\item{A_SAND_MI}{(numeric) The sand content of the soil (\%).}
+\item{A_SAND_MI}{(numeric) Sand content (\%)}
 
-\item{A_CLAY_MI}{(numeric) The clay content of the soil (\%).}
+\item{A_CLAY_MI}{(numeric) The clay content of the mineral soil fraction (\%).}
 
-\item{D_BDS}{(numeric) The soil bulk density (g/cm3).}
-
-\item{A_C_OF}{(numeric) The soil organic carbon content (g/kg).}
+\item{A_C_OF}{(numeric) Organic Carbon Content (g / kg)}
 
 \item{mp_wp}{(numeric) Water potential at wilting point (kPa).}
 
 \item{mp_fc}{(numeric) Water potential at field capacity (kPa).}
 }
 \description{
-Calculate the WHC given the pedotransferfunction of Weynants et al 2009
+Calculate the water holding capacity given the pedotransferfunction of Weynants et al. 2009
 }
 \references{
-Weynants et al (2009) Revisiting Vereecken Pedotransfer Functions: Introducing a Closed-Form Hydraulic Model
+Weynants et al.(2009) Revisiting Vereecken Pedotransfer Functions: Introducing a Closed-Form Hydraulic Model
 }

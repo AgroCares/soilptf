@@ -20,6 +20,8 @@
 #' @param B_ROCKS_FR (numeric) description
 #' @param B_SLOPE_ASPECT (numeric) The slope aspect (degrees)
 #' @param B_SLOPE_DEGREE (numeric) Slope of the field (degrees)
+#' @param mp_wp (numeric) Water potential at wilting point (kPa).
+#' @param mp_fc (numeric) Water potential at field capacity (kPa).
 sptf_bd0 <- function(){}
 
 #' Calculate the bulk density given the pedotransferfunction in Dutch Fertilizer Recommendation

@@ -14,15 +14,13 @@ calc_soil_porosity(
 )
 }
 \arguments{
-\item{D_BDS}{(numeric) The soil bulk density (g/cm3).}
+\item{A_SAND_MI}{(numeric) Sand content (\%)}
 
-\item{A_SAND_MI}{(numeric) The sand content of the soil (\%).}
+\item{A_CLAY_MI}{(numeric) The clay content of the mineral soil fraction (\%).}
 
-\item{A_CLAY_MI}{(numeric) The clay content of the soil (\%).}
+\item{A_SILT_MI}{(numeric) Silt content (\%)}
 
-\item{A_SILT_MI}{(numeric) The clay content of the soil (\%).}
-
-\item{A_SOM_LOI}{(numeric) The soil organic matter content (\%).}
+\item{A_SOM_LOI}{(numeric) The percentage organic matter in the soil determined by loss on ignition (\%)}
 
 \item{method}{(CHAR) The method to estimate soil density. "Heinen" or "average"}
 }
