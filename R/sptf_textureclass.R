@@ -12,7 +12,7 @@ sptf_textureclass <- function(A_CLAY_MI, A_SILT_MI, A_SAND_MI){
   check_numeric('A_CLAY_MI', A_CLAY_MI, FALSE, arg.length)
   check_numeric('A_SAND_MI', A_SAND_MI, FALSE, arg.length)
   check_numeric('A_SILT_MI', A_SILT_MI, FALSE, arg.length)
-  checkmate::assert_true(sum(A_CLAY_MI, A_SAND_MI, A_SILT_MI) <= 100)
+  checkmate::assert_true(all(rowSums(data.table(A_CLAY_MI, A_SAND_MI, A_SILT_MI)) <= 100))
   
   # make internal table with shorter names
   dt <- data.table(cl = A_CLAY_MI,
