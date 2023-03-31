@@ -49,8 +49,6 @@ ptf_bd(
 \item{B_LOC_COUNTRY}{(character) The country code}
 
 \item{nmax}{(integer) the maximum number of ptfs to be included (default nmax = 5)}
-
-\item{B_DEPTH}{(numeric) The depth of the sampled soil layer (m)}
 }
 \description{
 Predict the bulk density with the best combination of existing ptfs from literature.

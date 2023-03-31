@@ -27,8 +27,6 @@ ptf_bd_lm(
 \item{B_LOC_COUNTRY}{(character) The country code}
 
 \item{nboot}{(integer) the number of bootstrapped samples (x 1000) to predict soil density}
-
-\item{B_DEPTH}{(numeric) The depth of the sampled soil layer (m)}
 }
 \description{
 Predict the bulk density with the best combination of existing ptfs from literature.

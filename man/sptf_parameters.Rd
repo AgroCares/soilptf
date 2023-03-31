@@ -5,7 +5,7 @@
 \alias{sptf_parameters}
 \title{Table with variables that functions may use}
 \format{
-An object of class \code{data.table} (inherits from \code{data.frame}) with 19 rows and 13 columns.
+An object of class \code{data.table} (inherits from \code{data.frame}) with 18 rows and 13 columns.
 }
 \usage{
 sptf_parameters
