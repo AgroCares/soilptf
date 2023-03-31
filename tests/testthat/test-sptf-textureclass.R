@@ -12,7 +12,7 @@ test_that("USDA texture classification", {
   
   
   textures <- sptf_textureclass(A_CLAY_MI = dt$A_CLAY_MI, A_SILT_MI = dt$A_SILT_MI, A_SAND_MI = dt$A_SAND_MI)
-  expect_equal(textures, expected = c( "sandy loam","sandy clay loam"), tolerance = 0.01)
+  expect_equal(textures, expected = c( "sandy loam","sandy clay loam"))
 
   
 })
