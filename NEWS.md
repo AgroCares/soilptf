@@ -11,6 +11,7 @@
 * checkmates to use `sptf_parameters` instead of hardcoding min and maxvalues in
 each function
 * export whc and pmn ptf's in NAMESPACE
+* `sptf_whc4` now takes A_DEPTH in m instead of cm 
 
 
 ## Version 0.1.0  2022-08-15

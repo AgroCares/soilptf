@@ -2,9 +2,7 @@
 
 #' Calculate the WHC given the pedotransferfunction of Bagdal et al 2022 for non-calcareous soil
 #' 
-#' @param A_C_OF (numeric) The fraction organic carbon in the soil (g / kg).
-#' @param A_SAND_MI (numeric) The sand content of the soil (\%).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
+#' @inheritParams sptf_bd0
 #'
 #' @import data.table
 #' 
@@ -50,9 +48,7 @@ sptf_whc1 <- function(A_C_OF, A_SAND_MI, A_CLAY_MI) {
 
 #' Calculate the WHC given the pedotransferfunction of Bagdal et al 2022 for calcareous soil
 #' 
-#' @param A_C_OF (numeric) The fraction organic carbon in the soil (g / kg).
-#' @param A_SAND_MI (numeric) The sand content of the soil (\%).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
+#' @inheritParams sptf_bd0
 #'
 #' @import data.table
 #' 
@@ -99,8 +95,7 @@ sptf_whc2 <- function(A_C_OF, A_SAND_MI, A_CLAY_MI) {
 #' Calculate the WHC given the pedotransferfunction of Saxton et al 1986 
 #' This PTF is applicable for water potential larger than 10
 #' 
-#' @param A_SAND_MI (numeric) The sand content of the soil (\%).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
+#' @inheritParams sptf_bd0
 #' @param mp_wp (numeric) Water potential at wilting point (kPa).
 #' @param mp_fc (numeric) Water potential at field capacity (kPa). This should be larger than 10. 
 #'
@@ -154,6 +149,10 @@ sptf_whc3 <- function(A_SAND_MI, A_CLAY_MI, mp_wp = 1500, mp_fc = 33) {
 #' 
 #' @import data.table
 #' 
+#' @details
+#' For this function A_DEPTH should be between 0.08 and 0.18
+#' 
+#' 
 #' @references Oosterveld and Chang (1980) Empirical relations between laboratory determinations of soil texture and moisture retention
 #'
 #' @export
@@ -165,8 +164,10 @@ sptf_whc4 <- function(A_SAND_MI, A_CLAY_MI, D_BDS, A_DEPTH = 15, mp_wp = 1500) {
   check_numeric('A_CLAY_MI', A_CLAY_MI, FALSE, arg.length)
   check_numeric('D_BDS', D_BDS, FALSE, arg.length)
   check_numeric('A_DEPTH', A_DEPTH, FALSE, arg.length)
-  checkmate::assert_numeric(A_DEPTH, lower = 8, upper = 180) # additonal function specific stringent check
+  checkmate::assert_numeric(A_DEPTH, lower = 0.08, upper = 0.180) # additional function specific stringent check
   
+  # internally convert A_DEPTH to cm
+  A_DEPTH <- A_DEPTH*100
   
   # Collect data into a table (set in units %)
   dt <- data.table(A_SAND_MI = A_SAND_MI,
