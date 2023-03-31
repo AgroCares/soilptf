@@ -2,29 +2,23 @@
 % Please edit documentation in R/hydraulic_properties.R
 \name{sptf_vg1}
 \alias{sptf_vg1}
-\title{This function calculates different kind of Water Retention Indices given the continuous pedotransferfunctions of Wosten et al. (1999)
-These include : 'wilting point','field capacity','water holding capacity','plant available water' and 'Ksat'}
+\title{Calculate water retention indices given the pedotransferfunctions of Wösten et al. (1999)}
 \usage{
-sptf_vg1(A_CLAY_MI, A_SILT_MI, A_SOM_LOI, A_SAND_M50, A_DEPTH)
-
-sptf_vg1(A_CLAY_MI, A_SILT_MI, A_SOM_LOI, A_SAND_M50, A_DEPTH)
+sptf_vg1(A_CLAY_MI, A_SILT_MI, A_SOM_LOI, A_DEPTH)
 }
 \arguments{
-\item{A_CLAY_MI}{(numeric) The clay (<2um) content of the soil (\%)}
+\item{A_CLAY_MI}{(numeric) The clay content of the mineral soil fraction (\%).}
 
-\item{A_SILT_MI}{(numeric) The silt content of the soil (\%)}
+\item{A_SILT_MI}{(numeric) Silt content (\%)}
 
-\item{A_SOM_LOI}{(numeric) The organic matter content of the soil (\%)}
-
-\item{A_SAND_M50}{(numeric) the size of sand fraction (um)}
+\item{A_SOM_LOI}{(numeric) The percentage organic matter in the soil determined by loss on ignition (\%)}
 
 \item{A_DEPTH}{(numeric) The depth of the sampled soil layer (m)}
 }
 \description{
-This function estimates water retention curve parameters using Pedo transfer function of Wosten (2001)
+This function calculates different kind of Water Retention Indices given the continuous pedotransferfunctions of Wosten et al. (1999)
+These include : 'wilting point','field capacity','water holding capacity','plant available water' and 'Ksat'
 }
 \references{
 Wösten, J.H.M , Lilly, A., Nemes, A., Le Bas, C. (1999) Development and use of a database of hydraulic properties of European soils. Geoderma 90 (3-4): 169-185.
-
-Wösten, J. H. M., Veerman, G. ., de Groot, W. J., & Stolte, J. (2001). Waterretentie en doorlatendheidskarakteristieken van boven- en ondergronden in Nederland: de Staringreeks. Alterra Rapport, 153, 86. https://doi.org/153
 }
