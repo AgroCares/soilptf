@@ -7,7 +7,7 @@ test_that("USDA texture classification", {
   dt <- data.table(
     A_CLAY_MI = c(10, 30),
     A_SILT_MI = c(20, 20),
-    A_SAND_MI = c(60, 50)
+    A_SAND_MI = c(15, 50)
   )
   
   
