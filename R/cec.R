@@ -1809,28 +1809,25 @@ sptf_cec40 <- function(A_SOM_LOI, A_CLAY_MI) {
 #' @param A_SOM_LOI (numeric) The percentage organic matter in the soil (\%).
 #' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
 #' @param A_SILT_MI (numeric) The silt content of the soil (\%).
-#' @param A_PH_CC (numeric) The acidity of the soil, pH in CaCl2 (-).
 #'  
 #' @import data.table
 #' 
 #' @references Enang et al. (2022) Pedotransfer functions for cation exchange capacity estimation in highly weathered soils of the tropical highlands of NW Cameroon 
 #'
 #' @export
-sptf_cec41 <- function(A_SOM_LOI, A_CLAY_MI, A_SILT_MI, A_PH_CC) {
+sptf_cec41 <- function(A_SOM_LOI, A_CLAY_MI, A_SILT_MI) {
   
   # Check input
-  arg.length <- max(length(A_SOM_LOI), length(A_CLAY_MI),length(A_PH_CC),length(A_SILT_MI))
+  arg.length <- max(length(A_SOM_LOI), length(A_CLAY_MI),llength(A_SILT_MI))
   checkmate::assert_numeric(A_SOM_LOI, lower = 0, upper = 100,len = arg.length)
   checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
   checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, len = arg.length)
-  checkmate::assert_numeric(A_PH_CC, lower = 3, upper = 12, len = arg.length)
-  
+
   # make internal data.table
   dt <- data.table(A_SOM_LOI = A_SOM_LOI,
                    A_CLAY_MI = A_CLAY_MI,
                    A_SILT_MI = A_SILT_MI,
-                   A_SAND_MI = 100 - A_CLAY_MI - A_SILT_MI,
-                   A_PH_CC = A_PH_CC)
+                   A_SAND_MI = 100 - A_CLAY_MI - A_SILT_MI)
   
   # function for CEC at pH 7 (NH4Ac) for the A horizont
   dt[, v1 := 36.914 * exp(-0.02 * A_SAND)]
@@ -1850,3 +1847,224 @@ sptf_cec41 <- function(A_SOM_LOI, A_CLAY_MI, A_SILT_MI, A_PH_CC) {
   
 }
 
+#' Calculate the CEC
+#'
+#' This function calculates the effective CEC at sample pH for agricultural soils at various depths in Nigeria
+#'
+#' @param A_SOM_LOI (numeric) The percentage organic matter in the soil (\%).
+#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
+#' @param A_SILT_MI (numeric) The silt content of the soil (\%).
+#' @param A_PH_CC (numeric) The acidity of the soil, pH in CaCl2 (-).
+#'  
+#' @import data.table
+#' 
+#' @references Apka et al. (2016) Enhancing pedotransfer functions with environmental data for estimating bulk density and effective cation exchange capacity in a data-sparse situation  
+#'
+#' @export
+sptf_cec42 <- function(A_SOM_LOI, A_CLAY_MI, A_SILT_MI, A_PH_CC) {
+  
+  # Check input
+  arg.length <- max(length(A_SOM_LOI), length(A_CLAY_MI),length(A_PH_CC),length(A_SILT_MI))
+  checkmate::assert_numeric(A_SOM_LOI, lower = 0, upper = 100,len = arg.length)
+  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_numeric(A_PH_CC, lower = 3, upper = 12, len = arg.length)
+  
+  # make internal data.table
+  dt <- data.table(A_C_OF = 0.5 * A_SOM_LOI,
+                   A_CLAY_MI = A_CLAY_MI,
+                   A_SILT_MI = A_SILT_MI,
+                   A_SAND_MI = 100 - A_CLAY_MI - A_SILT_MI,
+                   A_PH_CC = A_PH_CC)
+  
+  # function for CEC at pH 7 (NH4Ac) at various depths (all data, n = 2124, R2 = 0.577)
+  dt[, value := -15.681 + 0.118 * A_CLAY_MI + 4.097 * A_PH_CC * 0.124 - A_SAND_MI + 0.0887 * A_C_OF]
+  
+  # update unit from cmol/kg to mmol/kg
+  dt[, value := value * 10]
+  
+  # select output variable
+  value <- dt[,value]
+  
+  # return value (mmol+ / kg)
+  return(value)
+  
+}
+
+#' Calculate the CEC
+#'
+#' This function calculates the effective CEC at sample pH for agricultural topsoils in Nigeria
+#'
+#' @param A_SOM_LOI (numeric) The percentage organic matter in the soil (\%).
+#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
+#' @param A_SILT_MI (numeric) The silt content of the soil (\%).
+#' @param A_PH_CC (numeric) The acidity of the soil, pH in CaCl2 (-).
+#'  
+#' @import data.table
+#' 
+#' @references Apka et al. (2016) Enhancing pedotransfer functions with environmental data for estimating bulk density and effective cation exchange capacity in a data-sparse situation  
+#'
+#' @export
+sptf_cec43 <- function(A_SOM_LOI, A_CLAY_MI, A_SILT_MI, A_PH_CC) {
+  
+  # Check input
+  arg.length <- max(length(A_SOM_LOI), length(A_CLAY_MI),length(A_PH_CC),length(A_SILT_MI))
+  checkmate::assert_numeric(A_SOM_LOI, lower = 0, upper = 100,len = arg.length)
+  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_numeric(A_PH_CC, lower = 3, upper = 12, len = arg.length)
+  
+  # make internal data.table
+  dt <- data.table(A_C_OF = 0.5 * A_SOM_LOI,
+                   A_CLAY_MI = A_CLAY_MI,
+                   A_SILT_MI = A_SILT_MI,
+                   A_SAND_MI = 100 - A_CLAY_MI - A_SILT_MI,
+                   A_PH_CC = A_PH_CC)
+  
+  # function for CEC at pH 7 (NH4Ac) at various depths (n = 627, R2 = 0.812)
+  dt[, value := -22.612 + 0.212 * A_CLAY_MI + 5.0295 * A_PH_CC -0.110 * A_SAND_MI + 0.136 * A_C_OF]
+  
+  # update unit from cmol/kg to mmol/kg
+  dt[, value := value * 10]
+  
+  # select output variable
+  value <- dt[,value]
+  
+  # return value (mmol+ / kg)
+  return(value)
+  
+}
+
+#' Calculate the CEC
+#'
+#' This function calculates the CEC at pH 7 at agricultural sites in Finland
+#'
+#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
+#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
+#' @param A_PH_WA (numeric) The acidity of the soil, pH in water (-)
+#' 
+#' @import data.table
+#' 
+#' @references Raty et al. (2021) Estimating cation exchange capacity and clay content from agricultural soil testing data.
+#'
+#' @export
+sptf_cec44 <- function(A_C_OF, A_CLAY_MI, A_PH_WA) {
+  
+  # Check input
+  arg.length <- max(length(A_C_OF), length(A_CLAY_MI))
+  checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000,len = arg.length)
+  checkmate::assert_numeric(A_PH_WA, lower = 3, upper = 12, len = arg.length)
+  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
+  
+  # make internal data.table (with clay and Corg in %)
+  dt <- data.table(A_C_OF = A_C_OF * 0.1,
+                   A_CLAY_MI = A_CLAY_MI,
+                   A_PH_WA = A_PH_WA)
+  
+  # function for CEC(n = 114, R2 = 0.89)
+  dt[A_C_OF <= 10, value := 4.89 + 1.67 * A_C_OF + 0.247 * A_CLAY_MI]
+  dt[A_C_OF > 10, value := 70.10 + 1.30 * A_C_OF - 9.11 * A_PH_WA]
+  
+  # update unit from cmol/kg to mmol/kg
+  dt[, value := value * 10]
+  
+  # select output variable
+  value <- dt[,value]
+  
+  # return value (mmol+ / kg)
+  return(value)
+  
+}
+
+
+' Calculate the CEC
+#'
+#' This function calculates the CEC at pH 7 at agricultural sites at various depths in Tanzania
+#'
+#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
+#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
+#' 
+#' @import data.table
+#' 
+#' @references Mtama et al. (2018) Pedotransfer Functions for Cation Exchange Capacity, Available Water Holding Capacity and Soil Organic Carbon for Representative Soils of Southern Highland Zone of Tanzania
+#'
+#' @export
+sptf_cec45 <- function(A_C_OF, A_CLAY_MI) {
+  
+  # Check input
+  arg.length <- max(length(A_C_OF), length(A_CLAY_MI))
+  checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000,len = arg.length)
+  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
+  
+  # make internal data.table (with clay and Corg in %)
+  dt <- data.table(A_C_OF = A_C_OF * 0.1,
+                   A_CLAY_MI = A_CLAY_MI)
+  
+  # function for CEC(n = 20, R2 = 0.93)
+  dt[, value := 9.6 * A_C_OF + 0.44 * A_CLAY_MI]
+  
+  # update unit from cmol/kg to mmol/kg
+  dt[, value := value * 10]
+  
+  # select output variable
+  value <- dt[,value]
+  
+  # return value (mmol+ / kg)
+  return(value)
+  
+}
+
+#' Calculate the CEC
+#'
+#' This function calculates the effective CEC at pH of sample for agricultural topsoils (0-20cm) in Africa
+#'
+#' @param A_SOM_LOI (numeric) The percentage organic matter in the soil (\%).
+#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
+#' @param A_SILT_MI (numeric) The clay content of the soil (\%).
+#' @param B_LU_PTFCLASS (character) The land use category (options: agriculture, grassland, cropland, forest, nature)
+#'  
+#' @import data.table
+#' 
+#' @references Asadu et al. (1997) Contributions of organic matter, clay and silt to the effective CEC of soils of different land use history
+#'
+#' @export
+sptf_cec46 <- function(A_SOM_LOI, A_CLAY_MI, A_SILT_MI,B_LU_PTFCLASS) {
+  
+  # discussion note given in the article
+  # Soil Survey Laboratory Methods (1996) defines effective CEC as the sum of NH4OAc extractable bases plus KCl extractable Al. 
+  # The extraction of Al with KCl, an unbuffered salt, is done close to the pH of the soil. 
+  # Effective CEC by this procedure measures the active exchange sites at the existing soil pH.
+  
+  # Check input
+  arg.length <- max(length(A_SOM_LOI), length(A_CLAY_MI),length(A_SILT_MI),length(B_LU_PTFCLASS))
+  checkmate::assert_numeric(A_SOM_LOI, lower = 0, upper = 100,len = arg.length)
+  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_character(B_LU_PTFCLASS,length = arg.length)
+  checkmate::assert_subset(B_LU_PTFCLASS, choices = c('agriculture', 'grassland', 'cropland', 'forest', 'nature'))
+  
+  # make internal data.table
+  dt <- data.table(A_SOM_LOI = A_SOM_LOI,
+                   A_CLAY_MI = A_CLAY_MI,
+                   A_SILT_MI = A_SILT_MI,
+                   B_LU_PTFCLASS = B_LU_PTFCLASS
+  )
+  
+  # function effective CEC, NH4-Ac and KCl (n=36, R2 = 0.35)
+  dt[, value := 2.76 + 0.08 * A_SOM_LOI + 0.07 * A_CLAY_MI + 0.45 * A_SILT_MI]
+  
+  # overwrite when more data is known (n = 7, R2 = 0.85 |n = 5, R2 = 0.97 | n = 10, R2 = 0.10)
+  # dt[B_LU_PTFCLASS == 'cropland', value := -4.63 + 0.83 * A_SOM_LOI + 0.20 * A_CLAY_MI + 0.56 * A_SILT_MI]
+  # dt[B_LU_PTFCLASS == 'forest', value := 14.52 -1.32 * A_SOM_LOI - 0.01 * A_CLAY_MI -0.18 * A_SILT_MI]
+  # dt[B_LU_PTFCLASS == 'nature', value := 3.33 + 0.08 * A_SOM_LOI + 0.02 * A_CLAY_MI + 0.06 * A_SILT_MI]
+
+  # update unit from cmol/kg to mmol/kg
+  dt[, value := value * 10]
+  
+  # select output variable
+  value <- dt[,value]
+  
+  # return value (mmol+ / kg)
+  return(value)
+  
+}
