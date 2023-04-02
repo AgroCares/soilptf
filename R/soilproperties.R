@@ -59,3 +59,6 @@ sptf_ph2 <- function(A_SOM_LOI, A_PH_KCL,A_CLAY_MI) {
   
 }
 
+# The influence of organic matter on aggregate stability in some British soils
+# K. CHANEY, R.S. SWIFT
+
