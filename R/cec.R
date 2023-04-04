@@ -2438,7 +2438,7 @@ sptf_cec54 <- function(A_C_OF, A_CLAY_MI) {
 # https://doi.org/10.1080/00103628309367409, Fpilippine
 # https://doi.org/10.2136/sssaj1962.03615995002600030021x Kamprath
 # dabkowska_2001_cation
-
+# tranter
 
 
 
