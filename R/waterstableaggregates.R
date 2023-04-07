@@ -107,6 +107,61 @@ sptf_wsa3 <- function(A_SOM_LOI,A_CLAY_MI,A_SILT_MI,A_K_AA,A_PH_WA) {
   
 }
 
+# Predicting the percentage water stable aggregates
+#
+#' Calculate the percentage water stable aggregates (%)
+#'
+#' This function calculates theerodible fraction in Argentina
+#'
+#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
+#' @param A_SILT_MI (numeric) The silt content of the soil (\%).
+#' @param A_SAND_MI (numeric) The sand content of the soil (\%).
+#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
+#' 
+#' @import data.table
+#' 
+#' @references Colazo & Buschiazzo (2010) Soil dry aggregate stability and wind erodible fraction in a semiarid environmentvof Argentina
+#'
+#' @export
+sptf_wsa4 <- function(A_CLAY_MI,A_SAND_MI,A_SILT_MI,A_C_OF) {
+  
+  # Check input
+  arg.length <- max(length(A_CLAY_MI), length(A_SAND_MI),length(A_SILT_MI))
+  checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000, len = arg.length)
+  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_numeric(A_SAND_MI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, len = arg.length)
+  
+  # make internal data.table
+  dt <- data.table(id = 1:arg.length,
+                   A_C_OF = A_C_OF,
+                   A_CLAY_MI = A_CLAY_MI * 10,
+                   A_SAND_MI = A_SAND_MI,
+                   A_SILT_MI = A_SILT_MI)
+  
+  # estimate 1 and 2 based on OC (R2 0.65 and 0.96)
+  dt[,v1 := 85/(1+357 * exp(1.5 * A_C_OF))]
+  dt[,v2 := 90/(1+2.9 * exp(0.5 * A_C_OF))]
+  
+  # estimate 2 and 3 based on clay content (R2 0.93 - 0.92)
+  dt[, v3 := 85 * (1.1 - exp(0.015 * A_CLAY_MI))]
+  dt[, v4 := 161 * (0.6 - exp(0.03 * A_CLAY_MI))]
+  
+  # estimate 4 and 5 based on sand and clay ratio (R2 0.96 - 0.96)
+  dt[, v5 := 98 + 2.8 * A_SAND_MI / A_CLAY_MI]
+  dt[, v6 := 89 + 0.8 * A_SAND_MI / A_CLAY_MI - 0.2 * (A_SAND_MI/A_CLAY_MI)^2]
+  
+  # Estimate mean value
+  dt <- melt(dt,id.vars = 'id',measure.vars = c('v1','v2','v3','v4','v5','v6'))
+  dt <- dt[,list(value = mean(value,na.rm=T)),by='id']
+  
+  # select output variable
+  value <- dt[,value]
+  
+  # return percentage water stable aggregates (%)
+  return(value)
+  
+}
 #' Calculate the Mean Weight Diamater given the pedotransferfunction of Chaney and Swift (1984)
 #'
 #' @param A_SOM_LOI (numeric) The percentage organic matter in the soil (\%).
