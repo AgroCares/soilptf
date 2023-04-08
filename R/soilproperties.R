@@ -1,3 +1,37 @@
+#' Calculate the soil pH buffering capacity
+#'
+#' This function calculates the capacity of soils to buffer pH changes.
+#'
+#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
+#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
+#'
+#' @import data.table
+#' 
+#' @references McBraney et al. (2002). From pedotransfer functions to soil inference systems. 
+#'
+#' @export
+sptf_phbc <- function(A_C_OF, A_CLAY_MI) {
+  
+  # Check input
+  arg.length <- max(length(A_C_OF), length(A_CLAY_MI))
+  checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000,len = arg.length)
+  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
+  
+  # make internal data.table (with SOC in %, percentage 20-2000 um as the remaining, slib + sand)
+  dt <- data.table(A_C_OF = A_C_OF * 0.1,
+                   A_CLAY_MI = A_CLAY_MI,
+                   A_REST_MI = 100 - A_CLAY_MI)
+  
+  # estimate pH buffer capacity (R2 = 0.79, n = 85)
+  dt[,value := 6.38 - 0.08 * A_CLAY_MI + 2.63 * A_C_OF - 0.23 * A_REST_MI + 0.02 * A_CLAY_MI * A_REST_MI + 0.17 * A_REST_MI * A_C_OF]
+  
+  # return pHBC (mmol H+ kg-1 pH-1)
+  return(value)
+  
+}
+
+# klei < 2 um, silt 2-50 um en zand > 50 um
+
 #' Calculate the pH-water value from pH-KCL
 #'
 #' This function calculates the pH extracted with water from the pH-KCL.
