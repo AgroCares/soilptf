@@ -2328,7 +2328,7 @@ sptf_cec52 <- function(A_SOM_LOI, A_CLAY_MI, A_SILT_MI, A_CACO3_MI) {
 #' 
 #' @import data.table
 #' 
-#' @references McBraney et al. (2002). From pedotransfer functions to soil inference ssytems. Cited in Razzaghi et al. (2021).
+#' @references McBraney et al. (2002). From pedotransfer functions to soil inference systems. 
 #'
 #' @export
 sptf_cec53 <- function(A_C_OF, A_CLAY_MI) {
@@ -2342,8 +2342,8 @@ sptf_cec53 <- function(A_C_OF, A_CLAY_MI) {
   dt <- data.table(A_C_OF = A_C_OF * 0.1,
                    A_CLAY_MI = A_CLAY_MI)
   
-  # function for CEC (n = 1930, R2 =  )
-  dt[, value := -29.25 + 8.14 * A_CLAY_MI + 0.25 * A_C_OF]
+  # function for CEC (n = 1930, R2 =  0.74)
+  dt[, value := -29.25 + 8.14 * A_CLAY_MI + 0.25 * A_CLAY_MI * A_C_OF]
   
   # select output variable
   value <- dt[,value]
@@ -2427,6 +2427,60 @@ sptf_cec54 <- function(A_C_OF, A_CLAY_MI) {
   
 }
 
+#' Calculate the CEC
+#'
+#' This function calculates the CEC at pH 8.2 for calcareous soils in Iran
+#'
+#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
+#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
+#' @param A_SILT_MI (numeric) The silt content of the soil (\%).
+#' @param A_CACO3_MI (numeric) The carbonate content of the soil (\%).
+#' 
+#' @import data.table
+#' 
+#' @references Kashi et al. (2014) Estimation of Soil Infiltration and Cation Exchange Capacity Based on Multiple Regression, ANN (RBF, MLP), and ANFIS Models.
+#'
+#' @export
+sptf_cec55 <- function(A_C_OF, A_CLAY_MI,A_SILT_MI,A_CACO3_MI) {
+  
+  # Check input
+  arg.length <- max(length(A_C_OF), length(A_CLAY_MI),length(A_SILT_MI),length(A_CACO3_MI))
+  checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000,len = arg.length)
+  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_numeric(A_CACO3_MI, lower = 0, upper = 100, len = arg.length)
+  
+  # make internal data.table
+  dt <- data.table(A_C_OF = A_C_OF,
+                   A_CLAY_MI = A_CLAY_MI,
+                   A_SILT_MI = A_SILT_MI,
+                   A_CACO3_MI = A_CACO3_MI)
+  
+  # estimate bulk density (in g/cm3)
+  dt[, bd := (1617 - 77.4 * log(A_C_OF) - 3.49 * A_C_OF) * 0.001]
+  
+  # set sodium absorption rate (SAR) to mean value
+  dt[, sar := 5.67]
+  
+  # set electric conductivity (EC, dS/m) to mean value
+  dt[, ec := 5.25]
+  
+  # function for CEC NH4Ac pH 8.2 (n = 200, 0-30cm, R2 =  )
+  dt[, value := 18.87 - 6.16 * bd - 0.019 * sar + 0.016 * A_SAND_MI + 0.026 * A_SILT_MI + 0.076 * A_CLAY_MI - 0.038 * ec]
+  
+  # when carbonate is known adapt
+  dt[, value := value - 0.07 * fifelse(is.na(A_CACO3_MI),19,A_CACO3_MI)]
+  
+  # update unit from cmol/kg to mmol/kg
+  dt[, value := value * 10]
+  
+  # select output variable
+  value <- dt[,value]
+  
+  # return value (mmol+ / kg)
+  return(value)
+  
+}
 # 
 # Contribution of organic matter and clay minerals to the cation exchange capacity of soils
 # https://doi.org/10.1080/00103629509369376
