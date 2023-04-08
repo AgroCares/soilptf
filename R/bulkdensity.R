@@ -6708,5 +6708,145 @@ sptf_bd181 <- function(A_SOM_LOI, A_CLAY_MI, A_SILT_MI) {
   
 }
 
+#' Calculate the bulk density given the pedotransferfunction of Ruhlmann et al. (2006)
+#'
+#' @param A_SOM_LOI (numeric) The percentage of organic matter in the soil (\%).
+#'
+#' @import data.table
+#' 
+#' @references Ruhlmann et al. (2006). A new approach to calculate the particle density of soils considering properties of the soil organic matter and the mineral matrix. Geoderma 130, 272–283.
+#'
+#' @export
+sptf_bd182 <- function(A_SOM_LOI) {
+  
+  # Check input
+  checkmate::assert_numeric(A_SOM_LOI, lower = 0, upper = 100, any.missing = FALSE)
+  
+  # Collect data into a table (SOM in kg/kg)
+  dt <- data.table(A_SOM_LOI = A_SOM_LOI * 0.01, value = NA_real_)
+  
+  # estimate soil density in kg / m3 (n = 170)
+  dt[, value := 1000/(A_SOM_LOI / (1.127 + 0.373 * A_SOM_LOI) + (1 - A_SOM_LOI)/2.684)]
+  
+  # return value
+  value <- dt[, value]
+  
+  # return value
+  return(value)
+  
+}
 
+#' Calculate the bulk density given the pedotransferfunction of McBride et al. (2011)
+#'
+#' @param A_SOM_LOI (numeric) The percentage of organic matter in the soil (\%).
+#'
+#' @import data.table
+#' 
+#' @references McBride et al. (2011). Estimating particle density from soil inventory data in the Lake Erie lowlands. Cited in: Schjonning et al. (2016)
+#'
+#' @export
+sptf_bd183 <- function(A_SOM_LOI) {
+  
+  # Check input
+  checkmate::assert_numeric(A_SOM_LOI, lower = 0, upper = 100, any.missing = FALSE)
+  
+  # Collect data into a table (SOM in kg/kg)
+  dt <- data.table(A_SOM_LOI = A_SOM_LOI * 0.01, value = NA_real_)
+  
+  # estimate soil density in kg / m3 (n = 282 soils in Ontario, ABC horizons, 91 sites)
+  dt[, value := 1000 * (2.646 - 2.8 * A_SOM_LOI)]
+  
+  # return value
+  value <- dt[, value]
+  
+  # return value
+  return(value)
+  
+}
 
+#' Calculate the bulk density given the pedotransferfunction of Schjonning et al. (2016).
+#'
+#' @param A_SOM_LOI (numeric) The percentage of organic matter in the soil (\%).
+#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
+#' @param A_SILT_MI (numeric) The silt content of the soil (\%).
+#'
+#' @import data.table
+#' 
+#' @references Schjonning et al. (2016) Predicting soil particle density from clay and soil organic matter contents.
+#'
+#' @export
+sptf_bd184 <- function(A_SOM_LOI, A_CLAY_MI, A_SILT_MI) {
+  
+  # Check input
+  arg.length <- max(length(A_SOM_LOI), length(A_CLAY_MI),length(A_SILT_MI))
+  checkmate::assert_numeric(A_SOM_LOI, lower = 0, upper = 1000, any.missing = FALSE,len = arg.length)
+  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, len = arg.length)
+  
+  # Collect data into a table (OM in g/kg)
+  dt <- data.table(id = 1: arg.length,
+                   A_SOM_LOI = A_SOM_LOI * 0.01, 
+                   A_CLAY_MI = A_CLAY_MI * 0.01,
+                   A_SILT_MI = A_SILT_MI * 0.01,
+                   value = NA_real_)
+  
+  # estimate soil density in Mg m-3 = ton m-3 (n = 79, R2 = 0.77)
+  dt[, v1 := 2.686 - 2.649 * A_SOM_LOI]
+  dt[, v2 := 2.610 - 0.337 * A_CLAY_MI]
+  dt[, v3 := 2.947 - 0.337 * (100 - A_CLAY_MI)]
+  
+  # overwrite when SOM is < 0.01 kg kg-1 (n = 47)
+  dt[A_SOM_LOI <= 0.01,v2 := 2.648 + 0.209 * A_CLAY_MI]
+  dt[A_SOM_LOI <= 0.01,v3 := 2.856 + 0.209 * (100 - A_CLAY_MI)]
+  
+  # estimate soil density via MLR (R2 = 0.92)
+  dt[,v4 := 2.652 + 0.216 * A_CLAY_MI - 2.237 * A_SOM_LOI]
+    
+  # Estimate mean value
+  dt <- melt(dt,id.vars = 'id',measure.vars = c('v1','v2','v3'))
+  dt <- dt[,list(value = mean(value,na.rm=T)),by='id']
+  
+  # convert to kg / m3
+  dt[, value := value * 1000]
+  
+  # return value
+  value <- dt[, value]
+  
+  # return value
+  return(value)
+  
+}
+
+#' Calculate the bulk density given the pedotransferfunction of Schjonning et al. (2016)
+#'
+#' @param A_SOM_LOI (numeric) The percentage of organic matter in the soil (\%).
+#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
+#' 
+#' @import data.table
+#' 
+#' @references Schjonning et al. (2016) Predicting soil particle density from clay and soil organic matter contents.
+#'
+#' @export
+sptf_bd185 <- function(A_SOM_LOI,A_CLAY_MI) {
+  
+  # Check input
+  arg.length <- max(length(A_SOM_LOI), length(A_CLAY_MI))
+  checkmate::assert_numeric(A_SOM_LOI, lower = 0, upper = 1000, any.missing = FALSE,len = arg.length)
+  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
+  
+  # Collect data into a table (OM in g/kg)
+  dt <- data.table(id = 1: arg.length,
+                   A_SOM_LOI = A_SOM_LOI * 0.01, 
+                   A_CLAY_MI = A_CLAY_MI * 0.01,
+                   value = NA_real_)
+  
+  # estimate soil density in kg / m3 (n = 277, R2 > 0.9)
+  dt[, value := 1000/(A_SOM_LOI / (1.127 + 0.373 * A_SOM_LOI) + (1 - A_SOM_LOI)/(2.648 + 0.209 * A_CLAY_MI))]
+  
+  # return value
+  value <- dt[, value]
+  
+  # return value
+  return(value)
+  
+}
