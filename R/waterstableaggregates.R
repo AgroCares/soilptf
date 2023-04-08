@@ -58,7 +58,7 @@ sptf_wsa2 <- function(A_C_OF) {
   
 }
 
-#' Calculate the Mean Weight Diamater given the pedotransferfunction of Gulser (2018)
+#' Calculate the Percentage Water Stable Aggregates given the pedotransferfunction of Gulser (2018)
 #'
 #' @param A_SOM_LOI (numeric) The percentage organic matter in the soil (\%).
 #' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
@@ -251,6 +251,127 @@ sptf_wsa6 <- function(A_C_OF,A_CLAY_MI,A_SILT_MI,A_CACO3_MI) {
   # estimate Mean Weight Diamater (r = 0.91, n = 68)
   dt[, fsoc := 35.6 + 52.86/(1 + 4.14e5 * exp(-0.67 * A_C_OF))]
   dt[, value := -27.56 + 0.98 * fsoc + 0.41 * (A_CLAY_MI + A_SILT_MI) + 0.13 * A_CACO3_MI ]
+  
+  # return value (%)
+  value <- dt[, value]
+  
+  # return value
+  return(value)
+  
+}
+
+#' Calculate the water stable aggragates given the pedotransferfunction of Canasveras et al. (2010)
+#'
+#' @param A_SOM_LOI (numeric) The percentage organic matter in the soil (\%).
+#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
+#' @param A_SILT_MI (numeric) The silt content of the soil (\%).
+#' @param A_PH_WA (numeric) The acidity of the soil, pH in water (-)
+#' @param A_CACO3_MI (numeric) The calcium carbonate content of the soil (\%)
+#' 
+#' @import data.table
+#' 
+#' @references Canasveras et al. (2010) Estimation of aggregate stability indices in Mediterranean soils by diffuse reflectance spectroscopy
+#'
+#' @export
+sptf_wsa7 <- function(A_SOM_LOI,A_CLAY_MI,A_SILT_MI,A_PH_WA, A_CACO3_MI) {
+  
+  # Check input
+  arg.length <- max(length(A_SOM_LOI),length(A_CLAY_MI),length(A_SILT_MI), length(A_PH_WA), length(A_CACO3_MI))
+  checkmate::assert_numeric(A_SOM_LOI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
+  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_numeric(A_PH_WA, lower = 2, upper = 12, len = arg.length)
+  checkmate::assert_numeric(A_CACO3_MI, lower = 0, upper = 15, len = arg.length)
+  
+  # Collect data into a table
+  dt <- data.table(A_SOM_LOI = A_SOM_LOI * 10,
+                   A_CLAY_MI = A_CLAY_MI * 10,
+                   A_SILT_MI = A_SILT_MI * 10,
+                   A_SAND_MI = (100 - A_CLAY_MI - A_SILT_MI) * 10,
+                   A_PH_WA = A_PH_WA,
+                   A_CACO3_MI = A_CACO3_MI * 10,
+                   value = NA_real_)
+  
+  # add mean Fe extractable with citrate-bicarbonate-dithionite
+  dt[, fe := 8.3]
+  
+  # Estimate wsa (g/kg), R2 = 0.37, n = 80 topsoils, Spain
+  dt[, value := 44.158 - 0.048 * A_SAND_MI - 0.087 * A_CLAY_MI + 0.002 * A_CACO3_MI +0.431 * A_PH_WA + 0.041 * A_SOM_LOI + 0.756 * fe]
+  
+  # avoid values outside calibration range
+  dt[value < 0 | value > 499, value := NA_real_]
+  
+  # return value (%)
+  value <- dt[, value * 10]
+  
+  # return value
+  return(value)
+  
+}
+
+#' Calculate the Percentage Water Stable Aggregates given the pedotransferfunction of Perfect et al. (1993)
+#'
+#' @param A_SOM_LOI (numeric) The percentage organic matter in the soil (\%).
+#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
+#' 
+#' @import data.table
+#' 
+#' @references Perfect et al. (1993) Comparison of functions for characterizing the dry aggregate size distribution of tilled soil
+#'
+#' @export
+sptf_wsa8 <- function(A_SOM_LOI,A_CLAY_MI) {
+  
+  # Check input
+  arg.length <- max(length(A_SOM_LOI), length(A_CLAY_MI))
+  checkmate::assert_numeric(A_SOM_LOI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
+  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
+  
+  # Collect data into a table
+  dt <- data.table(A_SOM_LOI = A_SOM_LOI,
+                   A_CLAY_MI = A_CLAY_MI,
+                   value = NA_real_)
+  
+  # Estimate WSA, using an averaged moisture content of 20% (n = 36, R2 = 0.83)
+  dt[, value := 8.17 + 0.84 * A_CLAY_MI + 3.21 * A_SOM_LOI - 0.99 * 20]
+  
+  # select value (%)
+  value <- dt[, value]
+  
+  # return value
+  return(value)
+  
+}
+
+#' Calculate the Percentage Water Stable Aggregates given the pedotransferfunction of Rivera & Bonilla (2020)
+#'
+#' @param A_SOM_LOI (numeric) The percentage organic matter in the soil (\%).
+#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
+#' @param A_PH_WA (numeric) The acidity of the soil, pH in water (-)
+#' 
+#' @import data.table
+#' 
+#' @references Rivera & Bonilla (2020) Predicting soil aggregate stability using readily available soil properties and machine learning techniques
+#'
+#' @export
+sptf_wsa9 <- function(A_SOM_LOI,A_CLAY_MI,A_PH_WA) {
+  
+  # Check input
+  arg.length <- max(length(A_SOM_LOI), length(A_CLAY_MI),length(A_PH_WA))
+  checkmate::assert_numeric(A_SOM_LOI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
+  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_numeric(A_PH_WA, lower = 2, upper = 12, len = arg.length)
+  
+  # Collect data into a table, 
+  dt <- data.table(A_SOM_LOI = A_SOM_LOI,
+                   A_CLAY_MI = A_CLAY_MI,
+                   A_PH_WA = A_PH_WA,
+                   value = NA_real_)
+  
+  # Estimate WSA (%), R2 = 0.59, n = 109, Argentina
+  dt[, value := 122.4 + 1.1 * A_SOM_LOI + 0.19 * A_CLAY_MI - 9.1 * A_PH_WA]
+  
+  # avoid predictions outside calibration range
+  dt[value < 12.5 | value > 98.7, value := NA_real_]
   
   # return value (%)
   value <- dt[, value]
@@ -661,6 +782,220 @@ sptf_mwd10 <- function(A_C_OF) {
   
 }
 
+#' Calculate the Mean Weight Diameter given the pedotransferfunction of Bazzoffi et al. (1994)
+#'
+#' @param A_C_OF (numeric) The fraction organic carbon in the soil (g / kg).
+#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
+#' 
+#' @import data.table
+#' 
+#' @references Bazzoffi et al. (1994) Statistical models for predicting aggregate stability from intrinsic soil components.  
+#'
+#' @export
+sptf_mwd11 <- function(A_C_OF,A_CLAY_MI) {
+  
+  # Check input
+  arg.length <- max(length(A_C_OF),length(A_CLAY_MI))
+  checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000, any.missing = FALSE,len = arg.length)
+  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
+  
+  # Collect data into a table (Corg in %)
+  dt <- data.table(A_C_OF = A_C_OF * 0.1,
+                   A_CLAY_MI = A_CLAY_MI,
+                   value = NA_real_)
+  
+  # Estimate thw MWD (mm) for 15 soils, 0-20cm, Italy (R2 = 0.63)
+  dt[, value := exp(-3.4347 + 0.8413 * log(A_CLAY_MI) + 0.8858 * log(A_C_OF))]
+  
+  # return value (mm)
+  value <- dt[, value]
+  
+  # return value
+  return(value)
+  
+}
+
+# Predicting the the Mean Weight Diameter for soils in India
+#
+#' Calculate the Mean Weight Diameter (mm) given the pedotransferfunction of Bhattacharya et al. (2021)
+#'
+#' This function calculates the percentage water stable aggregates for alluvial soils in southern Ohio
+#'
+#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
+#' @param A_SILT_MI (numeric) The silt content of the soil (\%).
+#' @param A_SAND_MI (numeric) The sand content of the soil (\%).
+#' @param A_SOM_LOI (numeric) The soil organic matter content (\%).
+#' 
+#' @import data.table
+#' 
+#' @references Bhattacharya et al. (2021) Prediction of mean weight diameter of soil using machine learning approaches
+#'
+#' @export
+sptf_mwd12 <- function(A_CLAY_MI,A_SAND_MI,A_SILT_MI,A_SOM_LOI) {
+  
+  # Check input
+  arg.length <- max(length(A_CLAY_MI), length(A_SAND_MI),length(A_SILT_MI),length(A_SOM_LOI))
+  checkmate::assert_numeric(A_SOM_LOI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_numeric(A_SAND_MI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, len = arg.length)
+  
+  # make internal data.table
+  dt <- data.table(id = 1:arg.length,
+                   A_SOM_LOI = A_SOM_LOI,
+                   A_C_OF = A_SOM_LOI * 0.5,
+                   A_CLAY_MI = A_CLAY_MI,
+                   A_SAND_MI = A_SAND_MI,
+                   A_SILT_MI = A_SILT_MI)
+  
+  # estimate bulk density (in g / cm3)
+  dt[, bd := (1617 - 77.4 * log(A_C_OF) - 3.49 * A_C_OF) * 0.001]
+  
+  # estimate Mean Weight Diameter (mm) (R2 = 0.65, n = 120)
+  dt[, value := 3.7 + 0.0329 * A_CLAY_MI - 0.0317 * A_SILT_MI - 0.03 * A_SAND_MI + 0.019 * bd + 0.4267 * A_C_OF]
+  
+  # select output variable
+  value <- dt[,value]
+  
+  # return MWD (mm)
+  return(value)
+  
+}
+
+# Predicting the the Mean Weight Diameter for soils in Morroco
+#
+#' Calculate the Mean Weight Diameter (mm) given the pedotransferfunction of Bouslihim et al. (2021)
+#'
+#' This function calculates the percentage water stable aggregates for alluvial soils in southern Ohio
+#'
+#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
+#' @param A_SOM_LOI (numeric) The soil organic matter content (\%).
+#' 
+#' @import data.table
+#' 
+#' @references Bouslihim et al. (2021) Machine learning approaches for the prediction of soil aggregate stability
+#'
+#' @export
+sptf_mwd13 <- function(A_CLAY_MI,A_SOM_LOI) {
+  
+  # Check input
+  arg.length <- max(length(A_CLAY_MI), length(A_SOM_LOI))
+  checkmate::assert_numeric(A_SOM_LOI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
+
+  # make internal data.table
+  dt <- data.table(id = 1:arg.length,
+                   A_SOM_LOI = A_SOM_LOI,
+                   A_CLAY_MI = A_CLAY_MI)
+  
+  # estimate Mean Weight Diameter (mm) for SP1 (R2 =  0.59, n =  77)
+  dt[, v1 := 0.577 + 0.176 * A_SOM_LOI + 0.012 * A_CLAY_MI]
+  
+  # estimate Mean Weight Diameter (mm) for SP2 (R2 = 0.35, n =  114)
+  dt[, v2 := 0.673 + 0.171 * A_SOM_LOI + 0.009 * A_CLAY_MI]
+  
+  # estimate Mean Weight Diameter (mm) for SPRS1 (R2 = 0.52, n =  77)
+  dt[, v3 := 0.577 + 0.176 * A_SOM_LOI + 0.012 * A_CLAY_MI]
+  
+  # estimate Mean Weight Diameter (mm) for SPRS2 (R2 = 0.36, n =  114)
+  dt[, v4 := 0.673 + 0.171 * A_SOM_LOI + 0.009 * A_CLAY_MI]
+  
+  # Estimate mean value
+  dt <- melt(dt,id.vars = 'id',measure.vars = c('v1','v2', 'v3','v4'))
+  dt <- dt[,list(value = mean(value,na.rm=T)),by='id']
+  
+  # select output variable
+  value <- dt[,value]
+  
+  # return MWD (mm)
+  return(value)
+  
+}
+
+#' Calculate the Mean Weight Diamater given the pedotransferfunction of Canasveras et al. (2010)
+#'
+#' @param A_SOM_LOI (numeric) The percentage organic matter in the soil (\%).
+#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
+#' @param A_SILT_MI (numeric) The silt content of the soil (\%).
+#' @param A_PH_WA (numeric) The acidity of the soil, pH in water (-)
+#' @param A_CACO3_MI (numeric) The calcium carbonate content of the soil (\%)
+#' 
+#' @import data.table
+#' 
+#' @references Canasveras et al. (2010) Estimation of aggregate stability indices in Mediterranean soils by diffuse reflectance spectroscopy
+#'
+#' @export
+sptf_mwd14 <- function(A_SOM_LOI,A_CLAY_MI,A_SILT_MI,A_PH_WA, A_CACO3_MI) {
+  
+  # Check input
+  arg.length <- max(length(A_SOM_LOI),length(A_CLAY_MI),length(A_SILT_MI), length(A_PH_WA), length(A_CACO3_MI))
+  checkmate::assert_numeric(A_SOM_LOI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
+  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_numeric(A_PH_WA, lower = 2, upper = 12, len = arg.length)
+  checkmate::assert_numeric(A_CACO3_MI, lower = 0, upper = 15, len = arg.length)
+  
+  # Collect data into a table
+  dt <- data.table(A_SOM_LOI = A_SOM_LOI * 10,
+                   A_CLAY_MI = A_CLAY_MI * 10,
+                   A_SILT_MI = A_SILT_MI * 10,
+                   A_SAND_MI = (100 - A_CLAY_MI - A_SILT_MI) * 10,
+                   A_PH_WA = A_PH_WA,
+                   A_CACO3_MI = A_CACO3_MI * 10,
+                   value = NA_real_)
+  
+  # add mean Fe extractable with citrate-bicarbonate-dithionite
+  dt[, fe := 8.3]
+  
+  # Estimate MWD (mm), R2 = 0.52, n = 80 topsoils, Spain
+  dt[, value := 2.573 - 0.001 * A_SAND_MI - 0.003 * A_CLAY_MI + 0.001 * A_CACO3_MI -0.119 * A_PH_WA + 0.012 * A_SOM_LOI + 0.042 * fe]
+  
+  # avoid values outside calibration range
+  dt[value < 0.1 | value > 2.8, value := NA_real_]
+  
+  # return value (mm)
+  value <- dt[, value]
+  
+  # return value
+  return(value)
+  
+}
+
+#' Calculate the Mean Weight Diamater given the pedotransferfunction of Shi et al. (2020)
+#'
+#' @param A_C_OF (numeric) The fraction organic carbon in the soil (g / kg).
+#' @param A_PH_WA (numeric) The acidity of the soil, pH in water (-)
+#' 
+#' @import data.table
+#' 
+#' @references Shi et al. (2020). Vis-NIR spectroscopic assessment of soil aggregate stability and aggregate size distribution in the Belgian Loam Belt  
+#'
+#' @export
+sptf_mwd15 <- function(A_C_OF,A_PH_WA) {
+  
+  # Check input
+  arg.length <- max(length(A_C_OF),length(A_PH_WA))
+  checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000, any.missing = FALSE,len = arg.length)
+  checkmate::assert_numeric(A_PH_WA, lower = 2, upper = 12, len = arg.length)
+  
+  # Collect data into a table
+  dt <- data.table(A_C_OF = A_C_OF * 0.1,
+                   A_PH_WA = A_PH_WA,
+                   value = NA_real_)
+  
+  # set mean moisture content at sampling (%)
+  dt[, swc := 16.55]
+  
+  # estimate MWD (mm) for 83 topsoils (0-10 cm) in Belgium (R2 = 0.85, n = 85)
+  dt[,value := 1.2 + 0.527 * A_C_OF - 0.174 * A_PH_WA - 0.015 * swc]
+  
+  # return MWD value (mm)
+  value <- dt[, value]
+  
+  # return value
+  return(value)
+  
+}
 # see paper of Purushothaman et al. (2022) for 17 PTFs
 # see Bhattacharya, https://doi.org/10.1002/agj2.20469
 # le bissonnais, gomez, annabi
