@@ -162,6 +162,104 @@ sptf_wsa4 <- function(A_CLAY_MI,A_SAND_MI,A_SILT_MI,A_C_OF) {
   return(value)
   
 }
+
+# Predicting the percentage water stable aggregates
+#
+#' Calculate the percentage water stable aggregates (%)
+#'
+#' This function calculates the percentage water stable aggregates for alluvial soils in southern Ohio
+#'
+#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
+#' @param A_SILT_MI (numeric) The silt content of the soil (\%).
+#' @param A_SAND_MI (numeric) The sand content of the soil (\%).
+#' @param A_SOM_LOI (numeric) The soil organic matter content (\%).
+#' 
+#' @import data.table
+#' 
+#' @references Salchow et al. (1996) Pedotransfer functions for variable alluvial soils in southern Ohio.
+#'
+#' @export
+sptf_wsa5 <- function(A_CLAY_MI,A_SAND_MI,A_SILT_MI,A_SOM_LOI) {
+  
+  # Check input
+  arg.length <- max(length(A_CLAY_MI), length(A_SAND_MI),length(A_SILT_MI),length(A_SOM_LOI))
+  checkmate::assert_numeric(A_SOM_LOI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_numeric(A_SAND_MI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, len = arg.length)
+  
+  # make internal data.table
+  dt <- data.table(id = 1:arg.length,
+                   A_SOM_LOI = A_SOM_LOI,
+                   A_C_OF = A_SOM_LOI * 0.5 * 10,
+                   A_CLAY_MI = A_CLAY_MI,
+                   A_SAND_MI = A_SAND_MI,
+                   A_SILT_MI = A_SILT_MI)
+  
+  # estimate bulk density (in g / cm3)
+  dt[, bd := (1617 - 77.4 * log(A_C_OF) - 3.49 * A_C_OF) * 0.001]
+  
+  # derive UDS soil classification
+  dt[, B_SOILTYPE := sptf_textureclass(A_CLAY_MI = A_CLAY_MI,A_SILT_MI = A_SILT_MI,A_SAND_MI = A_SAND_MI)]
+  
+  # estimate percentage of water stable aggregates (%) (R2 = 0.38)
+  dt[, value := 0.6867 * A_SAND_MI + 0.3447 * A_SILT_MI + 0.6649 * A_CLAY_MI + 11.911 * A_SOM_LOI -25.50 * bd]
+  
+  # overwrite averaged estimate with soil type specific ones (R2 = 0.31,0.48,0.10,0.48)
+  dt[B_SOILTYPE == 'silty clay loam', value := 1.885 * A_SAND_MI -0.4838 * A_SILT_MI + 1.445 * A_CLAY_MI + 13.588 * A_SOM_LOI -20.30 * bd]
+  dt[B_SOILTYPE == 'silty loam', value := 0.7156 * A_SAND_MI +0.6106 * A_SILT_MI + 0.9397 * A_CLAY_MI + 12.568 * A_SOM_LOI -42.78 * bd]
+  dt[B_SOILTYPE == 'loam', value := 0.5579 * A_SAND_MI +0.5757 * A_SILT_MI + 0.578 * A_CLAY_MI -2.096 * A_SOM_LOI -6.43 * bd]
+  dt[B_SOILTYPE == 'sandy loam', value := -0.3474 * A_SAND_MI -0.0045 * A_SILT_MI -1.357 * A_CLAY_MI +24.39 * A_SOM_LOI +19.05 * bd]
+  
+  # select output variable
+  value <- dt[,value]
+  
+  # return percentage water stable aggregates (%)
+  return(value)
+  
+}
+
+#' Calculate the water stable aggragates given the pedotransferfunction of le Bissonnais et al. (2007)
+#'
+#' @param A_C_OF (numeric) The fraction organic carbon in the soil (g / kg).
+#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
+#' @param A_SILT_MI (numeric) The silt content of the soil (\%).
+#' @param A_CACO3_MI (numeric) The calcium carbonate content of the soil (\%)
+#' 
+#' @import data.table
+#' 
+#' @references le Bissonnais et al. (2007) Erodibility of Mediterranean vineyard soils: relevant aggregate stability methods and significant soil variables
+#'
+#' @export
+sptf_wsa6 <- function(A_C_OF,A_CLAY_MI,A_SILT_MI,A_CACO3_MI) {
+  
+  # Check input
+  arg.length <- max(length(A_C_OF), length(A_CLAY_MI),length(A_SILT_MI),length(A_CACO3_MI))
+  checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000, any.missing = FALSE)
+  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_numeric(A_CACO3_MI, lower = 0, upper = 15, len = arg.length)
+  
+  # Collect data into a table (units in g/kg)
+  dt <- data.table(id = 1:arg.length,
+                   A_C_OF = A_C_OF,
+                   A_CLAY_MI = A_CLAY_MI * 10,
+                   A_SILT_MI = A_SILT_MI * 10,
+                   A_CACO3_MI = A_CACO3_MI * 10,
+                   value = NA_real_)
+  
+  # estimate Mean Weight Diamater (r = 0.91, n = 68)
+  dt[, fsoc := 35.6 + 52.86/(1 + 4.14e5 * exp(-0.67 * A_C_OF))]
+  dt[, value := -27.56 + 0.98 * fsoc + 0.41 * (A_CLAY_MI + A_SILT_MI) + 0.13 * A_CACO3_MI ]
+  
+  # return value (%)
+  value <- dt[, value]
+  
+  # return value
+  return(value)
+  
+}
+
 #' Calculate the Mean Weight Diamater given the pedotransferfunction of Chaney and Swift (1984)
 #'
 #' @param A_SOM_LOI (numeric) The percentage organic matter in the soil (\%).
@@ -485,6 +583,84 @@ sptf_mwd8 <- function(A_SOM_LOI,A_CLAY_MI,A_SILT_MI,A_PH_WA, A_CACO3_MI) {
   
 }
 
+#' Calculate the Mean Weight Diamater given the pedotransferfunction of Clergue et al. (2023)
+#'
+#' @param A_C_OF (numeric) The fraction organic carbon in the soil (g / kg).
+#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
+#' @param A_SILT_MI (numeric) The silt content of the soil (\%).
+#' @param A_PH_WA (numeric) The acidity of the soil, pH in water (-)
+#' @param B_LU_PTFCLASS (character) The land use category (options: agriculture, grassland, cropland, forest, nature)
+#' 
+#' @import data.table
+#' 
+#' @references Clergue et al. (2023). Estimating soil aggregate stability with infrared spectroscopy and pedotransfer functions 
+#'
+#' @export
+sptf_mwd9 <- function(A_C_OF,A_CLAY_MI,A_SILT_MI,A_PH_WA, B_LU_PTFCLASS) {
+  
+  # Check input
+  arg.length <- max(length(A_C_OF),length(A_CLAY_MI),length(A_SILT_MI), length(A_PH_WA), length(A_CACO3_MI))
+  checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000, any.missing = FALSE,len = arg.length)
+  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_numeric(A_PH_WA, lower = 2, upper = 12, len = arg.length)
+  checkmate::assert_character(B_LU_PTFCLASS,length = arg.length)
+  checkmate::assert_subset(B_LU_PTFCLASS, choices = c('agriculture', 'grassland', 'cropland', 'forest', 'nature'))
+  
+  # Collect data into a table
+  dt <- data.table(A_C_OF = A_C_OF,
+                   A_CLAY_MI = A_CLAY_MI * 10,
+                   A_SILT_MI = A_SILT_MI * 10,
+                   A_PH_WA = A_PH_WA,
+                   B_LU_PTFCLASS = B_LU_PTFCLASS,
+                   value = NA_real_)
+  
+  # Estimate thw MWD (mm) for croplands
+  dt[B_LU_PTFCLASS %in% c('agriculture','cropland'), value := 0.7630 + 0.0017 * A_CLAY_MI + 0.0145 * A_C_OF - 0.0719 * A_PH_WA - 0.004 * A_SILT_MI]
+  
+  # Estimate thw MWD (mm) for graslands
+  dt[B_LU_PTFCLASS == 'grasland', value := 1.4536 + 0.0017 * A_CLAY_MI + 0.0145 * A_C_OF - 0.0719 * A_PH_WA - 0.004 * A_SILT_MI]
+  
+  # Estimate thw MWD (mm) for forests and woodlands
+  dt[B_LU_PTFCLASS == 'forest', value := 2.068 + 0.0017 * A_CLAY_MI + 0.0145 * A_C_OF - 0.0719 * A_PH_WA - 0.004 * A_SILT_MI]
+  
+  # return value
+  value <- dt[, value]
+  
+  # return value
+  return(value)
+  
+}
+
+#' Calculate the Mean Weight Diamater given the pedotransferfunction of le Bissonnais et al. (2007)
+#'
+#' @param A_C_OF (numeric) The fraction organic carbon in the soil (g / kg).
+#' 
+#' @import data.table
+#' 
+#' @references le Bissonnais et al. (2007) Erodibility of Mediterranean vineyard soils: relevant aggregate stability methods and significant soil variables
+#'
+#' @export
+sptf_mwd10 <- function(A_C_OF) {
+  
+  # Check input
+  checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000, any.missing = FALSE)
+  
+  # Collect data into a table 
+  dt <- data.table(A_C_OF = A_C_OF,
+                   value = NA_real_)
+  
+  # estimate Mean Weight Diamater (r = 0.917, n = 68)
+  dt[, value := 0.001 * (exp(4.83 + (2.76 + 7e8 * exp(-1.01 * A_C_OF))) - 1)]
+  
+  # return value (mm)
+  value <- dt[, value]
+  
+  # return value
+  return(value)
+  
+}
+
 # see paper of Purushothaman et al. (2022) for 17 PTFs
 # see Bhattacharya, https://doi.org/10.1002/agj2.20469
-
+# le bissonnais, gomez, annabi
