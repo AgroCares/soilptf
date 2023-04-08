@@ -6850,3 +6850,42 @@ sptf_bd185 <- function(A_SOM_LOI,A_CLAY_MI) {
   return(value)
   
 }
+
+#' Calculate the bulk density given the pedotransferfunction of da Silva et al. (1997).
+#'
+#' @param A_C_OF (numeric) The fraction organic carbon in the soil (g / kg).
+#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
+#'
+#' @import data.table
+#' 
+#' @references da Silva et al. (1997)  Management versus inherent properties effects on bulk density and relative compaction. Soil Tillage Res.
+#'
+#' @export
+sptf_bd186 <- function(A_C_OF, A_CLAY_MI) {
+  
+  # Check input
+  arg.length <- max(length(A_C_OF), length(A_CLAY_MI))
+  checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000, any.missing = FALSE,len = arg.length)
+  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
+  
+  # Collect data into a table (SOC in %)
+  dt <- data.table(A_C_OF = A_C_OF * 0.1, 
+                   A_CLAY_MI = A_CLAY_MI,
+                   value = NA_real_)
+  
+  # add tillage impact (True = 1, False = 0)
+  dt[,til := 1]
+  
+  # estimate soil density in Mg m-3 = ton m-3 (R2 = 0.83, n = 144)
+  dt[, value := 1.5726 - 0.064 * til -0.125 * A_C_OF - 0.0032 * A_CLAY_MI + 0.0021 * A_C_OF * A_CLAY_MI]
+  
+  # convert to kg / m3
+  dt[, value := value * 1000]
+  
+  # return value
+  value <- dt[, value]
+  
+  # return value
+  return(value)
+  
+}
