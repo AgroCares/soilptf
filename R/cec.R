@@ -2481,6 +2481,74 @@ sptf_cec55 <- function(A_C_OF, A_CLAY_MI,A_SILT_MI,A_CACO3_MI) {
   return(value)
   
 }
+
+#' Calculate the CEC
+#'
+#' This function calculates the CEC for soils in Italy
+#'
+#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
+#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
+#' 
+#' @import data.table
+#' 
+#' @references Bazzoffi et al. (1994) Statistical models for predicting aggregate stability from intrinsic soil components.  
+#'
+#' @export
+sptf_cec56 <- function(A_C_OF, A_CLAY_MI) {
+  
+  # Check input
+  arg.length <- max(length(A_C_OF), length(A_CLAY_MI))
+  checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000,len = arg.length)
+  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
+  
+  # make internal data.table (with SOC in %)
+  dt <- data.table(A_C_OF = A_C_OF * 0.1,
+                   A_CLAY_MI = A_CLAY_MI)
+  
+  # function for CEC (n = 15, R2 =  0.62)
+  dt[, value := exp(2.2334 + 0.2485 * log(A_CLAY_MI) + 0.1556 * log(A_C_OF)) * 10]
+  
+  # select output variable
+  value <- dt[,value]
+  
+  # return value (mmol+ / kg)
+  return(value)
+  
+}
+
+#' Calculate the CEC
+#'
+#' This function calculates the CEC for soils in New Zealand
+#'
+#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
+#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
+#' 
+#' @import data.table
+#' 
+#' @references Curtin & Trolove (2013) Predicting pH buffering capacity of New Zealand soils from organic matter content and mineral characteristics
+#'
+#' @export
+sptf_cec57 <- function(A_C_OF, A_CLAY_MI) {
+  
+  # Check input
+  arg.length <- max(length(A_C_OF), length(A_CLAY_MI))
+  checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000,len = arg.length)
+  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
+  
+  # make internal data.table (clay in g/kg)
+  dt <- data.table(A_C_OF = A_C_OF,
+                   A_CLAY_MI = A_CLAY_MI * 10)
+  
+  # function for CEC (n = 15, R2 =  0.62)
+  dt[, value := exp(-0.6274 + 0.643 * log(A_C_OF) + 0.2384 * log(A_CLAY_MI)) * 10]
+  
+  # select output variable
+  value <- dt[,value]
+  
+  # return value (mmol+ / kg)
+  return(value)
+  
+}
 # 
 # Contribution of organic matter and clay minerals to the cation exchange capacity of soils
 # https://doi.org/10.1080/00103629509369376
