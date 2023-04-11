@@ -828,7 +828,9 @@ sptf_mwd9 <- function(A_C_OF,A_CLAY_MI,A_SILT_MI,A_PH_WA, B_LU_PTFCLASS) {
   
 }
 
-#' Calculate the Mean Weight Diamater given the pedotransferfunction of le Bissonnais et al. (2007)
+#' Calculate the Mean Weight Diamater
+#'
+#' Calculate the Mean Weight Diamater for brown calcareous soils (0-5 cm) within the Mediterranean basin in France given the pedotransferfunction of le Bissonnais et al. (2007)
 #'
 #' @param A_C_OF (numeric) The fraction organic carbon in the soil (g / kg).
 #' 
@@ -857,7 +859,9 @@ sptf_mwd10 <- function(A_C_OF) {
   
 }
 
-#' Calculate the Mean Weight Diameter given the pedotransferfunction of Bazzoffi et al. (1994)
+#' Calculate the Mean Weight Diamater
+#'
+#' Calculate the Mean Weight Diameter given for soils (0-20cm) in Italy the pedotransferfunction of Bazzoffi et al. (1994)
 #'
 #' @param A_C_OF (numeric) The fraction organic carbon in the soil (g / kg).
 #' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
@@ -890,29 +894,28 @@ sptf_mwd11 <- function(A_C_OF,A_CLAY_MI) {
   
 }
 
-# Predicting the the Mean Weight Diameter for soils in India
-#
-#' Calculate the Mean Weight Diameter (mm) given the pedotransferfunction of Bhattacharya et al. (2021)
+#' Predicting the the Mean Weight Diameter
 #'
-#' This function calculates the percentage water stable aggregates for alluvial soils in southern Ohio
+#' Calculate the Mean Weight Diameter (mm) for agricultural topsoils (0-30cm) in India given the pedotransferfunction of Bhattacharya et al. (2021)
 #'
+#' @param A_SOM_LOI (numeric) The soil organic matter content (\%).
 #' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
 #' @param A_SILT_MI (numeric) The silt content of the soil (\%).
-#' @param A_SAND_MI (numeric) The sand content of the soil (\%).
-#' @param A_SOM_LOI (numeric) The soil organic matter content (\%).
 #' 
 #' @import data.table
 #' 
 #' @references Bhattacharya et al. (2021) Prediction of mean weight diameter of soil using machine learning approaches
 #'
 #' @export
-sptf_mwd12 <- function(A_CLAY_MI,A_SAND_MI,A_SILT_MI,A_SOM_LOI) {
+sptf_mwd12 <- function(A_SOM_LOI,A_CLAY_MI,A_SILT_MI) {
+  
+  # add visual bindings
+  bd = NULL
   
   # Check input
-  arg.length <- max(length(A_CLAY_MI), length(A_SAND_MI),length(A_SILT_MI),length(A_SOM_LOI))
+  arg.length <- max(length(A_CLAY_MI), length(A_SILT_MI),length(A_SOM_LOI))
   checkmate::assert_numeric(A_SOM_LOI, lower = 0, upper = 100, len = arg.length)
   checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
-  checkmate::assert_numeric(A_SAND_MI, lower = 0, upper = 100, len = arg.length)
   checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, len = arg.length)
   
   # make internal data.table
@@ -920,7 +923,7 @@ sptf_mwd12 <- function(A_CLAY_MI,A_SAND_MI,A_SILT_MI,A_SOM_LOI) {
                    A_SOM_LOI = A_SOM_LOI,
                    A_C_OF = A_SOM_LOI * 0.5,
                    A_CLAY_MI = A_CLAY_MI,
-                   A_SAND_MI = A_SAND_MI,
+                   A_SAND_MI = 100 - A_CLAY_MI - A_SILT_MI,
                    A_SILT_MI = A_SILT_MI)
   
   # estimate bulk density (in g / cm3)
@@ -937,11 +940,9 @@ sptf_mwd12 <- function(A_CLAY_MI,A_SAND_MI,A_SILT_MI,A_SOM_LOI) {
   
 }
 
-# Predicting the the Mean Weight Diameter for soils in Morroco
-#
-#' Calculate the Mean Weight Diameter (mm) given the pedotransferfunction of Bouslihim et al. (2021)
+#' Predicting the the Mean Weight Diameter for soils in Morroco
 #'
-#' This function calculates the percentage water stable aggregates for alluvial soils in southern Ohio
+#' Calculate the Mean Weight Diameter (mm) for agricultural soils (0-40 cm) in Morroco given the pedotransferfunction of Bouslihim et al. (2021)
 #'
 #' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
 #' @param A_SOM_LOI (numeric) The soil organic matter content (\%).
@@ -952,6 +953,9 @@ sptf_mwd12 <- function(A_CLAY_MI,A_SAND_MI,A_SILT_MI,A_SOM_LOI) {
 #'
 #' @export
 sptf_mwd13 <- function(A_CLAY_MI,A_SOM_LOI) {
+  
+  # add visual bindings
+  v1 = v2 = v3 = v4 = NULL
   
   # Check input
   arg.length <- max(length(A_CLAY_MI), length(A_SOM_LOI))
@@ -987,7 +991,9 @@ sptf_mwd13 <- function(A_CLAY_MI,A_SOM_LOI) {
   
 }
 
-#' Calculate the Mean Weight Diamater given the pedotransferfunction of Canasveras et al. (2010)
+#' Predicting the the Mean Weight Diameter for soils
+#'
+#' Calculate the Mean Weight Diamater for agricultural soils (0-10cm) in southern Spain given the pedotransferfunction of Canasveras et al. (2010)
 #'
 #' @param A_SOM_LOI (numeric) The percentage organic matter in the soil (\%).
 #' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
@@ -1001,6 +1007,9 @@ sptf_mwd13 <- function(A_CLAY_MI,A_SOM_LOI) {
 #'
 #' @export
 sptf_mwd14 <- function(A_SOM_LOI,A_CLAY_MI,A_SILT_MI,A_PH_WA, A_CACO3_MI) {
+  
+  # add visual bindings
+  fe = NULL
   
   # Check input
   arg.length <- max(length(A_SOM_LOI),length(A_CLAY_MI),length(A_SILT_MI), length(A_PH_WA), length(A_CACO3_MI))
@@ -1036,7 +1045,9 @@ sptf_mwd14 <- function(A_SOM_LOI,A_CLAY_MI,A_SILT_MI,A_PH_WA, A_CACO3_MI) {
   
 }
 
-#' Calculate the Mean Weight Diamater given the pedotransferfunction of Shi et al. (2020)
+#' Predicting the the Mean Weight Diameter for soils
+#'
+#' Calculate the Mean Weight Diamater for agricultural topsoils (0-10cm) in Belgium given the pedotransferfunction of Shi et al. (2020)
 #'
 #' @param A_C_OF (numeric) The fraction organic carbon in the soil (g / kg).
 #' @param A_PH_WA (numeric) The acidity of the soil, pH in water (-)
@@ -1047,6 +1058,9 @@ sptf_mwd14 <- function(A_SOM_LOI,A_CLAY_MI,A_SILT_MI,A_PH_WA, A_CACO3_MI) {
 #'
 #' @export
 sptf_mwd15 <- function(A_C_OF,A_PH_WA) {
+  
+  # add visual bindings
+  swc = NULL
   
   # Check input
   arg.length <- max(length(A_C_OF),length(A_PH_WA))
