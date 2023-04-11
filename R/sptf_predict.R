@@ -462,7 +462,6 @@ ptf_bd_lm <- function(B_LU_PTFCLASS = NA_character_,
 #' This function returns a melted form of data table, containing values of predicted water holding capacity with different PTFs
 #' 
 #' @import data.table
-#' @import euptf2
 #' 
 #' @export
 ptf_whc_all <- function(dt){

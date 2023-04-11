@@ -373,7 +373,6 @@ sptf_whc6 <-
 #' @inheritParams sptf_bd0
 #'
 #' @import data.table
-#' @import euptf2
 #'
 #' @references Szabó et al.(2021) Updated European hydraulic pedotransfer functions with communicated uncertainties in the predicted variables (euptfv2)
 #'
@@ -439,11 +438,11 @@ sptf_whc7 <-
     
     # estimate water retention parameters
     # (This works only then dt2 has more than 1 rows!!)
-    euptfres <- as.data.table(euptf2::euptfFun(
-      ptf = "PTF07",
-      predictor = dt2,
-      target = c("VG")
-    ))
+    # euptfres <- as.data.table(euptf2::euptfFun(# this funtion is disabled to avoid importing euptf2 This function should be included in soilptf to avoid dependenc
+    #   ptf = "PTF07",
+    #   predictor = dt2,
+    #   target = c("VG")
+    # ))
     cols <- c("THS_PTF07", "THR_PTF07", "ALP_PTF07", "N_PTF07")
     cols2 <- c("theta_sat", "theta_res", "alfa", "n")
     setnames(euptfres, cols, cols2)
