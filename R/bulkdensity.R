@@ -23,7 +23,7 @@
 #' @param mp_wp (numeric) Water potential at wilting point (kPa).
 #' @param mp_fc (numeric) Water potential at field capacity (kPa).
 #' @param D_BDS (numeric) Bulk density (kg/m3)
-#' @param A_CACO3_IF (numeric) Carbonated Lime inorganic soil fraction (%)
+#' @param A_CACO3_IF (numeric) Carbonated Lime inorganic soil fraction (\%)
 #' @param A_H2O_T105 ?soil pore volume? (?)
 sptf_bd0 <- function(){}
 
