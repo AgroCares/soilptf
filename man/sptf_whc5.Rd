@@ -19,6 +19,8 @@ sptf_whc5(
 
 \item{A_CLAY_MI}{(numeric) The clay content of the mineral soil fraction (\%).}
 
+\item{D_BDS}{(numeric) Bulk density (kg/m3)}
+
 \item{A_SOM_LOI}{(numeric) The percentage organic matter in the soil determined by loss on ignition (\%)}
 
 \item{topsoil}{(boolean) Whether top soil (1) or sub-soil (0)}

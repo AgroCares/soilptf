@@ -26,6 +26,8 @@ sptf_whc7(
 
 \item{A_SILT_MI}{(numeric) Silt content (\%)}
 
+\item{D_BDS}{(numeric) Bulk density (kg/m3)}
+
 \item{A_C_OF}{(numeric) Organic Carbon Content (g / kg)}
 
 \item{A_DEPTH}{(numeric) The depth of the sampled soil layer (m)}

@@ -11,6 +11,8 @@ sptf_whc12(A_CLAY_MI, A_SAND_MI, D_BDS, mp_wp = 1500, mp_fc = 33)
 
 \item{A_SAND_MI}{(numeric) Sand content (\%)}
 
+\item{D_BDS}{(numeric) Bulk density (kg/m3)}
+
 \item{mp_wp}{(numeric) Water potential at wilting point (kPa).}
 
 \item{mp_fc}{(numeric) Water potential at field capacity (kPa).}

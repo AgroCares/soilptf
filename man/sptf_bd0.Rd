@@ -46,6 +46,12 @@ sptf_bd0()
 \item{mp_wp}{(numeric) Water potential at wilting point (kPa).}
 
 \item{mp_fc}{(numeric) Water potential at field capacity (kPa).}
+
+\item{D_BDS}{(numeric) Bulk density (kg/m3)}
+
+\item{A_CACO3_IF}{(numeric) Carbonated Lime inorganic soil fraction (%)}
+
+\item{A_H2O_T105}{?soil pore volume? (?)}
 }
 \description{
 Documentation of all possible bulk density pedotransfer function inputs

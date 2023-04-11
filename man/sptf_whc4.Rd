@@ -11,6 +11,8 @@ sptf_whc4(A_SAND_MI, A_CLAY_MI, D_BDS, A_DEPTH = 15, mp_wp = 1500)
 
 \item{A_CLAY_MI}{(numeric) The clay content of the mineral soil fraction (\%).}
 
+\item{D_BDS}{(numeric) Bulk density (kg/m3)}
+
 \item{A_DEPTH}{(numeric) The depth of the sampled soil layer (m)}
 
 \item{mp_wp}{(numeric) Water potential at wilting point (kPa).}

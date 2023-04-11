@@ -15,6 +15,8 @@ sptf_whc10(A_CLAY_MI, A_SILT_MI, A_SAND_MI, A_C_OF, D_BDS, mp_fc = 33)
 
 \item{A_C_OF}{(numeric) Organic Carbon Content (g / kg)}
 
+\item{D_BDS}{(numeric) Bulk density (kg/m3)}
+
 \item{mp_fc}{(numeric) Water potential at field capacity (kPa).}
 }
 \description{

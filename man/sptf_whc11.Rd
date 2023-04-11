@@ -12,6 +12,8 @@ sptf_whc11(A_CLAY_MI, A_SILT_MI, D_BDS, mp_wp = 1500, mp_fc = 33)
 
 \item{A_SILT_MI}{(numeric) Silt content (\%)}
 
+\item{D_BDS}{(numeric) Bulk density (kg/m3)}
+
 \item{mp_wp}{(numeric) Water potential at wilting point (kPa).}
 
 \item{mp_fc}{(numeric) Water potential at field capacity (kPa).}

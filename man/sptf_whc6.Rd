@@ -11,6 +11,8 @@ sptf_whc6(A_SAND_MI, A_CLAY_MI, D_BDS, A_C_OF, mp_wp = 15000, mp_fc = 33)
 
 \item{A_CLAY_MI}{(numeric) The clay content of the mineral soil fraction (\%).}
 
+\item{D_BDS}{(numeric) Bulk density (kg/m3)}
+
 \item{A_C_OF}{(numeric) Organic Carbon Content (g / kg)}
 
 \item{mp_wp}{(numeric) Water potential at wilting point (kPa).}

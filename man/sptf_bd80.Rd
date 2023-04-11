@@ -10,6 +10,8 @@ sptf_bd80(A_C_OF, A_CLAY_MI, A_CACO3_IF)
 \item{A_C_OF}{(numeric) Organic Carbon Content (g / kg)}
 
 \item{A_CLAY_MI}{(numeric) The clay content of the mineral soil fraction (\%).}
+
+\item{A_CACO3_IF}{(numeric) Carbonated Lime inorganic soil fraction (%)}
 }
 \description{
 Calculate the bulk density given the pedotransferfunction of Brahim et al. (2012)
