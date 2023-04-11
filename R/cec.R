@@ -2952,6 +2952,76 @@ sptf_cec65 <- function(A_C_OF) {
   
 }
 
+#' Calculate the CEC
+#'
+#' This function calculates the CEC for soils in Iraq
+#'
+#' @param A_SOM_LOI (numeric) The organi cmatter content of the soil (\%).
+#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
+#' 
+#' @import data.table
+#' 
+#' @references Majed et al. (1991) Relative contribution of clay and organic fraction to the cation exchange capacity of northern Iraqi Soils. Cited in Fattah et al. (2021)
+#'
+#' @export
+sptf_cec66 <- function(A_SOM_LOI, A_CLAY_MI) {
+  
+  # Check input
+  arg.length <- max(length(A_SOM_LOI), length(A_CLAY_MI))
+  checkmate::assert_numeric(A_SOM_LOI, lower = 0, upper = 100,len = arg.length)
+  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
+  
+  # make internal data.table
+  dt <- data.table(A_SOM_LOI = A_SOM_LOI,
+                   A_CLAY_MI = A_CLAY_MI,
+                   value = NA_real_)
+  
+  # function for CEC (n = 65, R2 =  0.77)
+  dt[, value := (10.96 + 0.45 * A_CLAY_MI + 3.10 * A_SOM_LOI) * 10]
+  
+  # select output variable
+  value <- dt[,value]
+  
+  # return value (mmol+ / kg)
+  return(value)
+  
+}
+
+#' Calculate the CEC
+#'
+#' This function calculates the CEC for soils in Iran
+#'
+#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
+#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
+#' 
+#' @import data.table
+#' 
+#' @references Sarmadian et al. (2009) Modeling of Some Soil Properties Using Artificial Neural Network and Multivariate Regression in Gorgan Province, North Iran
+#'
+#' @export
+sptf_cec67 <- function(A_C_OF, A_CLAY_MI) {
+  
+  # Check input
+  arg.length <- max(length(A_C_OF), length(A_CLAY_MI))
+  checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000,len = arg.length)
+  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
+  
+  # make internal data.table
+  dt <- data.table(A_C_OF = A_C_OF * 0.1,
+                   A_CLAY_MI = A_CLAY_MI,
+                   value = NA_real_)
+  
+  # function for CEC (n = 125 , R2 =  0.63)
+  dt[, value := (1.91 + 0.318 * A_CLAY_MI + 3.96 * A_C_OF) * 10]
+  
+  # select output variable
+  value <- dt[,value]
+  
+  # return value (mmol+ / kg)
+  return(value)
+  
+}
+
 # 
 # Contribution of organic matter and clay minerals to the cation exchange capacity of soils
 # https://doi.org/10.1080/00103629509369376
@@ -2967,5 +3037,5 @@ sptf_cec65 <- function(A_C_OF) {
 # manrique_199+0
 # deutlich
 # meyer 1994
-# see tekst Fattah
+
 

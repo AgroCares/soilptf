@@ -6889,3 +6889,37 @@ sptf_bd186 <- function(A_C_OF, A_CLAY_MI) {
   return(value)
   
 }
+
+#' Calculate the bulk density given the pedotransferfunction of Guerif & Farure (1979)
+#'
+#' @param A_SOM_LOI (numeric) The percentage of organic matter in the soil (\%).
+#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
+#' 
+#' @import data.table
+#' 
+#' @references Guerif & Farure (1979). Role de la matiere organique sur le comportement des sols au compactage. I. Etude statistique.  Cited in Stengel et al. (1984)
+#'
+#' @export
+sptf_bd187 <- function(A_SOM_LOI,A_CLAY_MI) {
+  
+  # Check input
+  arg.length <- max(length(A_SOM_LOI), length(A_CLAY_MI))
+  checkmate::assert_numeric(A_SOM_LOI, lower = 0, upper = 1000, any.missing = FALSE,len = arg.length)
+  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
+  
+  # Collect data into a table
+  dt <- data.table(id = 1: arg.length,
+                   A_SOM_LOI = A_SOM_LOI, 
+                   A_CLAY_MI = A_CLAY_MI,
+                   value = NA_real_)
+  
+  # estimate soil density in kg / m3 (n = , R2 = 0.87)
+  dt[, value := 1000/(0.197 * A_CLAY_MI + 2.645 * A_SOM_LOI + 0.503)]
+  
+  # return value
+  value <- dt[, value]
+  
+  # return value
+  return(value)
+  
+}
