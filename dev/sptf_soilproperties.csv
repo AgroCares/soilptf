@@ -71,7 +71,7 @@
 70;1;wsa;UK;EU;variable;agriculture;20;48;61;a_c_of;stengel_1984;https://doi.org/10.1016/0167-1987(84)90015-1
 71;2;wsa;UK;EU;sand;grassland;15;14;87;a_c_of;ekwue_1990;https://doi.org/10.1016/0167-1987(90)90102-J
 72;3;wsa;TR;AS;variable;agriculture;20;176;55;a_som_loi||a_clay_mi||a_silt_mi||a_k_aa||a_ph_wa;gulster_2018;not available
-73;4;wsa;AS;SA;variable;agriculture;20;28;92;a_c_of||a_clay_mi||a_silt_mi;colazo_2010;http://dx.doi.org/10.1016/j.geoderma.2010.07.016
+73;4;wsa;AR;SA;variable;agriculture;20;28;92;a_c_of||a_clay_mi||a_silt_mi;colazo_2010;http://dx.doi.org/10.1016/j.geoderma.2010.07.016
 74;5;wsa;US;NA;variable;agriculture;10;108;38;a_som_loi||a_clay_mi||a_silt_mi;salchow_1996;https://doi.org/10.1016/0016-7061(96)00044-4
 75;6;wsa;FR;EU;variable;agriculture;5;68;91;a_c_of||a_clay_mi||a_silt_mi||a_caco3_mi;bissonnais_2007;https://doi.org/10.1111/j.1365-2389.2006.00823.x
 76;7;wsa;ES;EU;variable;agriculture;10;80;37;a_som_loi||a_clay_mi||a_silt_mi||a_caco3_mi||a_ph_wa;canasveras_2010;https://doi.org/10.1016%2Fj.geoderma.2009.09.004
@@ -86,3 +86,25 @@
 85;7;mwd;IQ;AS;variable;agriculture;10;100;83;a_c_of||a_sand_mi;hatamvand_2021;not available
 86;8;mwd;DZ;AF;variable;agriculture;20;1248;22;a_som_loi||a_clay_mi||a_silt_mi||a_caco3_mi||a_ph_wa;hamel_2021;https://doi.org/10.1016/j.chnaes.2021.04.00
 87;9;mwd;FR;EU;variable;variable;20;129;65;a_c_of||a_clay_mi||a_silt_mi||a_ph_wa||b_lu_ptfclass;clergue_2023;https://doi.org/10.1016/j.soisec.2023.100088
+88;10;mwd;FR;EU;variable;agriculture;5;68;92;a_c_of;bissonnais_2007;https://doi.org/10.1111/j.1365-2389.2006.00823.x
+89;11;mwd;IT;EU;variable;agriculture;20;15;63;a_c_of||a_clay_mi;bazzoffi_1994;not available
+90;12;mwd;IN;AS;variable;agriculture;30;120;65;a_som_loi||a_clay_mi||a_silt_mi;bhattacharya_2021;https://doi.org/10.1002/agj2.20469
+91;13;mwd;MA;AF;variable;agriculture;40;77;59;a_som_loi||a_clay_mi;bouslihim_2021;https://doi.org/10.1016/j.heliyon.2021.e06480
+92;14;mwd;ES;EU;variable;agriculture;10;80;52;a_som_loi||a_clay_mi||a_silt_mi||a_caco3_mi||a_ph_wa;canasveras_2010;https://doi.org/10.1016%2Fj.geoderma.2009.09.004
+93;15;mwd;BE;EU;variable;agriculture;10;83;85;a_c_of||a_ph_wa;shi_2020;https://doi.org/10.1016/j.geoderma.2019.113958
+94;1;tv;IR;AS;variable;agriculture;3;22;42;a_som_loi||a_clay_mi||a_amwd_dm;razaei_2022;https://doi.org/10.1002/ldr.4309
+95;2;tv;;;variable;variable;20;2015;;a_clay_mi||a_silt_mi;unknown;
+96;3;tv;HU;EU;variable;agriculture;20;80;72;a_clay_mi||a_silt_mi;negyesi_2016;https://doi.org/10.1007/s12517-016-2626-0
+97;1;erodibility;IR;AS;variable;agriculture;20;3;99;a_amwd_dm;zamani_2013;https://doi.org/10.1080/03650340.2012.748984
+98;2;erodibility;AR;SA;variable;agriculture;20;28;86;a_c_of||a_clay_mi||a_silt_mi;colazo_2010;http://dx.doi.org/10.1016/j.geoderma.2010.07.016
+99;1;sss;CN;SA;variable;agriculture;4;153;59;a_som_loi||a_caco3_mi;zhang_2018;https://doi.org/10.1016/j.still.2017.12.014
+100;2;sss;DK;EU;variable;agriculture;12;931;51;a_som_loi||a_clay_mi;schjonning_2021;https://doi.org/10.1016/j.still.2021.105049
+101;3;sss;DK;EU;variable;agriculture;80;1651;84;a_som_loi||a_clay_mi;schjonning_2021;https://doi.org/10.1016/j.still.2021.105049
+102;1;phbc;AU;OC;variable;agriculture;30;85;79;a_c_of||a_clay_mi;mcbratney_2002;https://doi.org/10.1016/S0016-7061(02)00139-8
+103;2;phbc;AU;OC;variable;agriculture;10;89;89;a_c_of;wong_2013;https://doi.org/10.1111/sum.12022
+104;3;phbc;AU;OC;variable;agriculture;30;16;87;a_c_of||a_clay_mi;wong_2013;https://doi.org/10.1111/sum.12022
+105;4;phbc;NZ;OC;variable;agriculture;15;30;83;a_c_of||a_clay_mi;curtin_2013;http://dx.doi.org/10.1071/SR13137
+106;5;phbc;US;NA;variable;agriculture;15;136;62;a_c_of;weaver_2004;https://doi.org/10.2136/sssaj2004.6620
+107;6;phbc;AU;OC;variable;agriculture;15;40;83;a_c_of||a_clay_mi;aitken_1990;https://doi.org/10.1071/SR9900695
+108;7;phbc;GH;AF;variable;agriculture;22;6;92;a_c_of||a_clay_mi||a_ph_wa;owusu_1995;https://doi.org/10.1080/00103629509369346
+109;8;phbc;FR;EU;variable;variable;;;;a_c_of||a_clay_mi;joret_1934;not available
