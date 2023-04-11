@@ -29,6 +29,26 @@ ptf_bd <- function(A_SOM_LOI = NA_real_, A_C_OF = NA_real_,
                    B_LOC_COUNTRY = 'NL', 
                    nmax = 5, ...){
   
+  # add visual bindings
+  country_code = contitent_code = num_obs = B_SOILTYPE = . = NULL
+  p1 = p2 = p3 = p4 = p5 = p6 = p7 = p8 = p9 = p10 = p11 = p12 = p13 = p14 = p15= p16 = p17 = p18 = p19 = NULL
+  p20 = p21 = p22 = p23 = p24 = p25 = p26 = p27 = p28 = p29 = p30 = p31 = p32 = p33 = p34 = p35 = p36 = p37 = p38 = p39 = NULL
+  p40 = p41 = p42 = p43 = p44 = p45 = p46 = p47 = p48 = p49 = p50 = p51 = p52 = p53 = p54 = p55 = p56 = p57 = p58 = p59 = NULL
+  p20 = p21 = p22 = p23 = p24 = p25 = p26 = p27 = p28 = p29 = NULL
+  p60 = p61 = p62 = p63 = p64 = p65 = p66 = p67 = p68 = p69 = NULL
+  p70 = p71 = p72 = p73 = p74 = p75 = p76 = p77 = p78 = p79= NULL
+  p80 = p81 = p82 = p83 = p84 = p85 = p86 = p87 = p88 = p89 = NULL
+  p90 = p91 = p92 = p93 = p94 = p95 = p96 = p97 = p98 = p99 = NULL
+  p100 = p101 = p102 = p103 = p104 = p105 = p106 = p107 = p108 = p109 = NULL
+  p110 = p111 = p112 = p113 = p114 = p115 = p116 = p117 = p118 = p119 = NULL
+  p120 = p121 = p122 = p123 = p124 = p125 = p126 = p127 = p128 = p129 = NULL
+  p130 = p131 = p132 = p133 = p134 = p135 = p136 = p137 = p138 = p139 = NULL
+  p140 = p141 = p142 = p143 = p144 = p145 = p146 = p147 = p148 = p149 = NULL
+  p150 = p151 = p152 = p153 = p154 = p155 = p156 = p157 = p158 = p159 = NULL
+  p160 = p161 = p162 = p163 = p164 = p165 = p166 = p167 = p168 = p169 = NULL
+  p170 = p171 = p172 = p173 = p174 = p175 = p176 = p177 = p178 = p179 = NULL
+  p180 = p181 = p182 = p183 = p184 = p185 = p186 = p187 = p188 = p189 = NULL
+  
   # combine all input objects not given as default function arguments
   obj <- list(...)
   obj <- as.data.table(obj)

@@ -72,7 +72,7 @@ sptf_tv1 <- function(A_SOM_LOI,A_CLAY_MI,A_AMWD_DM = NA_real_) {
 #' @references unknown
 #'
 #' @export
-sptf_tv2 <- function(A_CLAY_MI,A_SAND_MI) {
+sptf_tv2 <- function(A_CLAY_MI,A_SILT_MI) {
   
   # add visual bindings
   B_SOILTYPE = NULL

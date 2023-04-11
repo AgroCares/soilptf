@@ -332,7 +332,7 @@ sptf_phbc8 <- function(A_C_OF,A_CLAY_MI) {
 #' @references Wosten et al. (1997) Bodemkundige vertaalfuncties bij SC-DLO; state of the art. https://edepot.wur.nl/299664
 #'
 #' @export
-sptf_ph1 <- function(A_SOM_LOI, A_PH_KCL) {
+sptf_ph1 <- function(A_PH_KCL) {
   
   # Check input
   checkmate::assert_numeric(A_PH_KCL, lower = 2, upper = 10, len = arg.length)
