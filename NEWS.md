@@ -1,4 +1,10 @@
 # Changelog soilptf
+# Version 0.1.1 2023-04-11
+## Fixed
+* package being uninstallable due to dependency on EUptf2
+
+## Changed
+* `sptf_whc7` does not work due to missing dependency (EUptf2)
 
 # Version 0.1.0.9000 2023-03-15
 ## Added
