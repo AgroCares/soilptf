@@ -7,6 +7,8 @@ Authors@R: c(person(given = "Gerard", family = "Ros", email = "gerard.ros@nmi-ag
              person(given = "Sven", family = "Verweij", email = "sven.verweij@nmi-agro.nl", role = c("aut")),
              person(given = "Yuki", family = "Fujita", email = "yuki.fujita@nmi-agro.nl", role = c("aut")),
              person(given = "Tessa", family = "van der Voort", email = "tessa.vandervoort@nmi-agro.nl", role = c("aut")),
+             person(given = "Job", family = "de Pater", email = "job.depater@nmi-agro.nl", role = c("aut")),
+             person(given = "Brent", family = "Riechelman", email = "brent.riechelman@nmi-agro.nl", role = c("aut")),
              person("Nutriënten Management Instituut", email = "nmi@nmi-agro.nl", role = "cph"))
 Description: This package calculates soil properties via so called pedotransferfunctions. At the moment all existing pedotransferfunctions for predicting soil density are added.
 Depends:
@@ -22,5 +24,7 @@ Suggests:
     rmarkdown,
     knitr,
     ggplot2,
-    testthat
+    testthat (>= 3.0.0),
+    euptf2
 VignetteBuilder: knitr
+Config/testthat/edition: 3

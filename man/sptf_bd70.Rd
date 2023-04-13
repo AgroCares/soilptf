@@ -8,24 +8,24 @@ sptf_bd70(
   A_C_OF,
   A_CLAY_MI,
   A_SILT_MI,
-  B_DEPTH,
+  A_DEPTH,
   B_ALTITUDE,
   B_SLOPE_DEGREE,
   B_SLOPE_ASPECT
 )
 }
 \arguments{
-\item{A_C_OF}{(numeric) The carbon content of the soil (g / kg).}
+\item{A_C_OF}{(numeric) Organic Carbon Content (g / kg)}
 
-\item{A_CLAY_MI}{(numeric) The clay content of the soil (\%).}
+\item{A_CLAY_MI}{(numeric) The clay content of the mineral soil fraction (\%).}
 
-\item{A_SILT_MI}{(numeric) The silt content of the soil (\%)}
+\item{A_SILT_MI}{(numeric) Silt content (\%)}
 
-\item{B_DEPTH}{(numeric) The depth of the sampled soil layer (m)}
+\item{A_DEPTH}{(numeric) The depth of the sampled soil layer (m)}
 
 \item{B_ALTITUDE}{(numeric) The altitude (m)}
 
-\item{B_SLOPE_DEGREE}{(numeric) The slope of the field (degrees)}
+\item{B_SLOPE_DEGREE}{(numeric) Slope of the field (degrees)}
 
 \item{B_SLOPE_ASPECT}{(numeric) The slope aspect (degrees)}
 }

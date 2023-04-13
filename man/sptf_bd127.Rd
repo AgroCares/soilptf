@@ -4,12 +4,12 @@
 \alias{sptf_bd127}
 \title{Calculate the bulk density given the pedotransferfunction of Foldal et al. (2020).}
 \usage{
-sptf_bd127(A_C_OF, B_DEPTH)
+sptf_bd127(A_C_OF, A_DEPTH)
 }
 \arguments{
-\item{A_C_OF}{(numeric) The fraction organic carbon in the soil (g / kg).}
+\item{A_C_OF}{(numeric) Organic Carbon Content (g / kg)}
 
-\item{B_DEPTH}{(numeric) The depth of the sampled soil layer (m)}
+\item{A_DEPTH}{(numeric) The depth of the sampled soil layer (m)}
 }
 \description{
 Calculate the bulk density given the pedotransferfunction of Foldal et al. (2020).

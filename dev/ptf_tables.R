@@ -52,3 +52,11 @@
   usethis::use_data(sptf_soilproperties,overwrite = TRUE)
   
           
+  
+  # parameters ====
+  sptf_parameters <- fread('data-raw/sptf_parameters.csv')
+  usethis::use_data(sptf_parameters, overwrite = TRUE)
+
+  # document
+  document()
+  

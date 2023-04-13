@@ -8,26 +8,26 @@ sptf_bd121(
   A_C_OF,
   A_CLAY_MI,
   A_SAND_MI,
-  A_CACO3_MI,
+  A_CACO3_IF,
   A_PH_WA,
   B_ALTITUDE,
   B_SLOPE_DEGREE
 )
 }
 \arguments{
-\item{A_C_OF}{(numeric) The fraction organic carbon in the soil (g / kg).}
+\item{A_C_OF}{(numeric) Organic Carbon Content (g / kg)}
 
-\item{A_CLAY_MI}{(numeric) The clay content of the soil (\%).}
+\item{A_CLAY_MI}{(numeric) The clay content of the mineral soil fraction (\%).}
 
-\item{A_SAND_MI}{(numeric) The sand content of the soil (\%).}
+\item{A_SAND_MI}{(numeric) Sand content (\%)}
 
-\item{A_CACO3_MI}{(numeric) The calcium carbonate content of the soil (\%)}
+\item{A_CACO3_IF}{(numeric) Carbonated Lime inorganic soil fraction (\%)}
 
-\item{A_PH_WA}{(numeric) The acidity of the soil, pH in water (-)}
+\item{A_PH_WA}{(numeric) Acidity in water (-)}
 
 \item{B_ALTITUDE}{(numeric) The altitude (m)}
 
-\item{B_SLOPE_DEGREE}{(numeric) The slope of the field (degrees)}
+\item{B_SLOPE_DEGREE}{(numeric) Slope of the field (degrees)}
 }
 \description{
 Calculate the bulk density given the pedotransferfunction of Palladino et al. (2022).

@@ -4,14 +4,14 @@
 \alias{sptf_bd80}
 \title{Calculate the bulk density given the pedotransferfunction of Brahim et al. (2012)}
 \usage{
-sptf_bd80(A_C_OF, A_CLAY_MI, A_CACO3_MI)
+sptf_bd80(A_C_OF, A_CLAY_MI, A_CACO3_IF)
 }
 \arguments{
-\item{A_C_OF}{(numeric) The carbon content of the soil (g / kg).}
+\item{A_C_OF}{(numeric) Organic Carbon Content (g / kg)}
 
-\item{A_CLAY_MI}{(numeric) The clay content of the soil (\%).}
+\item{A_CLAY_MI}{(numeric) The clay content of the mineral soil fraction (\%).}
 
-\item{A_CACO3_MI}{(numeric) The calcium carbonate content of the soil (\%)}
+\item{A_CACO3_IF}{(numeric) Carbonated Lime inorganic soil fraction (\%)}
 }
 \description{
 Calculate the bulk density given the pedotransferfunction of Brahim et al. (2012)

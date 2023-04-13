@@ -4,16 +4,16 @@
 \alias{sptf_bd137}
 \title{Calculate the bulk density given the pedotransferfunction of Sun et al. (2019)}
 \usage{
-sptf_bd137(A_SOM_LOI, A_SILT_MI, A_PH_WA, B_DEPTH)
+sptf_bd137(A_SOM_LOI, A_SILT_MI, A_PH_WA, A_DEPTH)
 }
 \arguments{
-\item{A_SOM_LOI}{(numeric) The percentage of organic matter in the soil (\%).}
+\item{A_SOM_LOI}{(numeric) The percentage organic matter in the soil determined by loss on ignition (\%)}
 
-\item{A_SILT_MI}{(numeric) The silt content of the soil (\%).}
+\item{A_SILT_MI}{(numeric) Silt content (\%)}
 
-\item{A_PH_WA}{(numeric) The acidity of the soil, pH in water (-)}
+\item{A_PH_WA}{(numeric) Acidity in water (-)}
 
-\item{B_DEPTH}{(numeric) The depth of the sampled soil layer (m)}
+\item{A_DEPTH}{(numeric) The depth of the sampled soil layer (m)}
 }
 \description{
 Calculate the bulk density given the pedotransferfunction of Sun et al. (2019)

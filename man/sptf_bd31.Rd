@@ -7,7 +7,7 @@
 sptf_bd31(A_CLAY_MI)
 }
 \arguments{
-\item{A_CLAY_MI}{(numeric) The clay content of the soil (\%).}
+\item{A_CLAY_MI}{(numeric) The clay content of the mineral soil fraction (\%).}
 }
 \description{
 Calculate the bulk density given the pedotransferfunction of Benites et al. (2007)
