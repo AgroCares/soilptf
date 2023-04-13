@@ -4,7 +4,7 @@
 
 ### Added
 * 6 extra pedotransfer functions for bulk density
-* 67 pedotransfer functions for CEC
+* 74 pedotransfer functions for CEC
 * 15 pedotransfer functions of Mean Weight Diameter of soil aggregates
 * 8 pedotransfer functions for pH buffer capacity
 * 9 pedotransfer functions for Water Stable Aggregates
