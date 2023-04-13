@@ -4074,7 +4074,7 @@ sptf_bd114 <- function(A_C_OF) {
 sptf_bd115 <- function(A_C_OF, A_CLAY_MI,A_SAND_MI,A_SILT_MI) {
   
   # add visual bindings
-  v1 = v2 = v3 = v4 = v5 = NULL
+  v1 = v2 = v3 = v4 = v5 = patterns = id = NULL
     
   # Check input
   arg.length <- max(length(A_C_OF), length(A_CLAY_MI),length(A_SILT_MI),length(A_SAND_MI))
@@ -6567,7 +6567,7 @@ sptf_bd178 <- function(A_SOM_LOI, A_CLAY_MI) {
 sptf_bd179 <- function(A_SOM_LOI, A_C_OF = NA, A_CLAY_MI = NA, A_SILT_MI = NA, A_SAND_MI = NA, A_PH_WA = NA) {
   
   # add visual bindings
-  v1 = v2 = v3 = v4 = v5 = v6 = v7 = id = NULL
+  v1 = v2 = v3 = v4 = v5 = v6 = v7 = id = patterns = NULL
   
   # Check input
   arg.length <- max(length(A_SOM_LOI), length(A_C_OF),
@@ -6777,6 +6777,9 @@ sptf_bd183 <- function(A_SOM_LOI) {
 #' @export
 sptf_bd184 <- function(A_SOM_LOI, A_CLAY_MI, A_SILT_MI) {
   
+  # add visual bindings
+  v1 = v2 = v3 = v4 = NULL
+  
   # Check input
   arg.length <- max(length(A_SOM_LOI), length(A_CLAY_MI),length(A_SILT_MI))
   checkmate::assert_numeric(A_SOM_LOI, lower = 0, upper = 1000, any.missing = FALSE,len = arg.length)
@@ -6862,6 +6865,9 @@ sptf_bd185 <- function(A_SOM_LOI,A_CLAY_MI) {
 #'
 #' @export
 sptf_bd186 <- function(A_C_OF, A_CLAY_MI) {
+  
+  # add visual bindings
+  til = NULL
   
   # Check input
   arg.length <- max(length(A_C_OF), length(A_CLAY_MI))

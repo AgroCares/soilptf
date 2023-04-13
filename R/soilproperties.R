@@ -14,6 +14,9 @@
 #' @export
 sptf_phbc1 <- function(A_C_OF, A_CLAY_MI) {
   
+  # add visual bindings
+  A_REST_MI = value = NULL
+  
   # Check input
   arg.length <- max(length(A_C_OF), length(A_CLAY_MI))
   checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000,len = arg.length)
@@ -23,7 +26,7 @@ sptf_phbc1 <- function(A_C_OF, A_CLAY_MI) {
   dt <- data.table(A_C_OF = A_C_OF * 0.1,
                    A_CLAY_MI = A_CLAY_MI,
                    A_REST_MI = 100 - A_CLAY_MI,
-                   value = NA_real_)
+                   value = NA_real_ )
   
   # estimate pH buffer capacity (R2 = 0.79, n = 85)
   dt[,value := 6.38 - 0.08 * A_CLAY_MI + 2.63 * A_C_OF - 0.23 * A_REST_MI + 0.02 * A_CLAY_MI * A_REST_MI + 0.17 * A_REST_MI * A_C_OF]
@@ -48,8 +51,11 @@ sptf_phbc1 <- function(A_C_OF, A_CLAY_MI) {
 #' @export
 sptf_phbc2 <- function(A_C_OF) {
   
+  # add visual binding
+  value = NULL
+  
   # Check input
-  checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000,len = arg.length)
+  checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000)
   
   # make internal data.table (with SOC in %)
   dt <- data.table(A_C_OF = A_C_OF * 0.1,
@@ -80,7 +86,7 @@ sptf_phbc2 <- function(A_C_OF) {
 sptf_phbc3 <- function(A_C_OF,A_CLAY_MI) {
   
   # add visual bindings
-  v1 = v2 = v3a = v3b = v4a = v4b = v4c = NULL
+  v1 = v2 = v3a = v3b = v4a = v4b = v4c = value = NULL
   
   # Check input
   arg.length <- max(length(A_C_OF), length(A_CLAY_MI))
@@ -90,8 +96,7 @@ sptf_phbc3 <- function(A_C_OF,A_CLAY_MI) {
   # make internal data.table (with SOC in %)
   dt <- data.table(id = 1: length(A_C_OF),
                    A_C_OF = A_C_OF * 0.1,
-                   A_CLAY_MI = A_CLAY_MI,
-                   value = NA_real_)
+                   A_CLAY_MI = A_CLAY_MI)
   
   # estimate pH buffer capacity (R2 = 0.87), Noble's Dalrymple Shire
   dt[,v1 := 10 * (0.42 + 1.24 * A_C_OF)]
@@ -298,7 +303,7 @@ sptf_phbc7 <- function(A_C_OF,A_CLAY_MI,A_PH_WA) {
 sptf_phbc8 <- function(A_C_OF,A_CLAY_MI) {
   
   # Check input
-  arg.length <- max(length(A_C_OF), length(A_CLAY_MI),length(A_PH_WA))
+  arg.length <- max(length(A_C_OF), length(A_CLAY_MI))
   checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000,len = arg.length)
   checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
   
@@ -335,7 +340,7 @@ sptf_phbc8 <- function(A_C_OF,A_CLAY_MI) {
 sptf_ph1 <- function(A_PH_KCL) {
   
   # Check input
-  checkmate::assert_numeric(A_PH_KCL, lower = 2, upper = 10, len = arg.length)
+  checkmate::assert_numeric(A_PH_KCL, lower = 2, upper = 10)
   
   # estimate pH water from pH-KCL for peat soils (Finke, 1996)
   value <- 1.3235 + 0.8581 * A_PH_KCL
@@ -360,6 +365,9 @@ sptf_ph1 <- function(A_PH_KCL) {
 #' @export
 sptf_ph2 <- function(A_SOM_LOI, A_PH_KCL,A_CLAY_MI) {
   
+  # add visual binding
+  value = NULL
+  
   # Check input
   arg.length <- max(length(A_SOM_LOI), length(A_PH_KCL))
   checkmate::assert_numeric(A_SOM_LOI, lower = 0, upper = 1000, len = arg.length)
@@ -369,7 +377,8 @@ sptf_ph2 <- function(A_SOM_LOI, A_PH_KCL,A_CLAY_MI) {
   # make internal data.table
   dt <- data.table(A_SOM_LOI = A_SOM_LOI,
                    A_CLAY_MI = A_CLAY_MI,
-                   A_PH_KCL = A_PH_KCL)
+                   A_PH_KCL = A_PH_KCL,
+                   value = NA_real_)
   
   # estimate pH water from pH-KCL for sand soils with <15% humus (Finke, 1996)
   dt[A_SOM_LOI < 15 & A_CLAY_MI <= 20,value := 0.9843 + 0.9003 * A_PH_KCL + 0.00995 * A_SOM_LOI]

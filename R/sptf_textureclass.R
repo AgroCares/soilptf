@@ -9,6 +9,9 @@
 #' @export 
 sptf_textureclass <- function(A_CLAY_MI, A_SILT_MI, A_SAND_MI){
   
+  # add visual bindings
+  cl = sa = si = NULL
+  
   # check inputs
   checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, any.missing = FALSE)
   checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, any.missing = FALSE)

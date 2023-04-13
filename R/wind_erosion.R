@@ -75,7 +75,7 @@ sptf_tv1 <- function(A_SOM_LOI,A_CLAY_MI,A_AMWD_DM = NA_real_) {
 sptf_tv2 <- function(A_CLAY_MI,A_SILT_MI) {
   
   # add visual bindings
-  B_SOILTYPE = NULL
+  B_SOILTYPE = A_SAND_MI = NULL
   
   # Check input
   arg.length <- max(length(A_CLAY_MI),length(A_SILT_MI))
@@ -128,7 +128,7 @@ sptf_tv2 <- function(A_CLAY_MI,A_SILT_MI) {
 sptf_tv3 <- function(A_CLAY_MI,A_SILT_MI) {
   
   # add visual bindings
-  B_SOILTYPE = NULL
+  B_SOILTYPE = A_SAND_MI = NULL
   
   # Check input
   arg.length <- max(length(A_CLAY_MI), length(A_SAND_MI),length(A_SILT_MI))
@@ -203,7 +203,7 @@ sptf_erodibility1 <- function(A_AMWD_DM) {
 sptf_erodibility2 <- function(A_CLAY_MI,A_SILT_MI,A_C_OF) {
   
   # add visual bindings
-  v1 = v2 = v3 = v4 = v5 = v6 = NULL
+  v1 = v2 = v3 = v4 = v5 = v6 = A_SAND_MI = NULL
   
   # Check input
   arg.length <- max(length(A_CLAY_MI), length(A_C_OF),length(A_SILT_MI))
@@ -257,10 +257,10 @@ sptf_erodibility2 <- function(A_CLAY_MI,A_SILT_MI,A_C_OF) {
 sptf_sss1 <- function(A_SOM_LOI,A_CACO3_MI) {
   
   # add visual bindings
-  bd = v1 = v2 = v3 = NULL
+  bd = v1 = v2 = v3 = A_C_OF = NULL
   
   # Check input
-  arg.length <- max(length(A_SOM_LOI), length(A_CLAY_MI),length(A_AMWD_DM))
+  arg.length <- max(length(A_SOM_LOI), length(A_CACO3_MI))
   checkmate::assert_numeric(A_SOM_LOI, lower = 0, upper = 1000, len = arg.length)
   checkmate::assert_numeric(A_CACO3_MI, lower = 0, upper = 100, len = arg.length)
   
@@ -309,7 +309,7 @@ sptf_sss1 <- function(A_SOM_LOI,A_CACO3_MI) {
 sptf_sss2 <- function(A_SOM_LOI,A_CLAY_MI) {
   
   # add visual bindings
-  NL = bd = pps = v1 = v2 = NULL
+  NL = bd = pps = v1 = v2 = A_C_OF = NULL
   
   # Check input
   arg.length <- max(length(A_SOM_LOI), length(A_CLAY_MI))
@@ -366,7 +366,8 @@ sptf_sss2 <- function(A_SOM_LOI,A_CLAY_MI) {
 sptf_sss3 <- function(A_SOM_LOI,A_CLAY_MI) {
   
   # add visual bindings
-  NL = bd = pps = NULL
+  NL = bd = pps = A_C_OF = NULL
+  
   # Check input
   arg.length <- max(length(A_SOM_LOI), length(A_CLAY_MI))
   checkmate::assert_numeric(A_SOM_LOI, lower = 0, upper = 1000, len = arg.length)

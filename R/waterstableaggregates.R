@@ -44,6 +44,9 @@ sptf_wsa1 <- function(A_C_OF) {
 #' @export
 sptf_wsa2 <- function(A_SOM_LOI) {
   
+  # add visual bindings
+  v1 = v2 = NULL
+  
   # Check input
   checkmate::assert_numeric(A_SOM_LOI, lower = 0, upper = 100, any.missing = FALSE)
   
@@ -54,6 +57,10 @@ sptf_wsa2 <- function(A_SOM_LOI) {
   # estimate percentage of water stable aggregates(>0.5 mm) (n = 14, R2 = 0.87) on sandy grassland soils
   dt[, v1 := 3.32 * A_SOM_LOI -1.44]
   dt[, v2 := 3.03 * exp(-0.22 * A_SOM_LOI)]
+  
+  # Estimate mean value
+  dt <- melt(dt,id.vars = 'id',measure.vars = c('v1','v2'))
+  dt <- dt[,list(value = mean(value,na.rm=T)),by='id']
   
   # return value
   value <- dt[, value]
@@ -80,6 +87,9 @@ sptf_wsa2 <- function(A_SOM_LOI) {
 #' @export
 sptf_wsa3 <- function(A_SOM_LOI,A_CLAY_MI,A_SILT_MI,A_K_AA,A_PH_WA) {
 
+  # add visual bindings
+  EC = A_SAND_MI = NULL
+  
   # Check input
   arg.length <- max(length(A_SOM_LOI), length(A_CLAY_MI),length(A_SILT_MI),length(A_K_AA),length(A_PH_WA))
   checkmate::assert_numeric(A_SOM_LOI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
@@ -132,7 +142,7 @@ sptf_wsa3 <- function(A_SOM_LOI,A_CLAY_MI,A_SILT_MI,A_K_AA,A_PH_WA) {
 sptf_wsa4 <- function(A_CLAY_MI,A_SILT_MI,A_C_OF) {
   
   # add visual bindings
-  v1 = v2 = v3 = v4 = v5 = v6 = NULL
+  v1 = v2 = v3 = v4 = v5 = v6 = A_SAND_MI = NULL
   
   # Check input
   arg.length <- max(length(A_CLAY_MI), length(A_SAND_MI),length(A_SILT_MI))
@@ -189,7 +199,7 @@ sptf_wsa4 <- function(A_CLAY_MI,A_SILT_MI,A_C_OF) {
 sptf_wsa5 <- function(A_CLAY_MI,A_SILT_MI,A_SOM_LOI) {
   
   # add visual bindings
-  bd = B_SOILTYPE = NULL
+  bd = B_SOILTYPE = A_SAND_MI = A_C_OF = NULL
   
   # Check input
   arg.length <- max(length(A_CLAY_MI), length(A_SAND_MI),length(A_SILT_MI),length(A_SOM_LOI))
@@ -293,7 +303,7 @@ sptf_wsa6 <- function(A_C_OF,A_CLAY_MI,A_SILT_MI,A_CACO3_MI) {
 sptf_wsa7 <- function(A_SOM_LOI,A_CLAY_MI,A_SILT_MI,A_PH_WA, A_CACO3_MI) {
   
   # add visual bindings
-  fe = NULL
+  fe = A_SAND_MI = NULL
   
   # Check input
   arg.length <- max(length(A_SOM_LOI),length(A_CLAY_MI),length(A_SILT_MI), length(A_PH_WA), length(A_CACO3_MI))
@@ -466,7 +476,7 @@ sptf_mwd1 <- function(A_SOM_LOI) {
 sptf_mwd2 <- function(A_C_OF,A_CLAY_MI,A_SILT_MI) {
   
   # add visual bindings
-  B_SOILTYPE = NULL
+  B_SOILTYPE = A_SAND_MI = NULL
   
   # Check input
   arg.length <- max(length(A_C_OF), length(A_CLAY_MI),length(A_SILT_MI))
@@ -516,7 +526,7 @@ sptf_mwd2 <- function(A_C_OF,A_CLAY_MI,A_SILT_MI) {
 sptf_mwd3 <- function(A_C_OF,A_CEC_CO,A_CLAY_MI,A_SILT_MI, A_PH_WA, A_CACO3_MI) {
   
   # add visual bindings
-  B_SOILTYPE = NULL
+  B_SOILTYPE = A_SAND_MI = A_SOM_LOI = NULL
   
   # Check input
   arg.length <- max(length(A_C_OF), length(A_CEC_CO),length(A_CLAY_MI),length(A_SILT_MI),length(A_PH_WA),length(A_CACO3_MI))
@@ -572,7 +582,7 @@ sptf_mwd3 <- function(A_C_OF,A_CEC_CO,A_CLAY_MI,A_SILT_MI, A_PH_WA, A_CACO3_MI) 
 sptf_mwd4 <- function(A_C_OF,A_CLAY_MI,A_SILT_MI, A_CACO3_MI) {
   
   # add visual binding
-  B_SOILTYPE = v1 = v2 = v3 = v4 = NULL
+  B_SOILTYPE = v1 = v2 = v3 = v4 = A_SAND_MI = NULL
   
   # Check input
   arg.length <- max(length(A_C_OF),length(A_CLAY_MI),length(A_SILT_MI),length(A_CACO3_MI))
@@ -738,7 +748,7 @@ sptf_mwd7 <- function(A_C_OF,A_SAND_MI) {
 sptf_mwd8 <- function(A_SOM_LOI,A_CLAY_MI,A_SILT_MI,A_PH_WA, A_CACO3_MI) {
   
   # add visual bindings
-  B_SOILTYPE = EC = NULL
+  B_SOILTYPE = EC = A_SAND_MI = NULL
   
   # Check input
   arg.length <- max(length(A_SOM_LOI),length(A_CLAY_MI),length(A_SILT_MI), length(A_PH_WA), length(A_CACO3_MI))
@@ -794,8 +804,10 @@ sptf_mwd8 <- function(A_SOM_LOI,A_CLAY_MI,A_SILT_MI,A_PH_WA, A_CACO3_MI) {
 #' @export
 sptf_mwd9 <- function(A_C_OF,A_CLAY_MI,A_SILT_MI,A_PH_WA, B_LU_PTFCLASS) {
   
+  # add visual bindings
+  
   # Check input
-  arg.length <- max(length(A_C_OF),length(A_CLAY_MI),length(A_SILT_MI), length(A_PH_WA), length(A_CACO3_MI))
+  arg.length <- max(length(A_C_OF),length(A_CLAY_MI),length(A_SILT_MI), length(A_PH_WA))
   checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000, any.missing = FALSE,len = arg.length)
   checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
   checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, len = arg.length)
@@ -910,7 +922,7 @@ sptf_mwd11 <- function(A_C_OF,A_CLAY_MI) {
 sptf_mwd12 <- function(A_SOM_LOI,A_CLAY_MI,A_SILT_MI) {
   
   # add visual bindings
-  bd = NULL
+  bd = A_C_OF = A_SAND_MI = NULL
   
   # Check input
   arg.length <- max(length(A_CLAY_MI), length(A_SILT_MI),length(A_SOM_LOI))
@@ -1009,7 +1021,7 @@ sptf_mwd13 <- function(A_CLAY_MI,A_SOM_LOI) {
 sptf_mwd14 <- function(A_SOM_LOI,A_CLAY_MI,A_SILT_MI,A_PH_WA, A_CACO3_MI) {
   
   # add visual bindings
-  fe = NULL
+  fe = A_SAND_MI = NULL
   
   # Check input
   arg.length <- max(length(A_SOM_LOI),length(A_CLAY_MI),length(A_SILT_MI), length(A_PH_WA), length(A_CACO3_MI))

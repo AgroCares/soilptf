@@ -89,6 +89,9 @@ sptf_cec2 <- function(A_SOM_LOI, A_CLAY_MI, A_PH_KCL) {
 #' @export
 sptf_cec3 <- function(A_C_OF, A_CLAY_MI, A_PH_CC) {
   
+  # add visual bindigns
+  D_PH = NULL
+  
   # Check input
   arg.length <- max(length(A_C_OF), length(A_CLAY_MI))
   checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000,len = arg.length)
@@ -208,6 +211,9 @@ sptf_cec5 <- function(A_SOM_LOI, A_CLAY_MI) {
 #'
 #' @export
 sptf_cec6 <- function(A_SOM_LOI, A_CLAY_MI, A_SILT_MI, A_PH_CC) {
+  
+  # add visual bindings
+  A_SLIB_MI = NULL
   
   # Check input
   arg.length <- max(length(A_SOM_LOI), length(A_CLAY_MI),length(A_SILT_MI),length(A_PH_CC))
@@ -388,7 +394,7 @@ sptf_cec9 <- function(A_SOM_LOI, A_CLAY_MI, A_PH_CC,B_LU_PTFCLASS) {
 #'
 #' This function calculates the CEC at pH of sample for forest topsoils (0-30cm) in Switzerland
 #'
-#' @param A_SOM_LOI (numeric) The percentage organic matter in the soil (\%).
+#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
 #' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
 #' @param A_PH_CC (numeric) The acidity of the soil, pH in CaCl2 (-).
 #' @param B_LU_PTFCLASS (character) The land use category (options: agriculture, grassland, cropland, forest, nature)
@@ -398,18 +404,18 @@ sptf_cec9 <- function(A_SOM_LOI, A_CLAY_MI, A_PH_CC,B_LU_PTFCLASS) {
 #' @references Soly et al. (2020) A Critical Evaluation of the Relationship Between the Effective Cation Exchange Capacity and Soil Organic Carbon Content in Swiss Forest Soils
 #'
 #' @export
-sptf_cec10 <- function(A_SOM_LOI, A_CLAY_MI, A_PH_CC,B_LU_PTFCLASS) {
+sptf_cec10 <- function(A_C_OF, A_CLAY_MI, A_PH_CC,B_LU_PTFCLASS) {
   
   # Check input
-  arg.length <- max(length(A_SOM_LOI), length(A_CLAY_MI),length(A_PH_CC),length(B_LU_PTFCLASS))
-  checkmate::assert_numeric(A_SOM_LOI, lower = 0, upper = 100,len = arg.length)
+  arg.length <- max(length(A_C_OF), length(A_CLAY_MI),length(A_PH_CC),length(B_LU_PTFCLASS))
+  checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000,len = arg.length)
   checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
   checkmate::assert_numeric(A_PH_CC, lower = 2, upper = 12, len = arg.length)
   checkmate::assert_character(B_LU_PTFCLASS,length = arg.length)
   checkmate::assert_subset(B_LU_PTFCLASS, choices = c('agriculture', 'grassland', 'cropland', 'forest', 'nature'))
   
   # make internal data.table
-  dt <- data.table(A_SOM_LOI = A_SOM_LOI,
+  dt <- data.table(A_C_OF = A_C_OF,
                    A_CLAY_MI = A_CLAY_MI,
                    A_PH_CC = A_PH_CC,
                    B_LU_PTFCLASS = B_LU_PTFCLASS,
@@ -433,7 +439,7 @@ sptf_cec10 <- function(A_SOM_LOI, A_CLAY_MI, A_PH_CC,B_LU_PTFCLASS) {
 #'
 #' This function calculates the CEC at pH of sample for forest soils (including all horizons) in Switzerland
 #'
-#' @param A_SOM_LOI (numeric) The percentage organic matter in the soil (\%).
+#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
 #' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
 #' @param A_PH_CC (numeric) The acidity of the soil, pH in CaCl2 (-).
 #' @param B_LU_PTFCLASS (character) The land use category (options: agriculture, grassland, cropland, forest, nature)
@@ -443,18 +449,18 @@ sptf_cec10 <- function(A_SOM_LOI, A_CLAY_MI, A_PH_CC,B_LU_PTFCLASS) {
 #' @references Soly et al. (2020) A Critical Evaluation of the Relationship Between the Effective Cation Exchange Capacity and Soil Organic Carbon Content in Swiss Forest Soils
 #'
 #' @export
-sptf_cec11 <- function(A_SOM_LOI, A_CLAY_MI, A_PH_CC,B_LU_PTFCLASS) {
+sptf_cec11 <- function(A_C_OF, A_CLAY_MI, A_PH_CC,B_LU_PTFCLASS) {
   
   # Check input
-  arg.length <- max(length(A_SOM_LOI), length(A_CLAY_MI),length(A_PH_CC),length(B_LU_PTFCLASS))
-  checkmate::assert_numeric(A_SOM_LOI, lower = 0, upper = 100,len = arg.length)
+  arg.length <- max(length(A_C_OF), length(A_CLAY_MI),length(A_PH_CC),length(B_LU_PTFCLASS))
+  checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000,len = arg.length)
   checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
   checkmate::assert_numeric(A_PH_CC, lower = 2, upper = 12, len = arg.length)
   checkmate::assert_character(B_LU_PTFCLASS,length = arg.length)
   checkmate::assert_subset(B_LU_PTFCLASS, choices = c('agriculture', 'grassland', 'cropland', 'forest', 'nature'))
   
   # make internal data.table
-  dt <- data.table(A_SOM_LOI = A_SOM_LOI,
+  dt <- data.table(A_C_OF = A_C_OF,
                    A_CLAY_MI = A_CLAY_MI,
                    A_PH_CC = A_PH_CC,
                    B_LU_PTFCLASS = B_LU_PTFCLASS,
@@ -488,6 +494,9 @@ sptf_cec11 <- function(A_SOM_LOI, A_CLAY_MI, A_PH_CC,B_LU_PTFCLASS) {
 #' @export
 sptf_cec12 <- function(A_C_OF, B_LU_PTFCLASS) {
   
+  # add visual bindings
+  bd = NULL
+  
   # Check input
   arg.length <- max(length(A_C_OF),length(B_LU_PTFCLASS))
   checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000,len = arg.length)
@@ -505,8 +514,8 @@ sptf_cec12 <- function(A_C_OF, B_LU_PTFCLASS) {
   # 1 kg grond heeft 20 g C/kg grond = 20 g C/0.7604563 dm3 = 
   
   # convert A_C_OF from g/kg to g/dm3
-  dt[,D_DENSITY := 1617 - 77.4 * log(A_C_OF) - 3.49 * A_C_OF]
-  dt[,A_C_OF := A_C_OF * D_DENSITY / 1000]
+  dt[,bd := 1617 - 77.4 * log(A_C_OF) - 3.49 * A_C_OF]
+  dt[,A_C_OF := A_C_OF * bd / 1000]
   
   # function (n = 444, R2 = 0.87) using Corg in g/dm3 = kg / m3
   dt[, value := (A_C_OF - 4.5663)/0.3436]
@@ -810,6 +819,9 @@ sptf_cec19 <- function(A_C_OF, A_CLAY_MI) {
 #' @export
 sptf_cec20 <- function(A_C_OF, A_CLAY_MI,A_PH_WA) {
   
+  # add visual bindings
+  v1 = v2 = v3 = v4 = v5 = NULL
+  
   # Check input
   arg.length <- max(length(A_C_OF), length(A_CLAY_MI),length(A_PH_WA))
   checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000,len = arg.length)
@@ -855,6 +867,9 @@ sptf_cec20 <- function(A_C_OF, A_CLAY_MI,A_PH_WA) {
 #'
 #' @export
 sptf_cec21 <- function(A_CLAY_MI,A_SILT_MI) {
+  
+  # add visual bindings
+  A_SAND_MI = B_SOILTYPE = NULL
   
   # Check input
   arg.length <- max(length(A_CLAY_MI),length(A_SILT_MI))
@@ -1020,10 +1035,10 @@ sptf_cec24 <- function(A_C_OF,A_CLAY_MI,A_PH_CC) {
     dt[A_C_OF > 8 & A_PH_CC <= 7,value := 1.823 * A_C_OF + 0.398 * A_CLAY_MI + 15.54]
     
     # prediction 2. combination 2 (n = 275, R2 = 0.77)
-    dt[A_C_OF > 8 & A_C_OF <= 14.5 & A_PH > 7, value := exp(1.316 * log(A_C_OF) + 1.063 * log(A_CLAY_MI) - 3.211)]
+    dt[A_C_OF > 8 & A_C_OF <= 14.5 & A_PH_CC > 7, value := exp(1.316 * log(A_C_OF) + 1.063 * log(A_CLAY_MI) - 3.211)]
     
     # prediction 3. combination 3 (n = 30, R2 = 0.78)
-    dt[A_C_OF > 8 & A_C_OF > 14.5 & A_PH > 7, value := 4.314 * A_C_OF -26.492]
+    dt[A_C_OF > 8 & A_C_OF > 14.5 & A_PH_CC > 7, value := 4.314 * A_C_OF -26.492]
     
   # select output variable
   value <- dt[,value * 10]
@@ -1203,7 +1218,7 @@ sptf_cec27 <- function(A_SOM_LOI, A_CLAY_MI, A_SILT_MI,B_CLIM_CAT1) {
                    A_CLAY_MI = A_CLAY_MI,
                    A_SILT_MI = A_SILT_MI,
                    B_CLIM_CAT1 = B_CLIM_CAT1,
-                   value = NA_real
+                   value = NA_real_
   )
   
   # function effective CEC, NH4-Ac and KCl (n=905, R2 = 0.48 | n = 708, R2 = 0.26 | n = 281, R2= 0.42| n = 237, R2 = 0.42)
@@ -1429,6 +1444,9 @@ sptf_cec31 <- function(A_SOM_LOI, A_CLAY_MI,B_SOILCLASS_USDA = NA) {
 #'
 #' @export
 sptf_cec32 <- function(A_SOM_LOI, A_CLAY_MI, A_SILT_MI, A_PH_CC) {
+  
+  # add visual binding
+  A_SAND_MI = NULL
   
   # Check input
   arg.length <- max(length(A_SOM_LOI), length(A_CLAY_MI),length(A_PH_CC),length(A_SILT_MI))
@@ -1724,6 +1742,9 @@ sptf_cec37 <- function(A_C_OF, A_CLAY_MI) {
 #' @export
 sptf_cec38 <- function(A_SOM_LOI, A_CLAY_MI) {
   
+  # add visual bindings
+  v1 = v2 = NULL
+  
   # Check input
   arg.length <- max(length(A_SOM_LOI), length(A_CLAY_MI))
   checkmate::assert_numeric(A_SOM_LOI, lower = 0, upper = 100,len = arg.length)
@@ -1891,10 +1912,10 @@ sptf_cec41 <- function(A_SOM_LOI, A_CLAY_MI) {
 sptf_cec42 <- function(A_C_OF, A_CLAY_MI, A_SILT_MI) {
   
   # add visual bindings
-  v1 = v2 = v3 = v4 = v5 = NULL
+  v1 = v2 = v3 = v4 = v5 = A_SAND_MI = NULL
   
   # Check input
-  arg.length <- max(length(A_C_OF), length(A_CLAY_MI),llength(A_SILT_MI))
+  arg.length <- max(length(A_C_OF), length(A_CLAY_MI),length(A_SILT_MI))
   checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000,len = arg.length)
   checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
   checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, len = arg.length)
@@ -1950,6 +1971,9 @@ sptf_cec42 <- function(A_C_OF, A_CLAY_MI, A_SILT_MI) {
 #' @export
 sptf_cec43 <- function(A_C_OF, A_CLAY_MI, A_SILT_MI, A_PH_CC) {
   
+  # add visual bindings
+  A_SAND_MI = NULL
+  
   # Check input
   arg.length <- max(length(A_C_OF), length(A_CLAY_MI),length(A_PH_CC),length(A_SILT_MI))
   checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000,len = arg.length)
@@ -1994,6 +2018,9 @@ sptf_cec43 <- function(A_C_OF, A_CLAY_MI, A_SILT_MI, A_PH_CC) {
 #'
 #' @export
 sptf_cec44 <- function(A_C_OF, A_CLAY_MI, A_SILT_MI, A_PH_CC) {
+  
+  # add visual bindings
+  A_SAND_MI = NULL
   
   # Check input
   arg.length <- max(length(A_C_OF), length(A_CLAY_MI),length(A_PH_CC),length(A_SILT_MI))
@@ -2213,7 +2240,7 @@ sptf_cec48 <- function(A_SOM_LOI, A_CLAY_MI) {
 sptf_cec49 <- function(A_SOM_LOI, A_CLAY_MI, A_SILT_MI) {
   
   # add visual bindings
-  v1 = v2 = NULL
+  v1 = v2 = A_SAND_MI = NULL
   
   # Check input
   arg.length <- max(length(A_SOM_LOI), length(A_CLAY_MI),length(A_SILT_MI))
@@ -2309,6 +2336,9 @@ sptf_cec50 <- function(A_SOM_LOI, A_CLAY_MI, A_SILT_MI, A_CACO3_MI, A_PH_CC) {
 #' @export
 sptf_cec51 <- function(A_C_OF, A_CLAY_MI, A_SILT_MI, A_PH_WA) {
   
+  # add visual bindings
+  A_SAND_MI = NULL
+  
   # Check input
   arg.length <- max(length(A_C_OF), length(A_CLAY_MI),length(A_PH_WA),length(A_SILT_MI))
   checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000,len = arg.length)
@@ -2352,6 +2382,9 @@ sptf_cec51 <- function(A_C_OF, A_CLAY_MI, A_SILT_MI, A_PH_WA) {
 #'
 #' @export
 sptf_cec52 <- function(A_C_OF, A_CLAY_MI, A_SILT_MI, A_PH_WA) {
+  
+  # add visual bindings
+  A_SAND_MI = NULL
   
   # Check input
   arg.length <- max(length(A_C_OF), length(A_CLAY_MI),length(A_PH_WA),length(A_SILT_MI))
@@ -2397,6 +2430,9 @@ sptf_cec52 <- function(A_C_OF, A_CLAY_MI, A_SILT_MI, A_PH_WA) {
 #' @export
 sptf_cec53 <- function(A_C_OF, A_CLAY_MI, A_SILT_MI, A_PH_WA) {
   
+  # add visual bindings
+  A_SAND_MI = NULL
+  
   # Check input
   arg.length <- max(length(A_C_OF), length(A_CLAY_MI),length(A_PH_WA),length(A_SILT_MI))
   checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000,len = arg.length)
@@ -2441,6 +2477,9 @@ sptf_cec53 <- function(A_C_OF, A_CLAY_MI, A_SILT_MI, A_PH_WA) {
 #'
 #' @export
 sptf_cec54 <- function(A_C_OF, A_CLAY_MI, A_SILT_MI, A_PH_WA,B_LU_PTFCLASS) {
+  
+  # add visual bindings
+  A_SAND_MI = NULL
   
   # Check input
   arg.length <- max(length(A_C_OF), length(A_CLAY_MI),length(A_PH_WA),length(A_SILT_MI),length(B_LU_PTFCLASS))
@@ -2500,7 +2539,7 @@ sptf_cec54 <- function(A_C_OF, A_CLAY_MI, A_SILT_MI, A_PH_WA,B_LU_PTFCLASS) {
 sptf_cec55 <- function(A_C_OF, A_CLAY_MI, A_SILT_MI, A_PH_WA) {
   
   # add visual bindings
-  v1 = v2 = NULL
+  v1 = v2 = A_SAND_MI = NULL
   
   # Check input
   arg.length <- max(length(A_C_OF), length(A_CLAY_MI),length(A_PH_WA),length(A_SILT_MI))
@@ -2523,7 +2562,7 @@ sptf_cec55 <- function(A_C_OF, A_CLAY_MI, A_SILT_MI, A_PH_WA) {
   
   # function GLM polynomial for CEC at 8.2 (NH4Ac) (n = 170, R2 = 0.80)
   dt[, v2 := -25.82 + 1.0 * A_CLAY_MI - 0.037 * A_SAND_MI + 0.543 * A_PH_WA + 0.405 * A_C_OF + 0.0023 * A_CLAY_MI^2 + 
-              0.0058 * A_SILT_MI^2 + 0.0057 * A_SAND_MI^2 - 0.158 * A+PH_WA^2 - 0.015 * A_C_OF^2 + 4.337 * exp(A_C_OF/A_SAND_MI)^2]
+              0.0058 * A_SILT_MI^2 + 0.0057 * A_SAND_MI^2 - 0.158 * A_PH_WA^2 - 0.015 * A_C_OF^2 + 4.337 * exp(A_C_OF/A_SAND_MI)^2]
  
   # Estimate mean value
   dt <- melt(dt,id.vars = 'id',measure.vars = c('v1','v2'))
@@ -2556,7 +2595,7 @@ sptf_cec55 <- function(A_C_OF, A_CLAY_MI, A_SILT_MI, A_PH_WA) {
 sptf_cec56 <- function(A_SOM_LOI, A_CLAY_MI,A_PH_WA) {
   
   # add visual bindings
-  v1 = v2 = NULL
+  v1 = v2 = v3 = NULL
   
   # Check input
   arg.length <- max(length(A_SOM_LOI), length(A_CLAY_MI),length(A_PH_WA))
@@ -2659,6 +2698,9 @@ sptf_cec57 <- function(A_SOM_LOI, A_SAND_MI,A_PH_WA) {
 #'
 #' @export
 sptf_cec58 <- function(A_SOM_LOI, A_CLAY_MI, A_SILT_MI, A_CACO3_MI) {
+  
+  # add visual bindings
+  A_SAND_MI = NULL
   
   # Check input
   arg.length <- max(length(A_SOM_LOI), length(A_CLAY_MI),length(A_SILT_MI),length(A_CACO3_MI))
@@ -2817,6 +2859,9 @@ sptf_cec61 <- function(A_C_OF, A_CLAY_MI) {
 #' @export
 sptf_cec62 <- function(A_C_OF, A_CLAY_MI,A_SILT_MI,A_CACO3_MI) {
   
+  # add visual bindings
+  bd = sar = ec = A_SAND_MI = NULL
+  
   # Check input
   arg.length <- max(length(A_C_OF), length(A_CLAY_MI),length(A_SILT_MI),length(A_CACO3_MI))
   checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000,len = arg.length)
@@ -2941,7 +2986,7 @@ sptf_cec64 <- function(A_C_OF, A_CLAY_MI) {
 sptf_cec65 <- function(A_C_OF) {
   
   # Check input
-  checkmate::assert_numeric(A_C_OF, lower = 0, upper = 100,len = arg.length)
+  checkmate::assert_numeric(A_C_OF, lower = 0, upper = 100)
 
   # make internal data.table
   dt <- data.table(A_C_OF = A_C_OF,
@@ -3226,7 +3271,7 @@ sptf_cec72 <- function(A_C_OF, A_CLAY_MI,A_PH_WA) {
 sptf_cec73 <- function(A_SOM_LOI, A_CLAY_MI, A_SILT_MI,A_PH_WA) {
   
   # add visual bindings
-  v1 = v2 = NULL
+  v1 = v2 = A_SLIB_MI = NULL
   
   # Check input
   arg.length <- max(length(A_SOM_LOI), length(A_CLAY_MI),length(A_SILT_MI),length(A_PH_WA))
@@ -3324,7 +3369,7 @@ sptf_cec74 <- function(A_C_OF,A_CLAY_MI,A_SILT_MI,A_PH_WA,B_SOILCLASS_USDA) {
   dt[B_SOILCLASS_USDA == 'inceptisol', value := -6.227 + 0.073*A_PH_WA^3]
   
   # Mollisols (nR2 = 0.54)
-  dt[B_SOILCLASS_USDA == 'mollisol' , value := e-62.51 + 11.013 * A_PH_WA +0.436 * A_CLAY_MI]
+  dt[B_SOILCLASS_USDA == 'mollisol' , value := -62.51 + 11.013 * A_PH_WA +0.436 * A_CLAY_MI]
 
   # convert unit from cmol to mmol+/kg
   dt[,value := 10 * value]

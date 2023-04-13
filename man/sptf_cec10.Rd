@@ -4,10 +4,10 @@
 \alias{sptf_cec10}
 \title{Calculate the CEC}
 \usage{
-sptf_cec10(A_SOM_LOI, A_CLAY_MI, A_PH_CC, B_LU_PTFCLASS)
+sptf_cec10(A_C_OF, A_CLAY_MI, A_PH_CC, B_LU_PTFCLASS)
 }
 \arguments{
-\item{A_SOM_LOI}{(numeric) The percentage organic matter in the soil (\%).}
+\item{A_C_OF}{(numeric) The carbon content of the soil (g / kg).}
 
 \item{A_CLAY_MI}{(numeric) The clay content of the soil (\%).}
 

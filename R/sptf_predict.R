@@ -11,7 +11,8 @@
 #' @param B_LU_PTFCLASS (character) The land use categorie (options: agriculture, grassland, cropland, forest, nature)
 #' @param B_LOC_COUNTRY (character) The country code 
 #' @param nmax (integer) the maximum number of ptfs to be included (default nmax = 5)
-#'
+#' @param ... other arguments
+
 #' @details 
 #' Some of the ptfs require additional information. If given, the relevant ptf's are used, otherwise they are ignored.
 #' These include the total N content (A_N_RT, unit mg/kg), the pH (A_PH_WA), the carbonate content (A_CACO3_MI, unit \%), the moisture content (A_H2O_T105, \%), the slope (B_SLOPE_DEGREE, unit degrees), the aspect (B_SLOPE_ASPECT, unit degrees) and the altidue (B_ALTITUDE, unit m).
@@ -21,13 +22,21 @@
 #' 
 #' @import data.table
 #' 
+#' @importFrom stats weighted.mean
+#' 
 #' @export
 ptf_bd <- function(A_SOM_LOI = NA_real_, A_C_OF = NA_real_, 
                    A_CLAY_MI = NA_real_, A_SAND_MI = NA_real_, A_SILT_MI = NA_real_, 
                    B_LU_PTFCLASS = NA_real_,
                    B_DEPTH = 0.3, 
                    B_LOC_COUNTRY = 'NL', 
-                   nmax = 5, ...){
+                   nmax = 5,
+                   ...){
+  
+  # combine all input objects not given as default function arguments
+  obj <- list(...)
+  obj <- as.data.table(obj)
+  if(length(obj)==0){obj <- NULL}
   
   # add visual bindings
   country_code = continent_code = num_obs = B_SOILTYPE = . = NULL
@@ -48,11 +57,8 @@ ptf_bd <- function(A_SOM_LOI = NA_real_, A_C_OF = NA_real_,
   p160 = p161 = p162 = p163 = p164 = p165 = p166 = p167 = p168 = p169 = NULL
   p170 = p171 = p172 = p173 = p174 = p175 = p176 = p177 = p178 = p179 = NULL
   p180 = p181 = p182 = p183 = p184 = p185 = p186 = p187 = p188 = p189 = NULL
-  
-  # combine all input objects not given as default function arguments
-  obj <- list(...)
-  obj <- as.data.table(obj)
-  if(length(obj)==0){obj <- NULL}
+  landuse = value = ptf_id = patterns = ap = depth = r2 = oid = id = soiltype = NULL
+  B_LOC_CONT = NULL
   
   # read in internal table
   ptf.mods <- as.data.table(soilptf::sptf_bulkdensity)
@@ -98,6 +104,16 @@ ptf_bd <- function(A_SOM_LOI = NA_real_, A_C_OF = NA_real_,
   # add extra variables given as input
   checkmate::assert_data_table(obj,nrows = nrow(dt),null.ok = TRUE)
   dt <- cbind(dt,obj)
+  
+  # add visual bindings when no input is given
+  if(!'A_H2O_T105' %in% colnames(dt)){A_H2O_T105 = NULL}
+  if(!'A_PH_WA' %in% colnames(dt)){A_PH_WA = NULL}
+  if(!'A_CACO3_MI' %in% colnames(dt)){A_CACO3_MI = NULL}
+  if(!'A_N_RT' %in% colnames(dt)){A_N_RT = NULL}
+  if(!'A_SAND_M50' %in% colnames(dt)){A_SAND_M50 = NULL}
+  if(!'B_SLOPE_DEGREE' %in% colnames(dt)){B_SLOPE_DEGREE = NULL}
+  if(!'B_SLOPE_ASPECT' %in% colnames(dt)){B_SLOPE_ASPECT = NULL}
+  if(!'B_ALTITUDE' %in% colnames(dt)){B_ALTITUDE = NULL}
   
   # add all possible inputs as NA when missing
   cols <- c('A_PH_WA','A_CACO3_MI','A_N_RT','A_H2O_T105','A_SAND_M50','B_SLOPE_DEGREE','B_SLOPE_ASPECT','B_ALTITUDE')
@@ -343,11 +359,19 @@ ptf_bd <- function(A_SOM_LOI = NA_real_, A_C_OF = NA_real_,
 #' 
 #' @import data.table
 #' 
+#' @importFrom stats lm rnorm sd
+#' 
 #' @export
 ptf_bd_lm <- function(B_LU_PTFCLASS = NA_character_,
                       B_DEPTH = 0.3, 
                       B_LOC_COUNTRY = 'NL', 
                       nboot = 10){
+  
+  # add visual bindings
+  country_code = continent_code = B_SOILTYPE = . = ptf_id = nsample = r2 = nrep = value = NULL
+  A_CLAY_MI = A_SILT_MI = A_SAND_MI = A_SOM_LOI = A_C_OF = A_H2O_T105 = NULL
+  B_ALTITUDE = B_SLOPE_DEGREE = B_SLOPE_ASPECT = A_PH_WA = A_CACO3_MI = A_N_RT = NULL
+  A_SAND_M50 = error = NULL
   
   # read in internal table
   ptf.mods <- as.data.table(soilptf::sptf_bulkdensity)
@@ -367,6 +391,8 @@ ptf_bd_lm <- function(B_LU_PTFCLASS = NA_character_,
                    B_LOC_COUNTRY = B_LOC_COUNTRY,
                    B_LU_PTFCLASS = B_LU_PTFCLASS
   )
+  
+  
   
   # add USDA soil classification
   dt[, B_SOILTYPE := sptf_textureclass(A_CLAY_MI = A_CLAY_MI,A_SILT_MI = A_SILT_MI,A_SAND_MI = A_SAND_MI)]
