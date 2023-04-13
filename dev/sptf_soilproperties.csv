@@ -34,7 +34,7 @@
 33;31;cec;US;NA;variable;agriculture;220;170;74;a_som_loi||a_clay_mi||b_soilclass_usda;drake_1982;not available
 34;32;cec;CN;AS;variable;agriculture;20;100;80;a_som_loi||a_clay_mi||a_silt_mi||a_ph_cc;liao_2015;https://doi.org/10.1111/sum.12207
 35;33;cec;US;NA;variable;agriculture;30;12000;55;a_c_of||a_clay_mi||a_ph_cc;liao_2015;https://doi.org/10.1111/sum.12207
-36;34;cec;GE;EU;variable;variable;30;;;a_c_of||a_clay_mi||a_ph_cc;liao_2015;https://doi.org/10.1111/sum.12207
+36;34;cec;GE;EU;variable;forest;30;2000;72;a_c_of||a_clay_mi||a_ph_cc;meyer_1994;https://doi.org/10.4141/cjss94-053
 37;35;cec;GE;EU;variable;variable;30;;;a_c_of||a_clay_mi||a_ph_cc;liao_2015;https://doi.org/10.1111/sum.12207
 38;36;cec;GE;EU;variable;variable;30;;;a_c_of||a_clay_mi||a_ph_cc;liao_2015;https://doi.org/10.1111/sum.12207
 39;37;cec;US;NA;variable;agriculture;30;2725;79;a_c_of||a_clay_mi||a_ph_cc;franzmeier_1990;not available
@@ -108,3 +108,10 @@
 107;6;phbc;AU;OC;variable;agriculture;15;40;83;a_c_of||a_clay_mi;aitken_1990;https://doi.org/10.1071/SR9900695
 108;7;phbc;GH;AF;variable;agriculture;22;6;92;a_c_of||a_clay_mi||a_ph_wa;owusu_1995;https://doi.org/10.1080/00103629509369346
 109;8;phbc;FR;EU;variable;variable;;;;a_c_of||a_clay_mi;joret_1934;not available
+110;68;cec;NZ;OC;variable;forest;;347;70;a_c_of||a_clay_mi;parfitt_1995;https://doi.org/10.1080/00103629509369376
+111;69;cec;IN;AS;variable;variable;;42;83;a_c_of||a_clay_mi;somani_1983;not available
+112;70;cec;US;NA;variable;agriculture;30;17;88;a_c_of||a_clay_mi;martel_1976;not available
+113;71;cec;IE;EU;variable;agriculture;30;51;58;a_c_of||a_clay_mi;curtin_1976;not available
+114;72;cec;AU;OC;variable;variable;;92;69;a_c_of||a_clay_mi||a_ph_wa;tranter_2009;doi:10.1016/j.geoderma.2009.01.006
+115;73;cec;GE;EU;variable;variable;30;1533;;a_c_of||a_clay_mi||a_silt_mi||a_ph_wa;deumlich_2015;https://doi.org/10.1080/03650340.2014.961434
+116;74;cec;US;NA;variable;variable;220;12000;58;a_c_of||a_clay_mi||a_silt_mi||a_ph_wa||b_soilclass_usda;;https://doi.org/10.1080/00103629009368363

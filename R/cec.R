@@ -1545,24 +1545,30 @@ sptf_cec34 <- function(A_C_OF, A_CLAY_MI, A_PH_CC) {
 
 #' Calculate the CEC
 #'
-#' This function calculates the CEC at pH 7
+#' This function calculates the CEC at pH 7 for forest and natural grassland soils in eastern Canada
 #'
 #' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
 #' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
 #' @param A_PH_CC (numeric) The acidity of the soil, pH in CaCl2 (-)
-#' 
+#' @param B_LU_PTFCLASS (character) The land use category (options: agriculture, grassland, cropland, forest, nature)
+#'  
 #' @import data.table
 #' 
-#' @references Meyer et al. (1994).  Cation exchange capacities of upland soils in eastern Canada. Cited in Liao & Zhu (2015).
+#' @references Meyer et al. (1994).  Cation exchange capacities of upland soils in eastern Canada. 
 #'
 #' @export
-sptf_cec34 <- function(A_C_OF, A_CLAY_MI, A_PH_CC) {
+sptf_cec34 <- function(A_C_OF, A_CLAY_MI, A_PH_CC,B_LU_PTFCLASS) {
+  
+  # add visual bindings
+  B_LU_PTFCLASS = NULL
   
   # Check input
-  arg.length <- max(length(A_C_OF), length(A_CLAY_MI))
+  arg.length <- max(length(A_C_OF), length(A_CLAY_MI),length(B_LU_PTFCLASS))
   checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000,len = arg.length)
   checkmate::assert_numeric(A_PH_CC, lower = 3, upper = 12, len = arg.length)
   checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_character(B_LU_PTFCLASS,length = arg.length)
+  checkmate::assert_subset(B_LU_PTFCLASS, choices = c('agriculture', 'grassland', 'cropland', 'forest', 'nature'))
   
   # make internal data.table (with clay and Corg in %)
   dt <- data.table(A_C_OF = A_C_OF * 0.1,
@@ -1570,8 +1576,11 @@ sptf_cec34 <- function(A_C_OF, A_CLAY_MI, A_PH_CC) {
                    A_PH_CC = A_PH_CC,
                    value = NA_real_)
   
-  # function for CEC(n = , R2 = )
-  dt[, value := -7.00 + 0.29 * A_CLAY_MI + 0.82 * A_C_OF + 1.4 * A_PH_CC]
+  # function for CEC for forest soils (n = 1723, R2 = 0.72)
+  dt[B_LU_PTFCLASS %in% c('nature', 'forest'), value := -7.00 + 0.29 * A_CLAY_MI + 0.82 * A_C_OF + 1.4 * A_PH_CC]
+  
+  # function for CEC for forest soils (n = 344, R2 = 0.79)
+  dt[B_LU_PTFCLASS %in% c('grasslands'), value := -8.30 + 0.24 * A_CLAY_MI + 2.14 * A_C_OF + 1.3 * A_PH_CC]
   
   # update unit from cmol/kg to mmol/kg
   dt[, value := value * 10]
@@ -3022,20 +3031,319 @@ sptf_cec67 <- function(A_C_OF, A_CLAY_MI) {
   
 }
 
-# 
-# Contribution of organic matter and clay minerals to the cation exchange capacity of soils
-# https://doi.org/10.1080/00103629509369376
+#' Calculate the CEC
+#'
+#' This function calculates the CEC for soils in New Zealand
+#'
+#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
+#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
+#' 
+#' @import data.table
+#' 
+#' @references Parfitt et al. (1995) Contribution of organic matter and clay minerals to the cation exchange capacity of soils
+#'
+#' @export
+sptf_cec68 <- function(A_C_OF, A_CLAY_MI) {
+  
+  # Check input
+  arg.length <- max(length(A_C_OF), length(A_CLAY_MI))
+  checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000,len = arg.length)
+  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
+  
+  # make internal data.table (both in kg/kg)
+  dt <- data.table(A_C_OF = A_C_OF * 0.001,
+                   A_CLAY_MI = A_CLAY_MI*0.01,
+                   value = NA_real_)
+  
+  # function for CEC for A horizons (n = 347 , R2 =  0.7, manually estimated)
+  dt[, value := (221 * A_C_OF + 33 * A_CLAY_MI) * 10]
+  
+  # select output variable
+  value <- dt[,value]
+  
+  # return value (mmol+ / kg)
+  return(value)
+  
+}
+
+#' Calculate the CEC
+#'
+#' This function calculates the CEC at pH 7 for soils in India, variable land uses
+#'
+#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
+#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
+#' 
+#' @import data.table
+#' 
+#' @references Somani (1983). The computation of the cation exchange capacity of soils from clay and organic matter content. Cited in Meyer (1994).
+#'
+#' @export
+sptf_cec69 <- function(A_C_OF, A_CLAY_MI) {
+  
+  # Check input
+  arg.length <- max(length(A_C_OF), length(A_CLAY_MI))
+  checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000,len = arg.length)
+  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
+  
+  # make internal data.table (both in %)
+  dt <- data.table(A_C_OF = A_C_OF * 0.1,
+                   A_CLAY_MI = A_CLAY_MI,
+                   value = NA_real_)
+  
+  # function for CEC NH4OAc for unknown horizons (n = 42 , R2 =  0.83)
+  dt[, value := (2.57 + 0.36 * A_CLAY_MI + 6.72 * A_C_OF) * 10]
+  
+  # select output variable
+  value <- dt[,value]
+  
+  # return value (mmol+ / kg)
+  return(value)
+  
+}
+
+#' Calculate the CEC
+#'
+#' This function calculates the CEC at pH 7 for forage soils in Quebec.
+#'
+#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
+#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
+#' 
+#' @import data.table
+#' 
+#' @references Martel and Laverdiere (1976). Facteurs qui influencent la teneur de la matibre organique et les propietes d'echange cationique des horizons Ap des sols de grande culture du Quebec. Cited in Meyer (1994).
+#'
+#' @export
+sptf_cec70 <- function(A_C_OF, A_CLAY_MI) {
+  
+  # Check input
+  arg.length <- max(length(A_C_OF), length(A_CLAY_MI))
+  checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000,len = arg.length)
+  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
+  
+  # make internal data.table (both in %)
+  dt <- data.table(A_C_OF = A_C_OF * 0.1,
+                   A_CLAY_MI = A_CLAY_MI,
+                   value = NA_real_)
+  
+  # function for CEC NH4OAc for A horizons (n = 17 , R2 =  0.88)
+  dt[, value := (7.06 + 0.291 * A_CLAY_MI + 2.77 * A_C_OF) * 10]
+  
+  # select output variable
+  value <- dt[,value]
+  
+  # return value (mmol+ / kg)
+  return(value)
+  
+}
+
+#' Calculate the CEC
+#'
+#' This function calculates the CEC at pH 8.2 for various land use soils in Ireland
+#'
+#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
+#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
+#' 
+#' @import data.table
+#' 
+#' @references Curtin and Smillie (1976). Estimation of components of soil cation exchange capacity from measurements of specific surface and organic matter. Cited in Meyer (1994).
+#'
+#' @export
+sptf_cec71 <- function(A_C_OF, A_CLAY_MI) {
+  
+  # Check input
+  arg.length <- max(length(A_C_OF), length(A_CLAY_MI))
+  checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000,len = arg.length)
+  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
+  
+  # make internal data.table (both in %)
+  dt <- data.table(A_C_OF = A_C_OF * 0.1,
+                   A_CLAY_MI = A_CLAY_MI,
+                   value = NA_real_)
+  
+  # function for CEC BaCl2 for A horizons (n = 51 , R2 =  0.58)
+  dt[, value := (0.13 + 0.385 * A_CLAY_MI + 6.93 * A_C_OF) * 10]
+  
+  # select output variable
+  value <- dt[,value]
+  
+  # return value (mmol+ / kg)
+  return(value)
+  
+}
+
+#' Calculate the CEC
+#'
+#' This function calculates the CEC at pH 8.2 for various land use soils in Ireland
+#'
+#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
+#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
+#' @param A_PH_WA (numeric) The acidity of the soil, pH in water (-).
+#' 
+#' @import data.table
+#' 
+#' @references Tranter et al. (2009). Using distance metrics to determine the appropriate domain of pedotransfer function predictions
+#'
+#' @export
+sptf_cec72 <- function(A_C_OF, A_CLAY_MI,A_PH_WA) {
+  
+  # Check input
+  arg.length <- max(length(A_C_OF), length(A_CLAY_MI))
+  checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000,len = arg.length)
+  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_numeric(A_PH_WA, lower = 3, upper = 12, len = arg.length)
+  
+  # make internal data.table (both in %)
+  dt <- data.table(A_C_OF = A_C_OF * 0.1,
+                   A_CLAY_MI = A_CLAY_MI,
+                   A_PH_WA = A_PH_WA,
+                   value = NA_real_)
+  
+  # function for CEC BaCl2 for A horizons (n = 92 , R2 =  0.69)
+  dt[, value := (3.7 - 0.28 * A_PH_WA + 2.6 * log10(A_C_OF) + 0.28 * A_CLAY_MI) * 10]
+  
+  # select output variable
+  value <- dt[,value]
+  
+  # return value (mmol+ / kg)
+  return(value)
+  
+}
+
+#' Calculate the CEC
+#'
+#' This function calculates the effective CEC at pH 7 for agricultural topsoils (0-30cm) in Germany
+#'
+#' @param A_SOM_LOI (numeric) The percentage organic matter in the soil (\%).
+#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
+#' @param A_SILT_MI (numeric) The clay content of the soil (\%).
+#' @param A_PH_WA (numeric) The acidity of the soil, pH in water (-).
+#'   
+#' @import data.table
+#' 
+#' @references deumlich et al. (2015) Characterization of cation exchange capacity (CEC) for agricultural land-use areas
+#'
+#' @export
+sptf_cec73 <- function(A_SOM_LOI, A_CLAY_MI, A_SILT_MI,A_PH_WA) {
+  
+  # add visual bindings
+  v1 = v2 = NULL
+  
+  # Check input
+  arg.length <- max(length(A_SOM_LOI), length(A_CLAY_MI),length(A_SILT_MI),length(A_PH_WA))
+  checkmate::assert_numeric(A_SOM_LOI, lower = 0, upper = 100,len = arg.length)
+  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_numeric(A_PH_WA, lower = 0, upper = 100, len = arg.length)
+  
+  # make internal data.table
+  dt <- data.table(id = 1: arg.length,
+                   A_SOM_LOI = A_SOM_LOI,
+                   A_SLIB_MI = A_CLAY_MI + 0.3 * A_SILT_MI,
+                   A_PH_WA = A_PH_WA,
+                   value = NA_real_)
+  
+  # function effective CEC, NH4-Ac and KCl (n = 1533, R2 unknown)
+  dt[, v1 := -2.84 + 0.33 * A_SLIB_MI + 1.75 * A_SOM_LOI + 0.6 * A_PH_WA]
+  dt[, v2 := 0.5 * A_CLAY_MI + 0.05 * A_SILT_MI]
+  
+  # Estimate mean value
+  dt <- melt(dt,id.vars = 'id',measure.vars = c('v1','v2'))
+  dt <- dt[,list(value = mean(value,na.rm=T)),by='id']
+  
+  # update unit from cmol/kg to mmol/kg
+  dt[, value := value * 10]
+  
+  # select output variable
+  value <- dt[,value]
+  
+  # return value (mmol+ / kg)
+  return(value)
+  
+}
+
+#' Calculate the CEC
+#'
+#' This function calculates the CEC at pH 7 of soils in continental USA per taxonomic order stratification group.
+#'
+#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
+#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
+#' @param A_SILT_MI (numeric) The silt content of the soil (\%).
+#' @param A_PH_WA (numeric) The acidity of the soil, pH in water (-).
+#' @param B_SOILCLASS_USDA The soil type class according to the USDA Soil Taxonomy (https://en.wikipedia.org/wiki/USDA_soil_taxonomy)
+#' 
+#' @import data.table
+#' 
+#' @references Manrique et al. (1990) Estimation of exchangeable bases and base saturation from soil physical and chemical data
+#'
+#' @export
+sptf_cec74 <- function(A_C_OF,A_CLAY_MI,A_SILT_MI,A_PH_WA,B_SOILCLASS_USDA) {
+  
+  # add visual bindings
+  v1 = v2 = v3 = NULL
+  
+  # Check input
+  arg.length <- max(length(A_C_OF),length(A_CLAY_MI),length(A_SILT_MI),length(A_PH_WA),length(B_SOILCLASS_USDA))
+  checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000, len = arg.length)
+  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_numeric(A_PH_WA, lower = 2, upper = 12, len = arg.length)
+  checkmate::assert_character(B_SOILCLASS_USDA,len = arg.length)
+  checkmate::assert_subset(B_SOILCLASS_USDA,choiced = c('alfisol','andisol','aridisol','entisol',
+                                                        'gelisol','inceptisol','mollisol','oxisol',
+                                                        'spodosol','ultisol','vertisol','histosol'))
+  
+  # make internal data.table (assuming that Corg equals total C, units in \%)
+  dt <- data.table(id = 1:arg.length,
+                   A_C_OF = A_C_OF * 0.1,
+                   A_PH_WA = A_PH_WA,
+                   A_SILT_MI = A_SILT_MI,
+                   A_CLAY_MI = A_CLAY_MI,
+                   value = NA_real_)
+  
+  # add general eqation (R2 0.58, R2 = 0.63)
+  dt[, v1 := -4.043 + 0.071 * A_PH_WA^3]
+  dt[, v2 := -50.231 + 9.689 * A_PH_WA + 0.251 * A_CLAY_MI]
+  
+  # add CEC for horizon B (R2 = 0.63)
+  dt[, v3 := -4.916 + 0.075 * A_PH_WA^3]
+  
+  # Estimate mean value
+  dt <- melt(dt,id.vars = 'id',measure.vars = c('v1','v2','v3'))
+  dt <- dt[,list(value = mean(value,na.rm=T)),by='id']
+  
+  # alfisols (R2 = 0.45 - 0.53)
+  dt[B_SOILCLASS_USDA == 'alfisol', value := -0.328 + 0.059 * A_PH_WA^3]
+  dt[B_SOILCLASS_USDA == 'alfisol', value := (value -38.366 + 7.422 * A_PH_WA + 0.297 * A_CLAY_MI) * 0.5]
+  
+  # aridisols (R2 = 0.35)
+  dt[B_SOILCLASS_USDA == 'aridisol', value := -85.477 + 18.839 * A_PH_WA + 0.421 * A_CLAY_MI]
+  
+  # entisols (R2 = 0.44)
+  dt[B_SOILCLASS_USDA == 'entisol', value := -48.564 + 9.553 * A_PH_WA]
+  
+  # inceptisols (R2 = 0.55)
+  dt[B_SOILCLASS_USDA == 'inceptisol', value := -6.227 + 0.073*A_PH_WA^3]
+  
+  # Mollisols (nR2 = 0.54)
+  dt[B_SOILCLASS_USDA == 'mollisol' , value := e-62.51 + 11.013 * A_PH_WA +0.436 * A_CLAY_MI]
+
+  # convert unit from cmol to mmol+/kg
+  dt[,value := 10 * value]
+  
+  # select output variable
+  value <- dt[,value]
+  
+  # return value
+  return(value)
+  
+}
+
 #
 # montecillo, tropical
 # sinoga, spain
 # soares 2008 tropics
 # https://doi.org/10.1080/00103628309367409, Fpilippine
 # https://doi.org/10.2136/sssaj1962.03615995002600030021x Kamprath
-# dabkowska_2001_cation
-# tranter
-#partfitt_1995_contribution
-# manrique_199+0
-# deutlich
-# meyer 1994
 
+# cec after removal of som, discussion dabkowska_2001_cation
+# deumlich bevat interpretatie data CEC
 
