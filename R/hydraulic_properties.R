@@ -15,7 +15,7 @@
 sptf_vg1 <- function(A_CLAY_MI,A_SILT_MI,A_SOM_LOI,A_DEPTH) {
   
   # add visual bindings
-  A_DENSITY = ThetaR = ThetaS = alfa = n = ksat = id = NULL
+  A_DENSITY = ThetaR = ThetaS = alfa = n = ksat = id = TOPSOIL = NULL
   
   # Check input
   arg.length <- max(length(A_CLAY_MI), length(A_SILT_MI), length(A_SOM_LOI), length(A_DEPTH))
@@ -84,7 +84,7 @@ sptf_vg1 <- function(A_CLAY_MI,A_SILT_MI,A_SOM_LOI,A_DEPTH) {
 sptf_vg2 <- function(A_CLAY_MI, A_SILT_MI, A_SOM_LOI, A_SAND_M50, A_DEPTH){
   
   # add visual bindings
-  A_DENSITY = ThetaR = ThetaS = Ksat = alfa = l = n =  id = NULL
+  A_DENSITY = ThetaR = ThetaS = Ksat = alfa = l = n =  id = A_LOAM_MI = TOPSOIL = NULL
   
   # Check input
   arg.length <- max(length(A_CLAY_MI), length(A_SILT_MI), length(A_SOM_LOI), length(A_SAND_M50), length(A_DEPTH))

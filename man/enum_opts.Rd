@@ -17,7 +17,3 @@ This function wraps unlist(strsplit(sptf_parameters[code == this.parameter, opti
 to return a vector of allowed values for parameters of data_type 'enum'. If the
 data is numeric or integer, options will be given as numeric/integer instead of strings
 }
-\examples{
-enum_opts(this.parameter = "B_GWL_CLASS")
-
-}

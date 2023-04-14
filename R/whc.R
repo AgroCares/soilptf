@@ -10,21 +10,22 @@
 #'
 #' @export
 sptf_whc1 <- function(A_C_OF, A_SAND_MI, A_CLAY_MI) {
+
+  # add visual bindings
+  theta_pwp = theta_fc = NULL
+  
   # Check input
-  arg.length <-
-    max(length(A_C_OF), length(A_SAND_MI), length(A_CLAY_MI))
+  arg.length <-max(length(A_C_OF), length(A_SAND_MI), length(A_CLAY_MI))
   check_numeric('A_C_OF', A_C_OF, FALSE, arg.length)
   check_numeric('A_SAND_MI', A_SAND_MI, FALSE, arg.length)
   check_numeric('A_CLAY_MI', A_CLAY_MI, FALSE, arg.length)
   
-  
   # Collect data into a table (set in units %)
-  dt <- data.table(
-    A_C_OF = A_C_OF * 0.1,
-    A_SAND_MI = A_SAND_MI,
-    A_CLAY_MI = A_CLAY_MI,
-    value = NA_real_
-  )
+  dt <- data.table(A_C_OF = A_C_OF * 0.1,
+                    A_SAND_MI = A_SAND_MI,
+                    A_CLAY_MI = A_CLAY_MI,
+                    value = NA_real_
+                  )
   
   # Calculate volumetic water content at plant wilting point (mm / 100mm)
   dt[, theta_pwp := 7.222 + 0.296 * A_CLAY_MI - 0.074 * A_SAND_MI
@@ -59,21 +60,22 @@ sptf_whc1 <- function(A_C_OF, A_SAND_MI, A_CLAY_MI) {
 #'
 #' @export
 sptf_whc2 <- function(A_C_OF, A_SAND_MI, A_CLAY_MI) {
+  
+  # add visual bindings
+  theta_wp = theta_fc = NULL
+  
   # Check input
-  arg.length <-
-    max(length(A_C_OF), length(A_SAND_MI), length(A_CLAY_MI))
+  arg.length <-max(length(A_C_OF), length(A_SAND_MI), length(A_CLAY_MI))
   check_numeric('A_C_OF', A_C_OF, FALSE, arg.length)
   check_numeric('A_SAND_MI', A_SAND_MI, FALSE, arg.length)
   check_numeric('A_CLAY_MI', A_CLAY_MI, FALSE, arg.length)
   
-  
   # Collect data into a table (set in units %)
-  dt <- data.table(
-    A_C_OF = A_C_OF * 0.1,
-    A_SAND_MI = A_SAND_MI,
-    A_CLAY_MI = A_CLAY_MI,
-    value = NA_real_
-  )
+  dt <- data.table(A_C_OF = A_C_OF * 0.1,
+                   A_SAND_MI = A_SAND_MI,
+                   A_CLAY_MI = A_CLAY_MI,
+                   value = NA_real_
+                  )
   
   # Calculate volumetric water content at plant wilting point (mm / 100mm)
   dt[, theta_wp := 7.907 + 0.236 * A_CLAY_MI - 0.082 * A_SAND_MI
@@ -111,17 +113,16 @@ sptf_whc2 <- function(A_C_OF, A_SAND_MI, A_CLAY_MI) {
 #' @references Saxton et al.(1986) Estimating Generalized Soil-water Characteristics from Texture
 #'
 #' @export
-sptf_whc3 <-
-  function(A_SAND_MI,
-           A_CLAY_MI,
-           mp_wp = 1500,
-           mp_fc = 33) {
+sptf_whc3 <-  function(A_SAND_MI,A_CLAY_MI,mp_wp = 1500,mp_fc = 33) {
+    
+    # Add visual bindings
+    theta_sat = theta_res = theta_fc = alfa = n = A = B = theta_wp =NULL
+    
     # Check input
     arg.length <- max(length(A_SAND_MI), length(A_CLAY_MI))
     check_numeric('A_SAND_MI', A_SAND_MI, FALSE, arg.length)
     check_numeric('A_CLAY_MI', A_CLAY_MI, FALSE, arg.length)
     checkmate::assert_true(mp_fc > 10)
-    
     
     # Collect data into a table (set in units %)
     dt <- data.table(A_SAND_MI = A_SAND_MI,
@@ -135,7 +136,6 @@ sptf_whc3 <-
     )]
     dt[, B := -3.140 - 0.00222 * A_CLAY_MI ^ 2 - 0.00003484 * A_SAND_MI ^ 2 * A_CLAY_MI]
     
-    
     # Calculate volumetric water content at field capacity (cm3/cm3)
     dt[, theta_fc := exp(log(mp_fc / A) / B)]
     
@@ -145,7 +145,7 @@ sptf_whc3 <-
     # Calculate water holding capacity (cm3/cm3)
     dt[, value :=  theta_fc - theta_wp]
     
-    # return value
+    # select value
     value <- dt[, value]
     
     # return value
@@ -166,54 +166,51 @@ sptf_whc3 <-
 #' @references Oosterveld and Chang (1980) Empirical relations between laboratory determinations of soil texture and moisture retention
 #'
 #' @export
-sptf_whc4 <-
-  function(A_SAND_MI,
-           A_CLAY_MI,
-           D_BDS,
-           A_DEPTH = 15,
-           mp_wp = 1500) {
-    # Check input
-    arg.length <- max(length(A_SAND_MI), length(A_CLAY_MI))
+sptf_whc4 <-  function(A_SAND_MI,A_CLAY_MI,D_BDS,A_DEPTH = 15,mp_wp = 1500) {
     
-    check_numeric('A_SAND_MI', A_SAND_MI, FALSE, arg.length)
-    check_numeric('A_CLAY_MI', A_CLAY_MI, FALSE, arg.length)
-    check_numeric('D_BDS', D_BDS, FALSE, arg.length)
-    check_numeric('A_DEPTH', A_DEPTH, FALSE, arg.length)
-    checkmate::assert_numeric(A_DEPTH, lower = 0.08, upper = 0.180) # additional function specific stringent check
+  # Add visual bindings
+  theta_sat = theta_res = theta_fc = alfa = n = theta_wp = mp_fc = NULL
+  
+  # Check input
+  arg.length <- max(length(A_SAND_MI), length(A_CLAY_MI))
+  check_numeric('A_SAND_MI', A_SAND_MI, FALSE, arg.length)
+  check_numeric('A_CLAY_MI', A_CLAY_MI, FALSE, arg.length)
+  check_numeric('D_BDS', D_BDS, FALSE, arg.length)
+  check_numeric('A_DEPTH', A_DEPTH, FALSE, arg.length)
+  checkmate::assert_numeric(A_DEPTH, lower = 0.08, upper = 0.180) # additional function specific stringent check
+  
+  # internally convert A_DEPTH to cm
+  A_DEPTH <- A_DEPTH * 100
+  
+  # Collect data into a table (set in units %)
+  dt <- data.table(A_SAND_MI = A_SAND_MI,
+                    A_CLAY_MI = A_CLAY_MI,
+                    D_BDS = D_BDS,
+                    A_DEPTH = A_DEPTH,
+                    value = NA_real_
+                  )
     
-    # internally convert A_DEPTH to cm
-    A_DEPTH <- A_DEPTH * 100
+  # Water tention at field capacity (kPa)
+  dt[, mp_fc := 5.356 * A_CLAY_MI ^ 0.421]
+  
+  
+  # Calculate volumetric water content at field capacity (cm3/cm3)
+  dt[, theta_fc := 0.01 * D_BDS * (35.367 + 0.644 * A_CLAY_MI - 0.251 * A_SAND_MI - 0.045 * A_DEPTH) *
+       mp_fc ^ (-0.19)]
+  
+  # Calculate volumetric water content at wilting point (cm3/cm3)
+  dt[, theta_wp := 0.01 * D_BDS *
+       (35.367 + 0.644 * A_CLAY_MI - 0.251 * A_SAND_MI - 0.045 * A_DEPTH) *
+       mp_wp ^ (-0.19)]
     
-    # Collect data into a table (set in units %)
-    dt <- data.table(
-      A_SAND_MI = A_SAND_MI,
-      A_CLAY_MI = A_CLAY_MI,
-      D_BDS = D_BDS,
-      A_DEPTH = A_DEPTH,
-      value = NA_real_
-    )
-    
-    # Water tention at field capacity (kPa)
-    dt[, mp_fc := 5.356 * A_CLAY_MI ^ 0.421]
-    
-    
-    # Calculate volumetric water content at field capacity (cm3/cm3)
-    dt[, theta_fc := 0.01 * D_BDS * (35.367 + 0.644 * A_CLAY_MI - 0.251 * A_SAND_MI - 0.045 * A_DEPTH) *
-         mp_fc ^ (-0.19)]
-    
-    # Calculate volumetric water content at wilting point (cm3/cm3)
-    dt[, theta_wp := 0.01 * D_BDS *
-         (35.367 + 0.644 * A_CLAY_MI - 0.251 * A_SAND_MI - 0.045 * A_DEPTH) *
-         mp_wp ^ (-0.19)]
-    
-    # Calculate water holding capacity (cm3/cm3)
-    dt[, value :=  theta_fc - theta_wp]
-    
-    # return value
-    value <- dt[, value]
-    
-    # return value
-    return(value)
+  # Calculate water holding capacity (cm3/cm3)
+  dt[, value :=  theta_fc - theta_wp]
+  
+  # select value
+  value <- dt[, value]
+  
+  # return value
+  return(value)
     
   }
 
@@ -228,34 +225,26 @@ sptf_whc4 <-
 #' @references Wösten et al. (1999) Development and use of a database of hydraulic properties of European soils
 #'
 #' @export
-sptf_whc5 <-
-  function(A_SILT_MI,
-           A_CLAY_MI,
-           D_BDS,
-           A_SOM_LOI,
-           topsoil = 1,
-           mp_wp = 1500,
-           mp_fc = 33) {
+sptf_whc5 <-  function(A_SILT_MI, A_CLAY_MI, D_BDS,A_SOM_LOI, topsoil = 1,
+                      mp_wp = 1500,mp_fc = 33) {
+    
+    # Add visual bindings
+    theta_sat = theta_res = theta_fc = alfa = n = theta_wp = NULL
+    
     # Check input
-    arg.length <-
-      max(length(A_SILT_MI),
-          length(A_CLAY_MI),
-          length(A_SOM_LOI),
-          length(D_BDS))
+    arg.length <-max(length(A_SILT_MI), length(A_CLAY_MI),length(A_SOM_LOI),length(D_BDS))
     check_numeric('A_SILT_MI', A_SILT_MI, FALSE, arg.length)
     check_numeric('A_CLAY_MI', A_CLAY_MI, FALSE, arg.length)
     check_numeric('A_SOM_LOI', A_SOM_LOI, FALSE, arg.length)
     check_numeric('D_BDS', D_BDS, FALSE, arg.length)
     
     # Collect data into a table (set in units %)
-    dt <- data.table(
-      A_SILT_MI = A_SILT_MI,
-      A_CLAY_MI = A_CLAY_MI,
-      A_SOM_LOI = A_SOM_LOI,
-      D_BDS = D_BDS,
-      topsoil = topsoil,
-      value = NA_real_
-    )
+    dt <- data.table(A_SILT_MI = A_SILT_MI,
+                     A_CLAY_MI = A_CLAY_MI,
+                     A_SOM_LOI = A_SOM_LOI,
+                     D_BDS = D_BDS,
+                     topsoil = topsoil,
+                     value = NA_real_ )
     
     # Estimate water retention parameters
     dt[, theta_res    := 0.01]
@@ -311,33 +300,26 @@ sptf_whc5 <-
 #' @references Vereecken et al. (1989) Estimating the soil moisture retention characteristics from texture, bulk density and carbon content
 #'
 #' @export
-sptf_whc6 <-
-  function(A_SAND_MI,
-           A_CLAY_MI,
-           D_BDS,
-           A_C_OF,
-           mp_wp = 15000,
-           mp_fc = 33) {
+sptf_whc6 <-  function(A_SAND_MI,A_CLAY_MI,D_BDS,A_C_OF,mp_wp = 15000,mp_fc = 33) {
+    
+    # Add visual bindings
+    theta_sat = theta_res = theta_fc = alfa = n = theta_wp =NULL
+    
     # Check input
-    arg.length <-
-      max(length(A_SAND_MI),
-          length(A_CLAY_MI),
-          length(A_C_OF),
-          length(D_BDS))
+    arg.length <-max(length(A_SAND_MI),length(A_CLAY_MI),length(A_C_OF),length(D_BDS))
     check_numeric('A_SAND_MI', A_SAND_MI, FALSE, arg.length)
     check_numeric('A_CLAY_MI', A_CLAY_MI, FALSE, arg.length)
     check_numeric('A_C_OF', A_C_OF, FALSE, arg.length)
     check_numeric('D_BDS', D_BDS, FALSE, arg.length)
     
     # Collect data into a table (set in units %)
-    dt <- data.table(
-      A_SAND_MI = A_SAND_MI,
-      A_CLAY_MI = A_CLAY_MI,
-      A_C_OF = A_C_OF * 0.1,
-      D_BDS = D_BDS,
-      value = NA_real_
-    )
-    
+    dt <- data.table(A_SAND_MI = A_SAND_MI,
+                     A_CLAY_MI = A_CLAY_MI,
+                     A_C_OF = A_C_OF * 0.1,
+                     D_BDS = D_BDS,
+                     value = NA_real_
+                    )
+                  
     # Estimate water retention parameters
     dt[, theta_sat := 0.81 - 0.283 * D_BDS + 0.001 * A_CLAY_MI]
     dt[, theta_res := 0.015 + 0.005 * A_CLAY_MI + 0.014 * A_C_OF]
@@ -377,26 +359,15 @@ sptf_whc6 <-
 #' @references Szabó et al.(2021) Updated European hydraulic pedotransfer functions with communicated uncertainties in the predicted variables (euptfv2)
 #'
 #' @export
-sptf_whc7 <-
-  function(A_SAND_MI,
-           A_CLAY_MI,
-           A_SILT_MI,
-           D_BDS,
-           A_C_OF,
-           A_DEPTH = 0.15,
-           mp_wp = 1500,
-           mp_fc = 33) {
-    # Check input
-    arg.length <-
-      max(
-        length(A_SAND_MI),
-        length(A_CLAY_MI),
-        length(A_SILT_MI),
-        length(D_BDS),
-        length(A_C_OF),
-        length(A_DEPTH)
-      )
+sptf_whc7 <-function(A_SAND_MI,A_CLAY_MI,A_SILT_MI,D_BDS,A_C_OF,A_DEPTH = 0.15,
+                     mp_wp = 1500,mp_fc = 33) {
     
+    # Add visual bindings
+    theta_sat = theta_res = theta_fc = alfa = n = theta_wp =NULL
+    
+    # Check input
+    arg.length <-max(length(A_SAND_MI),length(A_CLAY_MI),length(A_SILT_MI),
+                    length(D_BDS),length(A_C_OF),length(A_DEPTH))
     check_numeric('A_SAND_MI', A_SAND_MI, FALSE, arg.length)
     check_numeric('A_CLAY_MI', A_CLAY_MI, FALSE, arg.length)
     check_numeric('A_SILT_MI', A_SILT_MI, FALSE, arg.length)
@@ -408,15 +379,14 @@ sptf_whc7 <-
     A_DEPTH <- A_DEPTH * 100
     
     # Collect data into a table (set in units %)
-    dt <- data.table(
-      A_SAND_MI = A_SAND_MI,
-      A_CLAY_MI = A_CLAY_MI,
-      A_SILT_MI = A_SILT_MI,
-      D_BDS = D_BDS,
-      A_C_OF = A_C_OF * 0.1,
-      A_DEPTH = A_DEPTH,
-      value = NA_real_
-    )
+    dt <- data.table(A_SAND_MI = A_SAND_MI,
+                    A_CLAY_MI = A_CLAY_MI,
+                    A_SILT_MI = A_SILT_MI,
+                    D_BDS = D_BDS,
+                    A_C_OF = A_C_OF * 0.1,
+                    A_DEPTH = A_DEPTH,
+                    value = NA_real_
+                  )
     
     # Estimate water retention parameters, using functions of the R package 'euptf2'
     # store necessary predictor as data frame
@@ -443,10 +413,11 @@ sptf_whc7 <-
     #   predictor = dt2,
     #   target = c("VG")
     # ))
+    euptfres = NULL
     cols <- c("THS_PTF07", "THR_PTF07", "ALP_PTF07", "N_PTF07")
     cols2 <- c("theta_sat", "theta_res", "alfa", "n")
     setnames(euptfres, cols, cols2)
-    dt <- cbind(dt, euptfres[, ..cols2])
+    dt <- cbind(dt, euptfres[, mget(cols2)])
     
     
     # Calculate volumetric water content at field capacity (cm3/cm3)
@@ -487,31 +458,25 @@ sptf_whc7 <-
 #' @references Weynants et al.(2009) Revisiting Vereecken Pedotransfer Functions: Introducing a Closed-Form Hydraulic Model
 #'
 #' @export
-sptf_whc8 <- function(A_SAND_MI,
-                      A_CLAY_MI,
-                      D_BDS,
-                      A_C_OF,
-                      mp_wp = 1500,
-                      mp_fc = 33) {
+sptf_whc8 <- function(A_SAND_MI,A_CLAY_MI,D_BDS,A_C_OF,mp_wp = 1500,mp_fc = 33) {
+  
+  # Add visual bindings
+  theta_sat = theta_res = alfa =n = theta_fc = theta_wp =  NULL
+  
   # Check input
-  arg.length <-
-    max(length(A_SAND_MI),
-        length(A_CLAY_MI),
-        length(D_BDS),
-        length(A_C_OF))
+  arg.length <- max(length(A_SAND_MI),length(A_CLAY_MI),length(D_BDS),length(A_C_OF))
   check_numeric('A_SAND_MI', A_SAND_MI, FALSE, arg.length)
   check_numeric('A_CLAY_MI', A_CLAY_MI, FALSE, arg.length)
   check_numeric('A_C_OF', A_C_OF, FALSE, arg.length)
   check_numeric('D_BDS', D_BDS, FALSE, arg.length)
   
   # Collect data into a table (set in units %)
-  dt <- data.table(
-    A_SAND_MI = A_SAND_MI,
-    A_CLAY_MI = A_CLAY_MI,
-    D_BDS = D_BDS,
-    A_C_OF = A_C_OF * 0.1,
-    value = NA_real_
-  )
+  dt <- data.table(A_SAND_MI = A_SAND_MI,
+                   A_CLAY_MI = A_CLAY_MI,
+                   D_BDS = D_BDS,
+                   A_C_OF = A_C_OF * 0.1,
+                   value = NA_real_
+                  )
   
   # Calculate water retention parameters
   dt[, theta_sat := 0.6355 + 0.0013 * A_CLAY_MI - 0.1631 * D_BDS]
@@ -550,6 +515,10 @@ sptf_whc8 <- function(A_SAND_MI,
 #'
 #' @export
 sptf_whc9 <- function(A_CLAY_MI, A_SILT_MI, A_C_OF, mp_fc = 33) {
+  
+  # add visual bindings
+  theta_wp = a= d = b= theta_fc = mp = NULL
+  
   # Check input
   arg.length <- max(length(A_CLAY_MI), length(A_SILT_MI), length(A_C_OF))
   check_numeric('A_CLAY_MI', A_CLAY_MI, FALSE, arg.length)
@@ -608,22 +577,13 @@ sptf_whc9 <- function(A_CLAY_MI, A_SILT_MI, A_C_OF, mp_fc = 33) {
 #' @references Rawls et al.(1982) Estimation of soil water properties. Trans. ASAE 25, 1316–1320.
 #'
 #' @export
-sptf_whc10 <-
-  function(A_CLAY_MI,
-           A_SILT_MI,
-           A_SAND_MI,
-           A_C_OF,
-           D_BDS,
-           mp_fc = 33) {
-    # Check input
-    arg.length <-
-      max(
-        length(A_CLAY_MI),
-        length(A_SILT_MI),
-        length(A_SAND_MI),
-        length(A_C_OF),
-        length(D_BDS)
-      )
+sptf_whc10 <-function(A_CLAY_MI,A_SILT_MI,A_SAND_MI, A_C_OF, D_BDS,mp_fc = 33) {
+    
+  # add visual bindings
+  mp = theta_wp = a = b = d = e = f = theta_fc = theta_wp = NULL
+  
+  # Check input
+    arg.length <-max(length(A_CLAY_MI),length(A_SILT_MI),length(A_SAND_MI),length(A_C_OF),length(D_BDS))
     check_numeric('A_CLAY_MI', A_CLAY_MI, FALSE, arg.length)
     check_numeric('A_SILT_MI', A_SILT_MI, FALSE, arg.length)
     check_numeric('A_SAND_MI', A_SAND_MI, FALSE, arg.length)
@@ -632,14 +592,12 @@ sptf_whc10 <-
     checkmate::assert_subset(mp_fc, choices = c(10, 33), empty.ok = FALSE)
     
     # Collect data into a table (set in units %)
-    dt <- data.table(
-      A_CLAY_MI = A_CLAY_MI,
-      A_SILT_MI = A_SILT_MI,
-      A_SAND_MI = A_SAND_MI,
-      A_C_OF = A_C_OF * 0.1,
-      D_BDS = D_BDS,
-      value = NA_real_
-    )
+    dt <- data.table(A_CLAY_MI = A_CLAY_MI,
+                     A_SILT_MI = A_SILT_MI,
+                     A_SAND_MI = A_SAND_MI,
+                     A_C_OF = A_C_OF * 0.1,
+                     D_BDS = D_BDS,
+                     value = NA_real_)
     
     # regression coeffients for prescribed matric potentials
     tb <- data.table(
@@ -688,14 +646,13 @@ sptf_whc10 <-
 
 #'
 #' @export
-sptf_whc11 <- function(A_CLAY_MI,
-                       A_SILT_MI,
-                       D_BDS,
-                       mp_wp = 1500,
-                       mp_fc = 33) {
+sptf_whc11 <- function(A_CLAY_MI,A_SILT_MI,D_BDS,mp_wp = 1500,mp_fc = 33) {
+  
+  # add visual bindings
+  theta_sat = theta_res = theta_fc = alfa = n = d_g = sigma_g = psi_es = lambda = psi_b=  theta_wp = NULL
+  
   # Check input
-  arg.length <-
-    max(length(A_CLAY_MI), length(A_SILT_MI), length(D_BDS))
+  arg.length <- max(length(A_CLAY_MI), length(A_SILT_MI), length(D_BDS))
   check_numeric('A_CLAY_MI', A_CLAY_MI, FALSE, arg.length)
   check_numeric('A_SILT_MI', A_SILT_MI, FALSE, arg.length)
   check_numeric('D_BDS', D_BDS, FALSE, arg.length)
@@ -703,12 +660,11 @@ sptf_whc11 <- function(A_CLAY_MI,
   checkmate::assert_numeric(mp_wp, any.missing = FALSE)
   
   # Collect data into a table
-  dt <- data.table(
-    A_CLAY_MI = A_CLAY_MI,
-    A_SILT_MI = A_SILT_MI,
-    D_BDS = D_BDS,
-    value = NA_real_
-  )
+  dt <- data.table(A_CLAY_MI = A_CLAY_MI,
+                   A_SILT_MI = A_SILT_MI,
+                   D_BDS = D_BDS,
+                   value = NA_real_
+                  )
   
   # Calcaulte parameters of water retention curve of Brooks and Corey (1964)
   dt[, d_g := exp(-0.025 - 0.0363 * A_SILT_MI - 0.0688 * A_CLAY_MI)] # geometric mean particle diameter
@@ -732,7 +688,7 @@ sptf_whc11 <- function(A_CLAY_MI,
   # Calculate water holding capacity (cm3/cm3)
   dt[, value :=  theta_fc - theta_wp]
   
-  # return value
+  # select value
   value <- dt[, value]
   
   # return value
@@ -757,14 +713,13 @@ sptf_whc11 <- function(A_CLAY_MI,
 #' @references Rawls & Brakensiek (1985) Prediction of Soil Water Properties for Hydrologic Modelling
 #'
 #' @export
-sptf_whc12 <- function(A_CLAY_MI,
-                       A_SAND_MI,
-                       D_BDS,
-                       mp_wp = 1500,
-                       mp_fc = 33) {
+sptf_whc12 <- function(A_CLAY_MI,A_SAND_MI,D_BDS,mp_wp = 1500,mp_fc = 33) {
+  
+  # Add visual bindings
+  theta_sat = theta_res = theta_fc = alfa = n = por = psi_b = lambda =  theta_wp = NULL
+  
   # Check input
-  arg.length <-
-    max(length(A_CLAY_MI), length(A_SAND_MI), length(D_BDS))
+  arg.length <- max(length(A_CLAY_MI), length(A_SAND_MI), length(D_BDS))
   check_numeric('A_CLAY_MI', A_CLAY_MI, FALSE, arg.length)
   check_numeric('A_SAND_MI', A_SAND_MI, FALSE, arg.length)
   check_numeric('D_BDS', D_BDS, FALSE, arg.length)
@@ -772,12 +727,11 @@ sptf_whc12 <- function(A_CLAY_MI,
   checkmate::assert_numeric(mp_wp, any.missing = FALSE)
   
   # Collect data into a table
-  dt <- data.table(
-    A_CLAY_MI = A_CLAY_MI,
-    A_SAND_MI = A_SAND_MI,
-    D_BDS = D_BDS,
-    value = NA_real_
-  )
+  dt <- data.table(A_CLAY_MI = A_CLAY_MI,
+                   A_SAND_MI = A_SAND_MI,
+                   D_BDS = D_BDS,
+                   value = NA_real_
+                  )
   
   # Calcaulte parameters of water retention curve of Brooks and Corey (1964)
   dt[, por := calc_soil_porosity(D_BDS)]
@@ -838,12 +792,12 @@ sptf_whc12 <- function(A_CLAY_MI,
 #'
 #' @export
 sptf_whc13 <- function(A_SAND_MI, A_CLAY_MI, D_BDS, A_C_OF, mp_wp = 1500, mp_fc = 33) {
+  
+  # Add visual bindings
+  theta_sat = theta_res = theta_fc = alfa = n = A_LOAM_MI = Dichtheid = theta_wp =  NULL
+  
   # Check input
-  arg.length <-
-    max(length(A_SAND_MI),
-        length(A_CLAY_MI),
-        length(D_BDS),
-        length(A_C_OF))
+  arg.length <-max(length(A_SAND_MI),length(A_CLAY_MI),length(D_BDS),length(A_C_OF))
   check_numeric('A_SAND_MI', A_SAND_MI, FALSE, arg.length)
   check_numeric('A_CLAY_MI', A_CLAY_MI, FALSE, arg.length)
   check_numeric('A_C_OF', A_C_OF, FALSE, arg.length)
@@ -852,13 +806,12 @@ sptf_whc13 <- function(A_SAND_MI, A_CLAY_MI, D_BDS, A_C_OF, mp_wp = 1500, mp_fc 
   checkmate::assert_numeric(mp_wp, any.missing = FALSE)
   
   # Collect data into a table (set in units %)
-  dt <- data.table(
-    A_SAND_MI = A_SAND_MI,
-    A_CLAY_MI = A_CLAY_MI,
-    D_BDS = D_BDS,
-    A_C_OF = A_C_OF * 0.1,
-    value = NA_real_
-  )
+  dt <- data.table( A_SAND_MI = A_SAND_MI,
+                    A_CLAY_MI = A_CLAY_MI,
+                    D_BDS = D_BDS,
+                    A_C_OF = A_C_OF * 0.1,
+                    value = NA_real_
+                  )
   
   # # Calculate water retention parameters (inc. OC: Eq. 9-12) <- TThis was not used, as including OC failed to improve estimation accuracy (p. 6 right-bottom)
   # dt[, theta_sat := - 0.3334 * D_BDS + 0.0005 * A_CLAY_MI + 0.8945]
@@ -886,7 +839,7 @@ sptf_whc13 <- function(A_SAND_MI, A_CLAY_MI, D_BDS, A_C_OF, mp_wp = 1500, mp_fc 
   # Calculate water holding capacity (cm3/cm3)
   dt[, value :=  theta_fc - theta_wp]
   
-  # return value
+  # select value
   value <- dt[, value]
   
   # return value
@@ -904,22 +857,13 @@ sptf_whc13 <- function(A_SAND_MI, A_CLAY_MI, D_BDS, A_C_OF, mp_wp = 1500, mp_fc 
 #' @references Wösten, J. H. M. (1997). Chapter 10 Pedotransfer functions to evaluate soil quality. In: Developments in Soil Science, Volume 25:221-245, Elsevier
 #'
 #' @export
-sptf_whc14 <- function(A_CLAY_MI,
-                       A_SILT_MI,
-                       A_SOM_LOI,
-                       A_SAND_M50 = 150,
-                       topsoil = 1,
-                       mp_wp = 1500,
-                       mp_fc = 33) {
+sptf_whc14 <- function(A_CLAY_MI,A_SILT_MI,A_SOM_LOI,A_SAND_M50 = 150,topsoil = 1,mp_wp = 1500,mp_fc = 33) {
+  
+  # Add visual bindings
+  theta_sat = theta_res = theta_fc = alfa = n = A_LOAM_MI = theta_wp = Dichtheid = NULL
+  
   # Check input
-  arg.length <-
-    max(
-      length(A_CLAY_MI),
-      length(A_SILT_MI),
-      length(A_SOM_LOI),
-      length(A_SAND_M50),
-      length(topsoil)
-    )
+  arg.length <-max(length(A_CLAY_MI), length(A_SILT_MI),length(A_SOM_LOI), length(A_SAND_M50), length(topsoil))
   check_numeric('A_CLAY_MI', A_CLAY_MI, FALSE, arg.length)
   check_numeric('A_SILT_MI', A_SILT_MI, FALSE, arg.length)
   check_numeric('A_SOM_LOI', A_SOM_LOI, FALSE, arg.length)
@@ -927,17 +871,14 @@ sptf_whc14 <- function(A_CLAY_MI,
   checkmate::assert_numeric(mp_fc, any.missing = FALSE)
   checkmate::assert_numeric(mp_wp, any.missing = FALSE)
   
-  # Collect data into a table
-  dt <- data.table(
-    A_CLAY_MI = A_CLAY_MI,
-    A_SILT_MI = A_SILT_MI,
-    A_SOM_LOI = A_SOM_LOI,
-    A_SAND_M50 = A_SAND_M50,
-    topsoil = topsoil,
-    A_LOAM_MI = (A_CLAY_MI + A_SILT_MI),
-    # loam content (< 50 um)
-    value = NA_real_
-  )
+  # Collect data into a table with loam content (< 50 um)
+  dt <- data.table(A_CLAY_MI = A_CLAY_MI,
+                  A_SILT_MI = A_SILT_MI,
+                  A_SOM_LOI = A_SOM_LOI,
+                  A_SAND_M50 = A_SAND_M50,
+                  topsoil = topsoil,
+                  A_LOAM_MI = (A_CLAY_MI + A_SILT_MI),
+                  value = NA_real_  )
   
   # For sandy soils
   dt[A_CLAY_MI < 8, Dichtheid := 1 / (
@@ -999,22 +940,13 @@ sptf_whc14 <- function(A_CLAY_MI,
 #' @references Wösten, J. H. M., Veerman, G. ., de Groot, W. J., & Stolte, J. (2001). Waterretentie en doorlatendheidskarakteristieken van boven- en ondergronden in Nederland: de Staringreeks. Alterra Rapport, 153, 86. https://edepot.wur.nl/43272
 #'
 #' @export
-sptf_whc15 <- function(A_CLAY_MI,
-                       A_SILT_MI,
-                       A_SOM_LOI,
-                       A_SAND_M50 = 150,
-                       topsoil = 1,
-                       mp_wp = 1500,
-                       mp_fc = 33) {
+sptf_whc15 <- function(A_CLAY_MI,A_SILT_MI,A_SOM_LOI,A_SAND_M50 = 150,topsoil = 1,mp_wp = 1500,mp_fc = 33) {
+  
+  # Add visual bindings
+  theta_sat = theta_res = theta_fc = alfa = n = A_LOAM_MI = theta_wp =  Dichtheid = NULL
+  
   # Check input
-  arg.length <-
-    max(
-      length(A_CLAY_MI),
-      length(A_SILT_MI),
-      length(A_SOM_LOI),
-      length(A_SAND_M50),
-      length(topsoil)
-    )
+  arg.length <- max(length(A_CLAY_MI),length(A_SILT_MI),length(A_SOM_LOI),length(A_SAND_M50),length(topsoil))
   check_numeric('A_CLAY_MI', A_CLAY_MI, FALSE, arg.length)
   check_numeric('A_SILT_MI', A_SILT_MI, FALSE, arg.length)
   check_numeric('A_SOM_LOI', A_SOM_LOI, FALSE, arg.length)
@@ -1022,16 +954,14 @@ sptf_whc15 <- function(A_CLAY_MI,
   checkmate::assert_numeric(mp_fc, any.missing = FALSE)
   checkmate::assert_numeric(mp_wp, any.missing = FALSE)
   
-  # Collect data into a table
-  dt <- data.table(
-    A_CLAY_MI = A_CLAY_MI,
-    A_SOM_LOI = A_SOM_LOI,
-    A_SAND_M50 = A_SAND_M50,
-    topsoil = topsoil,
-    A_LOAM_MI = (A_CLAY_MI + A_SILT_MI),
-    # loam content (< 50 um)
-    value = NA_real_
-  )
+  # Collect data into a table, with loam content (< 50 um)
+  dt <- data.table(A_CLAY_MI = A_CLAY_MI,
+                   A_SOM_LOI = A_SOM_LOI,
+                   A_SAND_M50 = A_SAND_M50,
+                   topsoil = topsoil,
+                   A_LOAM_MI = (A_CLAY_MI + A_SILT_MI),
+                   value = NA_real_
+                  )
   
   # For sandy soils
   dt[A_CLAY_MI < 8, Dichtheid := 1 / (
@@ -1082,7 +1012,7 @@ sptf_whc15 <- function(A_CLAY_MI,
   # Calculate water holding capacity (cm3/cm3)
   dt[, value :=  theta_fc - theta_wp]
   
-  # return value
+  # select value
   value <- dt[, value]
   
   # return value
@@ -1101,18 +1031,14 @@ sptf_whc15 <- function(A_CLAY_MI,
 #' @references Wösten, J. H. M., Veerman, G. ., de Groot, W. J., & Stolte, J. (2001). Waterretentie en doorlatendheidskarakteristieken van boven- en ondergronden in Nederland: de Staringreeks. Alterra Rapport, 153, 86. https://edepot.wur.nl/43272
 #'
 #' @export
-sptf_whc16 <- function(A_CLAY_MI,
-                       A_SILT_MI,
-                       A_SOM_LOI,
-                       A_SAND_M50 = 150,
-                       mp_wp = 1500,
-                       mp_fc = 33) {
+sptf_whc16 <- function(A_CLAY_MI,A_SILT_MI,A_SOM_LOI,A_SAND_M50 = 150,mp_wp = 1500,mp_fc = 33) {
+  
+  # Add visual bindings
+  theta_sat = theta_res = theta_fc = alfa = n = A_LOAM_MI = theta_wp = NULL
+  SEL1 = CF1 = CF2 = NULL
+  
   # Check input
-  arg.length <-
-    max(length(A_CLAY_MI),
-        length(A_SILT_MI),
-        length(A_SOM_LOI),
-        length(A_SAND_M50))
+  arg.length <-max(length(A_CLAY_MI),length(A_SILT_MI), length(A_SOM_LOI), length(A_SAND_M50))
   check_numeric('A_CLAY_MI', A_CLAY_MI, FALSE, arg.length)
   check_numeric('A_SILT_MI', A_SILT_MI, FALSE, arg.length)
   check_numeric('A_SOM_LOI', A_SOM_LOI, FALSE, arg.length)
@@ -1123,15 +1049,12 @@ sptf_whc16 <- function(A_CLAY_MI,
   # load table of parameter values
   bouwsteen_tb <- soilptf::sptf_bouwsteen |> setDT()
   
-  # Collect data into a table
-  dt <- data.table(
-    A_CLAY_MI = A_CLAY_MI,
-    A_SOM_LOI = A_SOM_LOI,
-    A_SAND_M50 = A_SAND_M50,
-    A_LOAM_MI = (A_CLAY_MI + A_SILT_MI),
-    # loam content (< 50 um)
-    value = NA_real_
-  )
+  # Collect data into a table, with loam content (< 50 um)
+  dt <- data.table(A_CLAY_MI = A_CLAY_MI,
+                   A_SOM_LOI = A_SOM_LOI,
+                   A_SAND_M50 = A_SAND_M50,
+                   A_LOAM_MI = (A_CLAY_MI + A_SILT_MI),
+                   value = NA_real_)
   
   dt[A_CLAY_MI <= 8, CF1 := 0]
   dt[A_CLAY_MI > 8, CF1 := 1]
@@ -1183,15 +1106,7 @@ sptf_whc16 <- function(A_CLAY_MI,
        A_SOM_LOI >= 35  & A_SOM_LOI <= 70, SEL1 := "B18"]
   
   # merge table
-  dt <-
-    merge(
-      dt,
-      bouwsteen_tb,
-      by.x = "SEL1",
-      by.y = "bouwsteen",
-      all.x = T,
-      all.y = F
-    )
+  dt <- merge(dt,bouwsteen_tb,by.x = "SEL1",by.y = "bouwsteen",all.x = T,all.y = F)
   setnames(dt,
            c("thres", "thsat", "alpha"),
            c("theta_res", "theta_sat", "alfa"))
@@ -1205,7 +1120,7 @@ sptf_whc16 <- function(A_CLAY_MI,
   # Calculate water holding capacity (cm3/cm3)
   dt[, value :=  theta_fc - theta_wp]
   
-  # return value
+  # select value
   value <- dt[, value]
   
   # return value
@@ -1243,20 +1158,20 @@ pF_curve <- function(head, thetaR, thetaS, alfa, n) {
 #' @param method (CHAR) The method to estimate soil density. "Heinen" or "average"
 #'
 #' @export
-calc_soil_porosity <-
-  function(D_BDS,
-           A_SAND_MI = NULL,
-           A_CLAY_MI = NULL,
-           A_SILT_MI = NULL,
-           A_SOM_LOI = NULL,
-           method = "average") {
-    # check inputs
-    checkmate::assert_subset(method, choices = c('Heinen', 'average'))
-    check_numeric('A_CLAY_MI', A_CLAY_MI, TRUE, arg.length)
-    check_numeric('A_SAND_MI', A_SAND_MI, TRUE, arg.length)
-    check_numeric('A_SILT_MI', A_SILT_MI, TRUE, arg.length)
-    check_numeric('A_SOM_LOI', A_SOM_LOI, TRUE, arg.length)
-    check_numeric('D_BDS', D_BDS, FALSE, arg.length)
+calc_soil_porosity <- function(D_BDS,
+                               A_SAND_MI = NULL,
+                               A_CLAY_MI = NULL,
+                               A_SILT_MI = NULL,
+                               A_SOM_LOI = NULL,
+                               method = "average") {
+  # check inputs
+  arg.length <- max(length(D_BDS))
+  checkmate::assert_subset(method, choices = c('Heinen', 'average'))
+  check_numeric('A_CLAY_MI', A_CLAY_MI, TRUE, arg.length)
+  check_numeric('A_SAND_MI', A_SAND_MI, TRUE, arg.length)
+  check_numeric('A_SILT_MI', A_SILT_MI, TRUE, arg.length)
+  check_numeric('A_SOM_LOI', A_SOM_LOI, TRUE, arg.length)
+  check_numeric('D_BDS', D_BDS, FALSE, arg.length)
     
     if (method == "Heinen") {
       # Calulate soil density (g/cm3), according to Heinen 2006

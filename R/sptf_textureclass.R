@@ -7,6 +7,9 @@
 #' @export 
 sptf_textureclass <- function(A_CLAY_MI, A_SILT_MI, A_SAND_MI){
   
+  # add visual bindings
+  cl = sa = si = NULL
+  
   # check inputs
   arg.length <- max(length(A_CLAY_MI),length(A_SAND_MI),length(A_SILT_MI))
   check_numeric('A_CLAY_MI', A_CLAY_MI, FALSE, arg.length)

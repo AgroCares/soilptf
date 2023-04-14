@@ -10,13 +10,16 @@
 #'
 #' @export
 sptf_pmn1 <- function(A_C_OF, A_CLAY_MI, A_N_RT, A_PH_CC) {
+  
+  # add visal bindings
+  A_CN_FR = A_FE_DTPA = NULL
+  
   # Check input
   arg.length <- max(length(A_C_OF), length(A_CLAY_MI), length(A_N_RT), length(A_PH_CC))
   check_numeric('A_C_OF', A_C_OF, FALSE, arg.length)
   check_numeric('A_CLAY_MI', A_CLAY_MI, FALSE, arg.length)
   check_numeric('A_N_RT', A_N_RT, FALSE, arg.length)
   check_numeric('A_PH_CC', A_PH_CC, FALSE, arg.length)
-  
   
   # Collect data into a table
   dt <- data.table(A_C_OF = A_C_OF, 
@@ -49,7 +52,7 @@ sptf_pmn1 <- function(A_C_OF, A_CLAY_MI, A_N_RT, A_PH_CC) {
   dt[, value := -19.28679 + 6.07373 * A_C_OF + 0.07522 * A_FE_DTPA +
        23.85534 * A_PH_CC -0.02653 * A_CLAY_MI -6.71265 * A_CN_FR -0.06066 * A_N_RT]
   
-  # return value
+  # select value
   value <- dt[, value]
   
   # return value
@@ -69,8 +72,12 @@ sptf_pmn1 <- function(A_C_OF, A_CLAY_MI, A_N_RT, A_PH_CC) {
 #'
 #' @export
 sptf_pmn2 <- function(A_C_OF, A_SILT_MI, A_N_RT, A_PH_CC, t = 7) {
+  
+  # add visual bindings
+  f = k = NULL
+  
   # Check input
-  arg.length <- max(length(A_C_OF), length(A_SILT_MI), length(A_N_RT), length(A_PH_CC), length(t))
+  arg.length <- max(length(A_C_OF), length(A_SILT_MI), length(A_N_RT), length(A_PH_CC))
   check_numeric('A_C_OF', A_C_OF, FALSE, arg.length)
   check_numeric('A_SILT_MI', A_SILT_MI, FALSE, arg.length)
   check_numeric('A_N_RT', A_N_RT, FALSE, arg.length)
@@ -105,7 +112,7 @@ sptf_pmn2 <- function(A_C_OF, A_SILT_MI, A_N_RT, A_PH_CC, t = 7) {
   dt[, value := A_N_RT * 10^4 * 
        (f * (1 - exp(-k * t)) + (1-f) * (1 - exp(-kr * t)))]
   
-  # return value
+  # select value
   value <- dt[, value]
   
   # return value
@@ -124,6 +131,7 @@ sptf_pmn2 <- function(A_C_OF, A_SILT_MI, A_N_RT, A_PH_CC, t = 7) {
 #'
 #' @export
 sptf_pmn3 <- function(A_N_RT, A_CLAY_MI) {
+  
   # Check input
   arg.length <- max(length(A_N_RT), length(A_CLAY_MI))
   check_numeric('A_N_RT', A_N_RT, FALSE, arg.length)
@@ -135,12 +143,9 @@ sptf_pmn3 <- function(A_N_RT, A_CLAY_MI) {
                    value = NA_real_)
   
   # Calculate Nmin (mg/kg) for 7 days at 40 dC
-  b0 <- -3.440931
-  b1 <- 1.1012449
-  b2 <- -0.055858
-  dt[, value := exp(b0 + b1 * log(A_N_RT) + b2 * log(A_CLAY_MI))]
+  dt[, value := exp(-3.440931 + 1.1012449 * log(A_N_RT) + -0.055858 * log(A_CLAY_MI))]
   
-  # return value
+  # select value
   value <- dt[, value]
   
   # return value
@@ -158,6 +163,7 @@ sptf_pmn3 <- function(A_N_RT, A_CLAY_MI) {
 #'
 #' @export
 sptf_pmn4 <- function(A_N_RT, A_CLAY_MI) {
+  
   # Check input
   arg.length <- max(length(A_N_RT), length(A_CLAY_MI))
   check_numeric('A_N_RT', A_N_RT, FALSE, arg.length)
@@ -169,12 +175,9 @@ sptf_pmn4 <- function(A_N_RT, A_CLAY_MI) {
                    value = NA_real_)
   
   # Calculate Nmin (mg/kg) for 7 days at 40 dC
-  b0 <- -2.333
-  b1 <- 0.897
-  b2 <- -0.069
-  dt[, value := exp(b0 + b1 * log(A_N_RT) + b2 * log(A_CLAY_MI))]
+  dt[, value := exp(-2.333 + 0.897 * log(A_N_RT) + -0.069 * log(A_CLAY_MI))]
   
-  # return value
+  # select value
   value <- dt[, value]
   
   # return value
@@ -194,6 +197,10 @@ sptf_pmn4 <- function(A_N_RT, A_CLAY_MI) {
 #' 
 #' @export
 sptf_pmn5 <- function(A_N_RT, A_C_OF, A_CEC_CO, t = 7) {
+  
+  # add visual bindings
+  TN = OC = CEC = wk = N0 = k0 = NULL
+  
   # Check input
   arg.length <- max(length(A_N_RT), length(A_C_OF), length(A_CEC_CO))
   check_numeric('A_N_RT', A_N_RT, FALSE, arg.length)
@@ -230,7 +237,7 @@ sptf_pmn5 <- function(A_N_RT, A_C_OF, A_CEC_CO, t = 7) {
   
   dt[, value := N0 * (1 - exp(-k0 * wk))]
   
-  # return value
+  # select value
   value <- dt[, value]
   
   # return value
@@ -250,6 +257,10 @@ sptf_pmn5 <- function(A_N_RT, A_C_OF, A_CEC_CO, t = 7) {
 #'
 #' @export
 sptf_pmn6 <- function(A_N_RT, A_C_OF, A_CLAY_MI, A_SILT_MI, A_PH_CC, t = 7, RES = 1) {
+  
+  # add visual bindings
+  TN=OC=wk=N1=Nr=k1=kr=NULL
+  
   # Check input
   arg.length <- max(length(A_N_RT), length(A_C_OF), length(A_CLAY_MI), length(A_SILT_MI), length(A_PH_CC))
   check_numeric('A_N_RT', A_N_RT, FALSE, arg.length)
@@ -291,7 +302,7 @@ sptf_pmn6 <- function(A_N_RT, A_C_OF, A_CLAY_MI, A_SILT_MI, A_PH_CC, t = 7, RES 
   dt[kr < 0, kr := 0] 
   dt[, value := N1 * (1 - exp(-k1 * wk)) + Nr * (1 - exp(-kr * wk))]
   
-  # return value
+  # select value
   value <- dt[, value]
   
   # return value
@@ -310,27 +321,25 @@ sptf_pmn6 <- function(A_N_RT, A_C_OF, A_CLAY_MI, A_SILT_MI, A_PH_CC, t = 7, RES 
 #'
 #' @export
 sptf_pmn7 <- function(A_C_OF, A_CLAY_MI, t = 7) {
+  
+  # add visual bindings
+  k = N0 = NULL
+  
   # Check input
   arg.length <- max(length(A_C_OF), length(A_CLAY_MI))
   check_numeric('A_C_OF', A_C_OF, FALSE, arg.length)
   check_numeric('A_CLAY_MI', A_CLAY_MI, FALSE, arg.length)
   checkmate::assert_numeric(t, lower = 0, upper = 100)
 
-  
-  # Collect data into a table
-  dt <- data.table(A_C_OF = A_C_OF, 
+  # Collect data into a table (set SOC to %)
+  dt <- data.table(A_C_OF = A_C_OF * 0.1, 
                    A_CLAY_MI = A_CLAY_MI, 
                    t = t,
                    value = NA_real_)
   
-
-  # Calculate organic C as % 
-  dt[, OC := A_C_OF * 0.1]  # g/kg to %
-
-  
-  # Calculate Nmin (mg/kg) based on 1-pool model
+    # Calculate Nmin (mg/kg) based on 1-pool model
   dt[, k := 0.04] # there was no PTF for k, thus the average value of 15 soils is used 
-  dt[, N0 := -5.34 + 128.16 * OC - 1.3 * A_CLAY_MI * OC]
+  dt[, N0 := -5.34 + 128.16 * A_C_OF - 1.3 * A_CLAY_MI * A_C_OF]
   dt[, value := N0 * (1 - exp(-k * t))]
   
   # return value
@@ -350,10 +359,13 @@ sptf_pmn7 <- function(A_C_OF, A_CLAY_MI, t = 7) {
 #' @import data.table
 #' 
 #' @references Herlihy (1979) Nitrogen mineralization in soils of varying texture, moisture and organic matter. Plant and Soil. 53:255-267.
-
 #'
 #' @export
 sptf_pmn8 <- function(A_N_RT, A_CEC_CO, A_SILT_MI, t = 7) {
+  
+  # add visual bindings
+  TN = CEC = wk = N0 = k0 = NULL
+  
   # Check input
   arg.length <- max(length(A_N_RT), length(A_CEC_CO), length(A_SILT_MI))
   check_numeric('A_N_RT', A_N_RT, FALSE, arg.length)
@@ -382,10 +394,9 @@ sptf_pmn8 <- function(A_N_RT, A_CEC_CO, A_SILT_MI, t = 7) {
   # The regression model was NA. Average value of 6 soils are used.
   dt[, k0 := 0.04533333]
 
-  
   dt[, value := N0 * (1 - exp(-k0 * wk))]
   
-  # return value
+  # select value
   value <- dt[, value]
   
   # return value
@@ -405,6 +416,10 @@ sptf_pmn8 <- function(A_N_RT, A_CEC_CO, A_SILT_MI, t = 7) {
 #'
 #' @export
 sptf_pmn9 <- function(A_N_RT, CULT = 1, t = 7) {
+  
+  # add visual bindings
+  TN = wk = N0 = k0 = NULL
+  
   # Check input
   arg.length <- max(length(A_N_RT), length(CULT))
   check_numeric('A_N_RT', A_N_RT, FALSE, arg.length)
@@ -433,7 +448,7 @@ sptf_pmn9 <- function(A_N_RT, CULT = 1, t = 7) {
   
   dt[, value := N0 * (1 - exp(-k0 * wk))]
   
-  # return value
+  # select value
   value <- dt[, value]
   
   # return value
@@ -453,6 +468,10 @@ sptf_pmn9 <- function(A_N_RT, CULT = 1, t = 7) {
 #'
 #' @export
 sptf_pmn10 <- function(A_N_RT, t = 7) {
+  
+  # add visual bindings
+  TN = wk = N0 = k0 = NULL
+  
   # Check input
   arg.length <- max(length(A_N_RT))
   check_numeric('A_N_RT', A_N_RT, FALSE, arg.length)
@@ -477,7 +496,7 @@ sptf_pmn10 <- function(A_N_RT, t = 7) {
   
   dt[, value := N0 * (1 - exp(-k0 * wk))]
   
-  # return value
+  # select value
   value <- dt[, value]
   
   # return value

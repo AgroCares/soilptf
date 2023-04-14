@@ -7,21 +7,14 @@
 ptf_pmn_all(dt)
 }
 \arguments{
-\item{dt}{(data.table) Data table which includes}
-
-\item{A_C_OF}{(numeric) The fraction organic carbon in the soil (g / kg).}
-
-\item{A_CLAY_MI}{(numeric) The clay content of the soil (\%).}
-
-\item{A_SAND_MI}{(numeric) The sand content of the soil (\%).}
-
-\item{A_SILT_MI}{(numeric) The silt content of the soil (\%).}
-
-\item{A_N_RT}{(numeric) The organic nitrogen content of the soil in mg N / kg}
-
-\item{A_PH_CC}{(numeric) The pH-CaCl2 of the soil}
-
-\item{A_CEC_CO}{(numeric) The cation exchange capacity (mmol+ / kg)}
+\item{dt}{(data.table) Data table which includes
+A_C_OF (numeric) The fraction organic carbon in the soil (g / kg).
+A_CLAY_MI (numeric) The clay content of the soil (\%).
+A_SAND_MI (numeric) The sand content of the soil (\%).
+A_SILT_MI (numeric) The silt content of the soil (\%).
+A_N_RT (numeric) The organic nitrogen content of the soil in mg N / kg
+A_PH_CC (numeric) The pH-CaCl2 of the soil
+A_CEC_CO (numeric) The cation exchange capacity (mmol+ / kg)}
 }
 \description{
 Predict the Potentially Mineralizable Nitrogen with existing ptfs from literature.
