@@ -56,7 +56,7 @@ ptf_bd_old <- function(A_SOM_LOI = NA_real_, A_C_OF = NA_real_,
   p170 = p171 = p172 = p173 = p174 = p175 = p176 = p177 = p178 = p179 = NULL
   p180 = p181 = p182 = p183 = p184 = p185 = p186 = p187 = p188 = p189 = NULL
   landuse = value = ptf_id = patterns = ap = depth = r2 = oid = id = soiltype = NULL
-  B_LOC_CONT = NULL
+  B_LOC_CONT = A_DEPTH = A_CACO3_IF = NULL
   
   # read in internal table
   ptf.mods <- as.data.table(soilptf::sptf_bulkdensity)
@@ -361,25 +361,25 @@ ptf_bd_old <- function(A_SOM_LOI = NA_real_, A_C_OF = NA_real_,
 ptf_bd_all <- function(dt){
         
     ## add visual binding ---
-    p1 = p2 = p3 = p4 = p5 = p6 = p7 = p8 = p9 = p10 = p11 = p12 = p13 = p14 = 
-    p15 = p16 = p17 = p18 = p19 = p20 = p21 = p22 = p23 = p24 = p25 = p26 = 
-    p27 = p28 = p29 = p30 = p31 = p32 = p33 = p34 = p35 = p36 = p37 = p38 = 
-    p39 = p40 = p41 = p42 = p43 = p44 = p45 = p46 = p47 = p48 = p49 = p50 = 
-    p51 = p52 = p53 = p54 = p55 = p56 = p57 = p58 = p59 = p60 = p61 = p62 = 
-    p63 = p64 = p65 = p66 = p67 = p68 = p69 = p70 = p71 = p72 = p73 = p74 = 
-    p75 = p76 = p77 = p78 = p79 = p80 = p81 = p82 = p83 = p84 = p85 = p86 = 
-    p87 = p88 = p89 = p90 = p91 = p92 = p93 = p94 = p95 = p96 = p97 = p98 = 
-    p99 = p100 = p101 = p102 = p103 = p104 = p105 = p106 = p107 = p108 = p109 =
-    p110 = p111 = p112 = p113 = p114 = p115 = p116 = p117 = p118 = p119 = p120 = 
-    p121 = p122 = p123 = p124 = p125 = p126 = p127 = p128 = p129 = p130 = p131 = 
-    p132 = p133 = p134 = p135 = p136 = p137 = p138 = p139 = p140 = p141 = p142 = 
-    p143 = p144 = p145 = p146 = p147 = p148 = p149 = p150 = p151 = p152 = p153 = 
-    p154 = p155 = p156 = p157 = p158 = p159 = p160 = p161 = p162 = p163 = p164 = 
-    p165 = p166 = p167 = p168 = p169 = p170 = p171 = p172 = p173 = p174 = p175 = 
-    p176 = p177 = p178 = p179 = p180 = p181 = 
-    num_obs = A_CLAY_MI = A_SAND_MI = A_SILT_MI = A_SOM_LOI = A_C_OF = A_H20_T105 = 
-    A_DEPTH = B_ALTITUDE = B_SLOPE_DEGREE = B_SLOPE_ASPECT = A_PH_WA = A_CACO3_IF = 
-    A_N_RT = A_SAND_M50 = A_H2O_T105 = ptf_id = NULL
+    p1 = p2 = p3 = p4 = p5 = p6 = p7 = p8 = p9 = p10 = p11 = p12 = p13 = p14 = NULL
+    p15 = p16 = p17 = p18 = p19 = p20 = p21 = p22 = p23 = p24 = p25 = p26 = NULL
+    p27 = p28 = p29 = p30 = p31 = p32 = p33 = p34 = p35 = p36 = p37 = p38 = NULL
+    p39 = p40 = p41 = p42 = p43 = p44 = p45 = p46 = p47 = p48 = p49 = p50 = NULL
+    p51 = p52 = p53 = p54 = p55 = p56 = p57 = p58 = p59 = p60 = p61 = p62 = NULL
+    p63 = p64 = p65 = p66 = p67 = p68 = p69 = p70 = p71 = p72 = p73 = p74 = NULL
+    p75 = p76 = p77 = p78 = p79 = p80 = p81 = p82 = p83 = p84 = p85 = p86 = NULL
+    p87 = p88 = p89 = p90 = p91 = p92 = p93 = p94 = p95 = p96 = p97 = p98 = NULL
+    p99 = p100 = p101 = p102 = p103 = p104 = p105 = p106 = p107 = p108 = p109 =NULL
+    p110 = p111 = p112 = p113 = p114 = p115 = p116 = p117 = p118 = p119 = p120 = NULL
+    p121 = p122 = p123 = p124 = p125 = p126 = p127 = p128 = p129 = p130 = p131 = NULL
+    p132 = p133 = p134 = p135 = p136 = p137 = p138 = p139 = p140 = p141 = p142 = NULL
+    p143 = p144 = p145 = p146 = p147 = p148 = p149 = p150 = p151 = p152 = p153 = NULL
+    p154 = p155 = p156 = p157 = p158 = p159 = p160 = p161 = p162 = p163 = p164 = NULL
+    p165 = p166 = p167 = p168 = p169 = p170 = p171 = p172 = p173 = p174 = p175 = NULL
+    p176 = p177 = p178 = p179 = p180 = p181 = NULL
+    num_obs = A_CLAY_MI = A_SAND_MI = A_SILT_MI = A_SOM_LOI = A_C_OF = A_H20_T105 = NULL
+    A_DEPTH = B_ALTITUDE = B_SLOPE_DEGREE = B_SLOPE_ASPECT = A_PH_WA = A_CACO3_IF = NULL
+    A_N_RT = A_SAND_M50 = A_H2O_T105 = ptf_id = patterns = NULL
         
     dt <- copy(dt)
      
@@ -611,7 +611,8 @@ ptf_bd_all <- function(dt){
 #' @param B_LU_PTFCLASS (character) The land use categorie (options: agriculture, grassland, cropland, forest, nature)
 #' @param B_LOC_COUNTRY (character) The country code 
 #' @param nmax (integer) the maximum number of ptfs to be included (default nmax = 5)
-#'
+#' @param ... other arguments
+#' 
 #' @details 
 #' Some of the ptfs require additional information. If given, the relevant ptf's are used, otherwise they are ignored.
 #' These include the total N content (A_N_RT, unit mg/kg), the pH (A_PH_WA), the carbonate content (A_CACO3_IF, unit \%), the moisture content (A_H2O_T105, \%), the slope (B_SLOPE_DEGREE, unit degrees), the aspect (B_SLOPE_ASPECT, unit degrees) and the altidue (B_ALTITUDE, unit m).
@@ -629,27 +630,11 @@ ptf_bd <- function(A_SOM_LOI = NA_real_, A_C_OF = NA_real_,
                    B_LOC_COUNTRY = 'NL', 
                    nmax = 5, ...){
   
-  # add visual binding
-  p1 = p2 = p3 = p4 = p5 = p6 = p7 = p8 = p9 = p10 = p11 = p12 = p13 = p14 = 
-    p15 = p16 = p17 = p18 = p19 = p20 = p21 = p22 = p23 = p24 = p25 = p26 = 
-    p27 = p28 = p29 = p30 = p31 = p32 = p33 = p34 = p35 = p36 = p37 = p38 = 
-    p39 = p40 = p41 = p42 = p43 = p44 = p45 = p46 = p47 = p48 = p49 = p50 = 
-    p51 = p52 = p53 = p54 = p55 = p56 = p57 = p58 = p59 = p60 = p61 = p62 = 
-    p63 = p64 = p65 = p66 = p67 = p68 = p69 = p70 = p71 = p72 = p73 = p74 = 
-    p75 = p76 = p77 = p78 = p79 = p80 = p81 = p82 = p83 = p84 = p85 = p86 = 
-    p87 = p88 = p89 = p90 = p91 = p92 = p93 = p94 = p95 = p96 = p97 = p98 = 
-    p99 = p100 = p101 = p102 = p103 = p104 = p105 = p106 = p107 = p108 = p109 =
-    p110 = p111 = p112 = p113 = p114 = p115 = p116 = p117 = p118 = p119 = p120 = 
-    p121 = p122 = p123 = p124 = p125 = p126 = p127 = p128 = p129 = p130 = p131 = 
-    p132 = p133 = p134 = p135 = p136 = p137 = p138 = p139 = p140 = p141 = p142 = 
-    p143 = p144 = p145 = p146 = p147 = p148 = p149 = p150 = p151 = p152 = p153 = 
-    p154 = p155 = p156 = p157 = p158 = p159 = p160 = p161 = p162 = p163 = p164 = 
-    p165 = p166 = p167 = p168 = p169 = p170 = p171 = p172 = p173 = p174 = p175 = 
-    p176 = p177 = p178 = p179 = p180 = p181 = 
-    num_obs = A_CLAY_MI = A_SAND_MI = A_SILT_MI = A_SOM_LOI = A_C_OF = A_H20_T105 = 
-    A_DEPTH = B_ALTITUDE = B_SLOPE_DEGREE = B_SLOPE_ASPECT = A_PH_WA = A_CACO3_IF = 
-    A_N_RT = A_SAND_M50 = 
-    ptf_id = value = ap = B_LOC_CONT = landuse = depth = soiltype = r2 = oid = id =NULL
+  num_obs = A_CLAY_MI = A_SAND_MI = A_SILT_MI = A_SOM_LOI = A_C_OF = A_H20_T105 = NULL
+  A_DEPTH = B_ALTITUDE = B_SLOPE_DEGREE = B_SLOPE_ASPECT = A_PH_WA = A_CACO3_IF = NULL
+  A_N_RT = A_SAND_M50 = NULL
+  ptf_id = value = ap = B_LOC_CONT = landuse = depth = soiltype = r2 = oid = id =NULL
+  country_code = continent_code = num_obs = B_SOILTYPE = . = NULL
   
   # combine all input objects not given as default function arguments
   obj <- list(...)
@@ -746,7 +731,6 @@ ptf_bd <- function(A_SOM_LOI = NA_real_, A_C_OF = NA_real_,
 #' 
 #' @import data.table
 #' @importFrom stats lm median rnorm sd weighted.mean
-#' 
 #' @importFrom stats lm rnorm sd
 #' 
 #' @export
@@ -756,10 +740,10 @@ ptf_bd_lm <- function(B_LU_PTFCLASS = NA_character_,
                       nboot = 10){
   
   # add visual binding 
-  A_CLAY_MI = A_SAND_MI = A_SILT_MI = A_SOM_LOI = A_C_OF = A_H20_T105 = 
-  A_DEPTH = B_ALTITUDE = B_SLOPE_DEGREE = B_SLOPE_ASPECT = A_PH_WA = A_CACO3_IF = 
-  A_N_RT = A_SAND_M50 = B_SOILTYPE_AGR = 
-  patterns = ptf_id = country_code = continent_code = . = ptf_id = nsample = r2 = 
+  A_CLAY_MI = A_SAND_MI = A_SILT_MI = A_SOM_LOI = A_C_OF = A_H20_T105 = NULL
+  A_DEPTH = B_ALTITUDE = B_SLOPE_DEGREE = B_SLOPE_ASPECT = A_PH_WA = A_CACO3_IF = NULL
+  A_N_RT = A_SAND_M50 = B_SOILTYPE_AGR = B_SOILTYPE = id = NULL
+  patterns = ptf_id = country_code = continent_code = . = ptf_id = nsample = r2 = NULL
   nrep = value = error = NULL
     
   # read in internal table
@@ -778,8 +762,7 @@ ptf_bd_lm <- function(B_LU_PTFCLASS = NA_character_,
                    A_SAND_MI = 60,
                    A_DEPTH = A_DEPTH,
                    B_LOC_COUNTRY = B_LOC_COUNTRY,
-                   B_LU_PTFCLASS = B_LU_PTFCLASS
-  )
+                   B_LU_PTFCLASS = B_LU_PTFCLASS)
   
   # estimate missing variables
   dt[!is.na(A_SOM_LOI), A_C_OF := A_SOM_LOI * 10 / 1.724]
@@ -839,14 +822,14 @@ ptf_bd_lm <- function(B_LU_PTFCLASS = NA_character_,
 #' Predict the Water Holding Capacity with existing ptfs from literature.
 #'
 #' @param dt (data.table) Data table which includes
-#' @param A_SOM_LOI (numeric) The percentage of organic matter in the soil (\%).
-#' @param A_C_OF (numeric) The fraction organic carbon in the soil (g / kg).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
-#' @param A_SAND_MI (numeric) The sand content of the soil (\%).
-#' @param A_SILT_MI (numeric) The silt content of the soil (\%).
-#' @param D_BDS (numeric) Soil bulk density (kg/m3)
-#' @param A_DEPTH (numeric) The depth of the sampled soil layer (m)
-#' @param topsoil (boolean) Whether top soil (1) or not (0)
+#' A_SOM_LOI (numeric) The percentage of organic matter in the soil (\%).
+#' A_C_OF (numeric) The fraction organic carbon in the soil (g / kg).
+#' A_CLAY_MI (numeric) The clay content of the soil (\%).
+#' A_SAND_MI (numeric) The sand content of the soil (\%).
+#' A_SILT_MI (numeric) The silt content of the soil (\%).
+#' D_BDS (numeric) Soil bulk density (kg/m3)
+#' A_DEPTH (numeric) The depth of the sampled soil layer (m)
+#' topsoil (boolean) Whether top soil (1) or not (0)
 #' 
 #' 
 #' @details 
@@ -858,13 +841,14 @@ ptf_bd_lm <- function(B_LU_PTFCLASS = NA_character_,
 ptf_whc_all <- function(dt){
   
   # add visual binding
-  p1 = p2 = p3 = p4 = p5 = p6 = p7 = p8 = p9 = p10 = p11 = p12 = p13 = p14 = 
-  p15 = p16 = A_CLAY_MI = A_SAND_MI = A_SILT_MI = A_SOM_LOI = A_C_OF = A_H20_T105 = 
-  A_DEPTH = B_ALTITUDE = B_SLOPE_DEGREE = B_SLOPE_ASPECT = A_PH_WA = A_CACO3_IF = 
-  A_N_RT = A_SAND_M50 = B_SOILTYPE_AGR = 
-  patterns = ptf_id = country_code = continent_code = . = ptf_id = nsample = r2 = 
-  nrep = value = error = NULL
+  p1 = p2 = p3 = p4 = p5 = p6 = p7 = p8 = p9 = p10 = p11 = p12 = p13 = p14 = NULL
+  p15 = p16 = A_CLAY_MI = A_SAND_MI = A_SILT_MI = A_SOM_LOI = A_C_OF = A_H20_T105 = NULL 
+  A_DEPTH = B_ALTITUDE = B_SLOPE_DEGREE = B_SLOPE_ASPECT = A_PH_WA = A_CACO3_IF = NULL
+  A_N_RT = A_SAND_M50 = B_SOILTYPE_AGR = D_BDS = topsoil = NULL
+  patterns = ptf_id = country_code = continent_code = . = ptf_id = nsample = r2 = NULL
+  nrep = value = error = patterns = num_obs = NULL
   
+  # make local copy
   dt <- copy(dt)
   
   # add all possible inputs as NA when missing
@@ -946,15 +930,14 @@ ptf_whc_all <- function(dt){
 #' Predict the Potentially Mineralizable Nitrogen with existing ptfs from literature.
 #'
 #' @param dt (data.table) Data table which includes
-#' @param A_C_OF (numeric) The fraction organic carbon in the soil (g / kg).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
-#' @param A_SAND_MI (numeric) The sand content of the soil (\%).
-#' @param A_SILT_MI (numeric) The silt content of the soil (\%).
-#' @param A_N_RT (numeric) The organic nitrogen content of the soil in mg N / kg
-#' @param A_PH_CC (numeric) The pH-CaCl2 of the soil
-#' @param A_CEC_CO (numeric) The cation exchange capacity (mmol+ / kg) 
-#' 
-#' 
+#' A_C_OF (numeric) The fraction organic carbon in the soil (g / kg).
+#' A_CLAY_MI (numeric) The clay content of the soil (\%).
+#' A_SAND_MI (numeric) The sand content of the soil (\%).
+#' A_SILT_MI (numeric) The silt content of the soil (\%).
+#' A_N_RT (numeric) The organic nitrogen content of the soil in mg N / kg
+#' A_PH_CC (numeric) The pH-CaCl2 of the soil
+#' A_CEC_CO (numeric) The cation exchange capacity (mmol+ / kg) 
+#'  
 #' @details 
 #' This function returns a melted form of data table, containing values of predicted PMN with different PTFs
 #' 
@@ -963,6 +946,12 @@ ptf_whc_all <- function(dt){
 #' @export
 ptf_pmn_all <- function(dt){
   
+  # add visual bindings
+  A_C_OF = A_CLAY_MI = A_SAND_MI = A_SILT_MI = A_N_RT = A_PH_CC = A_CEC_CO = NULL
+  num_obs = A_SOM_LOI = p1_p = p1 = p2 = p3 = p4 = p5 = p6 = p7 = p8 = p9 = p10 = NULL
+  patterns = ptf_id = NULL
+  
+  # make local copy
   dt <- copy(dt)
   
   # add all possible inputs as NA when missing

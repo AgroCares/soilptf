@@ -2,11 +2,12 @@
 % Please edit documentation in R/sptf_predict.R
 \name{ptf_bd_lm}
 \alias{ptf_bd_lm}
-\title{Predict the bulk density with the best combination of existing ptfs from literature.}
+\title{Predict the bulk density with the best combination of existing ptfs from literature.
+ (modified version, using the support function ptf_bd_all)}
 \usage{
 ptf_bd_lm(
   B_LU_PTFCLASS = NA_character_,
-  B_DEPTH = 0.3,
+  A_DEPTH = 0.3,
   B_LOC_COUNTRY = "NL",
   nboot = 10
 )
@@ -14,7 +15,7 @@ ptf_bd_lm(
 \arguments{
 \item{B_LU_PTFCLASS}{(character) The land use categorie (options: agriculture, grassland, cropland, forest, nature)}
 
-\item{B_DEPTH}{(numeric) The depth of the sampled soil layer (m)}
+\item{A_DEPTH}{(numeric) The depth of the sampled soil layer (m)}
 
 \item{B_LOC_COUNTRY}{(character) The country code}
 
@@ -22,10 +23,11 @@ ptf_bd_lm(
 }
 \description{
 Predict the bulk density with the best combination of existing ptfs from literature.
+ (modified version, using the support function ptf_bd_all)
 }
 \details{
 Some of the ptfs require additional information. If given, the relevant ptf's are used, otherwise they are ignored.
-These include the total N content (A_N_RT, unit mg/kg), the pH (A_PH_WA), the carbonate content (A_CACO3_MI, unit \%), the moisture content (A_H2O_T105, \%), the slope (B_SLOPE_DEGREE, unit degrees), the aspect (B_SLOPE_ASPECT, unit degrees) and the altidue (B_ALTITUDE, unit m).
+These include the total N content (A_N_RT, unit mg/kg), the pH (A_PH_WA), the carbonate content (A_CACO3_IF, unit \%), the moisture content (A_H2O_T105, \%), the slope (B_SLOPE_DEGREE, unit degrees), the aspect (B_SLOPE_ASPECT, unit degrees) and the altidue (B_ALTITUDE, unit m).
 When added, please ensure to use the correct element name and units. 
 
 When depth is missing, the function assumes that topsoils are used.

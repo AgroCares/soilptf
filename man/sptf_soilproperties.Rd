@@ -20,7 +20,6 @@ A data.frame with x rows and x columns:
   \item{soilproperties}{The soil properties required to estimate the bulk density}
   \item{reference}{the paper describing the pedotransferfunction}
   \item{url}{weblink to reference}
-  
   }
 }
 \usage{

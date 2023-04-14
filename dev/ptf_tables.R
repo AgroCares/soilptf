@@ -54,7 +54,7 @@
           
   
   # parameters ====
-  sptf_parameters <- fread('data-raw/sptf_parameters.csv')
+  sptf_parameters <- fread('dev/sptf_parameters.csv',encoding = 'UTF-8')
   usethis::use_data(sptf_parameters, overwrite = TRUE)
 
   # document

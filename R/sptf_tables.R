@@ -75,6 +75,28 @@
 #'   \item{soilproperties}{The soil properties required to estimate the bulk density}
 #'   \item{reference}{the paper describing the pedotransferfunction}
 #'   \item{url}{weblink to reference}
-#'   
 #'   }
 "sptf_soilproperties"
+
+#' Table with supprting infromation for class ptfs pF curve
+#'
+#' This table contains parameters for Dutch categorial ptfs for pF curve
+#'
+#' @format A data.frame with x rows and x columns:
+#' \describe{
+#'   \item{bouwsteen}{}
+#'   \item{omschrijving}{}
+#'   \item{thres}{}
+#'   \item{thsat}{}
+#'   \item{Ks}{}
+#'   \item{alpha}{}
+#'   \item{l}{}
+#'   \item{n}{}
+#'   \item{sand}{}
+#'   \item{silt}{}
+#'   \item{clay}{}
+#'   \item{OM}{}
+#'   \item{bulkdensity}{}
+#'   \item{M50}{}
+#'   }
+"sptf_bouwsteen"

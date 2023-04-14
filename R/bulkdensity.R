@@ -24,8 +24,13 @@
 #' @param mp_fc (numeric) Water potential at field capacity (kPa).
 #' @param D_BDS (numeric) Bulk density (kg/m3)
 #' @param A_CACO3_IF (numeric) Carbonated Lime inorganic soil fraction (\%)
-#' @param A_H2O_T105 ?soil pore volume? (?)
-sptf_bd0 <- function(){}
+#' @param A_H2O_T105 (numeric) water content measured after drying at 105 degrees (\%)
+#' 
+#' @export
+sptf_bd0 <- function(A_CACO3_MI,A_CEC_CO,A_CLAY_MI,A_C_OF,A_DEPTH,A_DENSITY,A_H20_T105,
+                     A_N_RT,A_PH_CC,A_PH_WA,A_SAND_M50,A_SAND_MI,A_SILT_MI,A_SOM_LOI,
+                     B_ALTITUDE,B_ROCKS_FR,B_SLOPE_ASPECT,B_SLOPE_DEGREE,mp_wp,
+                     mp_fc,D_BDS,A_CACO3_IF,A_H2O_T105){return(NULL)}
 
 #' Calculate the bulk density given the pedotransferfunction in Dutch Fertilizer Recommendation
 #'

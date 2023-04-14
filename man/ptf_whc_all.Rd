@@ -7,23 +7,15 @@
 ptf_whc_all(dt)
 }
 \arguments{
-\item{dt}{(data.table) Data table which includes}
-
-\item{A_SOM_LOI}{(numeric) The percentage of organic matter in the soil (\%).}
-
-\item{A_C_OF}{(numeric) The fraction organic carbon in the soil (g / kg).}
-
-\item{A_CLAY_MI}{(numeric) The clay content of the soil (\%).}
-
-\item{A_SAND_MI}{(numeric) The sand content of the soil (\%).}
-
-\item{A_SILT_MI}{(numeric) The silt content of the soil (\%).}
-
-\item{D_BDS}{(numeric) Soil bulk density (kg/m3)}
-
-\item{A_DEPTH}{(numeric) The depth of the sampled soil layer (m)}
-
-\item{topsoil}{(boolean) Whether top soil (1) or not (0)}
+\item{dt}{(data.table) Data table which includes
+A_SOM_LOI (numeric) The percentage of organic matter in the soil (\%).
+A_C_OF (numeric) The fraction organic carbon in the soil (g / kg).
+A_CLAY_MI (numeric) The clay content of the soil (\%).
+A_SAND_MI (numeric) The sand content of the soil (\%).
+A_SILT_MI (numeric) The silt content of the soil (\%).
+D_BDS (numeric) Soil bulk density (kg/m3)
+A_DEPTH (numeric) The depth of the sampled soil layer (m)
+topsoil (boolean) Whether top soil (1) or not (0)}
 }
 \description{
 Predict the Water Holding Capacity with existing ptfs from literature.
