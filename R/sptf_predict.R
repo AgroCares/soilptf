@@ -925,7 +925,139 @@ ptf_whc_all <- function(dt){
 
 }
 
+#' Predict the Cation Exchange Capacity with existing ptfs from literature.
+#'
+#' @param dt (data.table) Data table which includes
+#' A_SOM_LOI (numeric) The percentage of organic matter in the soil (\%).
+#' A_C_OF (numeric) The fraction organic carbon in the soil (g / kg).
+#' A_CLAY_MI (numeric) The clay content of the soil (\%).
+#' A_SAND_MI (numeric) The sand content of the soil (\%).
+#' A_SILT_MI (numeric) The silt content of the soil (\%).
+#' D_BDS (numeric) Soil bulk density (kg/m3)
+#' A_DEPTH (numeric) The depth of the sampled soil layer (m)
+#' topsoil (boolean) Whether top soil (1) or not (0)
+#' 
+#' 
+#' @details 
+#' This function returns a melted form of data table, containing values of predicted CEC with different PTFs
+#' 
+#' @import data.table
+#' 
+#' @export
+ptf_cec_all <- function(dt){
+  
+  # add visual binding
 
+  # make local copy
+  dt <- copy(dt)
+  
+  # add all possible inputs as NA when missing
+  cols <- c('A_SOM_LOI', 'A_C_OF', 'A_CLAY_MI','A_SAND_MI','A_SILT_MI', 'D_BDS',
+            'A_DEPTH', 'topsoil')
+  cols <- cols[!cols %in% colnames(dt)]
+  dt[,c(cols) := NA_real_]
+  
+  # estimate missing variables for texture being dependent on each other
+  dt[, num_obs := Reduce(`+`, lapply(.SD,function(x) !is.na(x))),.SDcols = c('A_CLAY_MI','A_SAND_MI','A_SILT_MI')]
+  dt[num_obs == 2 & is.na(A_CLAY_MI), A_CLAY_MI := 100 - A_SAND_MI - A_SILT_MI]
+  dt[num_obs == 2 & is.na(A_SAND_MI), A_SAND_MI := 100 - A_CLAY_MI - A_SILT_MI]
+  dt[num_obs == 2 & is.na(A_SILT_MI), A_SILT_MI := 100 - A_CLAY_MI - A_SAND_MI]
+  
+  # estimate missing SOM variables
+  dt[is.na(A_SOM_LOI) & !is.na(A_C_OF), A_SOM_LOI := A_C_OF * 0.1 * 1.724]
+  dt[!is.na(A_SOM_LOI) & is.na(A_C_OF), A_C_OF := A_SOM_LOI * 10 / 1.724]
+  
+  # if bulk density is missing, estimate this from A_C_OF
+  # dt[is.na(D_BDS), D_BDS := 1617 - 77.4 * log(A_C_OF) - 3.49 * A_C_OF]
+  
+  # estimate CEC (mmol+/kg)
+  dt[, p1 := sptf_cec1(A_SOM_LOI = A_SOM_LOI, A_CLAY_MI = A_CLAY_MI)]
+  dt[, p2 := sptf_cec2(A_SOM_LOI = A_SOM_LOI, A_CLAY_MI = A_CLAY_MI,A_PH_KCL = A_PH_KCL)]
+  dt[, p3 := sptf_cec3(A_C_OF = A_C_OF, A_CLAY_MI = A_CLAY_MI,A_PH_CC = A_PH_CC)]
+  dt[, p4 := sptf_cec4(A_C_OF = A_C_OF, A_CLAY_MI = A_CLAY_MI,A_PH_CC = A_PH_CC)]
+  dt[, p5 := sptf_cec5(A_SOM_LOI = A_SOM_LOI, A_CLAY_MI = A_CLAY_MI)]
+  dt[, p6 := sptf_cec6(A_SOM_LOI = A_SOM_LOI, A_CLAY_MI = A_CLAY_MI,A_SILT_MI = A_SILT_MI,A_PH_CC = A_PH_CC)]
+  dt[, p7 := sptf_cec7(A_SOM_LOI = A_SOM_LOI, A_CLAY_MI = A_CLAY_MI,B_LU_PTFCLASS = B_LU_PTFCLASS,A_PH_CC = A_PH_CC)]
+  dt[, p8 := sptf_cec8(A_SOM_LOI = A_SOM_LOI, A_CLAY_MI = A_CLAY_MI,A_CN_FR = A_CN_FR,B_LU_PTFCLASS = B_LU_PTFCLASS,A_PH_CC = A_PH_CC)]
+  dt[, p9 := sptf_cec9(A_SOM_LOI = A_SOM_LOI, A_CLAY_MI = A_CLAY_MI,B_LU_PTFCLASS = B_LU_PTFCLASS,A_PH_CC = A_PH_CC)]
+  dt[, p10 := sptf_cec10(A_C_OF = A_C_OF, A_CLAY_MI = A_CLAY_MI,B_LU_PTFCLASS = B_LU_PTFCLASS,A_PH_CC = A_PH_CC)]
+  dt[, p11 := sptf_cec11(A_C_OF = A_C_OF, A_CLAY_MI = A_CLAY_MI,B_LU_PTFCLASS = B_LU_PTFCLASS,A_PH_CC = A_PH_CC)]
+  dt[, p12 := sptf_cec12(A_C_OF = A_C_OF, B_LU_PTFCLASS = B_LU_PTFCLASS)]
+  dt[, p13 := sptf_cec13(A_SOM_LOI = A_SOM_LOI, A_CLAY_MI = A_CLAY_MI)]
+  dt[, p14 := sptf_cec14(A_SOM_LOI = A_SOM_LOI, A_CLAY_MI = A_CLAY_MI)]
+  dt[, p15 := sptf_cec15(A_SOM_LOI = A_SOM_LOI, A_CLAY_MI = A_CLAY_MI)]
+  dt[, p16 := sptf_cec16(A_SOM_LOI = A_SOM_LOI, A_CLAY_MI = A_CLAY_MI, A_PH_WA = A_PH_WA)]
+  dt[, p17 := sptf_cec17(A_SOM_LOI = A_SOM_LOI, B_LU_PTFCLASS = B_LU_PTFCLASS)]
+  dt[, p18 := sptf_cec18(A_SOM_LOI = A_SOM_LOI, A_CLAY_MI = A_CLAY_MI)]
+  dt[, p19 := sptf_cec19(A_SOM_LOI = A_SOM_LOI, A_CLAY_MI = A_CLAY_MI)]
+  dt[, p20 := sptf_cec20(A_SOM_LOI = A_SOM_LOI, A_CLAY_MI = A_CLAY_MI, A_PH_WA = A_PH_WA)]
+  dt[, p21 := sptf_cec21(A_CLAY_MI = A_CLAY_MI, A_SILT_MI = A_SILT_MI)]
+  dt[, p22 := sptf_cec22(A_SOM_LOI = A_SOM_LOI,A_CLAY_MI = A_CLAY_MI, A_SILT_MI = A_SILT_MI)]
+  dt[, p23 := sptf_cec23(A_C_OF = A_C_OF, A_CLAY_MI = A_CLAY_MI,A_PH_CC = A_PH_CC)]
+  dt[, p24 := sptf_cec24(A_C_OF = A_C_OF, A_CLAY_MI = A_CLAY_MI,A_PH_CC = A_PH_CC)]
+  dt[, p25 := sptf_cec25(A_C_OF = A_C_OF, A_CLAY_MI = A_CLAY_MI,A_PH_CC = A_PH_CC)]
+  dt[, p26 := sptf_cec26(A_C_OF = A_C_OF, A_CLAY_MI = A_CLAY_MI,A_SILT_MI = A_SILT_MI,A_PH_WA = A_PH_WA,B_SOILCLASS_USDA=NA_character_)]
+  dt[, p27 := sptf_cec27(A_SOM_LOI = A_SOM_LOI,A_CLAY_MI = A_CLAY_MI, A_SILT_MI = A_SILT_MI,B_CLIM_CAT1=B_CLIM_CAT1)]
+  dt[, p28 := sptf_cec28(A_SOM_LOI = A_SOM_LOI, A_CLAY_MI = A_CLAY_MI,A_SILT_MI = A_SILT_MI,A_PH_CC = A_PH_CC)]
+  dt[, p29 := sptf_cec29(A_SOM_LOI = A_SOM_LOI, A_CLAY_MI = A_CLAY_MI,A_SILT_MI = A_SILT_MI,A_CACO3_MI=A_CACO3_MI,A_PH_CC = A_PH_CC)]
+  dt[, p30 := sptf_cec30(A_SOM_LOI = A_SOM_LOI, A_CLAY_MI = A_CLAY_MI)]
+  dt[, p31 := sptf_cec31(A_SOM_LOI = A_SOM_LOI, A_CLAY_MI = A_CLAY_MI,B_SOILCLASS_USDA=NA_character_)]
+  dt[, p32 := sptf_cec32(A_SOM_LOI = A_SOM_LOI, A_CLAY_MI = A_CLAY_MI,A_SILT_MI = A_SILT_MI,A_PH_CC = A_PH_CC)]
+  dt[, p33 := sptf_cec33(A_C_OF = A_C_OF, A_CLAY_MI = A_CLAY_MI,A_PH_CC = A_PH_CC)]
+  dt[, p34 := sptf_cec34(A_C_OF = A_C_OF, A_CLAY_MI = A_CLAY_MI,A_PH_CC = A_PH_CC,B_LU_PTFCLASS = B_LU_PTFCLASS)]
+  dt[, p35 := sptf_cec35(A_C_OF = A_C_OF, A_CLAY_MI = A_CLAY_MI,A_PH_CC = A_PH_CC)]
+  dt[, p36 := sptf_cec36(A_C_OF = A_C_OF, A_CLAY_MI = A_CLAY_MI)]
+  dt[, p37 := sptf_cec37(A_C_OF = A_C_OF, A_CLAY_MI = A_CLAY_MI)]
+  dt[, p38 := sptf_cec38(A_SOM_LOI = A_SOM_LOI, A_CLAY_MI = A_CLAY_MI)]
+  dt[, p39 := sptf_cec39(A_C_OF = A_C_OF, A_CLAY_MI = A_CLAY_MI)]
+  dt[, p40 := sptf_cec40(A_C_OF = A_C_OF, A_CLAY_MI = A_CLAY_MI)]
+  dt[, p41 := sptf_cec41(A_SOM_LOI = A_SOM_LOI, A_CLAY_MI = A_CLAY_MI)]
+  dt[, p42 := sptf_cec42(A_C_OF = A_C_OF,A_CLAY_MI = A_CLAY_MI, A_SILT_MI = A_SILT_MI)]
+  dt[, p43 := sptf_cec43(A_C_OF = A_C_OF, A_CLAY_MI = A_CLAY_MI,A_SILT_MI = A_SILT_MI,A_PH_CC = A_PH_CC)]
+  dt[, p44 := sptf_cec44(A_C_OF = A_C_OF, A_CLAY_MI = A_CLAY_MI,A_SILT_MI = A_SILT_MI,A_PH_CC = A_PH_CC)]
+  dt[, p45 := sptf_cec45(A_C_OF = A_C_OF, A_CLAY_MI = A_CLAY_MI, A_PH_WA = A_PH_WA)]
+  dt[, p46 := sptf_cec46(A_C_OF = A_C_OF, A_CLAY_MI = A_CLAY_MI)]
+  dt[, p47 := sptf_cec47(A_SOM_LOI = A_SOM_LOI, A_CLAY_MI = A_CLAY_MI,A_SILT_MI = A_SILT_MI,B_LU_PTFCLASS = B_LU_PTFCLASS)]
+  dt[, p48 := sptf_cec48(A_SOM_LOI = A_SOM_LOI, A_CLAY_MI = A_CLAY_MI)]
+  dt[, p49 := sptf_cec49(A_SOM_LOI = A_SOM_LOI,A_CLAY_MI = A_CLAY_MI, A_SILT_MI = A_SILT_MI)]
+  dt[, p50 := sptf_cec50(A_SOM_LOI = A_SOM_LOI, A_CLAY_MI = A_CLAY_MI,A_SILT_MI = A_SILT_MI,A_CACO3_MI=A_CACO3_MI,A_PH_CC = A_PH_CC)]
+  dt[, p51 := sptf_cec51(A_C_OF = A_C_OF, A_CLAY_MI = A_CLAY_MI,A_SILT_MI = A_SILT_MI, A_PH_WA = A_PH_WA)]
+  dt[, p52 := sptf_cec52(A_C_OF = A_C_OF, A_CLAY_MI = A_CLAY_MI,A_SILT_MI = A_SILT_MI, A_PH_WA = A_PH_WA)]
+  dt[, p53 := sptf_cec53(A_C_OF = A_C_OF, A_CLAY_MI = A_CLAY_MI,A_SILT_MI = A_SILT_MI, A_PH_WA = A_PH_WA)]
+  dt[, p54 := sptf_cec54(A_C_OF = A_C_OF, A_CLAY_MI = A_CLAY_MI,A_SILT_MI = A_SILT_MI, A_PH_WA = A_PH_WA,B_LU_PTFCLASS=B_LU_PTFCLASS)]
+  dt[, p55 := sptf_cec55(A_C_OF = A_C_OF, A_CLAY_MI = A_CLAY_MI,A_SILT_MI = A_SILT_MI, A_PH_WA = A_PH_WA)]
+  dt[, p56 := sptf_cec56(A_SOM_LOI = A_SOM_LOI, A_CLAY_MI = A_CLAY_MI, A_PH_WA = A_PH_WA)]
+  dt[, p57 := sptf_cec57(A_SOM_LOI = A_SOM_LOI, A_SAND_MI = A_SAND_MI, A_PH_WA = A_PH_WA)]
+  dt[, p58 := sptf_cec58(A_SOM_LOI = A_SOM_LOI, A_CLAY_MI = A_CLAY_MI,A_SILT_MI = A_SILT_MI,A_CACO3_MI=A_CACO3_MI)]
+  dt[, p59 := sptf_cec59(A_C_OF = A_C_OF, A_CLAY_MI = A_CLAY_MI)]
+  dt[, p60 := sptf_cec60(A_C_OF = A_C_OF, A_CLAY_MI = A_CLAY_MI)]
+  dt[, p61 := sptf_cec61(A_C_OF = A_C_OF, A_CLAY_MI = A_CLAY_MI)]
+  dt[, p62 := sptf_cec62(A_C_OF = A_C_OF, A_CLAY_MI = A_CLAY_MI,A_SILT_MI = A_SILT_MI,A_CACO3_MI=A_CACO3_MI)]
+  dt[, p63 := sptf_cec63(A_C_OF = A_C_OF, A_CLAY_MI = A_CLAY_MI)]
+  dt[, p64 := sptf_cec64(A_C_OF = A_C_OF, A_CLAY_MI = A_CLAY_MI)]
+  dt[, p65 := sptf_cec65(A_C_OF = A_C_OF)]
+  dt[, p66 := sptf_cec66(A_SOM_LOI = A_SOM_LOI, A_CLAY_MI = A_CLAY_MI)]
+  dt[, p67 := sptf_cec67(A_C_OF = A_C_OF, A_CLAY_MI = A_CLAY_MI)]
+  dt[, p68 := sptf_cec68(A_C_OF = A_C_OF, A_CLAY_MI = A_CLAY_MI)]
+  dt[, p69 := sptf_cec69(A_C_OF = A_C_OF, A_CLAY_MI = A_CLAY_MI)]
+  dt[, p70 := sptf_cec70(A_C_OF = A_C_OF, A_CLAY_MI = A_CLAY_MI)]
+  dt[, p71 := sptf_cec71(A_C_OF = A_C_OF, A_CLAY_MI = A_CLAY_MI)]
+  dt[, p72 := sptf_cec72(A_C_OF = A_C_OF, A_CLAY_MI = A_CLAY_MI, A_PH_WA = A_PH_WA)]
+  dt[, p73 := sptf_cec73(A_SOM_LOI = A_SOM_LOI, A_CLAY_MI = A_CLAY_MI,A_SILT_MI = A_SILT_MI, A_PH_WA = A_PH_WA)]
+  dt[, p74 := sptf_cec74(A_SOM_LOI = A_SOM_LOI, A_CLAY_MI = A_CLAY_MI,A_SILT_MI = A_SILT_MI, A_PH_WA = A_PH_WA,B_SOILCLASS_USDA = NA_character_)]
+  
+  # melt the data
+  dt2 <- melt(dt, 
+              id.vars = c('id','A_SOM_LOI', "A_C_OF", "A_CLAY_MI", "A_SAND_MI", "A_SILT_MI", "D_BDS", "A_DEPTH"),
+              measure = patterns('^p'),
+              variable.name = 'ptf_id',
+              value.name = 'cec')
+  dt2[,ptf_id := as.integer(gsub('p','',ptf_id))]
+  
+  # return value
+  return(dt2)
+  
+}
 
 #' Predict the Potentially Mineralizable Nitrogen with existing ptfs from literature.
 #'
