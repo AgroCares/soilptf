@@ -933,10 +933,6 @@ ptf_whc_all <- function(dt){
 #' A_CLAY_MI (numeric) The clay content of the soil (\%).
 #' A_SAND_MI (numeric) The sand content of the soil (\%).
 #' A_SILT_MI (numeric) The silt content of the soil (\%).
-#' D_BDS (numeric) Soil bulk density (kg/m3)
-#' A_DEPTH (numeric) The depth of the sampled soil layer (m)
-#' topsoil (boolean) Whether top soil (1) or not (0)
-#' 
 #' 
 #' @details 
 #' This function returns a melted form of data table, containing values of predicted CEC with different PTFs
@@ -952,8 +948,7 @@ ptf_cec_all <- function(dt){
   dt <- copy(dt)
   
   # add all possible inputs as NA when missing
-  cols <- c('A_SOM_LOI', 'A_C_OF', 'A_CLAY_MI','A_SAND_MI','A_SILT_MI', 'D_BDS',
-            'A_DEPTH', 'topsoil')
+  cols <- c('A_SOM_LOI', 'A_C_OF', 'A_CLAY_MI','A_SAND_MI','A_SILT_MI', 'D_BDS')
   cols <- cols[!cols %in% colnames(dt)]
   dt[,c(cols) := NA_real_]
   
@@ -1052,6 +1047,69 @@ ptf_cec_all <- function(dt){
               measure = patterns('^p'),
               variable.name = 'ptf_id',
               value.name = 'cec')
+  dt2[,ptf_id := as.integer(gsub('p','',ptf_id))]
+  
+  # return value
+  return(dt2)
+  
+}
+
+#' Predict the pH buffer Capacity with existing ptfs from literature.
+#'
+#' @param dt (data.table) Data table which includes
+#' A_SOM_LOI (numeric) The percentage of organic matter in the soil (\%).
+#' A_C_OF (numeric) The fraction organic carbon in the soil (g / kg).
+#' A_CLAY_MI (numeric) The clay content of the soil (\%).
+#' A_SAND_MI (numeric) The sand content of the soil (\%).
+#' A_SILT_MI (numeric) The silt content of the soil (\%).
+#' 
+#' @details 
+#' This function returns a melted form of data table, containing values of predicted pH buffer capacity with different PTFs
+#' 
+#' @import data.table
+#' 
+#' @export
+ptf_phbc_all <- function(dt){
+  
+  # add visual binding
+  
+  # make local copy
+  dt <- copy(dt)
+  
+  # add all possible inputs as NA when missing
+  cols <- c('A_SOM_LOI', 'A_C_OF', 'A_CLAY_MI','A_SAND_MI','A_SILT_MI')
+  cols <- cols[!cols %in% colnames(dt)]
+  dt[,c(cols) := NA_real_]
+  
+  # estimate missing variables for texture being dependent on each other
+  dt[, num_obs := Reduce(`+`, lapply(.SD,function(x) !is.na(x))),.SDcols = c('A_CLAY_MI','A_SAND_MI','A_SILT_MI')]
+  dt[num_obs == 2 & is.na(A_CLAY_MI), A_CLAY_MI := 100 - A_SAND_MI - A_SILT_MI]
+  dt[num_obs == 2 & is.na(A_SAND_MI), A_SAND_MI := 100 - A_CLAY_MI - A_SILT_MI]
+  dt[num_obs == 2 & is.na(A_SILT_MI), A_SILT_MI := 100 - A_CLAY_MI - A_SAND_MI]
+  
+  # estimate missing SOM variables
+  dt[is.na(A_SOM_LOI) & !is.na(A_C_OF), A_SOM_LOI := A_C_OF * 0.1 * 1.724]
+  dt[!is.na(A_SOM_LOI) & is.na(A_C_OF), A_C_OF := A_SOM_LOI * 10 / 1.724]
+  
+  # if bulk density is missing, estimate this from A_C_OF
+  # dt[is.na(D_BDS), D_BDS := 1617 - 77.4 * log(A_C_OF) - 3.49 * A_C_OF]
+  
+  # estimate the pH buffer capacity
+  dt[, p1 := sptf_phbc1(A_C_OF = A_C_OF, A_CLAY_MI = A_CLAY_MI)]
+  dt[, p2 := sptf_phbc2(A_C_OF = A_C_OF)]
+  dt[, p3 := sptf_phbc3(A_C_OF = A_C_OF, A_CLAY_MI = A_CLAY_MI)]
+  dt[, p4 := sptf_phbc4(A_C_OF = A_C_OF, A_CLAY_MI = A_CLAY_MI)]
+  dt[, p5 := sptf_phbc5(A_C_OF = A_C_OF)]
+  dt[, p6 := sptf_phbc6(A_C_OF = A_C_OF, A_CLAY_MI = A_CLAY_MI)]
+  dt[, p7 := sptf_phbc7(A_C_OF = A_C_OF, A_CLAY_MI = A_CLAY_MI,A_PH_WA=A_PH_WA)]
+  dt[, p8 := sptf_phbc8(A_C_OF = A_C_OF, A_CLAY_MI = A_CLAY_MI)]
+  
+  # melt the data
+  dt2 <- melt(dt, 
+              id.vars = 'id',
+              measure = patterns('^p'),
+              variable.name = 'ptf_id',
+              value.name = 'phbc')
   dt2[,ptf_id := as.integer(gsub('p','',ptf_id))]
   
   # return value
