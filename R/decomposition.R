@@ -62,3 +62,4 @@ sptf_cdec2 <- function(A_C_OF, years) {
   return(value)
   
 }
+

@@ -1378,6 +1378,57 @@ ptf_sss_all <- function(dt){
   
 }
 
+#' Predict the carbon decomposition over time via simplified first order carbon model from literature.
+#'
+#' @param dt (data.table) Data table which includes
+#' A_SOM_LOI (numeric) The percentage of organic matter in the soil (\%).
+#' A_C_OF (numeric) The fraction organic carbon in the soil (g / kg).
+#' A_CLAY_MI (numeric) The clay content of the soil (\%).
+#' A_SAND_MI (numeric) The sand content of the soil (\%).
+#' A_SILT_MI (numeric) The silt content of the soil (\%).
+#' 
+#' @details 
+#' This function returns a melted form of data table, containing values of predicted C decomposition with different PTFs
+#' 
+#' @import data.table
+#' 
+#' @export
+ptf_cdec_all <- function(dt){
+  
+  # add visual binding
+  
+  # make local copy
+  dt <- copy(dt)
+  
+  # add all possible inputs as NA when missing
+  cols <- c('A_SOM_LOI', 'A_C_OF', 'A_N_RT')
+  cols <- cols[!cols %in% colnames(dt)]
+  dt[,c(cols) := NA_real_]
+  
+  # estimate missing SOM variables
+  dt[is.na(A_SOM_LOI) & !is.na(A_C_OF), A_SOM_LOI := A_C_OF * 0.1 * 1.724]
+  dt[!is.na(A_SOM_LOI) & is.na(A_C_OF), A_C_OF := A_SOM_LOI * 10 / 1.724]
+  
+  # if bulk density is missing, estimate this from A_C_OF
+  # dt[is.na(D_BDS), D_BDS := 1617 - 77.4 * log(A_C_OF) - 3.49 * A_C_OF]
+  
+  # estimate the percentage hot water carbon (mg/kg)
+  dt[A_SOM_LOI > 20, p1 := sptf_dec1(A_C_OF = A_C_OF, A_N_RT = A_N_RT, years = 10)]
+  dt[A_SOM_LOI <= 20, p1 := sptf_dec2(A_C_OF = A_C_OF, years = 10)]
+ 
+  # melt the data
+  dt2 <- melt(dt, 
+              id.vars = 'id',
+              measure = patterns('^p'),
+              variable.name = 'ptf_id',
+              value.name = 'cdec')
+  dt2[,ptf_id := as.integer(gsub('p','',ptf_id))]
+  
+  # return value
+  return(dt2)
+  
+}
+
 #' Predict the Potentially Mineralizable Nitrogen with existing ptfs from literature.
 #'
 #' @param dt (data.table) Data table which includes
