@@ -1253,6 +1253,73 @@ ptf_wsa_all <- function(dt){
   return(dt2)
   
 }
+
+#' Predict the hot water extractable carbon level (mg/kg) from soil properties via existing ptfs from literature.
+#'
+#' @param dt (data.table) Data table which includes
+#' A_SOM_LOI (numeric) The percentage of organic matter in the soil (\%).
+#' A_C_OF (numeric) The fraction organic carbon in the soil (g / kg).
+#' A_CLAY_MI (numeric) The clay content of the soil (\%).
+#' A_SAND_MI (numeric) The sand content of the soil (\%).
+#' A_SILT_MI (numeric) The silt content of the soil (\%).
+#' 
+#' @details 
+#' This function returns a melted form of data table, containing values of predicted HWC with different PTFs
+#' 
+#' @import data.table
+#' 
+#' @export
+ptf_hwc_all <- function(dt){
+  
+  # add visual binding
+  
+  # make local copy
+  dt <- copy(dt)
+  
+  # add all possible inputs as NA when missing
+  cols <- c('A_SOM_LOI', 'A_C_OF', 'A_CLAY_MI','A_SAND_MI','A_SILT_MI')
+  cols <- cols[!cols %in% colnames(dt)]
+  dt[,c(cols) := NA_real_]
+  
+  # estimate missing variables for texture being dependent on each other
+  dt[, num_obs := Reduce(`+`, lapply(.SD,function(x) !is.na(x))),.SDcols = c('A_CLAY_MI','A_SAND_MI','A_SILT_MI')]
+  dt[num_obs == 2 & is.na(A_CLAY_MI), A_CLAY_MI := 100 - A_SAND_MI - A_SILT_MI]
+  dt[num_obs == 2 & is.na(A_SAND_MI), A_SAND_MI := 100 - A_CLAY_MI - A_SILT_MI]
+  dt[num_obs == 2 & is.na(A_SILT_MI), A_SILT_MI := 100 - A_CLAY_MI - A_SAND_MI]
+  
+  # estimate missing SOM variables
+  dt[is.na(A_SOM_LOI) & !is.na(A_C_OF), A_SOM_LOI := A_C_OF * 0.1 * 1.724]
+  dt[!is.na(A_SOM_LOI) & is.na(A_C_OF), A_C_OF := A_SOM_LOI * 10 / 1.724]
+  
+  # if bulk density is missing, estimate this from A_C_OF
+  # dt[is.na(D_BDS), D_BDS := 1617 - 77.4 * log(A_C_OF) - 3.49 * A_C_OF]
+  
+  # estimate the percentage hot water carbon (mg/kg)
+  dt[, p1 := sptf_hwc1(A_C_OF = A_C_OF, A_CLAY_MI = A_CLAY_MI)]
+  dt[, p2 := sptf_hwc2(A_C_OF = A_C_OF)]
+  dt[, p3 := sptf_hwc3(A_C_OF = A_C_OF, A_PH_CC = A_PH_CC)]
+  dt[, p4 := sptf_hwc4(A_C_OF = A_C_OF)]
+  dt[, p5 := sptf_hwc5(A_C_OF = A_C_OF, A_P_AL = A_P_AL, A_PH_CC = A_PH_CC)]
+  dt[, p6 := sptf_hwc6(A_C_OF = A_C_OF,  A_CLAY_MI = A_CLAY_MI,A_P_AL = A_P_AL)]
+  dt[, p7 := sptf_hwc7(A_C_OF = A_C_OF, A_CLAY_MI = A_CLAY_MI)]
+  dt[, p8 := sptf_hwc8(A_C_OF = A_C_OF)]
+  dt[, p9 := sptf_hwc9(A_C_OF = A_C_OF, A_PH_CC = A_PH_CC)]
+  dt[, p10 := sptf_hwc10(A_C_OF = A_C_OF, A_PH_CC = A_PH_CC)]
+  dt[, p11 := sptf_hwc11(A_C_OF = A_C_OF, A_CLAY_MI = A_CLAY_MI)]
+  
+  # melt the data
+  dt2 <- melt(dt, 
+              id.vars = 'id',
+              measure = patterns('^p'),
+              variable.name = 'ptf_id',
+              value.name = 'hwc')
+  dt2[,ptf_id := as.integer(gsub('p','',ptf_id))]
+  
+  # return value
+  return(dt2)
+  
+}
+
 #' Predict the Potentially Mineralizable Nitrogen with existing ptfs from literature.
 #'
 #' @param dt (data.table) Data table which includes
