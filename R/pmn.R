@@ -504,6 +504,387 @@ sptf_pmn10 <- function(A_N_RT, t = 7) {
   
 }
 
+
+#' Calculate the Potentially Mineralizable N (PMN) in mg/kg
+#'
+#' This function calculates the PMN content for agricultural soils in the Netherlands. PMN refers to anearobic mineralizable N pool, 40 degrees for 7 days.
+#'
+#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
+#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
+#'
+#' @import data.table
+#' 
+#' @references Ros (2011) Predicting soil Nitrogen Supply.
+#'
+#' @export
+sptf_pmn11 <- function(A_C_OF, A_CLAY_MI) {
+  
+  # Check input
+  arg.length <- max(length(A_C_OF), length(A_CLAY_MI))
+  checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000, len = arg.length)
+  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
+  
+  # make internal data.table
+  dt <- data.table(A_C_OF = A_C_OF,
+                   A_CLAY_MI = A_CLAY_MI,
+                   value = NA_real_)
+  
+  # experimental data from thesis Ros (2011), n = 100, R2 = 0.44, 0-30 cm soil
+  dt[, value := exp(0.61003 + 0.98365 * log(A_C_OF) -0.05396 * log(A_CLAY_MI))]
+  
+  # experimental data from thesis Ros (2011), n = 100, R2 = 0.44, 0-30 cm soil
+  dt[is.na(A_CLAY_MI), value := exp(0.4691 + 1.0077 * log(A_C_OF))]
+  
+  # select output variable
+  value <- dt[,value]
+  
+  # return value (mg / kg)
+  return(value)
+  
+}
+
+#' Calculate the Potentially Mineralizable N (PMN) in mg/kg
+#'
+#' This function calculates the PMN content for agricultural soils in the Netherlands. PMN refers to anearobic mineralizable N pool, 40 degrees for 7 days.
+#'
+#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
+#'
+#' @import data.table
+#' 
+#' @references Ros (2011) Predicting soil Nitrogen Supply. Unpublished data from pot experiment and incubation experiment.
+#'
+#' @export
+sptf_pmn12 <- function(A_C_OF) {
+  
+  # Check input
+  checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000)
+  
+  # make internal data.table
+  dt <- data.table(A_C_OF = A_C_OF, value = NA_real_)
+  
+  # experimental data from thesis Ros (2011), n = 47, R2 = 0.52, 0-30 cm soil
+  dt[, value := exp(1.19921 + 0.38323 * log(A_C_OF))]
+  
+  # select output variable
+  value <- dt[,value]
+  
+  # return value (mg / kg)
+  return(value)
+  
+}
+
+
+#' Calculate the Potentially Mineralizable N (PMN) in mg/kg
+#'
+#' This function calculates the PMN content for agricultural soils in the Netherlands. PMN refers to anearobic mineralizable N pool, 40 degrees for 7 days.
+#'
+#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
+#'
+#' @import data.table
+#' 
+#' @references Van Eekeren & Bokhorst (2009) Beoordeling bodemkwaliteit zandgrond. Een inventarisatie van bodemindicatoren voor de veehouderij. ZvZ-rapport 7, 61 pp.
+#'
+#' @export
+sptf_pmn13 <- function(A_C_OF) {
+  
+  # Check input
+  checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000)
+  
+  # make internal data.table
+  dt <- data.table(A_C_OF = A_C_OF,
+                   value = NA_real_)
+  
+  # experimental data from Van Eekeren & Bokhorst (2009), n = 20, R2 = 0.37, 0-30 cm soil
+  dt[,value := exp(2.6409 + 0.5214 * log(A_C_OF))]
+  
+  # select output variable
+  value <- dt[,value]
+  
+  # return value (mg / kg)
+  return(value)
+  
+}
+
+#' Calculate the Potentially Mineralizable N (PMN) in mg/kg
+#'
+#' This function calculates the PMN content for agricultural soils in the Netherlands. PMN refers to anearobic mineralizable N pool, 40 degrees for 7 days.
+#' Experimental data from 2019.
+#'
+#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
+#' @param A_P_AL (numeric) The phosphorus content of the soil, extracted in ammonium lactate (mg P2O5/100g)
+#' @param A_PH_CC (numeric) The acidity of the soil, pH in CaCl2 (-)
+#'
+#' @import data.table
+#' 
+#' @references Van Balen et al. (2015) Effecten bodem- en structuurverbeteraars. Onderzoek op klei- en zandgrond 2010-2015. PPO-report 693.
+#'
+#' @export
+sptf_pmn14 <- function(A_C_OF,A_P_AL,A_PH_CC) {
+  
+  # Check input
+  arg.length <- max(length(A_C_OF), length(A_P_AL), length(A_PH_CC))
+  checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000, len = arg.length)
+  checkmate::assert_numeric(A_P_AL, lower = 10, upper = 250, len = arg.length)
+  checkmate::assert_numeric(A_PH_CC, lower = 3, upper = 12, len = arg.length)
+  
+  # make internal data.table
+  dt <- data.table(A_C_OF = A_C_OF,
+                   A_P_AL = A_P_AL,
+                   A_PH_CC = A_PH_CC,
+                   value = NA_real_)
+  
+  # experimental data from Van Balen et al. (2015), n = 51, R2 = 0.683, 0-30 cm soil
+  dt[,value := exp(-15.4676 + 2.0614 * log(A_C_OF) + 0.6355 * log(A_P_AL) + 5.4224 * log(A_PH_CC))]
+  
+  # experimental data from Van Balen et al. (2015), n = 51, R2 = 0.54, 0-30 cm soil
+  dt[is.na(A_PH_CC) & !is.na(A_P_AL),value := exp(0.02961 + 0.77965 * log(A_C_OF) + 0.2465 * log(A_P_AL))]
+  
+  # experimental data from Van Balen et al. (2015), n = 51, R2 = 0.53, 0-30 cm soil
+  dt[is.na(A_PH_CC) & is.na(A_P_AL),value := exp(1.12183 + 0.72807 * log(A_C_OF))]
+  
+  # select output variable
+  value <- dt[,value]
+  
+  # return value (mg / kg)
+  return(value)
+  
+}
+
+#' Calculate the Potentially Mineralizable N (PMN) in mg/kg
+#'
+#' This function calculates the PMN content for agricultural soils in the Netherlands. PMN refers to anearobic mineralizable N pool, 40 degrees for 7 days.
+#' Data from various years.
+#'
+#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
+#' @param A_P_AL (numeric) The phosphorus content of the soil, extracted in ammonium lactate (mg P2O5/100g)
+#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
+#'
+#' @import data.table
+#' 
+#' @references Van Balen et al. (2015) Effecten bodem- en structuurverbeteraars. Onderzoek op klei- en zandgrond 2010-2015. PPO-report 693.
+#'
+#' @export
+sptf_pmn15 <- function(A_C_OF,A_P_AL,A_CLAY_MI) {
+  
+  # Check input
+  arg.length <- max(length(A_C_OF), length(A_P_AL), length(A_CLAY_MI))
+  checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000, len = arg.length)
+  checkmate::assert_numeric(A_P_AL, lower = 10, upper = 250, len = arg.length)
+  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
+  
+  # make internal data.table
+  dt <- data.table(A_C_OF = A_C_OF,
+                   A_P_AL = A_P_AL,
+                   A_CLAY_MI = A_CLAY_MI,
+                   value = NA_real_)
+  
+  # experimental data from Van Balen et al. (2015), n = 120, R2 = 0.64, 0-30 cm soil
+  dt[,value := exp(-1.17455 + 0.97101 * log(A_C_OF) + 0.26496 * log(A_P_AL) +0.37920 * log(A_CLAY_MI))]
+  
+  # experimental data from Van Balen et al. (2015), n = 120, R2 = 0.29, 0-30 cm soil
+  dt[is.na(A_CLAY_MI) & !is.na(A_P_AL),value := exp(3.42059 + 0.40691 * log(A_C_OF) -0.28764 * log(A_P_AL))]
+  
+  # experimental data from Van Balen et al. (2015), n = 120, R2 = 0.62, 0-30 cm soil
+  dt[!is.na(A_CLAY_MI) & is.na(A_P_AL),value := exp(0.23228 + 0.87849 * log(A_C_OF) + 0.32279 * log(A_CLAY_MI))]
+  
+  # experimental data from Van Balen et al. (2015), n = 120, R2 = 0.25, 0-30 cm soil
+  dt[is.na(A_PH_CC) & is.na(A_CLAY_MI),value := exp(2.28216 + 0.42048 * log(A_C_OF))]
+  
+  # select output variable
+  value <- dt[,value]
+  
+  # return value (mg / kg)
+  return(value)
+  
+}
+
+
+#' Calculate the Potentially Mineralizable N (PMN) in mg/kg
+#'
+#' This function calculates the PMN content for agricultural soils in the Netherlands. PMN refers to anearobic mineralizable N pool, 40 degrees for 7 days.
+#'
+#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
+#'
+#' @import data.table
+#' 
+#' @references Hanegraaf et al. (2009). Verkenning van bodemsensoren voor de landbouw. Interreg project Bodembreed, NMI project 1382, 93 pp.
+#'
+#' @export
+sptf_pmn16 <- function(A_C_OF) {
+  
+  # Check input
+  arg.length <- max(length(A_C_OF))
+  checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000, len = arg.length)
+  
+  # make internal data.table
+  dt <- data.table(A_C_OF = A_C_OF,
+                   value = NA_real_)
+  
+  # experimental data from Hanegraaf et al. (2009), n = 20, R2 = 0.15, 0-30 cm soil
+  dt[,value := exp(3.4881 + 0.3987 * log(A_C_OF))]
+  
+  # select output variable
+  value <- dt[,value]
+  
+  # return value (mg / kg)
+  return(value)
+  
+}
+
+#' Calculate the Potentially Mineralizable N (PMN) in mg/kg
+#'
+#' This function calculates the PMN content for agricultural soils in the Netherlands. PMN refers to anearobic mineralizable N pool, 40 degrees for 7 days.
+#' Data from various years.
+#'
+#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
+#' @param A_PH_CC (numeric) The acidity of the soil, pH in CaCl2 (-)
+#'
+#' @import data.table
+#' 
+#' @references Hanegraaf et al. (2012) Rekenen met de kwaliteit van organische stof: kengetallen en rekenregels. NMI project 1314.N.09,
+#'
+#' @export
+sptf_pmn17 <- function(A_C_OF,A_PH_CC) {
+  
+  # Check input
+  arg.length <- max(length(A_C_OF), length(A_PH_CC))
+  checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000, len = arg.length)
+  checkmate::assert_numeric(A_PH_CC, lower = 3, upper = 12, len = arg.length)
+  
+  # make internal data.table
+  dt <- data.table(A_C_OF = A_C_OF,
+                   A_PH_CC = A_PH_CC,
+                   value = NA_real_)
+  
+  # experimental data from Hanegraaf et al. (2012), n = 104, R2 = 0.31, 0-30 cm soil
+  dt[,value := exp(2.8779 + 0.632 * log(A_C_OF) -0.7644 * log(A_PH_CC))]
+  
+  # experimental data from Hanegraaf et al. (2012), n = 104, R2 = 0.30, 0-30 cm soil
+  dt[is.na(A_PH_CC),value := exp(1.4894 + 0.6646 * log(A_C_OF))]
+  
+  # select output variable
+  value <- dt[,value]
+  
+  # return value (mg / kg)
+  return(value)
+  
+}
+
+#' Calculate the Potentially Mineralizable N (PMN) in mg/kg
+#'
+#' This function calculates the PMN content for agricultural soils in the Netherlands. PMN refers to anearobic mineralizable N pool, 40 degrees for 7 days.
+#'
+#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
+#' @param A_PH_CC (numeric) The acidity of the soil, pH in CaCl2 (-)
+#'
+#' @import data.table
+#' 
+#' @references Hanegraaf et al. (2009). De afbraaksnelheid van organische stof in Drenthe. NMI project 972.N.09, 93 pp.
+#'
+#' @export
+sptf_pmn18 <- function(A_C_OF,A_PH_CC) {
+  
+  # Check input
+  arg.length <- max(length(A_C_OF), length(A_PH_CC))
+  checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000, len = arg.length)
+  checkmate::assert_numeric(A_PH_CC, lower = 3, upper = 12, len = arg.length)
+  
+  # make internal data.table
+  dt <- data.table(A_C_OF = A_C_OF,
+                   A_PH_CC = A_PH_CC,
+                   value = NA_real_)
+  
+  # experimental data from Hanegraaf et al. (2009), n = 149, R2 = 0.21, 0-30 cm soil
+  dt[,value := exp(-0.01683 + 0.5636 * log(A_C_OF) +0.30884 * log(A_PH_CC))]
+  
+  # experimental data from Hanegraaf et al. (2009), n = 170, R2 = 0.11, 0-30 cm soil
+  dt[is.na(A_PH_CC),value := exp(1.18616 + 0.41434 * log(A_C_OF))]
+  
+  # select output variable
+  value <- dt[,value]
+  
+  # return value (mg / kg)
+  return(value)
+  
+}
+
+#' Calculate the HWC content
+#'
+#' This function calculates the hot water extractable carbon content for agricultural soils in the Netherlands. Data from various years.
+#'
+#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
+#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
+#'
+#' @import data.table
+#' 
+#' @references Van Eekeren & Bokhorst (2009) Beoordeling bodemkwaliteit zandgrond. Een inventarisatie van bodemindicatoren voor de veehouderij. ZvZ-rapport 7, 61 pp. Unpublished data.
+#'
+#' @export
+sptf_pmn19 <- function(A_C_OF,A_CLAY_MI) {
+  
+  # Check input
+  arg.length <- max(length(A_C_OF), length(A_CLAY_MI))
+  checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000, len = arg.length)
+  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
+  
+  # make internal data.table
+  dt <- data.table(A_C_OF = A_C_OF,
+                   A_CLAY_MI = A_CLAY_MI,
+                   value = NA_real_)
+  
+  # experimental data from Van Eekeren & Bokhorst (2009), n = 20, R2 = 0.20, 0-30 cm soil
+  dt[,value := exp(1.56777 + 0.42086 * log(A_C_OF) +0.02016 * log(A_CLAY_MI))]
+  
+  # experimental data from Van Eekeren & Bokhorst (2009), n = 20, R2 = 0.25, 0-30 cm soil
+  dt[is.na(A_CLAY_MI),value := exp(1.5447 + 0.4351 * log(A_C_OF))]
+  
+  # select output variable
+  value <- dt[,value]
+  
+  # return value (mg / kg)
+  return(value)
+  
+}
+
+#' Calculate the HWC content
+#'
+#' This function calculates the hot water extractable carbon content for agricultural soils in the Netherlands. Data from various years.
+#' 
+#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
+#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
+#'
+#' @import data.table
+#' 
+#' @references Fujita & Ros (2023) Evaluation of pedotransfer functions for soil indicators of BLN. NMI report 1819.N.20. Unpublished data of praktijknetwerk.
+#'
+#' @export
+sptf_pmn20 <- function(A_C_OF,A_CLAY_MI) {
+  
+  # Check input
+  arg.length <- max(length(A_C_OF), length(A_CLAY_MI))
+  checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000, len = arg.length)
+  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
+  
+  # make internal data.table
+  dt <- data.table(A_C_OF = A_C_OF,
+                   A_CLAY_MI = A_CLAY_MI,
+                   value = NA_real_)
+  
+  # experimental data from Fujita & Ros (2023), n = 820, R2 = 0.31, 0-30 cm soil
+  dt[,value := exp(0.53598 + 0.90292 * log(A_C_OF) +0.33166 * log(A_CLAY_MI) -0.08935 * log(A_CLAY_MI)*log(A_C_OF))]
+  
+  # experimental data from Fujita & Ros (2023), n = 820, R2 = 0.08, 0-30 cm soil
+  dt[is.na(A_CLAY_MI),value := exp(0.10723 + 1.50209 * log(A_C_OF) -0.14623 * log(A_C_OF)^2)]
+  
+  # select output variable
+  value <- dt[,value]
+  
+  # return value (mg / kg)
+  return(value)
+  
+}
+
+
 #' Empirical relationship to convert Nmin to 7 days (mgN/kg/7 days)
 #' 
 #' @param Nmin (numeric) anaerobic N mineralization rate for t-day incubation (mgN/kg)
