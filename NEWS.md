@@ -1,5 +1,14 @@
 # Changelog soilptf
 
+## Version 0.2.1  2023-xx-xx
+
+### Added
+* 12 pedotransfer functions for HWC
+* 10 pedotransfer functions for PMN
+* 1 function for carbon decomposition
+* 4 partition functions for freundlich coefficients for metals
+* 7 predict functions: `ptf_cec_all`,`ptf_phbc_all`,`ptf_mwd_all`,`ptf_wsa_all`,`ptf_hwc_all`,`ptf_sss_all`,and `ptf_cdec_all` 
+
 ## Version 0.2.0  2023-04-14
 
 ### Added
