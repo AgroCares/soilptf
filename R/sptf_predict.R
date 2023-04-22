@@ -1320,6 +1320,64 @@ ptf_hwc_all <- function(dt){
   
 }
 
+#' Predict the soil shear strength from soil properties via existing ptfs from literature.
+#'
+#' @param dt (data.table) Data table which includes
+#' A_SOM_LOI (numeric) The percentage of organic matter in the soil (\%).
+#' A_C_OF (numeric) The fraction organic carbon in the soil (g / kg).
+#' A_CLAY_MI (numeric) The clay content of the soil (\%).
+#' A_SAND_MI (numeric) The sand content of the soil (\%).
+#' A_SILT_MI (numeric) The silt content of the soil (\%).
+#' 
+#' @details 
+#' This function returns a melted form of data table, containing values of predicted soil shear strength with different PTFs
+#' 
+#' @import data.table
+#' 
+#' @export
+ptf_sss_all <- function(dt){
+  
+  # add visual binding
+  
+  # make local copy
+  dt <- copy(dt)
+  
+  # add all possible inputs as NA when missing
+  cols <- c('A_SOM_LOI', 'A_C_OF', 'A_CLAY_MI','A_SAND_MI','A_SILT_MI','A_CACO3_MI')
+  cols <- cols[!cols %in% colnames(dt)]
+  dt[,c(cols) := NA_real_]
+  
+  # estimate missing variables for texture being dependent on each other
+  dt[, num_obs := Reduce(`+`, lapply(.SD,function(x) !is.na(x))),.SDcols = c('A_CLAY_MI','A_SAND_MI','A_SILT_MI')]
+  dt[num_obs == 2 & is.na(A_CLAY_MI), A_CLAY_MI := 100 - A_SAND_MI - A_SILT_MI]
+  dt[num_obs == 2 & is.na(A_SAND_MI), A_SAND_MI := 100 - A_CLAY_MI - A_SILT_MI]
+  dt[num_obs == 2 & is.na(A_SILT_MI), A_SILT_MI := 100 - A_CLAY_MI - A_SAND_MI]
+  
+  # estimate missing SOM variables
+  dt[is.na(A_SOM_LOI) & !is.na(A_C_OF), A_SOM_LOI := A_C_OF * 0.1 * 1.724]
+  dt[!is.na(A_SOM_LOI) & is.na(A_C_OF), A_C_OF := A_SOM_LOI * 10 / 1.724]
+  
+  # if bulk density is missing, estimate this from A_C_OF
+  # dt[is.na(D_BDS), D_BDS := 1617 - 77.4 * log(A_C_OF) - 3.49 * A_C_OF]
+  
+  # estimate the soil shear strength
+  dt[, p1 := sptf_sss1(A_SOM_LOI = A_SOM_LOI, A_CACO3_MI = A_CACO3_MI)]
+  dt[, p2 := sptf_sss2(A_SOM_LOI = A_SOM_LOI, A_CLAY_MI = A_CLAY_MI)]
+  dt[, p3 := sptf_sss3(A_SOM_LOI = A_SOM_LOI, A_CLAY_MI = A_CLAY_MI)]
+  
+  # melt the data
+  dt2 <- melt(dt, 
+              id.vars = 'id',
+              measure = patterns('^p'),
+              variable.name = 'ptf_id',
+              value.name = 'hwc')
+  dt2[,ptf_id := as.integer(gsub('p','',ptf_id))]
+  
+  # return value
+  return(dt2)
+  
+}
+
 #' Predict the Potentially Mineralizable Nitrogen with existing ptfs from literature.
 #'
 #' @param dt (data.table) Data table which includes
@@ -1387,14 +1445,23 @@ ptf_pmn_all <- function(dt){
   # Calculate Nmin (mg/kg) based on 1-pool model for t days
   dt[, p10 := sptf_pmn10(A_N_RT = A_N_RT,  t = 7)] 
   
+  # extend with empirical functions derived from Dutch datasets
+  dt[, p11 := sptf_pmn11(A_C_OF = A_C_OF,  A_CLAY_MI = A_CLAY_MI)] 
+  dt[, p12 := sptf_pmn12(A_C_OF = A_C_OF)]
+  dt[, p13 := sptf_pmn13(A_C_OF = A_C_OF)]
+  dt[, p14 := sptf_pmn14(A_C_OF = A_C_OF, A_P_AL = A_P_AL, A_PH_CC = A_PH_CC)]
+  dt[, p15 := sptf_pmn15(A_C_OF = A_C_OF,  A_CLAY_MI = A_CLAY_MI,A_P_AL = A_P_AL)]
+  dt[, p16 := sptf_pmn16(A_C_OF = A_C_OF)]
+  dt[, p17 := sptf_pmn17(A_C_OF = A_C_OF, A_PH_CC = A_PH_CC)]
+  dt[, p18 := sptf_pmn18(A_C_OF = A_C_OF, A_PH_CC = A_PH_CC)]
+  dt[, p19 := sptf_pmn19(A_C_OF = A_C_OF, A_CLAY_MI = A_CLAY_MI)]
   
-  c('A_C_OF', 'A_CLAY_MI','A_SAND_MI','A_SILT_MI',
-    'A_N_RT', 'A_PH_CC', 'A_CEC_CO')
   # melt the data
   dt2 <- melt(dt, 
-              id.vars = c('id', "A_C_OF", "A_CLAY_MI", "A_SAND_MI", "A_SILT_MI", 'A_N_RT', 'A_PH_CC', 'A_CEC_CO'),
+              id.vars = 'id',
               measure = patterns('^p'),
-              variable.name = 'ptf_id')
+              variable.name = 'ptf_id',
+              value.name = 'pmn')
   dt2[,ptf_id := as.integer(gsub('p','',ptf_id))]
   
   
