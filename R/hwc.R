@@ -117,11 +117,10 @@ sptf_hwc3 <- function(A_C_OF,A_PH_CC) {
 sptf_hwc4 <- function(A_C_OF) {
   
   # Check input
-  checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000, len = arg.length)
+  checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000)
   
   # make internal data.table
   dt <- data.table(A_C_OF = A_C_OF,
-                   A_PH_CC = A_PH_CC,
                    value = NA_real_)
   
   # experimental data from Van Eekeren & Bokhorst (2009), n = 20, R2 = 0.37, 0-30 cm soil
