@@ -20,8 +20,8 @@ sptf_cec1 <- function(A_SOM_LOI, A_CLAY_MI) {
   checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
   
   # make internal data.table
-  dt <- data.table(A_SOM_LOI = A_SOM_LOI * 0.01,
-                   A_CLAY_MI = A_CLAY_MI * 0.01)
+  dt <- data.table(A_SOM_LOI = A_SOM_LOI,
+                   A_CLAY_MI = A_CLAY_MI)
   
   # function for B-horizont of podzols / haplaquods (p30, inputs are in g/g)
   # other soils follow second one (here approxied by clay content)
@@ -260,7 +260,7 @@ sptf_cec7 <- function(A_SOM_LOI, A_CLAY_MI, A_PH_CC,B_LU_PTFCLASS) {
   checkmate::assert_numeric(A_SOM_LOI, lower = 0, upper = 100,len = arg.length)
   checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
   checkmate::assert_numeric(A_PH_CC, lower = 3, upper = 12, len = arg.length)
-  checkmate::assert_character(B_LU_PTFCLASS,length = arg.length)
+  checkmate::assert_character(B_LU_PTFCLASS,len = arg.length)
   checkmate::assert_subset(B_LU_PTFCLASS, choices = c('agriculture', 'grassland', 'cropland', 'forest', 'nature'))
   
   # make internal data.table
@@ -315,7 +315,7 @@ sptf_cec8 <- function(A_SOM_LOI, A_CLAY_MI, A_PH_CC,A_CN_FR,B_LU_PTFCLASS) {
   checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
   checkmate::assert_numeric(A_PH_CC, lower = 3, upper = 12, len = arg.length)
   checkmate::assert_numeric(A_CN_FR, lower = 6, upper = 40, len = arg.length)
-  checkmate::assert_character(B_LU_PTFCLASS,length = arg.length)
+  checkmate::assert_character(B_LU_PTFCLASS,len = arg.length)
   checkmate::assert_subset(B_LU_PTFCLASS, choices = c('agriculture', 'grassland', 'cropland', 'forest', 'nature'))
   
   # make internal data.table
@@ -365,7 +365,7 @@ sptf_cec9 <- function(A_SOM_LOI, A_CLAY_MI, A_PH_CC,B_LU_PTFCLASS) {
   checkmate::assert_numeric(A_SOM_LOI, lower = 0, upper = 100,len = arg.length)
   checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
   checkmate::assert_numeric(A_PH_CC, lower = 3, upper = 12, len = arg.length)
-  checkmate::assert_character(B_LU_PTFCLASS,length = arg.length)
+  checkmate::assert_character(B_LU_PTFCLASS,len = arg.length)
   checkmate::assert_subset(B_LU_PTFCLASS, choices = c('agriculture', 'grassland', 'cropland', 'forest', 'nature'))
   
   # make internal data.table
@@ -411,7 +411,7 @@ sptf_cec10 <- function(A_C_OF, A_CLAY_MI, A_PH_CC,B_LU_PTFCLASS) {
   checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000,len = arg.length)
   checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
   checkmate::assert_numeric(A_PH_CC, lower = 2, upper = 12, len = arg.length)
-  checkmate::assert_character(B_LU_PTFCLASS,length = arg.length)
+  checkmate::assert_character(B_LU_PTFCLASS,len = arg.length)
   checkmate::assert_subset(B_LU_PTFCLASS, choices = c('agriculture', 'grassland', 'cropland', 'forest', 'nature'))
   
   # make internal data.table
@@ -456,7 +456,7 @@ sptf_cec11 <- function(A_C_OF, A_CLAY_MI, A_PH_CC,B_LU_PTFCLASS) {
   checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000,len = arg.length)
   checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
   checkmate::assert_numeric(A_PH_CC, lower = 2, upper = 12, len = arg.length)
-  checkmate::assert_character(B_LU_PTFCLASS,length = arg.length)
+  checkmate::assert_character(B_LU_PTFCLASS,len = arg.length)
   checkmate::assert_subset(B_LU_PTFCLASS, choices = c('agriculture', 'grassland', 'cropland', 'forest', 'nature'))
   
   # make internal data.table
@@ -500,7 +500,7 @@ sptf_cec12 <- function(A_C_OF, B_LU_PTFCLASS) {
   # Check input
   arg.length <- max(length(A_C_OF),length(B_LU_PTFCLASS))
   checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000,len = arg.length)
-  checkmate::assert_character(B_LU_PTFCLASS,length = arg.length)
+  checkmate::assert_character(B_LU_PTFCLASS,len = arg.length)
   checkmate::assert_subset(B_LU_PTFCLASS, choices = c('agriculture', 'grassland', 'cropland', 'forest', 'nature'))
   
   # make internal data.table
@@ -711,7 +711,7 @@ sptf_cec17 <- function(A_SOM_LOI, B_LU_PTFCLASS) {
   # Check input
   arg.length <- max(length(A_SOM_LOI),length(B_LU_PTFCLASS))
   checkmate::assert_numeric(A_SOM_LOI, lower = 0, upper = 100,len = arg.length)
-  checkmate::assert_character(B_LU_PTFCLASS,length = arg.length)
+  checkmate::assert_character(B_LU_PTFCLASS,len = arg.length)
   checkmate::assert_subset(B_LU_PTFCLASS, choices = c('agriculture', 'grassland', 'cropland', 'forest', 'nature'))
   
   # make internal data.table (ASOM in g/kg)
@@ -843,7 +843,7 @@ sptf_cec20 <- function(A_C_OF, A_CLAY_MI,A_PH_WA) {
   dt[, v5 := 10 * (-13.93 + 2.645 * A_PH_WA + 0.0446 * A_CLAY_MI + 2.267 * A_C_OF)]
   
   # Estimate mean value
-  dt <- melt(dt,id.vars = 'id',measure.vars = c('v1','v2','v3','v4','v5','v6'))
+  dt <- melt(dt,id.vars = 'id',measure.vars = c('v1','v2','v3','v4','v5'))
   dt <- dt[,list(value = mean(value,na.rm=T)),by='id']
   
   # select output variable
@@ -1111,9 +1111,10 @@ sptf_cec26 <- function(A_C_OF,A_CLAY_MI,A_SILT_MI,A_PH_WA,B_SOILCLASS_USDA) {
   checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
   checkmate::assert_numeric(A_PH_WA, lower = 2, upper = 12, len = arg.length)
   checkmate::assert_character(B_SOILCLASS_USDA,len = arg.length)
-  checkmate::assert_subset(B_SOILCLASS_USDA,choiced = c('alfisol','andisol','aridisol','entisol',
+  checkmate::assert_subset(B_SOILCLASS_USDA,choices = c('alfisol','andisol','aridisol','entisol',
                                                         'gelisol','inceptisol','mollisol','oxisol',
-                                                        'spodosol','ultisol','vertisol','histosol'))
+                                                        'spodosol','ultisol','vertisol','histosol',
+                                                        NA_character_))
   
   # make internal data.table (assuming that Corg equals total C, units in \%)
   dt <- data.table(A_C_OF = A_C_OF * 0.1,
@@ -1210,8 +1211,8 @@ sptf_cec27 <- function(A_SOM_LOI, A_CLAY_MI, A_SILT_MI,B_CLIM_CAT1) {
   checkmate::assert_numeric(A_SOM_LOI, lower = 0, upper = 100,len = arg.length)
   checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
   checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, len = arg.length)
-  checkmate::assert_character(B_CLIM_CAT1,length = arg.length)
-  checkmate::assert_subset(B_CLIM_CAT1, choices = c('LLH', 'HLH', 'SH', 'NH'))
+  checkmate::assert_character(B_CLIM_CAT1,len = arg.length)
+  checkmate::assert_subset(B_CLIM_CAT1, choices = c('LLH', 'HLH', 'SH', 'NH',NA_character_))
   
   # make internal data.table
   dt <- data.table(A_SOM_LOI = A_SOM_LOI,
@@ -1403,9 +1404,10 @@ sptf_cec31 <- function(A_SOM_LOI, A_CLAY_MI,B_SOILCLASS_USDA = NA) {
   checkmate::assert_numeric(A_SOM_LOI, lower = 0, upper = 100,len = arg.length)
   checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
   checkmate::assert_character(B_SOILCLASS_USDA,len = arg.length)
-  checkmate::assert_subset(B_SOILCLASS_USDA,choiced = c('alfisol','andisol','aridisol','entisol',
+  checkmate::assert_subset(B_SOILCLASS_USDA,choices = c('alfisol','andisol','aridisol','entisol',
                                                         'gelisol','inceptisol','mollisol','oxisol',
-                                                        'spodosol','ultisol','vertisol','histosol'))
+                                                        'spodosol','ultisol','vertisol','histosol',
+                                                        NA_character_))
   # make internal data.table
   dt <- data.table(A_SOM_LOI = A_SOM_LOI,
                    A_CLAY_MI = A_CLAY_MI,
@@ -1523,46 +1525,6 @@ sptf_cec33 <- function(A_C_OF, A_CLAY_MI, A_PH_CC) {
 
 #' Calculate the CEC
 #'
-#' This function calculates the CEC at pH 7
-#'
-#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
-#' @param A_PH_CC (numeric) The acidity of the soil, pH in CaCl2 (-)
-#' 
-#' @import data.table
-#' 
-#' @references Thiere et al. (1986). Analyse des Zusammenhanges von Austauschkapazit€at (T-Wert), Kornung, organischer Bodensubstanz und Bodenreaktion fur verbreitete € Substrat- und Horizontgruppen. Cited in Liao & Zhu (2015).
-#'
-#' @export
-sptf_cec34 <- function(A_C_OF, A_CLAY_MI, A_PH_CC) {
-  
-  # Check input
-  arg.length <- max(length(A_C_OF), length(A_CLAY_MI))
-  checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000,len = arg.length)
-  checkmate::assert_numeric(A_PH_CC, lower = 3, upper = 12, len = arg.length)
-  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
-  
-  # make internal data.table (with clay and Corg in %)
-  dt <- data.table(A_C_OF = A_C_OF * 0.1,
-                   A_CLAY_MI = A_CLAY_MI,
-                   A_PH_CC = A_PH_CC)
-  
-  # function for CEC(n = , R2 = )
-  dt[, value := -3.30 + 0.46 * A_CLAY_MI + 3.06 * A_C_OF + 0.77 * A_PH_CC]
-  
-  # update unit from cmol/kg to mmol/kg
-  dt[, value := value * 10]
-  
-  # select output variable
-  value <- dt[,value]
-  
-  # return value (mmol+ / kg)
-  return(value)
-  
-}
-
-#' Calculate the CEC
-#'
 #' This function calculates the CEC at pH 7 for forest and natural grassland soils in eastern Canada
 #'
 #' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
@@ -1577,15 +1539,12 @@ sptf_cec34 <- function(A_C_OF, A_CLAY_MI, A_PH_CC) {
 #' @export
 sptf_cec34 <- function(A_C_OF, A_CLAY_MI, A_PH_CC,B_LU_PTFCLASS) {
   
-  # add visual bindings
-  B_LU_PTFCLASS = NULL
-  
   # Check input
   arg.length <- max(length(A_C_OF), length(A_CLAY_MI),length(B_LU_PTFCLASS))
   checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000,len = arg.length)
   checkmate::assert_numeric(A_PH_CC, lower = 3, upper = 12, len = arg.length)
   checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
-  checkmate::assert_character(B_LU_PTFCLASS,length = arg.length)
+  checkmate::assert_character(B_LU_PTFCLASS,len = arg.length)
   checkmate::assert_subset(B_LU_PTFCLASS, choices = c('agriculture', 'grassland', 'cropland', 'forest', 'nature'))
   
   # make internal data.table (with clay and Corg in %)
@@ -2158,7 +2117,7 @@ sptf_cec47 <- function(A_SOM_LOI, A_CLAY_MI, A_SILT_MI,B_LU_PTFCLASS) {
   checkmate::assert_numeric(A_SOM_LOI, lower = 0, upper = 100,len = arg.length)
   checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
   checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, len = arg.length)
-  checkmate::assert_character(B_LU_PTFCLASS,length = arg.length)
+  checkmate::assert_character(B_LU_PTFCLASS,len =arg.length)
   checkmate::assert_subset(B_LU_PTFCLASS, choices = c('agriculture', 'grassland', 'cropland', 'forest', 'nature'))
   
   # make internal data.table
@@ -2487,7 +2446,7 @@ sptf_cec54 <- function(A_C_OF, A_CLAY_MI, A_SILT_MI, A_PH_WA,B_LU_PTFCLASS) {
   checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
   checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, len = arg.length)
   checkmate::assert_numeric(A_PH_WA, lower = 3, upper = 12, len = arg.length)
-  checkmate::assert_character(B_LU_PTFCLASS,length = arg.length)
+  checkmate::assert_character(B_LU_PTFCLASS,len =arg.length)
   checkmate::assert_subset(B_LU_PTFCLASS, choices = c('agriculture', 'grassland', 'cropland', 'forest', 'nature'))
   
   # make internal data.table (SOC in %)
@@ -2873,6 +2832,7 @@ sptf_cec62 <- function(A_C_OF, A_CLAY_MI,A_SILT_MI,A_CACO3_MI) {
   dt <- data.table(A_C_OF = A_C_OF,
                    A_CLAY_MI = A_CLAY_MI,
                    A_SILT_MI = A_SILT_MI,
+                   A_SAND_MI = 100 - A_CLAY_MI - A_SILT_MI,
                    A_CACO3_MI = A_CACO3_MI,
                    value = NA_real_)
   
@@ -3332,9 +3292,10 @@ sptf_cec74 <- function(A_C_OF,A_CLAY_MI,A_SILT_MI,A_PH_WA,B_SOILCLASS_USDA) {
   checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
   checkmate::assert_numeric(A_PH_WA, lower = 2, upper = 12, len = arg.length)
   checkmate::assert_character(B_SOILCLASS_USDA,len = arg.length)
-  checkmate::assert_subset(B_SOILCLASS_USDA,choiced = c('alfisol','andisol','aridisol','entisol',
+  checkmate::assert_subset(B_SOILCLASS_USDA,choices = c('alfisol','andisol','aridisol','entisol',
                                                         'gelisol','inceptisol','mollisol','oxisol',
-                                                        'spodosol','ultisol','vertisol','histosol'))
+                                                        'spodosol','ultisol','vertisol','histosol',
+                                                        NA_character_))
   
   # make internal data.table (assuming that Corg equals total C, units in \%)
   dt <- data.table(id = 1:arg.length,
@@ -3382,6 +3343,45 @@ sptf_cec74 <- function(A_C_OF,A_CLAY_MI,A_SILT_MI,A_PH_WA,B_SOILCLASS_USDA) {
   
 }
 
+#' Calculate the CEC
+#'
+#' This function calculates the CEC at pH 7
+#'
+#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
+#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
+#' @param A_PH_CC (numeric) The acidity of the soil, pH in CaCl2 (-)
+#' 
+#' @import data.table
+#' 
+#' @references Thiere et al. (1986). Analyse des Zusammenhanges von Austauschkapazit€at (T-Wert), Kornung, organischer Bodensubstanz und Bodenreaktion fur verbreitete € Substrat- und Horizontgruppen. Cited in Liao & Zhu (2015).
+#'
+#' @export
+sptf_cec75 <- function(A_C_OF, A_CLAY_MI, A_PH_CC) {
+  
+  # Check input
+  arg.length <- max(length(A_C_OF), length(A_CLAY_MI))
+  checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000,len = arg.length)
+  checkmate::assert_numeric(A_PH_CC, lower = 3, upper = 12, len = arg.length)
+  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
+  
+  # make internal data.table (with clay and Corg in %)
+  dt <- data.table(A_C_OF = A_C_OF * 0.1,
+                   A_CLAY_MI = A_CLAY_MI,
+                   A_PH_CC = A_PH_CC)
+  
+  # function for CEC(n = , R2 = )
+  dt[, value := -3.30 + 0.46 * A_CLAY_MI + 3.06 * A_C_OF + 0.77 * A_PH_CC]
+  
+  # update unit from cmol/kg to mmol/kg
+  dt[, value := value * 10]
+  
+  # select output variable
+  value <- dt[,value]
+  
+  # return value (mmol+ / kg)
+  return(value)
+  
+}
 #
 # montecillo, tropical
 # sinoga, spain

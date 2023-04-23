@@ -947,10 +947,16 @@ ptf_cec_all <- function(dt){
   # make local copy
   dt <- copy(dt)
   
-  # add all possible inputs as NA when missing
-  cols <- c('A_SOM_LOI', 'A_C_OF', 'A_CLAY_MI','A_SAND_MI','A_SILT_MI', 'D_BDS')
+  # add all numeric inputs as NA when missing
+  cols <- c('A_SOM_LOI', 'A_C_OF', 'A_CLAY_MI','A_SAND_MI','A_SILT_MI', 
+            'A_CACO3_MI','A_PH_KCL','A_PH_CC','A_PH_WA','A_CN_FR')
   cols <- cols[!cols %in% colnames(dt)]
   dt[,c(cols) := NA_real_]
+  
+  # add all character inputs as NA when missing
+  cols <- c('B_LU_PTFCLASS','B_SOILCLASS_USDA','B_CLIM_CAT1')
+  cols <- cols[!cols %in% colnames(dt)]
+  dt[,c(cols) := NA_character_]
   
   # estimate missing variables for texture being dependent on each other
   dt[, num_obs := Reduce(`+`, lapply(.SD,function(x) !is.na(x))),.SDcols = c('A_CLAY_MI','A_SAND_MI','A_SILT_MI')]
@@ -962,8 +968,12 @@ ptf_cec_all <- function(dt){
   dt[is.na(A_SOM_LOI) & !is.na(A_C_OF), A_SOM_LOI := A_C_OF * 0.1 * 1.724]
   dt[!is.na(A_SOM_LOI) & is.na(A_C_OF), A_C_OF := A_SOM_LOI * 10 / 1.724]
   
-  # if bulk density is missing, estimate this from A_C_OF
-  # dt[is.na(D_BDS), D_BDS := 1617 - 77.4 * log(A_C_OF) - 3.49 * A_C_OF]
+  # estimate pH values
+  dt[is.na(A_PH_KCL) & !is.na(A_PH_CC), A_PH_KCL := (A_PH_CC - 0.5262)/0.9288]
+  dt[is.na(A_PH_WA) & !is.na(A_PH_KCL), A_PH_WA := 1.3235 + 0.8581 * A_PH_KCL]
+
+  # set default land use to agriculture when input is missing
+  dt[is.na(B_LU_PTFCLASS),B_LU_PTFCLASS := 'agriculture']
   
   # estimate CEC (mmol+/kg)
   dt[, p1 := sptf_cec1(A_SOM_LOI = A_SOM_LOI, A_CLAY_MI = A_CLAY_MI)]
@@ -984,19 +994,19 @@ ptf_cec_all <- function(dt){
   dt[, p16 := sptf_cec16(A_SOM_LOI = A_SOM_LOI, A_CLAY_MI = A_CLAY_MI, A_PH_WA = A_PH_WA)]
   dt[, p17 := sptf_cec17(A_SOM_LOI = A_SOM_LOI, B_LU_PTFCLASS = B_LU_PTFCLASS)]
   dt[, p18 := sptf_cec18(A_SOM_LOI = A_SOM_LOI, A_CLAY_MI = A_CLAY_MI)]
-  dt[, p19 := sptf_cec19(A_SOM_LOI = A_SOM_LOI, A_CLAY_MI = A_CLAY_MI)]
-  dt[, p20 := sptf_cec20(A_SOM_LOI = A_SOM_LOI, A_CLAY_MI = A_CLAY_MI, A_PH_WA = A_PH_WA)]
+  dt[, p19 := sptf_cec19(A_C_OF = A_C_OF, A_CLAY_MI = A_CLAY_MI)]
+  dt[, p20 := sptf_cec20(A_C_OF = A_C_OF, A_CLAY_MI = A_CLAY_MI, A_PH_WA = A_PH_WA)]
   dt[, p21 := sptf_cec21(A_CLAY_MI = A_CLAY_MI, A_SILT_MI = A_SILT_MI)]
   dt[, p22 := sptf_cec22(A_SOM_LOI = A_SOM_LOI,A_CLAY_MI = A_CLAY_MI, A_SILT_MI = A_SILT_MI)]
   dt[, p23 := sptf_cec23(A_C_OF = A_C_OF, A_CLAY_MI = A_CLAY_MI,A_PH_CC = A_PH_CC)]
   dt[, p24 := sptf_cec24(A_C_OF = A_C_OF, A_CLAY_MI = A_CLAY_MI,A_PH_CC = A_PH_CC)]
   dt[, p25 := sptf_cec25(A_C_OF = A_C_OF, A_CLAY_MI = A_CLAY_MI,A_PH_CC = A_PH_CC)]
-  dt[, p26 := sptf_cec26(A_C_OF = A_C_OF, A_CLAY_MI = A_CLAY_MI,A_SILT_MI = A_SILT_MI,A_PH_WA = A_PH_WA,B_SOILCLASS_USDA=NA_character_)]
+  dt[, p26 := sptf_cec26(A_C_OF = A_C_OF, A_CLAY_MI = A_CLAY_MI,A_SILT_MI = A_SILT_MI,A_PH_WA = A_PH_WA,B_SOILCLASS_USDA=B_SOILCLASS_USDA)]
   dt[, p27 := sptf_cec27(A_SOM_LOI = A_SOM_LOI,A_CLAY_MI = A_CLAY_MI, A_SILT_MI = A_SILT_MI,B_CLIM_CAT1=B_CLIM_CAT1)]
   dt[, p28 := sptf_cec28(A_SOM_LOI = A_SOM_LOI, A_CLAY_MI = A_CLAY_MI,A_SILT_MI = A_SILT_MI,A_PH_CC = A_PH_CC)]
   dt[, p29 := sptf_cec29(A_SOM_LOI = A_SOM_LOI, A_CLAY_MI = A_CLAY_MI,A_SILT_MI = A_SILT_MI,A_CACO3_MI=A_CACO3_MI,A_PH_CC = A_PH_CC)]
   dt[, p30 := sptf_cec30(A_SOM_LOI = A_SOM_LOI, A_CLAY_MI = A_CLAY_MI)]
-  dt[, p31 := sptf_cec31(A_SOM_LOI = A_SOM_LOI, A_CLAY_MI = A_CLAY_MI,B_SOILCLASS_USDA=NA_character_)]
+  dt[, p31 := sptf_cec31(A_SOM_LOI = A_SOM_LOI, A_CLAY_MI = A_CLAY_MI,B_SOILCLASS_USDA=B_SOILCLASS_USDA)]
   dt[, p32 := sptf_cec32(A_SOM_LOI = A_SOM_LOI, A_CLAY_MI = A_CLAY_MI,A_SILT_MI = A_SILT_MI,A_PH_CC = A_PH_CC)]
   dt[, p33 := sptf_cec33(A_C_OF = A_C_OF, A_CLAY_MI = A_CLAY_MI,A_PH_CC = A_PH_CC)]
   dt[, p34 := sptf_cec34(A_C_OF = A_C_OF, A_CLAY_MI = A_CLAY_MI,A_PH_CC = A_PH_CC,B_LU_PTFCLASS = B_LU_PTFCLASS)]
@@ -1039,15 +1049,19 @@ ptf_cec_all <- function(dt){
   dt[, p71 := sptf_cec71(A_C_OF = A_C_OF, A_CLAY_MI = A_CLAY_MI)]
   dt[, p72 := sptf_cec72(A_C_OF = A_C_OF, A_CLAY_MI = A_CLAY_MI, A_PH_WA = A_PH_WA)]
   dt[, p73 := sptf_cec73(A_SOM_LOI = A_SOM_LOI, A_CLAY_MI = A_CLAY_MI,A_SILT_MI = A_SILT_MI, A_PH_WA = A_PH_WA)]
-  dt[, p74 := sptf_cec74(A_SOM_LOI = A_SOM_LOI, A_CLAY_MI = A_CLAY_MI,A_SILT_MI = A_SILT_MI, A_PH_WA = A_PH_WA,B_SOILCLASS_USDA = NA_character_)]
+  dt[, p74 := sptf_cec74(A_C_OF = A_C_OF, A_CLAY_MI = A_CLAY_MI,A_SILT_MI = A_SILT_MI, A_PH_WA = A_PH_WA,B_SOILCLASS_USDA = B_SOILCLASS_USDA)]
+  dt[, p75 := sptf_cec75(A_C_OF = A_C_OF, A_CLAY_MI = A_CLAY_MI, A_PH_CC = A_PH_CC)]
   
   # melt the data
   dt2 <- melt(dt, 
-              id.vars = c('id','A_SOM_LOI', "A_C_OF", "A_CLAY_MI", "A_SAND_MI", "A_SILT_MI", "D_BDS", "A_DEPTH"),
+              id.vars = 'id',
               measure = patterns('^p'),
               variable.name = 'ptf_id',
               value.name = 'cec')
   dt2[,ptf_id := as.integer(gsub('p','',ptf_id))]
+  
+  # check values, set NaN to NA
+  dt2[!is.finite(cec), cec := NA_real_]
   
   # return value
   return(dt2)
@@ -1077,7 +1091,7 @@ ptf_phbc_all <- function(dt){
   dt <- copy(dt)
   
   # add all possible inputs as NA when missing
-  cols <- c('A_SOM_LOI', 'A_C_OF', 'A_CLAY_MI','A_SAND_MI','A_SILT_MI')
+  cols <- c('A_SOM_LOI', 'A_C_OF', 'A_CLAY_MI','A_PH_WA','A_SAND_MI','A_SILT_MI')
   cols <- cols[!cols %in% colnames(dt)]
   dt[,c(cols) := NA_real_]
   
@@ -1091,8 +1105,9 @@ ptf_phbc_all <- function(dt){
   dt[is.na(A_SOM_LOI) & !is.na(A_C_OF), A_SOM_LOI := A_C_OF * 0.1 * 1.724]
   dt[!is.na(A_SOM_LOI) & is.na(A_C_OF), A_C_OF := A_SOM_LOI * 10 / 1.724]
   
-  # if bulk density is missing, estimate this from A_C_OF
-  # dt[is.na(D_BDS), D_BDS := 1617 - 77.4 * log(A_C_OF) - 3.49 * A_C_OF]
+  # estimate pH values
+  dt[is.na(A_PH_KCL) & !is.na(A_PH_CC), A_PH_KCL := (A_PH_CC - 0.5262)/0.9288]
+  dt[is.na(A_PH_WA) & !is.na(A_PH_KCL), A_PH_WA := 1.3235 + 0.8581 * A_PH_KCL]
   
   # estimate the pH buffer capacity
   dt[, p1 := sptf_phbc1(A_C_OF = A_C_OF, A_CLAY_MI = A_CLAY_MI)]
@@ -1140,7 +1155,8 @@ ptf_mwd_all <- function(dt){
   dt <- copy(dt)
   
   # add all possible inputs as NA when missing
-  cols <- c('A_SOM_LOI', 'A_C_OF', 'A_CLAY_MI','A_SAND_MI','A_SILT_MI')
+  cols <- c('A_SOM_LOI', 'A_C_OF', 'A_CLAY_MI','A_SAND_MI','A_SILT_MI',
+            'A_CEC_CO','A_CACO3_MI','A_PH_WA','B_LU_PTFCLASS')
   cols <- cols[!cols %in% colnames(dt)]
   dt[,c(cols) := NA_real_]
   
@@ -1154,8 +1170,12 @@ ptf_mwd_all <- function(dt){
   dt[is.na(A_SOM_LOI) & !is.na(A_C_OF), A_SOM_LOI := A_C_OF * 0.1 * 1.724]
   dt[!is.na(A_SOM_LOI) & is.na(A_C_OF), A_C_OF := A_SOM_LOI * 10 / 1.724]
   
-  # if bulk density is missing, estimate this from A_C_OF
-  # dt[is.na(D_BDS), D_BDS := 1617 - 77.4 * log(A_C_OF) - 3.49 * A_C_OF]
+  # estimate pH values
+  dt[is.na(A_PH_KCL) & !is.na(A_PH_CC), A_PH_KCL := (A_PH_CC - 0.5262)/0.9288]
+  dt[is.na(A_PH_WA) & !is.na(A_PH_KCL), A_PH_WA := 1.3235 + 0.8581 * A_PH_KCL]
+  
+  # set default land use to agriculture when input is missing
+  dt[is.na(B_LU_PTFCLASS),B_LU_PTFCLASS := 'agriculture']
   
   # estimate the mean weight diameter of Soil Aggregates
   dt[, p1 := sptf_mwd1(A_SOM_LOI = A_SOM_LOI)]
@@ -1211,7 +1231,8 @@ ptf_wsa_all <- function(dt){
   dt <- copy(dt)
   
   # add all possible inputs as NA when missing
-  cols <- c('A_SOM_LOI', 'A_C_OF', 'A_CLAY_MI','A_SAND_MI','A_SILT_MI')
+  cols <- c('A_SOM_LOI', 'A_C_OF', 'A_CLAY_MI','A_SAND_MI','A_SILT_MI',
+            'A_CACO3_MI','A_PH_WA','A_K_AA')
   cols <- cols[!cols %in% colnames(dt)]
   dt[,c(cols) := NA_real_]
   
@@ -1225,8 +1246,9 @@ ptf_wsa_all <- function(dt){
   dt[is.na(A_SOM_LOI) & !is.na(A_C_OF), A_SOM_LOI := A_C_OF * 0.1 * 1.724]
   dt[!is.na(A_SOM_LOI) & is.na(A_C_OF), A_C_OF := A_SOM_LOI * 10 / 1.724]
   
-  # if bulk density is missing, estimate this from A_C_OF
-  # dt[is.na(D_BDS), D_BDS := 1617 - 77.4 * log(A_C_OF) - 3.49 * A_C_OF]
+  # estimate pH values
+  dt[is.na(A_PH_KCL) & !is.na(A_PH_CC), A_PH_KCL := (A_PH_CC - 0.5262)/0.9288]
+  dt[is.na(A_PH_WA) & !is.na(A_PH_KCL), A_PH_WA := 1.3235 + 0.8581 * A_PH_KCL]
   
   # estimate the percentage Water Stable Aggregates (%)
   dt[, p1 := sptf_wsa1(A_C_OF = A_C_OF)]
@@ -1277,7 +1299,8 @@ ptf_hwc_all <- function(dt){
   dt <- copy(dt)
   
   # add all possible inputs as NA when missing
-  cols <- c('A_SOM_LOI', 'A_C_OF', 'A_CLAY_MI','A_SAND_MI','A_SILT_MI')
+  cols <- c('A_SOM_LOI', 'A_C_OF', 'A_CLAY_MI','A_SAND_MI','A_SILT_MI','A_PH_CC','A_P_AL')
+  
   cols <- cols[!cols %in% colnames(dt)]
   dt[,c(cols) := NA_real_]
   
@@ -1291,8 +1314,12 @@ ptf_hwc_all <- function(dt){
   dt[is.na(A_SOM_LOI) & !is.na(A_C_OF), A_SOM_LOI := A_C_OF * 0.1 * 1.724]
   dt[!is.na(A_SOM_LOI) & is.na(A_C_OF), A_C_OF := A_SOM_LOI * 10 / 1.724]
   
-  # if bulk density is missing, estimate this from A_C_OF
-  # dt[is.na(D_BDS), D_BDS := 1617 - 77.4 * log(A_C_OF) - 3.49 * A_C_OF]
+  # estimate pH values
+  dt[is.na(A_PH_KCL) & !is.na(A_PH_CC), A_PH_KCL := (A_PH_CC - 0.5262)/0.9288]
+  dt[is.na(A_PH_WA) & !is.na(A_PH_KCL), A_PH_WA := 1.3235 + 0.8581 * A_PH_KCL]
+  
+  # set A_P_AL to mean value of 40 mg P2O5 / 100 g (soil fertility level optimum)
+  dt[is.na(A_P_AL), A_P_AL := 40]
   
   # estimate the percentage hot water carbon (mg/kg)
   dt[, p1 := sptf_hwc1(A_C_OF = A_C_OF, A_CLAY_MI = A_CLAY_MI)]
@@ -1458,7 +1485,7 @@ ptf_pmn_all <- function(dt){
   
   # add all possible inputs as NA when missing
   cols <- c('A_C_OF', 'A_CLAY_MI','A_SAND_MI','A_SILT_MI',
-            'A_N_RT', 'A_PH_CC', 'A_CEC_CO')
+            'A_N_RT', 'A_PH_CC', 'A_CEC_CO','A_P_AL')
   cols <- cols[!cols %in% colnames(dt)]
   dt[,c(cols) := NA_real_]
   
@@ -1469,8 +1496,15 @@ ptf_pmn_all <- function(dt){
   dt[num_obs == 2 & is.na(A_SILT_MI), A_SILT_MI := 100 - A_CLAY_MI - A_SAND_MI]
   
   # estimate missing SOM variables
+  dt[is.na(A_SOM_LOI) & !is.na(A_C_OF), A_SOM_LOI := A_C_OF * 0.1 * 1.724]
   dt[!is.na(A_SOM_LOI) & is.na(A_C_OF), A_C_OF := A_SOM_LOI * 10 / 1.724]
   
+  # estimate pH values
+  dt[is.na(A_PH_KCL) & !is.na(A_PH_CC), A_PH_KCL := (A_PH_CC - 0.5262)/0.9288]
+  dt[is.na(A_PH_WA) & !is.na(A_PH_KCL), A_PH_WA := 1.3235 + 0.8581 * A_PH_KCL]
+  
+  # set A_P_AL to mean value of 40 mg P2O5 / 100 g (soil fertility level optimum)
+  dt[is.na(A_P_AL), A_P_AL := 40]
   
   # Calculate PMN (mg/kg), 30 dC for 14 days
   dt[, p1_p := sptf_pmn1(A_C_OF = A_C_OF, A_CLAY_MI = A_CLAY_MI, A_N_RT = A_N_RT, A_PH_CC = A_PH_CC)]
