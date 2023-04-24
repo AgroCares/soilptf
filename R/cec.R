@@ -2948,8 +2948,8 @@ sptf_cec65 <- function(A_C_OF) {
   # Check input
   checkmate::assert_numeric(A_C_OF, lower = 0, upper = 100)
 
-  # make internal data.table
-  dt <- data.table(A_C_OF = A_C_OF,
+  # make internal data.table (organic C in %)
+  dt <- data.table(A_C_OF = A_C_OF * 0.1,
                    value = NA_real_)
   
   # function effective CEC, NH4-Ac and KCl (n= 57, R2 =  0.73)
