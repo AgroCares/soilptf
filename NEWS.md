@@ -1,5 +1,10 @@
 # Changelog soilptf
 
+## Version 0.2.1 2023-04-24
+### Fixed
+* summing and rounding error in when checking that `A_SILT_MI`, `A_CLAY_MI`, and 
+`A_SAND_MI` never exceed 100 resolving #18
+
 ## Version 0.2.0  2023-04-14
 
 ### Added
