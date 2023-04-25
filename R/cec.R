@@ -1941,7 +1941,7 @@ sptf_cec43 <- function(A_C_OF, A_CLAY_MI, A_SILT_MI, A_PH_CC) {
   checkmate::assert_numeric(A_PH_CC, lower = 3, upper = 12, len = arg.length)
   
   # make internal data.table (soc in %)
-  dt <- data.table(A_C_OF = A_C_OF * 0.1,
+  dt <- data.table(A_C_OF = A_C_OF,
                    A_CLAY_MI = A_CLAY_MI,
                    A_SILT_MI = A_SILT_MI,
                    A_SAND_MI = 100 - A_CLAY_MI - A_SILT_MI,
@@ -1949,7 +1949,7 @@ sptf_cec43 <- function(A_C_OF, A_CLAY_MI, A_SILT_MI, A_PH_CC) {
                    value = NA_real_)
   
   # function for CEC at pH 7 (NH4Ac) at various depths (all data, n = 2124, R2 = 0.577)
-  dt[, value := -15.681 + 0.118 * A_CLAY_MI + 4.097 * A_PH_CC * 0.124 - A_SAND_MI + 0.0887 * A_C_OF]
+  dt[, value := -15.681 + 0.118 * A_CLAY_MI + 4.097 * A_PH_CC - 0.124 * A_SAND_MI + 0.0887 * A_C_OF]
   
   # update unit from cmol/kg to mmol/kg
   dt[, value := value * 10]
@@ -1989,7 +1989,7 @@ sptf_cec44 <- function(A_C_OF, A_CLAY_MI, A_SILT_MI, A_PH_CC) {
   checkmate::assert_numeric(A_PH_CC, lower = 3, upper = 12, len = arg.length)
   
   # make internal data.table (soc in %)
-  dt <- data.table(A_C_OF = A_C_OF * 0.1,
+  dt <- data.table(A_C_OF = A_C_OF,
                    A_CLAY_MI = A_CLAY_MI,
                    A_SILT_MI = A_SILT_MI,
                    A_SAND_MI = 100 - A_CLAY_MI - A_SILT_MI,
@@ -2313,7 +2313,7 @@ sptf_cec51 <- function(A_C_OF, A_CLAY_MI, A_SILT_MI, A_PH_WA) {
                    A_PH_WA = A_PH_WA)
   
   # function for CEC at 8.2 (NH4Ac) (n = 65, R2 = 0.52)
-  dt[, value := 9.47 + 0.48 * A_CLAY_MI - 0.24 * A_SILT_MI - 035 * A_SAND_MI + 3.13 * A_PH_WA - 0.233 * A_C_OF]
+  dt[, value := 9.47 + 0.48 * A_CLAY_MI - 0.24 * A_SILT_MI - 0.35 * A_SAND_MI + 3.13 * A_PH_WA - 0.233 * A_C_OF]
   
   # update unit from cmol/kg to mmol/kg
   dt[, value := value * 10]
@@ -2407,7 +2407,7 @@ sptf_cec53 <- function(A_C_OF, A_CLAY_MI, A_SILT_MI, A_PH_WA) {
                    A_PH_WA = A_PH_WA)
   
   # function for CEC at 8.2 (NH4Ac) (n = 40, R2 = 0.82)
-  dt[, value := 25.219 + 0.132 * A_CLAY_MI +216.7 * A_SILT_MI - 0.054 * A_SAND_MI -2.445 * A_PH_WA + 0.865 * A_C_OF]
+  dt[, value := 25.219 + 0.132 * A_CLAY_MI +0.02167 * A_SILT_MI - 0.054 * A_SAND_MI -2.445 * A_PH_WA + 0.865 * A_C_OF]
   
   # update unit from cmol/kg to mmol/kg
   dt[, value := value * 10]
