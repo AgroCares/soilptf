@@ -911,6 +911,97 @@ ptf_whc_all <- function(dt){
 
 }
 
+#' Predict the Plant Available Water with existing ptfs from literature.
+#'
+#' @param dt (data.table) Data table which includes
+#' A_SOM_LOI (numeric) The percentage of organic matter in the soil (\%).
+#' A_C_OF (numeric) The fraction organic carbon in the soil (g / kg).
+#' A_CLAY_MI (numeric) The clay content of the soil (\%).
+#' A_SAND_MI (numeric) The sand content of the soil (\%).
+#' A_SILT_MI (numeric) The silt content of the soil (\%).
+#' D_BDS (numeric) Soil bulk density (kg/m3)
+#' A_DEPTH (numeric) The depth of the sampled soil layer (m)
+#' topsoil (boolean) Whether top soil (1) or not (0)
+#' 
+#' 
+#' @details 
+#' This function returns a melted form of data table, containing values of predicted plant available water with different PTFs
+#' 
+#' @import data.table
+#' 
+#' @export
+ptf_paw_all <- function(dt){
+  
+  # add visual binding
+  p1 = p2 = p3 = p4 = p5 = p6 = p7 = p8 = p9 = p10 = p11 = p12 = p13 = p14 = NULL
+  p15 = p16 = A_CLAY_MI = A_SAND_MI = A_SILT_MI = A_SOM_LOI = A_C_OF = A_H20_T105 = NULL 
+  A_DEPTH = B_ALTITUDE = B_SLOPE_DEGREE = B_SLOPE_ASPECT = A_PH_WA = A_CACO3_IF = NULL
+  A_N_RT = A_SAND_M50 = B_SOILTYPE_AGR = D_BDS = topsoil = NULL
+  patterns = ptf_id = country_code = continent_code = . = ptf_id = nsample = r2 = NULL
+  nrep = value = error = patterns = num_obs = NULL
+  
+  # make local copy
+  dt <- copy(dt)
+  
+  # add all possible inputs as NA when missing
+  cols <- c('A_SOM_LOI', 'A_C_OF', 'A_CLAY_MI','A_SAND_MI','A_SILT_MI', 'D_BDS',
+            'A_DEPTH', 'topsoil')
+  cols <- cols[!cols %in% colnames(dt)]
+  dt[,c(cols) := NA_real_]
+  
+  # estimate missing variables for texture being dependent on each other
+  dt[, num_obs := Reduce(`+`, lapply(.SD,function(x) !is.na(x))),.SDcols = c('A_CLAY_MI','A_SAND_MI','A_SILT_MI')]
+  dt[num_obs == 2 & is.na(A_CLAY_MI), A_CLAY_MI := 100 - A_SAND_MI - A_SILT_MI]
+  dt[num_obs == 2 & is.na(A_SAND_MI), A_SAND_MI := 100 - A_CLAY_MI - A_SILT_MI]
+  dt[num_obs == 2 & is.na(A_SILT_MI), A_SILT_MI := 100 - A_CLAY_MI - A_SAND_MI]
+  
+  # estimate missing SOM variables
+  dt[is.na(A_SOM_LOI) & !is.na(A_C_OF), A_SOM_LOI := A_C_OF * 0.1 * 1.724]
+  dt[!is.na(A_SOM_LOI) & is.na(A_C_OF), A_C_OF := A_SOM_LOI * 10 / 1.724]
+  
+  # insert default value for topsoil and A_DEPTH, when missing
+  dt[is.na(A_DEPTH), A_DEPTH := 0.3]
+  dt[is.na(topsoil), topsoil := 1]
+  
+  
+  # estimate the wsa by the pedotransfer functions
+  dt[, p1 := sptf_paw1(A_C_OF = A_C_OF, A_SAND_MI = A_SAND_MI, A_CLAY_MI = A_CLAY_MI)]
+  dt[, p2 := sptf_paw2(A_C_OF = A_C_OF, A_SAND_MI = A_SAND_MI, A_CLAY_MI = A_CLAY_MI)] 
+  dt[, p3 := sptf_paw3(A_SAND_MI = A_SAND_MI, A_CLAY_MI = A_CLAY_MI)] 
+  dt[, p4 := sptf_paw4(A_C_OF = A_C_OF, A_CLAY_MI = A_CLAY_MI,A_SAND_MI = A_SAND_MI)] 
+  dt[, p5 := sptf_paw5(A_SOM_LOI = A_SOM_LOI,A_CLAY_MI = A_CLAY_MI,A_SILT_MI = A_SILT_MI)] 
+  dt[, p6 := sptf_paw6(A_C_OF = A_C_OF, A_CLAY_MI = A_CLAY_MI,A_SAND_MI = A_SAND_MI)] 
+  
+  # PTF7: This PTF uses the package 'euptf2'. The function 'euptf2::euptfFun' does not work when the data frame has only 1 row ?!
+  dt[, p7 := sptf_paw7(A_C_OF = A_C_OF, A_CLAY_MI = A_CLAY_MI, A_SILT_MI = A_SILT_MI,A_SAND_MI = A_SAND_MI)] 
+  dt[, p8 := sptf_paw8(A_C_OF = A_C_OF, A_CLAY_MI = A_CLAY_MI,A_SAND_MI = A_SAND_MI)] 
+  dt[, p9 := sptf_paw9(A_C_OF = A_C_OF, A_CLAY_MI = A_CLAY_MI, A_SILT_MI = A_SILT_MI)] 
+  dt[, p10 := sptf_paw10(A_C_OF = A_C_OF,A_CLAY_MI = A_CLAY_MI, A_SILT_MI = A_SILT_MI, A_SAND_MI = A_SAND_MI)]
+  # # PTF11: Calculation of wrc parameters may be wrong. The calculated water content is out of normal range.
+  dt[, p11 := sptf_paw11(A_C_OF = A_C_OF, A_CLAY_MI = A_CLAY_MI, A_SILT_MI = A_SILT_MI)] 
+  # # PTF12: Calculation of wrc parameters may be wrong. The calculated water content is out of normal range.
+  dt[, p12 := sptf_paw12(A_C_OF = A_C_OF,A_CLAY_MI = A_CLAY_MI, A_SAND_MI = A_SAND_MI)]
+  dt[, p13 := sptf_paw13(A_C_OF = A_C_OF, A_CLAY_MI = A_CLAY_MI,A_SAND_MI = A_SAND_MI)]
+  dt[, p14 := sptf_paw14(A_SOM_LOI = A_SOM_LOI,A_CLAY_MI = A_CLAY_MI,A_SILT_MI = A_SILT_MI)] 
+  dt[, p15 := sptf_paw15(A_SOM_LOI = A_SOM_LOI,A_CLAY_MI = A_CLAY_MI,A_SILT_MI = A_SILT_MI)] 
+  # # PTF16: table (soilptf::sptf_bouwsteen) is not properly loaded within the function. To be fixed.
+  dt[, p16 := sptf_paw16(A_SOM_LOI = A_SOM_LOI,A_CLAY_MI = A_CLAY_MI,A_SILT_MI = A_SILT_MI)]
+  
+  
+  # melt the data
+  dt2 <- melt(dt, 
+              id.vars = c('id','A_SOM_LOI', "A_C_OF", "A_CLAY_MI", "A_SAND_MI", "A_SILT_MI", "D_BDS", "A_DEPTH"),
+              measure = patterns('^p[0-9]'),
+              variable.name = 'ptf_id',
+              value.name = 'paw')
+  dt2[,ptf_id := as.integer(gsub('p','',ptf_id))]
+  
+  # check values, set NaN to NA
+  dt2[!is.finite(paw), paw := NA_real_]
+  
+  return(dt2)
+  
+}
 #' Predict the Cation Exchange Capacity with existing ptfs from literature.
 #'
 #' @param dt (data.table) Data table which includes
@@ -1396,16 +1487,91 @@ ptf_sss_all <- function(dt){
   # melt the data
   dt2 <- melt(dt, 
               id.vars = 'id',
-              measure = patterns('^p'),
+              measure = patterns('^p[0-9]'),
               variable.name = 'ptf_id',
-              value.name = 'hwc')
+              value.name = 'sss')
   dt2[,ptf_id := as.integer(gsub('p','',ptf_id))]
+  
+  # check values, set NaN to NA
+  dt2[!is.finite(sss), sss := NA_real_]
   
   # return value
   return(dt2)
   
 }
 
+
+#' Predict the impact of soil organic carbon on metal adsorption.
+#'
+#' @param dt (data.table) Data table which includes
+#' A_SOM_LOI (numeric) The percentage of organic matter in the soil (\%).
+#' A_C_OF (numeric) The fraction organic carbon in the soil (g / kg).
+#' A_CLAY_MI (numeric) The clay content of the soil (\%).
+#' A_SAND_MI (numeric) The sand content of the soil (\%).
+#' A_SILT_MI (numeric) The silt content of the soil (\%).
+#' 
+#' @details 
+#' This function returns a melted form of data table, containing values of freundlich coefficient with different PTFs
+#' 
+#' @import data.table
+#' 
+#' @export
+ptf_metals_all <- function(dt){
+  
+  # add visual binding
+  
+  # make local copy
+  dt <- copy(dt)
+  
+  # add all possible inputs as NA when missing
+  cols <- c('A_SOM_LOI', 'A_C_OF', 'A_CLAY_MI','A_SAND_MI','A_SILT_MI','A_CACO3_MI',
+            'A_PH_WA','A_PH_CC','A_PH_KCL')
+  cols <- cols[!cols %in% colnames(dt)]
+  dt[,c(cols) := NA_real_]
+  
+  # estimate missing variables for texture being dependent on each other
+  dt[, num_obs := Reduce(`+`, lapply(.SD,function(x) !is.na(x))),.SDcols = c('A_CLAY_MI','A_SAND_MI','A_SILT_MI')]
+  dt[num_obs == 2 & is.na(A_CLAY_MI), A_CLAY_MI := 100 - A_SAND_MI - A_SILT_MI]
+  dt[num_obs == 2 & is.na(A_SAND_MI), A_SAND_MI := 100 - A_CLAY_MI - A_SILT_MI]
+  dt[num_obs == 2 & is.na(A_SILT_MI), A_SILT_MI := 100 - A_CLAY_MI - A_SAND_MI]
+  
+  # estimate missing SOM variables
+  dt[is.na(A_SOM_LOI) & !is.na(A_C_OF), A_SOM_LOI := A_C_OF * 0.1 * 1.724]
+  dt[!is.na(A_SOM_LOI) & is.na(A_C_OF), A_C_OF := A_SOM_LOI * 10 / 1.724]
+  
+  # estimate pH values
+  dt[is.na(A_PH_KCL) & is.na(A_PH_WA) & is.na(A_PH_CC) & A_CLAY_MI <= 10, A_PH_CC := 5.26]
+  dt[is.na(A_PH_KCL) & is.na(A_PH_WA) & is.na(A_PH_CC) & A_CLAY_MI > 10, A_PH_CC := 6.42]
+  dt[is.na(A_PH_KCL) & !is.na(A_PH_CC), A_PH_KCL := (A_PH_CC - 0.5262)/0.9288]
+  dt[is.na(A_PH_WA) & !is.na(A_PH_KCL), A_PH_WA := 1.3235 + 0.8581 * A_PH_KCL]
+  
+  # if bulk density is missing, estimate this from A_C_OF
+  # dt[is.na(D_BDS), D_BDS := 1617 - 77.4 * log(A_C_OF) - 3.49 * A_C_OF]
+  
+  # estimate the soil shear strength
+  dt[, p1 := sptf_fc_zinc(A_SOM_LOI = A_SOM_LOI,A_CLAY_MI = A_CLAY_MI,A_PH_WA = A_PH_WA)]
+  dt[, p2 := sptf_fc_cu(A_SOM_LOI = A_SOM_LOI,A_CLAY_MI = A_CLAY_MI,A_PH_WA = A_PH_WA)]
+  dt[, p3 := sptf_fc_pb(A_SOM_LOI = A_SOM_LOI,A_CLAY_MI = A_CLAY_MI,A_PH_WA = A_PH_WA)]
+  dt[, p4 := sptf_fc_cd(A_SOM_LOI = A_SOM_LOI,A_CLAY_MI = A_CLAY_MI,A_PH_WA = A_PH_WA)]
+  
+  # melt the data
+  dt2 <- melt(dt, 
+              id.vars = 'id',
+              measure = patterns('^p[0-9]'),
+              variable.name = 'ptf_id',
+              value.name = 'metal')
+  dt2[,ptf_id := as.integer(gsub('p','',ptf_id))]
+  
+  # adapt the unit with a factor 1000
+  dt2[,metal := metal * 100 / max(metal),by='ptf_id']
+  
+  # check values, set NaN to NA
+  dt2[!is.finite(metal), metal := NA_real_]
+  
+  # return value
+  return(dt2)
+  
+}
 #' Predict the carbon decomposition over time via simplified first order carbon model from literature.
 #'
 #' @param dt (data.table) Data table which includes

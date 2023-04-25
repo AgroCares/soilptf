@@ -1,6 +1,6 @@
-# Functions for water holding capacity (WHC)
+# Functions for Plant Available Water (PAW)
 
-#' Calculate the water holding capacity given the pedotransferfunction of Bagdal et al.2022 for non-calcareous soil
+#' Calculate the Plant Available Water (PAW) given the pedotransferfunction of Bagdal et al.2022 for non-calcareous soil
 #'
 #' @inheritParams sptf_bd0
 #'
@@ -9,7 +9,7 @@
 #' @references Bagdal et al.(2022) Carbon-sensitive pedotransfer functions for plant available water
 #'
 #' @export
-sptf_whc1 <- function(A_C_OF, A_SAND_MI, A_CLAY_MI) {
+sptf_paw1 <- function(A_C_OF, A_SAND_MI, A_CLAY_MI) {
 
   # add visual bindings
   theta_pwp = theta_fc = NULL
@@ -27,10 +27,20 @@ sptf_whc1 <- function(A_C_OF, A_SAND_MI, A_CLAY_MI) {
                    value = NA_real_
                   )
   
-  # to be deleted
+  # Calculate volumetic water content at plant wilting point (mm / 100mm)
+  dt[, theta_pwp := 7.222 + 0.296 * A_CLAY_MI - 0.074 * A_SAND_MI
+     - 0.309 * A_C_OF + 0.022 * A_SAND_MI * A_C_OF + 0.022 * A_CLAY_MI * A_C_OF]
+  
+  # Calculate volumetic water content at field capacity (mm / 100mm)
+  dt[, theta_fc := 32.217 - 0.14 * A_CLAY_MI - 0.304 * A_SAND_MI
+     - 0.222 * A_C_OF + 0.051 * A_SAND_MI * A_C_OF + 0.085 * A_CLAY_MI * A_C_OF
+     + 0.002 * A_CLAY_MI * A_SAND_MI]
+  
+  # Calculate water holding capacity (mm / 100mm)
+  dt[, value :=  theta_fc - theta_pwp]
   
   # convert mm / 100mm to fraction (cm3/cm3)
-  dt[, value := NA_real_]
+  dt[, value := value / 100]
   
   # return value
   value <- dt[, value]
@@ -40,7 +50,7 @@ sptf_whc1 <- function(A_C_OF, A_SAND_MI, A_CLAY_MI) {
   
 }
 
-#' Calculate the water holding capacity given the pedotransferfunction of Bagdal et al.2022 for calcareous soil
+#' Calculate the Plant Available Water (PAW) given the pedotransferfunction of Bagdal et al.2022 for calcareous soil
 #'
 #' @inheritParams sptf_bd0
 #'
@@ -49,7 +59,7 @@ sptf_whc1 <- function(A_C_OF, A_SAND_MI, A_CLAY_MI) {
 #' @references Bagdal et al.(2022) Carbon-sensitive pedotransfer functions for plant available water
 #'
 #' @export
-sptf_whc2 <- function(A_C_OF, A_SAND_MI, A_CLAY_MI) {
+sptf_paw2 <- function(A_C_OF, A_SAND_MI, A_CLAY_MI) {
   
   # add visual bindings
   theta_wp = theta_fc = NULL
@@ -67,10 +77,20 @@ sptf_whc2 <- function(A_C_OF, A_SAND_MI, A_CLAY_MI) {
                    value = NA_real_
                   )
   
-  # to be deleted
+  # Calculate volumetric water content at plant wilting point (mm / 100mm)
+  dt[, theta_wp := 7.907 + 0.236 * A_CLAY_MI - 0.082 * A_SAND_MI
+     + 0.441 * A_C_OF + 0.002 * A_CLAY_MI * A_SAND_MI]
+  
+  # Calculate volumetric water content at field capacity (mm / 100mm)
+  dt[, theta_fc := 33.351 + 0.020 * A_CLAY_MI - 0.446 * A_SAND_MI
+     + 1.398 * A_C_OF + 0.052 * A_SAND_MI * A_C_OF - 0.077 * A_CLAY_MI * A_C_OF
+     + 0.011 * A_CLAY_MI * A_SAND_MI]
+  
+  # Calculate water holding capacity (mm / 100mm)
+  dt[, value :=  theta_fc - theta_wp]
   
   # convert mm / 100mm to fraction (cm3/cm3)
-  dt[, value := NA_real_]
+  dt[, value := value / 100]
   
   # return value
   value <- dt[, value]
@@ -80,7 +100,7 @@ sptf_whc2 <- function(A_C_OF, A_SAND_MI, A_CLAY_MI) {
   
 }
 
-#' Calculate the water holding capacity given the pedotransferfunction of Saxton et al.1986
+#' Calculate the Plant Available Water (PAW) given the pedotransferfunction of Saxton et al.1986
 #'
 #' @inheritParams sptf_bd0
 #'
@@ -92,19 +112,21 @@ sptf_whc2 <- function(A_C_OF, A_SAND_MI, A_CLAY_MI) {
 #' @references Saxton et al.(1986) Estimating Generalized Soil-water Characteristics from Texture
 #'
 #' @export
-sptf_whc3 <-  function(A_SAND_MI,A_CLAY_MI) {
+sptf_paw3 <-  function(A_SAND_MI,A_CLAY_MI) {
     
     # Add visual bindings
     theta_sat = theta_res = theta_fc = alfa = n = A = B = theta_wp =NULL
     
     # set default parameters for this function
-    mp_whc = 0
+    mp_wp = 1500
+    mp_fc = 33
     
     # check inputs
     arg.length <-max(length(A_SAND_MI), length(A_CLAY_MI))
     checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
     checkmate::assert_numeric(A_SAND_MI, lower = 0, upper = 100, len = arg.length)
-
+    checkmate::assert_true(mp_fc > 10)
+    
     # Collect data into a table (set in units %)
     dt <- data.table(A_SAND_MI = A_SAND_MI,
                      A_CLAY_MI = A_CLAY_MI,
@@ -114,18 +136,24 @@ sptf_whc3 <-  function(A_SAND_MI,A_CLAY_MI) {
     dt[, A := 100 * exp(-4.396 - 0.0715 * A_CLAY_MI - 0.000488 * A_SAND_MI ^ 2 - 0.00004285 * A_SAND_MI ^ 2 * A_CLAY_MI)]
     dt[, B := -3.140 - 0.00222 * A_CLAY_MI ^ 2 - 0.00003484 * A_SAND_MI ^ 2 * A_CLAY_MI]
     
-    # Calculate volumetric water content at saturation (cm3/cm3)
-    dt[, theta := exp(log(1 * 10^mp_whc / A) / B)]
+    # Calculate volumetric water content at field capacity (cm3/cm3)
+    dt[, theta_fc := exp(log(mp_fc / A) / B)]
+    
+    # Calculate volumetric water content at wilting point (cm3/cm3)
+    dt[, theta_wp := exp(log(mp_wp / A) / B)]
+    
+    # Calculate water holding capacity (cm3/cm3)
+    dt[, value :=  theta_fc - theta_wp]
     
     # select value
-    value <- dt[, theta]
+    value <- dt[, value]
     
     # return value
     return(value)
     
   }
 
-#' Calculate the waterholding capacity given the pedotransferfunction of Oosterveld and Chang (1980)
+#' Calculate the Plant Available Water (PAW) given the pedotransferfunction of Oosterveld and Chang (1980)
 #'
 #' @inheritParams sptf_bd0
 #'
@@ -138,7 +166,7 @@ sptf_whc3 <-  function(A_SAND_MI,A_CLAY_MI) {
 #' @references Oosterveld and Chang (1980) Empirical relations between laboratory determinations of soil texture and moisture retention
 #'
 #' @export
-sptf_whc4 <-  function(A_C_OF,A_CLAY_MI,A_SAND_MI) {
+sptf_paw4 <-  function(A_C_OF,A_CLAY_MI,A_SAND_MI) {
     
   # Add visual bindings
   theta_sat = theta_res = theta_fc = alfa = n = theta_wp = mp_fc = NULL
@@ -162,10 +190,21 @@ sptf_whc4 <-  function(A_C_OF,A_CLAY_MI,A_SAND_MI) {
                    value = NA_real_
                   )
     
-  # to be deleted
+  # add density
+  dt[,D_BDS := 1617 - 77.4 * log(A_C_OF) - 3.49 * A_C_OF]
   
-  # convert mm / 100mm to fraction (cm3/cm3)
-  dt[, value := NA_real_]
+  # Water tention at field capacity (kPa)
+  dt[, mp_fc := 5.356 * A_CLAY_MI ^ 0.421]
+  
+  # Calculate volumetric water content at field capacity (cm3/cm3)
+  dt[, theta_fc := 0.01 * (35.367 + 0.644 * A_CLAY_MI - 0.251 * A_SAND_MI - 0.045 * A_DEPTH) * mp_fc ^ (-0.19)]
+  
+  # Calculate volumetric water content at wilting point (cm3/cm3)
+  dt[, theta_wp := 0.01 * (35.367 + 0.644 * A_CLAY_MI - 0.251 * A_SAND_MI - 0.045 * A_DEPTH) * mp_wp ^ (-0.19)]
+  dt[, theta_wp := 0.01 * (4.035 + 0.299 * A_CLAY_MI - 0.034 * A_SAND_MI - 0.016 * A_DEPTH)]  
+  
+  # Calculate water holding capacity (cm3/cm3)
+  dt[, value :=  theta_fc - theta_wp]
   
   # select value
   value <- dt[, value]
@@ -176,7 +215,7 @@ sptf_whc4 <-  function(A_C_OF,A_CLAY_MI,A_SAND_MI) {
   }
 
 
-#' Calculate the waterholding capacity given the pedotransferfunction of Wösten et al. 1999
+#' Calculate the Plant Available Water (PAW) given the pedotransferfunction of Wösten et al. 1999
 #'
 #' @inheritParams sptf_bd0
 #'
@@ -185,7 +224,7 @@ sptf_whc4 <-  function(A_C_OF,A_CLAY_MI,A_SAND_MI) {
 #' @references Wösten et al. (1999) Development and use of a database of hydraulic properties of European soils
 #'
 #' @export
-sptf_whc5 <-  function(A_SOM_LOI, A_CLAY_MI, A_SILT_MI) {
+sptf_paw5 <-  function(A_SOM_LOI, A_CLAY_MI, A_SILT_MI) {
     
     # Add visual bindings
     theta_sat = theta_res = theta_fc = alfa = n = theta_wp = NULL
@@ -194,7 +233,8 @@ sptf_whc5 <-  function(A_SOM_LOI, A_CLAY_MI, A_SILT_MI) {
     # boolean argument for top soil (1) or sub-soil (0)
     A_DEPTH = 0.15
     topsoil = 1 
-    mp_whc = 0
+    mp_wp = 4.2
+    mp_fc = 2.0
     
     # Check input
     arg.length <-max(length(A_SOM_LOI), length(A_CLAY_MI),length(A_SAND_MI))
@@ -237,11 +277,14 @@ sptf_whc5 <-  function(A_SOM_LOI, A_CLAY_MI, A_SILT_MI) {
       + 0.00718 * topsoil * A_CLAY_MI
     )]
     
-    # Calculate volumetric water content at whc (cm3/cm3)
-    dt[, theta := pF_curve(head=-1*10^mp_whc, theta_res, theta_sat, alfa, n)]
+    # Calculate volumetric water content at field capacity (cm3/cm3)
+    dt[, theta_fc := pF_curve(head=-1*10^mp_fc, theta_res, theta_sat, alfa, n)]
+    
+    # Calculate volumetric water content at wilting point (cm3/cm3)
+    dt[, theta_wp := pF_curve(head=-1*10^mp_wp, theta_res, theta_sat, alfa, n)]
     
     # Calculate water holding capacity (cm3/cm3)
-    dt[, value :=  theta]
+    dt[, value :=  theta_fc - theta_wp]
     
     # return value
     value <- dt[, value]
@@ -253,7 +296,7 @@ sptf_whc5 <-  function(A_SOM_LOI, A_CLAY_MI, A_SILT_MI) {
 
 
 
-#' Calculate the water holding capacity given the pedotransferfunction of Vereecken et al. 1989
+#' Calculate the Plant Available Water (PAW) given the pedotransferfunction of Vereecken et al. 1989
 #'
 #' @inheritParams sptf_bd0
 #'
@@ -262,13 +305,14 @@ sptf_whc5 <-  function(A_SOM_LOI, A_CLAY_MI, A_SILT_MI) {
 #' @references Vereecken et al. (1989) Estimating the soil moisture retention characteristics from texture, bulk density and carbon content
 #'
 #' @export
-sptf_whc6 <-  function(A_C_OF,A_CLAY_MI, A_SAND_MI) {
+sptf_paw6 <-  function(A_C_OF,A_CLAY_MI, A_SAND_MI) {
     
     # Add visual bindings
     theta_sat = theta_res = theta_fc = alfa = n = theta_wp =NULL
     
     # set default parameters for this function
-    mp_whc = 0
+    mp_wp = 4.2 # 1500
+    mp_fc = 2.0 # 33
     
     # Check input
     arg.length <-max(length(A_C_OF), length(A_CLAY_MI),length(A_SAND_MI))
@@ -294,8 +338,12 @@ sptf_whc6 <-  function(A_C_OF,A_CLAY_MI, A_SAND_MI) {
     
     # Calculate volumetric water content at field capacity (cm3/cm3) and wilting point
     # note that the van Genuchten model structure is different here
-    dt[, value := theta_res + (theta_sat - theta_res) / (1 + abs(alfa * (-1 * 10^mp_whc)) ^ n)]
-
+    dt[, theta_fc := theta_res + (theta_sat - theta_res) / (1 + abs(alfa * (-1 * 10^mp_fc)) ^ n)]
+    dt[, theta_wp := theta_res + (theta_sat - theta_res) / (1 + abs(alfa * (-1 * 10^mp_wp)) ^ n)]
+    
+    # Calculate water holding capacity (cm3/cm3)
+    dt[, value :=  theta_fc - theta_wp]
+    
     # return value
     value <- dt[, value]
     
@@ -304,7 +352,7 @@ sptf_whc6 <-  function(A_C_OF,A_CLAY_MI, A_SAND_MI) {
     
   }
 
-#' Calculate the water holding capacity given the pedotransferfunction of Szabo et al.2021
+#' Calculate the Plant Available Water (PAW) given the pedotransferfunction of Szabo et al.2021
 #' The RF-model based prediction can be calculated using the R package euptf2 (https://github.com/tkdweber/euptf2/)
 #' Note YF 20220928: It may be better to copy-paste codes and RF model results from euptf2,
 #' # so that we have no dependency on euptf2 package?
@@ -317,7 +365,7 @@ sptf_whc6 <-  function(A_C_OF,A_CLAY_MI, A_SAND_MI) {
 #' @references Szabó et al.(2021) Updated European hydraulic pedotransfer functions with communicated uncertainties in the predicted variables (euptfv2)
 #'
 #' @export
-sptf_whc7 <-function(A_C_OF,A_CLAY_MI,A_SILT_MI, A_SAND_MI) {
+sptf_paw7 <-function(A_C_OF,A_CLAY_MI,A_SILT_MI, A_SAND_MI) {
     
     # Add visual bindings
     theta_sat = theta_res = theta_fc = alfa = n = theta_wp =NULL
@@ -398,7 +446,7 @@ sptf_whc7 <-function(A_C_OF,A_CLAY_MI,A_SILT_MI, A_SAND_MI) {
     
   }
 
-#' Calculate the water holding capacity given the pedotransferfunction of Weynants et al. 2009
+#' Calculate the Plant Available Water (PAW) given the pedotransferfunction of Weynants et al. 2009
 #'
 #' @inheritParams sptf_bd0
 #' @param mp_wp (numeric) Water potential at wilting point (kPa).
@@ -408,14 +456,15 @@ sptf_whc7 <-function(A_C_OF,A_CLAY_MI,A_SILT_MI, A_SAND_MI) {
 #' @references Weynants et al.(2009) Revisiting Vereecken Pedotransfer Functions: Introducing a Closed-Form Hydraulic Model
 #'
 #' @export
-sptf_whc8 <- function(A_C_OF,A_CLAY_MI,A_SAND_MI) {
+sptf_paw8 <- function(A_C_OF,A_CLAY_MI,A_SAND_MI) {
   
   # Add visual bindings
   theta_sat = theta_res = alfa =n = theta_fc = theta_wp =  NULL
   
   # set default parameters for this function
   A_DEPTH = 0.15
-  mp_whc = 0
+  mp_wp = 4.2
+  mp_fc = 2.0
   
   # Check input
   arg.length <-max(length(A_C_OF), length(A_CLAY_MI),length(A_SAND_MI))
@@ -440,8 +489,14 @@ sptf_whc8 <- function(A_C_OF,A_CLAY_MI,A_SAND_MI) {
   dt[, n := exp(-1.0846 - 0.0236 * A_CLAY_MI - 0.0085 * A_SAND_MI
                 + 1.3699 * 10 ^ (-4) * A_SAND_MI ^ 2) + 1]
   
-  # Calculate volumetric water content at saturation (cm3/cm3)
-  dt[, value := pF_curve(head=-1*10^mp_whc, theta_res, theta_sat, alfa, n)]
+  # Calculate volumetric water content at field capacity (cm3/cm3)
+  dt[, theta_fc := pF_curve(head=-1*10^mp_fc, theta_res, theta_sat, alfa, n)]
+  
+  # Calculate volumetric water content at wilting point (cm3/cm3)
+  dt[, theta_wp := pF_curve(head=-1*10^mp_wp, theta_res, theta_sat, alfa, n)]
+  
+  # Calculate water holding capacity (cm3/cm3)
+  dt[, value :=  theta_fc - theta_wp]
   
   # return value
   value <- dt[, value]
@@ -451,7 +506,7 @@ sptf_whc8 <- function(A_C_OF,A_CLAY_MI,A_SAND_MI) {
   
 }
 
-#' Calculate the water holding capacity given the pedotransferfunction of Tomasella & Hodnett 1998
+#' Calculate the Plant Available Water (PAW) given the pedotransferfunction of Tomasella & Hodnett 1998
 #'
 #' @inheritParams sptf_bd0
 #'
@@ -463,7 +518,7 @@ sptf_whc8 <- function(A_C_OF,A_CLAY_MI,A_SAND_MI) {
 #' @references Tomasella & Hodnett (1998) Estimating soil water retention characteristics from limited data in Brazilian Amazonia. Soil Sci. 163, 190-202.
 #'
 #' @export
-sptf_whc9 <- function(A_C_OF,A_CLAY_MI, A_SILT_MI) {
+sptf_paw9 <- function(A_C_OF,A_CLAY_MI, A_SILT_MI) {
   
   # add visual bindings
   theta_wp = a= d = b= theta_fc = mp = NULL
@@ -486,10 +541,28 @@ sptf_whc9 <- function(A_C_OF,A_CLAY_MI, A_SILT_MI) {
     value = NA_real_
   )
   
-  # to be updated
+  # regression coeffients for prescribed matric potentials
+  tb <- data.table(
+    mp = c(10, 33, 1500),
+    a = c(0, 0, 0),
+    b = c(0.543, 0.426, 0.150),
+    c = c(0.321, 0.404, 0.396),
+    d = c(9.806, 4.046, 0.910)
+  )
+  
+  
+  # Calculate volumetic water content at plant wilting point (cm3/cm3)
+  dt <- cbind(dt, tb[mp == 1500])
+  dt[, theta_wp := 0.01 * (a * A_C_OF + b * A_SILT_MI + c * A_CLAY_MI + d)]
+  cols <- names(tb)
+  dt[, (cols) := NULL]
+  
+  # Calculate volumetric water content at field capacity (cm3/cm3)
+  dt <- cbind(dt, tb[mp == mp_fc])
+  dt[, theta_fc := 0.01 * (a * A_C_OF + b * A_SILT_MI + c * A_CLAY_MI + d)]
   
   # Calculate water holding capacity (cm3/cm3)
-  dt[, value :=  NA_real_]
+  dt[, value :=  theta_fc - theta_wp]
   
   # return value
   value <- dt[, value]
@@ -499,7 +572,7 @@ sptf_whc9 <- function(A_C_OF,A_CLAY_MI, A_SILT_MI) {
   
 }
 
-#' Calculate the water holding capacity given the pedotransferfunction of Rawls et al.1982
+#' Calculate the Plant Available Water (PAW) given the pedotransferfunction of Rawls et al.1982
 #'
 #' @inheritParams sptf_bd0
 #'
@@ -511,7 +584,7 @@ sptf_whc9 <- function(A_C_OF,A_CLAY_MI, A_SILT_MI) {
 #' @references Rawls et al.(1982) Estimation of soil water properties. Trans. ASAE 25, 1316–1320.
 #'
 #' @export
-sptf_whc10 <-function(A_C_OF,A_CLAY_MI,A_SILT_MI,A_SAND_MI) {
+sptf_paw10 <-function(A_C_OF,A_CLAY_MI,A_SILT_MI,A_SAND_MI) {
     
   # add visual bindings
   mp = theta_wp = a = b = d = e = f = theta_fc = theta_wp = NULL
@@ -538,10 +611,30 @@ sptf_whc10 <-function(A_C_OF,A_CLAY_MI,A_SILT_MI,A_SAND_MI) {
     # add density (with Corg in g/kg as input)
     dt[,D_BDS := 1617 - 77.4 * log(A_C_OF * 10) - 3.49 * A_C_OF * 10]
     
-    # to be updated
+    # regression coeffients for prescribed matric potentials
+    tb <- data.table(
+      mp = c(10, 33, 1500),
+      a = c(0.4118, 0.2576, 0.0260),
+      b = c(-0.0030, -0.0020, 0),
+      c = c(0, 0, 0),
+      d = c(0.0023, 0.0036, 0.0050),
+      e = c(0.0317, 0.0299, 0.0158),
+      f = c(0, 0, 0)
+    )
+    
+    
+    # Calculate volumetic water content at plant wilting point (cm3/cm3)
+    dt <- cbind(dt, tb[mp == 1500])
+    dt[, theta_wp := a + b * A_SAND_MI + c * A_SILT_MI + d * A_CLAY_MI + e * A_C_OF + f * D_BDS]
+    cols <- names(tb)
+    dt[, (cols) := NULL]
+    
+    # Calculate volumetric water content at field capacity (cm3/cm3)
+    dt <- cbind(dt, tb[mp == mp_fc])
+    dt[, theta_fc := a + b * A_SAND_MI + c * A_SILT_MI + d * A_CLAY_MI + e * A_C_OF + f * D_BDS]
     
     # Calculate water holding capacity (cm3/cm3)
-    dt[, value := NA_real_]
+    dt[, value :=  theta_fc - theta_wp]
     
     # return value
     value <- dt[, value]
@@ -551,7 +644,7 @@ sptf_whc10 <-function(A_C_OF,A_CLAY_MI,A_SILT_MI,A_SAND_MI) {
     
   }
 
-#' Calculate the water holding capacity given the pedotransferfunction of Campbell & Shiozawa 1992
+#' Calculate the Plant Available Water (PAW) given the pedotransferfunction of Campbell & Shiozawa 1992
 #' Note: Calculation of whc parameters may be wrong. The calculated water content is out of normal range. Original literature can not be found on web.
 #'
 #' @inheritParams sptf_bd0
@@ -564,13 +657,14 @@ sptf_whc10 <-function(A_C_OF,A_CLAY_MI,A_SILT_MI,A_SAND_MI) {
 #' @references Campbell & Shiozawa (1992) Prediction of hydraulic properties of soils using particle-size distribution and bulk density data
 #'
 #' @export
-sptf_whc11 <- function(A_C_OF,A_CLAY_MI,A_SILT_MI) {
+sptf_paw11 <- function(A_C_OF,A_CLAY_MI,A_SILT_MI) {
   
   # add visual bindings
   theta_sat = theta_res = theta_fc = alfa = n = d_g = sigma_g = psi_es = lambda = psi_b=  theta_wp = NULL
   
   # set default parameters for this function
-  mp_whc = 0
+  mp_fc = 2
+  mp_wp = 4.2
   
   # Check input
   arg.length <-max(length(A_C_OF), length(A_CLAY_MI),length(A_SILT_MI))
@@ -589,8 +683,36 @@ sptf_whc11 <- function(A_C_OF,A_CLAY_MI,A_SILT_MI) {
   # add density (with Corg in g/kg as input)
   dt[,D_BDS := (1617 - 77.4 * log(A_C_OF) - 3.49 * A_C_OF)*0.001]
   
+  # Calcaulte parameters of water retention curve of Brooks and Corey (1964)
+  dt[, d_g := exp(-0.025 - 0.0363 * A_SILT_MI - 0.0688 * A_CLAY_MI)] # geometric mean particle diameter
+  dt[, sigma_g := (exp(0.133 * A_SILT_MI + 0.477 * A_CLAY_MI - (log(d_g)^2))) ^ (1 / 2)] # geometric sd particle diameter # this equation is probably wrong!
+  dt[, psi_es := -0.05 * d_g ^ (-1 / 2)] # air entry matric head evaluated at a standard bulk density of 1.3 g cm3
+  
+  # test from PTF manual
+  dt[, d_g := exp(-0.80 - 0.0317 * A_SILT_MI - 0.0761 * A_CLAY_MI)]
+  dt[, sigma_g := exp(0.1332 * A_SILT_MI + 0.477 * A_CLAY_MI - log(d_g) * log(d_g))^0.5]
+  dt[, psi_es := -0.0003 * d_g ^ (-3/2)]
+  dt[, lambda := -20 * psi_es + 0.2 * sigma_g]
+  dt[, psi_b := psi_es * (D_BDS / 1.3) ^ (0.67 * lambda)]
+  
+  dt[, theta_res := 0]
+  dt[, theta_sat := calc_soil_porosity(D_BDS)]
+  
+  # estimate the capillary pressure h (cm)
+  dt[, h_wp := abs(-1*10^mp_wp)*0.01]
+  dt[, h_fc := abs(-1*10^mp_fc)*0.01]
+  
+  # Calculate volumetric water content at field capacity (cm3/cm3)
+  dt[,theta_fc := fifelse(h_fc > psi_b, (psi_b/h_fc)^lambda,1) * (theta_sat - theta_res) + theta_res]
+  
+  # Calculate volumetic water content at plant wilting point (cm3/cm3)
+  dt[,theta_wp := fifelse(h_wp > psi_b, (psi_b/h_wp)^lambda,1) * (theta_sat - theta_res) + theta_res]
+  
   # Calculate water holding capacity (cm3/cm3)
-  dt[, value := calc_soil_porosity(D_BDS)]
+  dt[, value :=  theta_fc - theta_wp]
+  
+  # function need to be checked
+  dt[,value := NA_real_]
   
   # select value
   value <- dt[, value]
@@ -602,7 +724,7 @@ sptf_whc11 <- function(A_C_OF,A_CLAY_MI,A_SILT_MI) {
 
 
 
-#' Calculate the water holding capacity given the pedotransferfunction of Rawls & Brakensiek 1985
+#' Calculate the Plant Available Water (PAW) given the pedotransferfunction of Rawls & Brakensiek 1985
 #'
 #' Note: Calculation of whc parameters may be wrong. The calculated water content is out of normal range. Original literature cannot be found on web.
 #'
@@ -617,7 +739,7 @@ sptf_whc11 <- function(A_C_OF,A_CLAY_MI,A_SILT_MI) {
 #' @references Rawls & Brakensiek (1985) Prediction of Soil Water Properties for Hydrologic Modelling
 #'
 #' @export
-sptf_whc12 <- function(A_C_OF,A_CLAY_MI,A_SAND_MI) {
+sptf_paw12 <- function(A_C_OF,A_CLAY_MI,A_SAND_MI) {
   
   # Add visual bindings
   theta_sat = theta_res = theta_fc = alfa = n = por = psi_b = lambda =  theta_wp = NULL
@@ -645,7 +767,43 @@ sptf_whc12 <- function(A_C_OF,A_CLAY_MI,A_SAND_MI) {
   dt[,D_BDS := (1617 - 77.4 * log(A_C_OF) - 3.49 * A_C_OF)*0.001]
   
   # Calcaulte parameters of water retention curve of Brooks and Corey (1964)
-  dt[, value := calc_soil_porosity(D_BDS)]
+  dt[, por := calc_soil_porosity(D_BDS)]
+  
+  # estimate bubbling pressure or air entry pressure
+  dt[, psi_b := exp(5.34 + 0.185 * A_CLAY_MI - 2.484 * por - 0.00214 * A_CLAY_MI^2 - 
+                       0.0436 * Pzand * por - 0.617 * A_CLAY_MI * por + 0.00144 * A_SAND_MI^2 * por^2 - 
+                       0.00855 * A_CLAY_MI^2 * por^2 - 0.0000128 * A_SAND_MI^2 * A_CLAY_MI + 0.00895 * A_CLAY_MI^2 * por - 
+                       0.000724 * A_SAND_MI^2 * por + 0.0000054 * A_CLAY_MI^2 * A_SAND_MI + 0.5 * por^2 * A_CLAY_MI)
+  ]
+  
+  # estimate pore size index
+  dt[, lambda := exp(
+    -0.784 + 0.018 * A_SAND_MI - 1.062 * por - 0.00005 * A_SAND_MI^2 - 0.003 * A_CLAY_MI^2
+    + 1.111 * por^2 - 0.031 * A_SAND_MI * por + 0.0003 * A_SAND_MI^2 * por^2
+    - 0.006 * A_CLAY_MI^2 * por^2 - 0.000002 * A_SAND_MI^2 * A_CLAY_MI
+    + 0.00799 * A_CLAY_MI^2 * por - 0.007 * por^2 * A_CLAY_MI
+  )]
+  # estimte residual water content
+  dt[, theta_res := (
+    -0.018 + 0.0009 * A_SAND_MI + 0.00513 * A_CLAY_MI + 0.029 * por
+    - 0.0002 * A_CLAY_MI ^ 2 - 0.001 * A_SAND_MI * por - 0.0002 * A_CLAY_MI ^
+      2 * por ^ 2
+    + 0.0003 * A_CLAY_MI ^ 2 * por - 0.002 * por ^ 2 * A_CLAY_MI
+  )]
+  dt[, theta_sat := por]
+  
+  # estimate the capillary pressure h (cm)
+  dt[, h_wp := abs(-1*10^mp_wp)]
+  dt[, h_fc := abs(-1*10^mp_fc)]
+  
+  # Calculate volumetric water content at field capacity (cm3/cm3)
+  dt[,theta_fc := fifelse(h_fc > psi_b, (psi_b/h_fc)^lambda,1) * (theta_sat - theta_res) + theta_res]
+  
+  # Calculate volumetic water content at plant wilting point (cm3/cm3)
+  dt[,theta_wp := fifelse(h_wp > psi_b, (psi_b/h_wp)^lambda,1) * (theta_sat - theta_res) + theta_res]
+  
+  # Calculate water holding capacity (cm3/cm3)
+  dt[, value :=  theta_fc - theta_wp]
   
   # return value
   value <- dt[, value]
@@ -656,7 +814,7 @@ sptf_whc12 <- function(A_C_OF,A_CLAY_MI,A_SAND_MI) {
 }
 
 
-#' Calculate the water holding capacity given the pedotransferfunction of Tian et al. 2021
+#' Calculate the Plant Available Water (PAW) given the pedotransferfunction of Tian et al. 2021
 #'
 #' @inheritParams sptf_bd0
 #'
@@ -665,10 +823,14 @@ sptf_whc12 <- function(A_C_OF,A_CLAY_MI,A_SAND_MI) {
 #' @references Tian et al. (2021) New pedotransfer functions for soil water retention curves that better account for bulk density effects
 #'
 #' @export
-sptf_whc13 <- function(A_C_OF,A_CLAY_MI,A_SAND_MI) {
+sptf_paw13 <- function(A_C_OF,A_CLAY_MI,A_SAND_MI) {
   
   # Add visual bindings
   theta_sat = theta_res = theta_fc = alfa = n = A_LOAM_MI = Dichtheid = theta_wp =  NULL
+  
+  # set default parameters for this function
+  mp_fc = 2
+  mp_wp = 4.2
   
   # Check input
   arg.length <-max(length(A_C_OF), length(A_CLAY_MI),length(A_SAND_MI))
@@ -688,8 +850,29 @@ sptf_whc13 <- function(A_C_OF,A_CLAY_MI,A_SAND_MI) {
   # add density (with Corg in g/kg as input)
   dt[,D_BDS := (1617 - 77.4 * log(A_C_OF *10) - 3.49 * A_C_OF * 10)*0.001]
   
+  # # Calculate water retention parameters (inc. OC: Eq. 9-12) <- TThis was not used, as including OC failed to improve estimation accuracy (p. 6 right-bottom)
+  # dt[, theta_sat := - 0.3334 * D_BDS + 0.0005 * A_CLAY_MI + 0.8945]
+  # dt[, theta_res := 0.0115 * D_BDS * A_CLAY_MI ^ 0.7489]
+  # dt[, alfa := (0.0012 * A_SAND_MI + 0.0001 * A_CLAY_MI + 0.0089 * A_C_OF + 0.0101) * D_BDS ^ (-2.5325)]
+  # dt[, n := (-0.0034 * A_SAND_MI - 0.0186 * A_CLAY_MI - 0.0351 * A_C_OF + 1.1477) * D_BDS
+  #           + (0.0068 * A_SAND_MI + 0.0217 * A_CLAY_MI + 0.0047 * A_C_OF + 0.0080)]
+  
   # Calculate water retention parameters (exc. OC; Eq. 13-16)
-  dt[, value := -0.3311 * D_BDS + 0.8916]
+  dt[, theta_sat := -0.3311 * D_BDS + 0.8916]
+  dt[, theta_res := 0.0112 * D_BDS * A_CLAY_MI ^ 0.7550]
+  dt[, alfa := (0.0014 * A_SAND_MI + 0.0001 * A_CLAY_MI + 0.0159) * D_BDS ^ (-2.8834)]
+  dt[, n := (-0.0046 * A_SAND_MI - 0.0212 * A_CLAY_MI + 1.3398) * D_BDS
+     + (0.0079 * A_SAND_MI + 0.0250 * A_CLAY_MI - 0.2617)]
+  
+  
+  # Calculate volumetric water content at field capacity (cm3/cm3)
+  dt[, theta_fc := pF_curve(head=-1*10^mp_fc, theta_res, theta_sat, alfa, n)]
+  
+  # Calculate volumetric water content at wilting point (cm3/cm3)
+  dt[, theta_wp := pF_curve(head=-1*10^mp_wp, theta_res, theta_sat, alfa, n)]
+  
+  # Calculate water holding capacity (cm3/cm3)
+  dt[, value :=  theta_fc - theta_wp]
   
   # select value
   value <- dt[, value]
@@ -699,7 +882,7 @@ sptf_whc13 <- function(A_C_OF,A_CLAY_MI,A_SAND_MI) {
   
 }
 
-#' Calculate the water holding capacity given the pedotransferfunction of Wösten 1997
+#' Calculate the Plant Available Water (PAW) given the pedotransferfunction of Wösten 1997
 #'
 #' @inheritParams sptf_bd0
 #' @param topsoil (boolean) Whether top soil (1) or sub-soil (0)
@@ -709,7 +892,7 @@ sptf_whc13 <- function(A_C_OF,A_CLAY_MI,A_SAND_MI) {
 #' @references Wösten, J. H. M. (1997). Chapter 10 Pedotransfer functions to evaluate soil quality. In: Developments in Soil Science, Volume 25:221-245, Elsevier
 #'
 #' @export
-sptf_whc14 <- function(A_SOM_LOI,A_CLAY_MI,A_SILT_MI) {
+sptf_paw14 <- function(A_SOM_LOI,A_CLAY_MI,A_SILT_MI) {
   
   # Add visual bindings
   theta_sat = theta_res = theta_fc = alfa = n = A_LOAM_MI = theta_wp = Dichtheid = NULL
@@ -770,14 +953,23 @@ sptf_whc14 <- function(A_SOM_LOI,A_CLAY_MI,A_SILT_MI) {
       0.0651 * Dichtheid * A_SOM_LOI
   ) + 1]
   
+  # Calculate volumetric water content at field capacity (cm3/cm3)
+  dt[, theta_fc := pF_curve(head=-1*10^mp_fc, theta_res, theta_sat, alfa, n)]
+  
+  # Calculate volumetric water content at wilting point (cm3/cm3)
+  dt[, theta_wp := pF_curve(head=-1*10^mp_wp, theta_res, theta_sat, alfa, n)]
+  
+  # Calculate water holding capacity (cm3/cm3)
+  dt[, value :=  theta_fc - theta_wp]
+  
   # return value
-  value <- dt[, theta_sat]
+  value <- dt[, value]
   
   # return value
   return(value)
 }
 
-#' Calculate the water holding capacity given the pedotransferfunction of Wösten et al.2001
+#' Calculate the Plant Available Water (PAW) given the pedotransferfunction of Wösten et al.2001
 #'
 #' @inheritParams sptf_bd0
 #' @param topsoil (boolean) Whether top soil (1) or sub-soil (0)
@@ -787,7 +979,7 @@ sptf_whc14 <- function(A_SOM_LOI,A_CLAY_MI,A_SILT_MI) {
 #' @references Wösten, J. H. M., Veerman, G. ., de Groot, W. J., & Stolte, J. (2001). Waterretentie en doorlatendheidskarakteristieken van boven- en ondergronden in Nederland: de Staringreeks. Alterra Rapport, 153, 86. https://edepot.wur.nl/43272
 #'
 #' @export
-sptf_whc15 <- function(A_SOM_LOI,A_CLAY_MI,A_SILT_MI) {
+sptf_paw15 <- function(A_SOM_LOI,A_CLAY_MI,A_SILT_MI) {
   
   # Add visual bindings
   theta_sat = theta_res = theta_fc = alfa = n = A_LOAM_MI = theta_wp =  Dichtheid = NULL
@@ -854,15 +1046,25 @@ sptf_whc15 <- function(A_SOM_LOI,A_CLAY_MI,A_SILT_MI) {
       0.0678 * Dichtheid * A_SOM_LOI
   ) + 1]
   
+  
+  # Calculate volumetric water content at field capacity (cm3/cm3)
+  dt[, theta_fc := pF_curve(head=-1*10^mp_fc, theta_res, theta_sat, alfa, n)]
+  
+  # Calculate volumetric water content at wilting point (cm3/cm3)
+  dt[, theta_wp := pF_curve(head=-1*10^mp_wp, theta_res, theta_sat, alfa, n)]
+  
+  # Calculate water holding capacity (cm3/cm3)
+  dt[, value :=  theta_fc - theta_wp]
+  
   # select value
-  value <- dt[, theta_sat]
+  value <- dt[, value]
   
   # return value
   return(value)
 }
 
 
-#'  the water holding capacity given the pedotransferfunction of Wösten et al.2001 (Table 3), for each soil class
+#' Calculate the Plant Available Water (PAW) given the pedotransferfunction of Wösten et al.2001 (Table 3), for each soil class
 #'
 #' @inheritParams sptf_bd0
 #' @param mp_wp (numeric) Water potential at wilting point (kPa).
@@ -872,7 +1074,7 @@ sptf_whc15 <- function(A_SOM_LOI,A_CLAY_MI,A_SILT_MI) {
 #' @references Wösten, J. H. M., Veerman, G. ., de Groot, W. J., & Stolte, J. (2001). Waterretentie en doorlatendheidskarakteristieken van boven- en ondergronden in Nederland: de Staringreeks. Alterra Rapport, 153, 86. https://edepot.wur.nl/43272
 #'
 #' @export
-sptf_whc16 <- function(A_SOM_LOI,A_CLAY_MI,A_SILT_MI) {
+sptf_paw16 <- function(A_SOM_LOI,A_CLAY_MI,A_SILT_MI) {
   
   # Add visual bindings
   theta_sat = theta_res = theta_fc = alfa = n = A_LOAM_MI = theta_wp = NULL
@@ -957,8 +1159,14 @@ sptf_whc16 <- function(A_SOM_LOI,A_CLAY_MI,A_SILT_MI) {
            c("thres", "thsat", "alpha"),
            c("theta_res", "theta_sat", "alfa"))
   
+  # Calculate volumetric water content at field capacity (cm3/cm3)
+  dt[, theta_fc := pF_curve(head = -1 * 10^mp_fc, theta_res, theta_sat, alfa, n)]
+  
+  # Calculate volumetric water content at wilting point (cm3/cm3)
+  dt[, theta_wp := pF_curve(head = -1 * 10^mp_wp, theta_res, theta_sat, alfa, n)]
+  
   # Calculate water holding capacity (cm3/cm3)
-  dt[, value :=  theta_sat]
+  dt[, value :=  theta_fc - theta_wp]
   
   # select value
   value <- dt[, value]
@@ -968,73 +1176,3 @@ sptf_whc16 <- function(A_SOM_LOI,A_CLAY_MI,A_SILT_MI) {
   
 }
 
-
-#' Water retention curve
-#'
-#' This function compute water content at given pressure head, using Van Genuchten water retention curve
-#'
-#' @param head (numeric)  suction pressure ([L] or cm of water)
-#' @param thetaR (numeric) residual water content (cm3/cm3)
-#' @param thetaS (numeric) saturated water content (cm3/cm3)
-#' @param alfa (numeric)  related to the inverse of the air entry suction, alfa > 0 (1/cm)
-#' @param n (numeric)  a measure of the pore-size distribution, n>1, dimensionless
-#'
-#' @return theta (numeric) water content (cm3/cm3)
-#'
-#' @export
-pF_curve <- function(head, thetaR, thetaS, alfa, n) {
-  theta <- thetaR + (thetaS - thetaR) / (1 + abs(alfa * head) ^ n) ^ (1 - 1 / n)
-  
-  return(theta)
-}
-
-
-
-#' Estimate soil pore space (= theta_sat) (cm3/cm3)
-#'
-#' @inheritParams sptf_bd0
-#' @param method (CHAR) The method to estimate soil density. "Heinen" or "average"
-#'
-#' @export
-calc_soil_porosity <- function(D_BDS,
-                               A_SAND_MI = NULL,
-                               A_CLAY_MI = NULL,
-                               A_SILT_MI = NULL,
-                               A_SOM_LOI = NULL,
-                               method = "average") {
-  # check inputs
-  arg.length <- max(length(D_BDS))
-  checkmate::assert_subset(method, choices = c('Heinen', 'average'))
-  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length,null.ok = TRUE)
-  checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, len = arg.length,null.ok = TRUE)
-  checkmate::assert_numeric(A_SAND_MI, lower = 0, upper = 100, len = arg.length,null.ok = TRUE)
-  checkmate::assert_numeric(A_SOM_LOI, lower = 0, upper = 100, len = arg.length,null.ok = TRUE)
-  checkmate::assert_numeric(D_BDS, lower = 0, upper = 2000, len = arg.length)
-  
-    if (method == "Heinen") {
-      # Calulate soil density (g/cm3), according to Heinen 2006
-      # Heinen, M., (2006) Application of a widely used denitrification model to Dutch datasets. Geoderma 133, 464e473.
-      
-      # Convert sand/clay/silt fraction to % in the whole soil (instead of % in mineral soil)
-      # (The original ref should be checked to see if this conversion is really necessary)
-      A_SAND_MI <- A_SAND_MI / 100 * (100 - A_SOM_LOI)
-      A_CLAY_MI <- A_CLAY_MI / 100 * (100 - A_SOM_LOI)
-      A_SILT_MI <- A_SILT_MI / 100 * (100 - A_SOM_LOI)
-      
-      soildens <-
-        1 / (A_SOM_LOI / 147 +  A_CLAY_MI / 275 +  (A_SILT_MI + A_SAND_MI) / 266)
-      
-    }
-    
-    if (method == "average") {
-      # Average soil density (cm3), Nasta et al. 2021
-      soildens <-
-        2.65 # average particle density (cm3), Nasta et al. 2021
-    }
-    
-    
-    # calculate soil pore space (= theta_sat) (cm3/cm3)
-    theta_sat <- 1 - D_BDS / soildens
-    
-    return(theta_sat)
-  }
