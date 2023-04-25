@@ -873,53 +873,39 @@ ptf_whc_all <- function(dt){
   
   
   # estimate the WHC by the pedotransfer functions
-  mp_wp = 1500
-  mp_fc = 33
-  #mp_fc = 10
-  
   dt[, p1 := sptf_whc1(A_C_OF = A_C_OF, A_SAND_MI = A_SAND_MI, A_CLAY_MI = A_CLAY_MI)]
   dt[, p2 := sptf_whc2(A_C_OF = A_C_OF, A_SAND_MI = A_SAND_MI, A_CLAY_MI = A_CLAY_MI)] 
-  dt[, p3 := sptf_whc3(A_SAND_MI = A_SAND_MI, A_CLAY_MI = A_CLAY_MI, mp_wp = mp_wp, mp_fc = mp_fc)] 
-  dt[, p4 := sptf_whc4(A_SAND_MI = A_SAND_MI, A_CLAY_MI = A_CLAY_MI, D_BDS = D_BDS, A_DEPTH = 30, mp_wp = mp_wp)] 
-  dt[, p5 := sptf_whc5(A_SILT_MI = A_SILT_MI, A_CLAY_MI = A_CLAY_MI, D_BDS = D_BDS, A_SOM_LOI = A_SOM_LOI, 
-                       topsoil = 1, mp_wp = mp_wp, mp_fc = mp_fc)] 
-  dt[, p6 := sptf_whc6(A_SAND_MI = A_SAND_MI, A_CLAY_MI = A_CLAY_MI, D_BDS = D_BDS, A_C_OF = A_C_OF,
-                       mp_wp = mp_wp, mp_fc = mp_fc)] 
-  # PTF7: This PTF uses the package 'euptf2'. The function 'euptf2::euptfFun' does not work when the data frame has only 1 row ?!
-  dt[, p7 := sptf_whc7(A_SAND_MI = A_SAND_MI, A_CLAY_MI = A_CLAY_MI, A_SILT_MI = A_SILT_MI,
-                       D_BDS = D_BDS, A_C_OF = A_C_OF, A_DEPTH = 30, mp_wp = mp_wp, mp_fc = mp_fc)] 
-  dt[, p8 := sptf_whc8(A_SAND_MI = A_SAND_MI, A_CLAY_MI = A_CLAY_MI,  D_BDS = D_BDS, A_C_OF = A_C_OF,
-                       mp_wp = mp_wp, mp_fc = mp_fc)] 
-  # PTF9: field capacity (mp_fc) should be either 33 or 10 kPa.
-  dt[, p9 := sptf_whc9(A_CLAY_MI = A_CLAY_MI, A_SILT_MI = A_SILT_MI, A_C_OF = A_C_OF,  mp_fc = mp_fc)] 
-  # PTF10: field capacity (mp_fc) should be either 33 or 10 kPa.
-  dt[, p10 := sptf_whc10(A_CLAY_MI = A_CLAY_MI, A_SILT_MI = A_SILT_MI, A_SAND_MI = A_SAND_MI, A_C_OF = A_C_OF,
-                         D_BDS = D_BDS, mp_fc = mp_fc)]
-  # # PTF11: Calculation of wrc parameters may be wrong. The calculated water content is out of normal range.
-  # dt[, p11 := sptf_whc11(A_CLAY_MI = A_CLAY_MI, A_SILT_MI = A_SILT_MI, D_BDS = D_BDS,
-  #                        mp_wp = mp_wp, mp_fc = mp_fc)] 
-  # # PTF12: Calculation of wrc parameters may be wrong. The calculated water content is out of normal range.
-  # dt[, p12 := sptf_whc12(A_CLAY_MI = A_CLAY_MI, A_SAND_MI = A_SAND_MI, D_BDS = D_BDS,
-  #                        mp_wp = mp_wp, mp_fc = mp_fc)]
-  dt[, p13 := sptf_whc13(A_SAND_MI = A_SAND_MI, A_CLAY_MI = A_CLAY_MI, D_BDS = D_BDS, A_C_OF = A_C_OF, 
-                         mp_wp = mp_wp, mp_fc = mp_fc)]
-  dt[, p14 := sptf_whc14(A_CLAY_MI = A_CLAY_MI, A_SILT_MI = A_SILT_MI, A_SOM_LOI = A_SOM_LOI, 
-                         A_SAND_M50 = 150, topsoil = 1, mp_wp = mp_wp, mp_fc = mp_fc)] 
-  dt[, p15 := sptf_whc15(A_CLAY_MI = A_CLAY_MI, A_SILT_MI = A_SILT_MI, A_SOM_LOI = A_SOM_LOI, 
-                         A_SAND_M50 = 150, topsoil = 1, mp_wp = mp_wp, mp_fc = mp_fc)] 
-  # # PTF16: table (soilptf::sptf_bouwsteen) is not properly loaded within the function. To be fixed.
-  dt[, p16 := sptf_whc16(A_CLAY_MI = A_CLAY_MI, A_SILT_MI = A_SILT_MI, A_SOM_LOI = A_SOM_LOI,
-                         A_SAND_M50 = 150, mp_wp = mp_wp, mp_fc = mp_fc)]
-
+  dt[, p3 := sptf_whc3(A_SAND_MI = A_SAND_MI, A_CLAY_MI = A_CLAY_MI)] 
+  dt[, p4 := sptf_whc4(A_C_OF = A_C_OF, A_CLAY_MI = A_CLAY_MI,A_SAND_MI = A_SAND_MI)] 
+  dt[, p5 := sptf_whc5(A_SOM_LOI = A_SOM_LOI,A_CLAY_MI = A_CLAY_MI,A_SILT_MI = A_SILT_MI)] 
+  dt[, p6 := sptf_whc6(A_C_OF = A_C_OF, A_CLAY_MI = A_CLAY_MI,A_SAND_MI = A_SAND_MI)] 
   
+  # PTF7: This PTF uses the package 'euptf2'. The function 'euptf2::euptfFun' does not work when the data frame has only 1 row ?!
+  dt[, p7 := sptf_whc7(A_C_OF = A_C_OF, A_CLAY_MI = A_CLAY_MI, A_SILT_MI = A_SILT_MI,A_SAND_MI = A_SAND_MI)] 
+  dt[, p8 := sptf_whc8(A_C_OF = A_C_OF, A_CLAY_MI = A_CLAY_MI,A_SAND_MI = A_SAND_MI)] 
+  dt[, p9 := sptf_whc9(A_C_OF = A_C_OF, A_CLAY_MI = A_CLAY_MI, A_SILT_MI = A_SILT_MI)] 
+  dt[, p10 := sptf_whc10(A_C_OF = A_C_OF,A_CLAY_MI = A_CLAY_MI, A_SILT_MI = A_SILT_MI, A_SAND_MI = A_SAND_MI)]
+  # # PTF11: Calculation of wrc parameters may be wrong. The calculated water content is out of normal range.
+  dt[, p11 := sptf_whc11(A_C_OF = A_C_OF, A_CLAY_MI = A_CLAY_MI, A_SILT_MI = A_SILT_MI)] 
+  # # PTF12: Calculation of wrc parameters may be wrong. The calculated water content is out of normal range.
+  dt[, p12 := sptf_whc12(A_C_OF = A_C_OF,A_CLAY_MI = A_CLAY_MI, A_SAND_MI = A_SAND_MI)]
+  dt[, p13 := sptf_whc13(A_C_OF = A_C_OF, A_CLAY_MI = A_CLAY_MI,A_SAND_MI = A_SAND_MI)]
+  dt[, p14 := sptf_whc14(A_SOM_LOI = A_SOM_LOI,A_CLAY_MI = A_CLAY_MI,A_SILT_MI = A_SILT_MI)] 
+  dt[, p15 := sptf_whc15(A_SOM_LOI = A_SOM_LOI,A_CLAY_MI = A_CLAY_MI,A_SILT_MI = A_SILT_MI)] 
+  # # PTF16: table (soilptf::sptf_bouwsteen) is not properly loaded within the function. To be fixed.
+  dt[, p16 := sptf_whc16(A_SOM_LOI = A_SOM_LOI,A_CLAY_MI = A_CLAY_MI,A_SILT_MI = A_SILT_MI)]
+
   
   # melt the data
   dt2 <- melt(dt, 
               id.vars = c('id','A_SOM_LOI', "A_C_OF", "A_CLAY_MI", "A_SAND_MI", "A_SILT_MI", "D_BDS", "A_DEPTH"),
-              measure = patterns('^p'),
-              variable.name = 'ptf_id')
+              measure = patterns('^p[0-9]'),
+              variable.name = 'ptf_id',
+              value.name = 'whc')
   dt2[,ptf_id := as.integer(gsub('p','',ptf_id))]
 
+  # check values, set NaN to NA
+  dt2[!is.finite(whc), whc := NA_real_]
   
   return(dt2)
 
@@ -1055,7 +1041,7 @@ ptf_cec_all <- function(dt){
   # melt the data
   dt2 <- melt(dt, 
               id.vars = 'id',
-              measure = patterns('^p'),
+              measure = patterns('^p[0-9]'),
               variable.name = 'ptf_id',
               value.name = 'cec')
   dt2[,ptf_id := as.integer(gsub('p','',ptf_id))]
@@ -1091,7 +1077,7 @@ ptf_phbc_all <- function(dt){
   dt <- copy(dt)
   
   # add all possible inputs as NA when missing
-  cols <- c('A_SOM_LOI', 'A_C_OF', 'A_CLAY_MI','A_PH_WA','A_SAND_MI','A_SILT_MI')
+  cols <- c('A_SOM_LOI', 'A_C_OF', 'A_CLAY_MI','A_PH_WA','A_SAND_MI','A_SILT_MI','A_PH_KCL','A_PH_CC')
   cols <- cols[!cols %in% colnames(dt)]
   dt[,c(cols) := NA_real_]
   
@@ -1122,10 +1108,13 @@ ptf_phbc_all <- function(dt){
   # melt the data
   dt2 <- melt(dt, 
               id.vars = 'id',
-              measure = patterns('^p'),
+              measure = patterns('^p[0-9]'),
               variable.name = 'ptf_id',
               value.name = 'phbc')
   dt2[,ptf_id := as.integer(gsub('p','',ptf_id))]
+  
+  # check values, set NaN to NA
+  dt2[!is.finite(phbc), phbc := NA_real_]
   
   # return value
   return(dt2)
@@ -1154,12 +1143,17 @@ ptf_mwd_all <- function(dt){
   # make local copy
   dt <- copy(dt)
   
-  # add all possible inputs as NA when missing
+  # add all possible numeric inputs as NA when missing
   cols <- c('A_SOM_LOI', 'A_C_OF', 'A_CLAY_MI','A_SAND_MI','A_SILT_MI',
-            'A_CEC_CO','A_CACO3_MI','A_PH_WA','B_LU_PTFCLASS')
+            'A_CEC_CO','A_CACO3_MI','A_PH_WA','A_PH_KCL','A_PH_CC')
   cols <- cols[!cols %in% colnames(dt)]
   dt[,c(cols) := NA_real_]
   
+  # add all character inputs as NA when missing
+  cols <- c('B_LU_PTFCLASS','B_SOILCLASS_USDA','B_CLIM_CAT1')
+  cols <- cols[!cols %in% colnames(dt)]
+  dt[,c(cols) := NA_character_]
+ 
   # estimate missing variables for texture being dependent on each other
   dt[, num_obs := Reduce(`+`, lapply(.SD,function(x) !is.na(x))),.SDcols = c('A_CLAY_MI','A_SAND_MI','A_SILT_MI')]
   dt[num_obs == 2 & is.na(A_CLAY_MI), A_CLAY_MI := 100 - A_SAND_MI - A_SILT_MI]
@@ -1198,7 +1192,7 @@ ptf_mwd_all <- function(dt){
   # melt the data
   dt2 <- melt(dt, 
               id.vars = 'id',
-              measure = patterns('^p'),
+              measure = patterns('^p[0-9]'),
               variable.name = 'ptf_id',
               value.name = 'mwd')
   dt2[,ptf_id := as.integer(gsub('p','',ptf_id))]
@@ -1232,7 +1226,7 @@ ptf_wsa_all <- function(dt){
   
   # add all possible inputs as NA when missing
   cols <- c('A_SOM_LOI', 'A_C_OF', 'A_CLAY_MI','A_SAND_MI','A_SILT_MI',
-            'A_CACO3_MI','A_PH_WA','A_K_AA')
+            'A_CACO3_MI','A_PH_WA','A_K_AA','A_PH_KCL','A_PH_CC')
   cols <- cols[!cols %in% colnames(dt)]
   dt[,c(cols) := NA_real_]
   
@@ -1266,10 +1260,13 @@ ptf_wsa_all <- function(dt){
   # melt the data
   dt2 <- melt(dt, 
               id.vars = 'id',
-              measure = patterns('^p'),
+              measure = patterns('^p[0-9]'),
               variable.name = 'ptf_id',
               value.name = 'wsa')
   dt2[,ptf_id := as.integer(gsub('p','',ptf_id))]
+  
+  # check values, set NaN to NA
+  dt2[!is.finite(wsa), wsa := NA_real_]
   
   # return value
   return(dt2)
@@ -1299,7 +1296,8 @@ ptf_hwc_all <- function(dt){
   dt <- copy(dt)
   
   # add all possible inputs as NA when missing
-  cols <- c('A_SOM_LOI', 'A_C_OF', 'A_CLAY_MI','A_SAND_MI','A_SILT_MI','A_PH_CC','A_P_AL')
+  cols <- c('A_SOM_LOI', 'A_C_OF', 'A_CLAY_MI','A_SAND_MI','A_SILT_MI','A_PH_CC','A_P_AL',
+            'A_PH_KCL','A_PH_WA')
   
   cols <- cols[!cols %in% colnames(dt)]
   dt[,c(cols) := NA_real_]
@@ -1337,10 +1335,13 @@ ptf_hwc_all <- function(dt){
   # melt the data
   dt2 <- melt(dt, 
               id.vars = 'id',
-              measure = patterns('^p'),
+              measure = patterns('^p[0-9]'),
               variable.name = 'ptf_id',
               value.name = 'hwc')
   dt2[,ptf_id := as.integer(gsub('p','',ptf_id))]
+  
+  # check values, set NaN to NA
+  dt2[!is.finite(hwc), hwc := NA_real_]
   
   # return value
   return(dt2)
@@ -1440,16 +1441,19 @@ ptf_cdec_all <- function(dt){
   # dt[is.na(D_BDS), D_BDS := 1617 - 77.4 * log(A_C_OF) - 3.49 * A_C_OF]
   
   # estimate the percentage hot water carbon (mg/kg)
-  dt[A_SOM_LOI > 20, p1 := sptf_dec1(A_C_OF = A_C_OF, A_N_RT = A_N_RT, years = 10)]
-  dt[A_SOM_LOI <= 20, p1 := sptf_dec2(A_C_OF = A_C_OF, years = 10)]
+  dt[A_SOM_LOI > 20, p1 := sptf_cdec1(A_C_OF = A_C_OF, A_N_RT = A_N_RT, years = 10)]
+  dt[A_SOM_LOI <= 20, p1 := sptf_cdec2(A_C_OF = A_C_OF, years = 10)]
  
   # melt the data
   dt2 <- melt(dt, 
               id.vars = 'id',
-              measure = patterns('^p'),
+              measure = patterns('^p[0-9]'),
               variable.name = 'ptf_id',
               value.name = 'cdec')
   dt2[,ptf_id := as.integer(gsub('p','',ptf_id))]
+  
+  # check values, set NaN to NA
+  dt2[!is.finite(cdec), cdec := NA_real_]
   
   # return value
   return(dt2)
@@ -1484,8 +1488,8 @@ ptf_pmn_all <- function(dt){
   dt <- copy(dt)
   
   # add all possible inputs as NA when missing
-  cols <- c('A_C_OF', 'A_CLAY_MI','A_SAND_MI','A_SILT_MI',
-            'A_N_RT', 'A_PH_CC', 'A_CEC_CO','A_P_AL')
+  cols <- c('A_C_OF','A_SOM_LOI', 'A_CLAY_MI','A_SAND_MI','A_SILT_MI',
+            'A_N_RT', 'A_PH_CC', 'A_CEC_CO','A_P_AL','A_PH_KCL','A_PH_WA')
   cols <- cols[!cols %in% colnames(dt)]
   dt[,c(cols) := NA_real_]
   
@@ -1513,9 +1517,9 @@ ptf_pmn_all <- function(dt){
   # Calculate Nmin (mg/kg) for t days at 35 dC
   dt[, p2 := sptf_pmn2(A_C_OF = A_C_OF, A_SILT_MI = A_SILT_MI, A_N_RT = A_N_RT, A_PH_CC = A_PH_CC, t = 7)] 
   # Calculate Nmin (mg/kg) for 7 days at 40 dC
-  dt[, p3 := sptf_pmn3(A_N_RT = A_N_RT, A_CLAY_MI = A_CLAY_MI)] 
+  dt[, p3 := sptf_pmn3(A_C_OF = A_C_OF,A_N_RT = A_N_RT, A_CLAY_MI = A_CLAY_MI)] 
   # Calculate Nmin (mg/kg) for 7 days at 40 dC
-  dt[, p4 := sptf_pmn4(A_N_RT = A_N_RT, A_CLAY_MI = A_CLAY_MI)] 
+  dt[, p4 := sptf_pmn4(A_C_OF = A_C_OF,A_N_RT = A_N_RT, A_CLAY_MI = A_CLAY_MI)] 
   # Calculate Nmin (mg/kg) based on 1-pool model for t days
   dt[, p5 := sptf_pmn5(A_N_RT = A_N_RT, A_C_OF = A_C_OF, A_CEC_CO = A_CEC_CO, t = 7)] 
   # Calculate Nmin (mg/kg) based on 2-pool model for t days
@@ -1544,11 +1548,13 @@ ptf_pmn_all <- function(dt){
   # melt the data
   dt2 <- melt(dt, 
               id.vars = 'id',
-              measure = patterns('^p'),
+              measure = patterns('^p[0-9]'),
               variable.name = 'ptf_id',
               value.name = 'pmn')
   dt2[,ptf_id := as.integer(gsub('p','',ptf_id))]
   
+  # check values, set NaN to NA
+  dt2[!is.finite(pmn), pmn := NA_real_]
   
   return(dt2)
   
