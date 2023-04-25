@@ -16,10 +16,10 @@ sptf_pmn1 <- function(A_C_OF, A_CLAY_MI, A_N_RT, A_PH_CC) {
   
   # Check input
   arg.length <- max(length(A_C_OF), length(A_CLAY_MI), length(A_N_RT), length(A_PH_CC))
-  check_numeric('A_C_OF', A_C_OF, FALSE, arg.length)
-  check_numeric('A_CLAY_MI', A_CLAY_MI, FALSE, arg.length)
-  check_numeric('A_N_RT', A_N_RT, FALSE, arg.length)
-  check_numeric('A_PH_CC', A_PH_CC, FALSE, arg.length)
+  checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000,len = arg.length)
+  checkmate::assert_numeric(A_CLAY_MI, len = arg.length)
+  checkmate::assert_numeric(A_N_RT, len = arg.length)
+  checkmate::assert_numeric(A_PH_CC, len = arg.length)
   
   # Collect data into a table
   dt <- data.table(A_C_OF = A_C_OF, 
@@ -28,8 +28,12 @@ sptf_pmn1 <- function(A_C_OF, A_CLAY_MI, A_N_RT, A_PH_CC) {
                    A_PH_CC = A_PH_CC,
                    value = NA_real_)
   
-  # compute C:N ratio
+  # compute C:N ratio and replace by mean value when data is missing
   dt[, A_CN_FR := A_C_OF / (A_N_RT/1000)]
+  dt[is.na(A_CN_FR), A_CN_FR := 13.55]
+  
+  # adjust Ntotal from CN ratio
+  dt[is.na(A_N_RT), A_N_RT := A_C_OF * 1000/ A_CN_FR]
   
   # Convert to the units of the predictors in the literature:
   # organic C (g/kg), DTPA Fe (mg/kg), clay (g/kg), total N (mg/kg)
@@ -38,6 +42,9 @@ sptf_pmn1 <- function(A_C_OF, A_CLAY_MI, A_N_RT, A_PH_CC) {
   # DTPA Fe (mg/kg) data is not available, but this predictor is not significantly correlated to the response varialle.
   # Therefore, we will use the median value of DTPA Fe (N=15)
   dt[, A_FE_DTPA := median(c(339, 63, 178, 178, 112, 264, 295, 340, 486, 485, 415, 236, 284, 24, 166))]
+  
+  # idem for soil pH
+  dt[is.na(A_PH_CC), A_PH_CC := median(c(4.3,5.2,7.7,4.9,5.4,5.1,6.1,5.6,5.4,5.6,5.5,5.3,6.1,6.3,5))]
   
   # Calculate PMN (mg/kg), 30 dC for 14 days
   
@@ -74,14 +81,14 @@ sptf_pmn1 <- function(A_C_OF, A_CLAY_MI, A_N_RT, A_PH_CC) {
 sptf_pmn2 <- function(A_C_OF, A_SILT_MI, A_N_RT, A_PH_CC, t = 7) {
   
   # add visual bindings
-  f = k = NULL
+  f = k = A_CN_FR = NULL
   
   # Check input
   arg.length <- max(length(A_C_OF), length(A_SILT_MI), length(A_N_RT), length(A_PH_CC))
-  check_numeric('A_C_OF', A_C_OF, FALSE, arg.length)
-  check_numeric('A_SILT_MI', A_SILT_MI, FALSE, arg.length)
-  check_numeric('A_N_RT', A_N_RT, FALSE, arg.length)
-  check_numeric('A_PH_CC', A_PH_CC, FALSE, arg.length)
+  checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000, len = arg.length)
+  checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_numeric(A_N_RT, lower = 0, upper = 50000, len = arg.length)
+  checkmate::assert_numeric(A_PH_CC, lower = 3, upper = 13, len = arg.length)
   checkmate::assert_numeric(t, lower = 0, upper = 35)
   
   # Collect data into a table
@@ -92,8 +99,16 @@ sptf_pmn2 <- function(A_C_OF, A_SILT_MI, A_N_RT, A_PH_CC, t = 7) {
                    t = t,
                    value = NA_real_)
   
+  # calculate CN ratio
+  dt[, A_CN_FR := A_C_OF / (A_N_RT * 0.001)]
+  dt[is.na(A_CN_FR), A_CN_FR := 7.49]
+  dt[is.na(A_N_RT), A_N_RT := A_C_OF * A_CN_FR * 1000]
+  
+  # add missing value for pH
+  dt[is.na(A_PH_CC), A_PH_CC := 4.93]
+  
   # convert unit to match the predictors' unit
-  dt[, A_N_RT :=  A_N_RT * 0.1 * 10^-3] # mg/kg to %
+  dt[, A_N_RT :=  A_N_RT * 0.1 * 0.001] # mg/kg to %
   dt[, A_C_OF := A_C_OF * 0.1] # g/kg to %
   
   # mineralization rate constants for soil resistant N (d-1)
@@ -130,17 +145,26 @@ sptf_pmn2 <- function(A_C_OF, A_SILT_MI, A_N_RT, A_PH_CC, t = 7) {
 #' @references Ros & Fujita (2020) FACTSHEET actools: Potential Mineralizable N Index v.0.4.
 #'
 #' @export
-sptf_pmn3 <- function(A_N_RT, A_CLAY_MI) {
+sptf_pmn3 <- function(A_C_OF,A_N_RT, A_CLAY_MI) {
   
   # Check input
-  arg.length <- max(length(A_N_RT), length(A_CLAY_MI))
-  check_numeric('A_N_RT', A_N_RT, FALSE, arg.length)
-  check_numeric('A_CLAY_MI', A_CLAY_MI, FALSE, arg.length)
-  
+  arg.length <- max(length(A_C_OF),length(A_N_RT), length(A_CLAY_MI))
+  checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000, len = arg.length)
+  checkmate::assert_numeric(A_N_RT, lower = 0, upper = 50000, len = arg.length)
+  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
+
   # Collect data into a table
-  dt <- data.table(A_N_RT = A_N_RT,
+  dt <- data.table(id = 1:arg.length,
+                   A_C_OF = A_C_OF,
+                   A_N_RT = A_N_RT,
+                   A_CN_FR = A_C_OF * 1000 / A_N_RT,
                    A_CLAY_MI = A_CLAY_MI, 
                    value = NA_real_)
+  
+  # estimate A_N_RT from missing data assuming mean CN ratio (derived from historical datasets)
+  dt[is.na(A_CN_FR) & A_CLAY_MI <= 10, A_CN_FR := 16.8]
+  dt[is.na(A_CN_FR) & A_CLAY_MI > 10, A_CN_FR := 12.2]
+  dt[is.na(A_N_RT), A_N_RT := A_C_OF * A_CN_FR * 1000]
   
   # Calculate Nmin (mg/kg) for 7 days at 40 dC
   dt[, value := exp(-3.440931 + 1.1012449 * log(A_N_RT) + -0.055858 * log(A_CLAY_MI))]
@@ -162,17 +186,25 @@ sptf_pmn3 <- function(A_N_RT, A_CLAY_MI) {
 #' @references Ros & Fujita (2020) FACTSHEET actools: Potential Mineralizable N Index v.0.4.
 #'
 #' @export
-sptf_pmn4 <- function(A_N_RT, A_CLAY_MI) {
+sptf_pmn4 <- function(A_C_OF,A_N_RT, A_CLAY_MI) {
   
   # Check input
-  arg.length <- max(length(A_N_RT), length(A_CLAY_MI))
-  check_numeric('A_N_RT', A_N_RT, FALSE, arg.length)
-  check_numeric('A_CLAY_MI', A_CLAY_MI, FALSE, arg.length)
+  arg.length <- max(length(A_C_OF),length(A_N_RT), length(A_CLAY_MI))
+  checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000, len = arg.length)
+  checkmate::assert_numeric(A_N_RT, lower = 0, upper = 50000, len = arg.length)
+  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
   
   # Collect data into a table
-  dt <- data.table(A_N_RT = A_N_RT,
+  dt <- data.table(A_C_OF = A_C_OF,
+                   A_N_RT = A_N_RT,
+                   A_CN_FR = A_C_OF * 1000 / A_N_RT,
                    A_CLAY_MI = A_CLAY_MI, 
                    value = NA_real_)
+  
+  # estimate A_N_RT from missing data assuming mean CN ratio (derived from historical datasets)
+  # mean CN ratio from Cleveland and Liptzin (2007) and Lal (2008)
+  dt[is.na(A_CN_FR), A_CN_FR := 12.3]
+  dt[is.na(A_N_RT), A_N_RT := A_C_OF * A_CN_FR * 1000]
   
   # Calculate Nmin (mg/kg) for 7 days at 40 dC
   dt[, value := exp(-2.333 + 0.897 * log(A_N_RT) + -0.069 * log(A_CLAY_MI))]
@@ -203,9 +235,9 @@ sptf_pmn5 <- function(A_N_RT, A_C_OF, A_CEC_CO, t = 7) {
   
   # Check input
   arg.length <- max(length(A_N_RT), length(A_C_OF), length(A_CEC_CO))
-  check_numeric('A_N_RT', A_N_RT, FALSE, arg.length)
-  check_numeric('A_C_OF', A_C_OF, FALSE, arg.length)
-  check_numeric('A_CEC_CO', A_CEC_CO, FALSE, arg.length)
+  checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000, len = arg.length)
+  checkmate::assert_numeric(A_N_RT, lower = 0, upper = 50000, len = arg.length)
+  checkmate::assert_numeric(A_CEC_CO, lower = 0, upper = 800, len = arg.length)
   checkmate::assert_numeric(t, lower = 0, upper = 100)
   
   # Collect data into a table
@@ -263,11 +295,11 @@ sptf_pmn6 <- function(A_N_RT, A_C_OF, A_CLAY_MI, A_SILT_MI, A_PH_CC, t = 7, RES 
   
   # Check input
   arg.length <- max(length(A_N_RT), length(A_C_OF), length(A_CLAY_MI), length(A_SILT_MI), length(A_PH_CC))
-  check_numeric('A_N_RT', A_N_RT, FALSE, arg.length)
-  check_numeric('A_C_OF', A_C_OF, FALSE, arg.length)
-  check_numeric('A_CLAY_MI', A_CLAY_MI, FALSE, arg.length)
-  check_numeric('A_SILT_MI', A_SILT_MI, FALSE, arg.length)
-  check_numeric('A_PH_CC', A_PH_CC, FALSE, arg.length)
+  checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000, len = arg.length)
+  checkmate::assert_numeric(A_N_RT, lower = 0, upper = 50000, len = arg.length)
+  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_numeric(A_PH_CC, lower = 3, upper = 13, len = arg.length)
   checkmate::assert_numeric(t, lower = 0, upper = 100)
   checkmate::assert_numeric(RES,lower = 0, upper = 1)
   
@@ -327,8 +359,8 @@ sptf_pmn7 <- function(A_C_OF, A_CLAY_MI, t = 7) {
   
   # Check input
   arg.length <- max(length(A_C_OF), length(A_CLAY_MI))
-  check_numeric('A_C_OF', A_C_OF, FALSE, arg.length)
-  check_numeric('A_CLAY_MI', A_CLAY_MI, FALSE, arg.length)
+  checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000, len = arg.length)
+  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
   checkmate::assert_numeric(t, lower = 0, upper = 100)
 
   # Collect data into a table (set SOC to %)
@@ -368,9 +400,9 @@ sptf_pmn8 <- function(A_N_RT, A_CEC_CO, A_SILT_MI, t = 7) {
   
   # Check input
   arg.length <- max(length(A_N_RT), length(A_CEC_CO), length(A_SILT_MI))
-  check_numeric('A_N_RT', A_N_RT, FALSE, arg.length)
-  check_numeric('A_CEC_CO', A_CEC_CO, FALSE, arg.length)
-  check_numeric('A_SILT_MI', A_SILT_MI, FALSE, arg.length)
+  checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_numeric(A_N_RT, lower = 0, upper = 50000, len = arg.length)
+  checkmate::assert_numeric(A_CEC_CO, lower = 0, upper = 800, len = arg.length)
   checkmate::assert_numeric(t, lower = 0, upper = 100)
   
   # Collect data into a table
@@ -422,7 +454,7 @@ sptf_pmn9 <- function(A_N_RT, CULT = 1, t = 7) {
   
   # Check input
   arg.length <- max(length(A_N_RT), length(CULT))
-  check_numeric('A_N_RT', A_N_RT, FALSE, arg.length)
+  checkmate::assert_numeric(A_N_RT, lower = 0, upper = 50000, len = arg.length)
   checkmate::assert_numeric(t, lower = 0, upper = 100)
   
   # Collect data into a table
@@ -474,7 +506,7 @@ sptf_pmn10 <- function(A_N_RT, t = 7) {
   
   # Check input
   arg.length <- max(length(A_N_RT))
-  check_numeric('A_N_RT', A_N_RT, FALSE, arg.length)
+  checkmate::assert_numeric(A_N_RT, lower = 0, upper = 50000, len = arg.length)
   checkmate::assert_numeric(t, lower = 0, upper = 100)
   
   # Collect data into a table
@@ -688,7 +720,7 @@ sptf_pmn15 <- function(A_C_OF,A_P_AL,A_CLAY_MI) {
   dt[!is.na(A_CLAY_MI) & is.na(A_P_AL),value := exp(0.23228 + 0.87849 * log(A_C_OF) + 0.32279 * log(A_CLAY_MI))]
   
   # experimental data from Van Balen et al. (2015), n = 120, R2 = 0.25, 0-30 cm soil
-  dt[is.na(A_PH_CC) & is.na(A_CLAY_MI),value := exp(2.28216 + 0.42048 * log(A_C_OF))]
+  dt[is.na(A_P_AL) & is.na(A_CLAY_MI),value := exp(2.28216 + 0.42048 * log(A_C_OF))]
   
   # select output variable
   value <- dt[,value]

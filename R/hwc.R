@@ -215,7 +215,7 @@ sptf_hwc6 <- function(A_C_OF,A_P_AL,A_CLAY_MI) {
   dt[!is.na(A_CLAY_MI) & is.na(A_P_AL),value := exp(3.36622 + 0.96466 * log(A_C_OF) -0.06135 * log(A_CLAY_MI))]
   
   # experimental data from Van Balen et al. (2015), n = 120, R2 = 0.93, 0-30 cm soil
-  dt[is.na(A_PH_CC) & is.na(A_CLAY_MI),value := exp(2.97662 + 1.05171 * log(A_C_OF))]
+  dt[is.na(A_P_AL) & is.na(A_CLAY_MI),value := exp(2.97662 + 1.05171 * log(A_C_OF))]
   
   # select output variable
   value <- dt[,value]

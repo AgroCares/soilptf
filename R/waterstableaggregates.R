@@ -51,7 +51,8 @@ sptf_wsa2 <- function(A_SOM_LOI) {
   checkmate::assert_numeric(A_SOM_LOI, lower = 0, upper = 100, any.missing = FALSE)
   
   # Collect data into a table (SOC in %)
-  dt <- data.table(A_SOM_LOI = A_SOM_LOI,
+  dt <- data.table(id = 1:length(A_SOM_LOI),
+                   A_SOM_LOI = A_SOM_LOI,
                    value = NA_real_)
   
   # estimate percentage of water stable aggregates(>0.5 mm) (n = 14, R2 = 0.87) on sandy grassland soils
@@ -107,8 +108,9 @@ sptf_wsa3 <- function(A_SOM_LOI,A_CLAY_MI,A_SILT_MI,A_K_AA,A_PH_WA) {
                    A_PH_WA = A_PH_WA,
                    value = NA_real_)
   
-  # replace missing K with mean value
+  # replace missing K and soil pH with mean value
   dt[is.na(A_K_AA), A_K_AA := 0.59]
+  dt[is.na(A_PH_WA), A_PH_WA := 7.56]
   
   # set mean EC value (dS/m)
   dt[, EC := 0.65]
@@ -158,15 +160,15 @@ sptf_wsa4 <- function(A_CLAY_MI,A_SILT_MI,A_C_OF) {
                    A_SILT_MI = A_SILT_MI * 10)
   
   # estimate 1 and 2 based on OC (R2 0.65 and 0.96)
-  dt[,v1 := 85/(1+357 * exp(1.5 * A_C_OF))]
-  dt[,v2 := 90/(1+2.9 * exp(0.5 * A_C_OF))]
+  dt[,v1 := 85/(1+357 * exp(-1.5 * A_C_OF))]
+  dt[,v2 := 90/(1+2.9 * exp(-0.5 * A_C_OF))]
   
   # estimate 2 and 3 based on clay content (R2 0.93 - 0.92)
-  dt[, v3 := 85 * (1.1 - exp(0.015 * A_CLAY_MI))]
-  dt[, v4 := 161 * (0.6 - exp(0.03 * A_CLAY_MI))]
+  dt[, v3 := 85 * (1.1 - exp(-0.015 * A_CLAY_MI))]
+  dt[, v4 := 162 * (0.6 - exp(-0.03 * A_CLAY_MI))]
   
   # estimate 4 and 5 based on sand and clay ratio (R2 0.96 - 0.96)
-  dt[, v5 := 98 + 2.8 * A_SAND_MI / A_CLAY_MI]
+  dt[, v5 := 98 - 2.8 * A_SAND_MI / A_CLAY_MI]
   dt[, v6 := 89 + 0.8 * A_SAND_MI / A_CLAY_MI - 0.2 * (A_SAND_MI/A_CLAY_MI)^2]
   
   # Estimate mean value
@@ -273,6 +275,9 @@ sptf_wsa6 <- function(A_C_OF,A_CLAY_MI,A_SILT_MI,A_CACO3_MI) {
                    A_CACO3_MI = A_CACO3_MI * 10,
                    value = NA_real_)
   
+  # set mean CaCO3 level when its value is unknown
+  dt[is.na(A_CACO3_MI), A_CACO3_MI := 456.4]
+  
   # estimate Aggregate Stability Index MA200 (r = 0.91, n = 68)
   dt[, fsoc := 35.6 + 52.86/(1 + 4.14e5 * exp(-0.67 * A_C_OF))]
   dt[, value := -27.56 + 0.98 * fsoc + 0.41 * (A_CLAY_MI + A_SILT_MI) + 0.13 * A_CACO3_MI ]
@@ -325,6 +330,9 @@ sptf_wsa7 <- function(A_SOM_LOI,A_CLAY_MI,A_SILT_MI,A_PH_WA, A_CACO3_MI) {
   # add mean Fe extractable with citrate-bicarbonate-dithionite
   dt[, fe := 8.3]
   
+  # set mean CaCO3 level when its value is unknown
+  dt[is.na(A_CACO3_MI), A_CACO3_MI := 310]
+  
   # Estimate wsa (g/kg), R2 = 0.37, n = 80 topsoils, Spain
   dt[, value := 44.158 - 0.048 * A_SAND_MI - 0.087 * A_CLAY_MI + 0.002 * A_CACO3_MI +0.431 * A_PH_WA + 0.041 * A_SOM_LOI + 0.756 * fe]
   
@@ -364,7 +372,10 @@ sptf_wsa8 <- function(A_SOM_LOI,A_CLAY_MI) {
                    value = NA_real_)
   
   # Estimate WSA, using an averaged moisture content of 20% (n = 36, R2 = 0.83)
-  dt[, value := 8.17 + 0.84 * A_CLAY_MI + 3.21 * A_SOM_LOI - 0.99 * 20]
+  dt[, value := 8.17 + 0.84 * A_CLAY_MI + 3.21 * A_SOM_LOI - 0.99 * 15]
+  
+  # the function is sensitive to unknown W, so set min and max based on measured values
+  dt[, value := pmin(45,pmax(8, value))]
   
   # select value (%)
   value <- dt[, value]
@@ -401,8 +412,12 @@ sptf_wsa9 <- function(A_SOM_LOI,A_CLAY_MI,A_PH_WA) {
                    A_PH_WA = A_PH_WA,
                    value = NA_real_)
   
+  # when pH water is missing update, replace by mean pH
+  dt[is.na(A_PH_WA), A_PH_WA := 6.7]
+  
   # Estimate WSA (%), R2 = 0.59, n = 109, Chile
   dt[, value := 122.4 + 1.1 * A_SOM_LOI + 0.19 * A_CLAY_MI - 9.1 * A_PH_WA]
+  
   
   # avoid predictions outside calibration range
   dt[value < 12.5 | value > 98.7, value := NA_real_]
@@ -452,7 +467,10 @@ sptf_mwd1 <- function(A_SOM_LOI) {
   dt <- melt(dt,id.vars = 'id',measure.vars = c('v1','v2','v3'))
   dt <- dt[,list(value = mean(value,na.rm=T)),by='id']
   
-  # return value (mm)
+  # adjust value to scale 0 -3 mm
+  dt[,value := value * 0.01]
+  
+  # return value (mm), varied between 37 and 225 mm.
   value <- dt[, value]
   
   # return value
@@ -551,6 +569,11 @@ sptf_mwd3 <- function(A_C_OF,A_CEC_CO,A_CLAY_MI,A_SILT_MI, A_PH_WA, A_CACO3_MI) 
   # Estimate USDA soil type
   dt[, B_SOILTYPE := sptf_textureclass(A_CLAY_MI = A_CLAY_MI,A_SILT_MI = A_SILT_MI,A_SAND_MI = A_SAND_MI)]
   
+  # replace missing pH and CaCo3 with mean values when inputs are missing
+  dt[is.na(A_PH_WA), A_PH_WA := 7.32]
+  dt[is.na(A_CACO3_MI), A_CACO3_MI := 7.81]
+  dt[is.na(A_CEC_CO), A_CEC_CO := 15.8 * 10]
+  
   # estimate Mean Weight Diamater in mm (n = 183, R2 = 0.67 ~ 0.71 ~ 0.91 ~ 0.94)
   dt[grepl('sand',B_SOILTYPE), value := 0.017 * A_C_OF + 0.004 * A_SILT_MI + 0.002 * A_PH_WA + 0.018 * A_CACO3_MI + 0.14 * A_SOM_LOI + 0.0006 * A_CEC_CO + 0.052]
   dt[grepl('silt',B_SOILTYPE), value := 0.007 * A_SILT_MI + 0.001 * A_SAND_MI + 0.05 * A_PH_WA + 2.6e-4 * A_CACO3_MI + 0.04 * A_SOM_LOI + 0.04 * 9.69 + 0.002 * A_CEC_CO - 0.3]
@@ -594,22 +617,34 @@ sptf_mwd4 <- function(A_C_OF,A_CLAY_MI,A_SILT_MI, A_CACO3_MI) {
   # Collect data into a table (SOC and mineralogy in g/kg)
   dt <- data.table(id = 1:arg.length,
                    A_C_OF = A_C_OF,
-                   A_CLAY_MI = A_CLAY_MI * 10,
-                   A_SILT_MI = A_SILT_MI * 10,
+                   A_CLAY_MI = A_CLAY_MI,
+                   A_SILT_MI = A_SILT_MI,
+                   A_SAND_MI = 100 - A_SILT_MI - A_CLAY_MI,
                    A_CACO3_MI = A_CACO3_MI)
   
   # Estimate USDA soil type
   dt[, B_SOILTYPE := sptf_textureclass(A_CLAY_MI = A_CLAY_MI,A_SILT_MI = A_SILT_MI,A_SAND_MI = A_SAND_MI)]
   
-  # estimate Mean Weight Diamater in mm (r = 0.624, n = 113)
+  # update units to g/kg
+  dt[,A_CLAY_MI := A_CLAY_MI * 10]
+  dt[,A_SILT_MI := A_SILT_MI * 10]
+  dt[,A_CACO3_MI := A_CACO3_MI * 10]
+  
+  # add median A_CACO3 when the input missing
+  dt[is.na(A_CACO3_MI), A_CACO3_MI := 30]
+  
+  # estimate Mean Weight Diamater in mm (r = 0.624, n = 113). Units for iron adapted because of too high outputs
   dt[, v1 := 0.5227 + 0.0015 * A_CLAY_MI - 0.0121 * A_C_OF]
-  dt[, v2 := 0.9535 + 0.0036 * A_SILT_MI - 0.0272 * A_C_OF + 0.0011 * A_CACO3_MI + 0.43 * 9.2]
-  dt[, v3 := 0.262 + 0.0052 * A_SILT_MI - 0.0358 * A_C_OF + 0.4784 * 9.2]
-  dt[, v4 := 0.5502 + 0.0031 * A_SILT_MI - 0.0214 * A_C_OF + 0.4460 * 9.2]
+  dt[, v2 := 0.9535 + 0.0036 * A_SILT_MI - 0.0272 * A_C_OF + 0.0011 * A_CACO3_MI + 0.43 * 9.2 * 0.1]
+  dt[, v3 := 0.262 + 0.0052 * A_SILT_MI - 0.0358 * A_C_OF + 0.4784 * 9.2 * 0.1]
+  dt[, v4 := 0.5502 + 0.0031 * A_SILT_MI - 0.0214 * A_C_OF + 0.4460 * 9.2 * 0.1]
   
   # Estimate the mean MWD (in mm)
   dt <- melt(dt,id.vars = 'id',measure.vars = c('v1','v2','v3','v4'))
   dt <- dt[,list(value = mean(value,na.rm=T)),by='id']
+  
+  # set allowable max and min
+  dt[,value := pmin(pmax(0.3,value),3)]
   
   # return value
   value <- dt[, value]
@@ -649,12 +684,15 @@ sptf_mwd5 <- function(A_C_OF, A_CLAY_MI, A_PH_WA) {
                    A_PH_WA = A_PH_WA,
                    value = NA_real_)
   
+  # replace missing pH with mean values when inputs are missing
+  dt[is.na(A_PH_WA), A_PH_WA := 7.0]
+  
   # estimate bulk density (in g / cm3)
   dt[, bd := (1617 - 77.4 * log(A_C_OF) - 3.49 * A_C_OF) * 0.001]
   
   # estimate Mean Weight Diamater (n = 120, R2 = 0.63)
   # estimate water retention at -33 kPa from clay content
-  dt[, value := -4.731 + 7.453 * bd + 0.200 * (-14.2099 * A_CLAY_MI^0.5) - 0.570 * A_PH_WA]
+  dt[, value := -4.731 + 7.453 * bd + 0.200 * (-14.2099 + 8.3147 * A_CLAY_MI^0.5) - 0.570 * A_PH_WA]
   
   # return value (mm)
   value <- dt[, value]
@@ -770,6 +808,10 @@ sptf_mwd8 <- function(A_SOM_LOI,A_CLAY_MI,A_SILT_MI,A_PH_WA, A_CACO3_MI) {
   # Estimate USDA soil type
   dt[, B_SOILTYPE := sptf_textureclass(A_CLAY_MI = A_CLAY_MI,A_SILT_MI = A_SILT_MI,A_SAND_MI = A_SAND_MI)]
   
+  # replace missing pH with mean values when inputs are missing
+  dt[is.na(A_PH_WA), A_PH_WA := 7.97]
+  dt[is.na(A_CACO3_MI), A_CACO3_MI := 17.73]
+  
   # set mean EC
   dt[, EC := 10.73]
   
@@ -812,7 +854,7 @@ sptf_mwd9 <- function(A_C_OF,A_CLAY_MI,A_SILT_MI,A_PH_WA, B_LU_PTFCLASS) {
   checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
   checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, len = arg.length)
   checkmate::assert_numeric(A_PH_WA, lower = 2, upper = 12, len = arg.length)
-  checkmate::assert_character(B_LU_PTFCLASS,length = arg.length)
+  checkmate::assert_character(B_LU_PTFCLASS,len = arg.length)
   checkmate::assert_subset(B_LU_PTFCLASS, choices = c('agriculture', 'grassland', 'cropland', 'forest', 'nature'))
   
   # Collect data into a table
@@ -823,14 +865,17 @@ sptf_mwd9 <- function(A_C_OF,A_CLAY_MI,A_SILT_MI,A_PH_WA, B_LU_PTFCLASS) {
                    B_LU_PTFCLASS = B_LU_PTFCLASS,
                    value = NA_real_)
   
+  # replace missing pH with mean values when inputs are missing
+  dt[is.na(A_PH_WA), A_PH_WA := 6.7]
+  
   # Estimate thw MWD (mm) for croplands (n = 129, R2 = 0.64)
-  dt[B_LU_PTFCLASS %in% c('agriculture','cropland'), value := 0.7630 + 0.0017 * A_CLAY_MI + 0.0145 * A_C_OF - 0.0719 * A_PH_WA - 0.004 * A_SILT_MI]
+  dt[B_LU_PTFCLASS %in% c('agriculture','cropland'), value := 0.7630 + 0.0017 * A_CLAY_MI + 0.0145 * A_C_OF - 0.0719 * A_PH_WA - 0.0004 * A_SILT_MI]
   
   # Estimate thw MWD (mm) for graslands (n = 52)
-  dt[B_LU_PTFCLASS == 'grasland', value := 1.4536 + 0.0017 * A_CLAY_MI + 0.0145 * A_C_OF - 0.0719 * A_PH_WA - 0.004 * A_SILT_MI]
+  dt[B_LU_PTFCLASS == 'grasland', value := 1.4536 + 0.0017 * A_CLAY_MI + 0.0145 * A_C_OF - 0.0719 * A_PH_WA - 0.0004 * A_SILT_MI]
   
   # Estimate thw MWD (mm) for forests and woodlands (n = 21)
-  dt[B_LU_PTFCLASS == 'forest', value := 2.068 + 0.0017 * A_CLAY_MI + 0.0145 * A_C_OF - 0.0719 * A_PH_WA - 0.004 * A_SILT_MI]
+  dt[B_LU_PTFCLASS == 'forest', value := 2.068 + 0.0017 * A_CLAY_MI + 0.0145 * A_C_OF - 0.0719 * A_PH_WA - 0.0004 * A_SILT_MI]
   
   # return value
   value <- dt[, value]
@@ -861,7 +906,7 @@ sptf_mwd10 <- function(A_C_OF) {
                    value = NA_real_)
   
   # estimate Mean Weight Diamater (r = 0.917, n = 68)
-  dt[, value := 0.001 * (exp(4.83 + (2.76 + 7e8 * exp(-1.01 * A_C_OF))) - 1)]
+  dt[, value := 0.001 * (exp(4.83 + 2.76/(1 + 7e8 * exp(-1.014 * A_C_OF)))-1)]
   
   # return value (mm)
   value <- dt[, value]
@@ -870,6 +915,7 @@ sptf_mwd10 <- function(A_C_OF) {
   return(value)
   
 }
+
 
 #' Calculate the Mean Weight Diamater
 #'

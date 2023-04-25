@@ -58,6 +58,9 @@ sptf_cdec2 <- function(A_C_OF, years) {
   # estimate C decline via MINIP for other crops, 0-20 cm depth
   dt[, value := A_C_OF * (1-exp(4.7*(((17+cor_temp*years)^-0.6)-(17^-0.6))))]
   
+  # select value
+  value <- dt[,value]
+  
   # return value
   return(value)
   
