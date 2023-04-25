@@ -8,6 +8,15 @@ dt1[,A_CN_FR := rnorm(.N,12,2)]
 dt1[,A_N_RT := A_C_OF * 1000 / A_CN_FR]
 
 # the cation exchange capacity
+dt1.bd <- ptf_bd_all(dt1)
+dt1.bd <- dt1.bd[,list(bd.mean = mean(bd,na.rm=T),
+                       bd.se = sd(bd,na.rm=T)/sqrt(sum(!is.na(bd)))),by='id']
+dt1 <- merge(dt1,dt1.bd,by='id')
+m.bd <- lm(bd.mean~A_C_OF + I(log(A_C_OF)),data=dt1)
+p.bd <- predict(m.bd,newdata = data.frame(A_C_OF = dt1$A_C_OF))
+l.bd <- paste('CEC == ', '2125 -1.056 * C - 257 * log(C)')
+
+# the cation exchange capacity
 dt1.cec <- ptf_cec_all(dt1)
 dt1.cec <- dt1.cec[,list(cec.mean = mean(cec,na.rm=T),
                          cec.se = sd(cec,na.rm=T)/sqrt(sum(!is.na(cec)))),by='id']
@@ -107,12 +116,87 @@ p.cdec <- predict(m.cdec,newdata = data.frame(A_C_OF = dt1$A_C_OF))
 l.cdec <- paste('C-decomposition == ', '0.22 * C')
 
 dt1[, cyield := sptf_yield1(A_C_OF = A_C_OF,A_CLAY_MI = A_CLAY_MI)]
+m.cyield <- lm(cyield~A_C_OF + I(A_C_OF^2),data=dt1)
 
 # optimum crop yield (see Young et al., 2021)
 # here is the target: dt1[, cyield1 := 0.5 + (1.75 - 0.5) * (A_CLAY_MI - 4)/(38 - 4)]
 # model of Oldfield, 118 kg N/ha default
 
+# fit a model
+fmod <- function(model,var){
+  
+  nd <- data.table(A_C_OF = seq(0,100,0.01))
+  nd[, p1 := predict(model,newdata = nd)]
+  nd[,diff := abs(p1-var)]
+  nd <- nd[diff == min(diff)[1]]
+  return(nd[,A_C_OF])
+}
 
+# optima for soil functions
+dt2 <- dt1[1,.(id,A_C_OF,A_CLAY_MI)]
+
+  # optimum density for rootability (Ros, 2023)
+  dt2[, odens := (1.75 - 0.009 * A_CLAY_MI) * 1000]
+  dt2[, cdens := fmod(m.bd,1682.5)]
+  
+  # optimum CEC level for soil fertility (van Erp, 2001; Ros et al, 2023)
+  dt2[, ocec := 100]
+  dt2[, ccec := fmod(m.cec,100)]
+  
+  # optimum level water stable aggregates (from SHI, Moebius-Clune, 2017)
+  # The larger the MWD and GMD values are, the higher the average particle size agglomeration of soil aggregates are, and the stronger the stability of soil structure is
+  dt2[, owsa := 75]
+  dt2[, cwsa := fmod(m.wsa,owsa),by=id]
+
+  # optimum MWD value using method of Le Bissonnais (1996), cited Clergue et al. (2003)
+  # lower values are unstable, and high risk on crusttability
+  dt2[, omwd := 1.3]
+  dt2[, cmwd := fmod(m.mwd,1.3),by=id]
+  
+  # for shear strength no optimum
+  dt2[, osss := NA_real_]
+  
+  # more is better, optimum score at 0.3 g / g (Moebius-Clune, 2017)
+  dt2[, owhc := 0.3]
+  dt2[, cwhc := fmod(m.whc,0.3),by=id]
+  
+  # more is better, optimum score at 0.3 g / g (Moebius-Clune, 2017)
+  dt2[, opaw := 0.3]
+  dt2[, cpaw := fmod(m.paw,0.3),by=id]
+  
+  # more is better, optimum score at 30 mg N /kg (Moebius-Clune, 2017)
+  dt2[, opmn := 30]
+  dt2[, cpmn := fmod(m.pmn,30),by=id]
+  
+  # more is better, optimum score at 900 mg C /kg (Moebius-Clune, 2017)
+  dt2[, ohwc := 900]
+  dt2[, chws := fmod(m.hwc,900),by=id]
+  
+  # optimum pH buffer capacity
+  dt2[, ophbc := NA_real_]
+
+  # optimum C decomposition is not higher than what can be added by annual grassland
+  # kg EOS * 0.5 = kg C / ha
+  dt2[, ocdec := 3975 * 0.5 *1000 * 10/ ((2125 - 1.056 * A_C_OF - 257 * log(A_C_OF))*100*100*0.3)]
+  dt2[, ccdec := fmod(m.cdec,ocdec),by=id]
+  
+  # optimum metal sorption, by default the highest one
+  dt2[, ometals := 100]
+  dt2[, cmetals := fmod(m.metal,100),by=id]
+  
+  # optimum crop yield based on Oldfield et al. (2009)
+  dt2[, oyield := 3]
+  dt2[, cyield := fmod(m.cyield,3),by=id]
+  
+  # melt
+  dt3 <- melt(dt2,
+              id.vars = c('id','A_C_OF','A_CLAY_MI'),
+              measure=patterns(target="^o", copt = "^c"))
+  vars <- c('dens','cec','wsa','mwd','sss','whc','paw','pmn','hwc','ophbc','cdec','metals','yield')
+  dt3[,parm := vars[variable]]
+  
+  
+  
 # plot figures of the pedotransfer functions
 ptl <- theme(plot.subtitle=element_text(size=10, face="italic", color="black"),
              axis.text = element_text(size = 12,colour ='black'),
@@ -217,3 +301,12 @@ p11 <- ggplot(data = dt1,aes(x = A_C_OF,y=cdec.mean)) + geom_point() + geom_line
       xlab('organic carbon content (g/kg)') + ylab('C decomposition') + theme_bw() +
       labs(title = "K. Relationship between C decomposition and SOC",
            subtitle = "derived from 1 ptfs for mineral soils") + ptl
+
+p12 <- ggplot(data = dt1,aes(x = A_C_OF,y=bd.mean)) + geom_point() + geom_line()+
+       geom_errorbar(aes(ymin=bd.mean - bd.se, ymax = bd.mean + bd.se),width = 0.2) +
+       geom_line(aes(y = p.bd),col='red')+
+       ylim(0,3000) +
+       annotate('text',x = 25, y = 2500, label = l.bd,parse = T,size = 4,adj=0) + 
+       xlab('organic carbon content (g/kg)') + ylab('bulk density (kg/m3)') + theme_bw() +
+       labs(title = "L. Relationship between bulk density and SOC",
+            subtitle = "derived from 181 ptfs for mineral soils") + ptl

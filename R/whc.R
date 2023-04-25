@@ -577,7 +577,7 @@ sptf_whc11 <- function(A_C_OF,A_CLAY_MI,A_SILT_MI) {
   checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000,len = arg.length)
   checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
   checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, len = arg.length)
-  checkmate::assert_numeric(mp_wp, any.missing = FALSE)
+  checkmate::assert_numeric(mp_whc, any.missing = FALSE)
   
   # Collect data into a table
   dt <- data.table(A_C_OF = A_C_OF,
@@ -675,9 +675,7 @@ sptf_whc13 <- function(A_C_OF,A_CLAY_MI,A_SAND_MI) {
   checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000,len = arg.length)
   checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
   checkmate::assert_numeric(A_SAND_MI, lower = 0, upper = 100, len = arg.length)
-  checkmate::assert_numeric(mp_wp, any.missing = FALSE)
-  checkmate::assert_subset(mp_fc, choices = c(2, 4.2))
-  
+
   # Collect data into a table (set in units %)
   dt <- data.table(A_C_OF = A_C_OF * 0.1,
                    A_SAND_MI = A_SAND_MI,

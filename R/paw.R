@@ -771,7 +771,7 @@ sptf_paw12 <- function(A_C_OF,A_CLAY_MI,A_SAND_MI) {
   
   # estimate bubbling pressure or air entry pressure
   dt[, psi_b := exp(5.34 + 0.185 * A_CLAY_MI - 2.484 * por - 0.00214 * A_CLAY_MI^2 - 
-                       0.0436 * Pzand * por - 0.617 * A_CLAY_MI * por + 0.00144 * A_SAND_MI^2 * por^2 - 
+                       0.0436 * A_SAND_MI * por - 0.617 * A_CLAY_MI * por + 0.00144 * A_SAND_MI^2 * por^2 - 
                        0.00855 * A_CLAY_MI^2 * por^2 - 0.0000128 * A_SAND_MI^2 * A_CLAY_MI + 0.00895 * A_CLAY_MI^2 * por - 
                        0.000724 * A_SAND_MI^2 * por + 0.0000054 * A_CLAY_MI^2 * A_SAND_MI + 0.5 * por^2 * A_CLAY_MI)
   ]

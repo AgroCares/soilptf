@@ -384,10 +384,17 @@ ptf_bd_all <- function(dt){
     dt <- copy(dt)
      
     # add all possible inputs as NA when missing
-    cols <- c('A_CLAY_MI','A_SAND_MI','A_SILT_MI', 'A_C_OF', 'A_DEPTH',
-              'A_PH_WA','A_CACO3_IF','A_N_RT','A_H2O_T105','A_SAND_M50','B_SLOPE_DEGREE','B_SLOPE_ASPECT','B_ALTITUDE')
+    cols <- c('A_CLAY_MI','A_SAND_MI','A_SILT_MI', 'A_C_OF', 'A_DEPTH','A_SOM_LOI',
+              'A_PH_WA','A_CACO3_IF','A_N_RT','A_H2O_T105','A_SAND_M50',
+              'A_PH_CC','A_PH_KCL',
+              'B_SLOPE_DEGREE','B_SLOPE_ASPECT','B_ALTITUDE')
     cols <- cols[!cols %in% colnames(dt)]
     dt[,c(cols) := NA_real_]
+    
+    # add all character inputs as NA when missing
+    cols <- c('B_LU_PTFCLASS','B_SOILCLASS_USDA','B_CLIM_CAT1')
+    cols <- cols[!cols %in% colnames(dt)]
+    dt[,c(cols) := NA_character_]
     
     # estimate missing variables for texture being dependent on each other
     dt[, num_obs := Reduce(`+`, lapply(.SD,function(x) !is.na(x))),.SDcols = c('A_CLAY_MI','A_SAND_MI','A_SILT_MI')]
@@ -399,6 +406,13 @@ ptf_bd_all <- function(dt){
     dt[is.na(A_SOM_LOI) & !is.na(A_C_OF), A_SOM_LOI := A_C_OF * 0.1 * 1.724]
     dt[!is.na(A_SOM_LOI) & is.na(A_C_OF), A_C_OF := A_SOM_LOI * 10 / 1.724]
         
+    # estimate pH values
+    dt[is.na(A_PH_KCL) & !is.na(A_PH_CC), A_PH_KCL := (A_PH_CC - 0.5262)/0.9288]
+    dt[is.na(A_PH_WA) & !is.na(A_PH_KCL), A_PH_WA := 1.3235 + 0.8581 * A_PH_KCL]
+    
+    # set default land use to agriculture when input is missing
+    dt[is.na(B_LU_PTFCLASS),B_LU_PTFCLASS := 'agriculture']
+    
     # estimate the bulk density by the pedotransfer functions
     dt[, p1 := sptf_bd1(A_SOM_LOI = A_SOM_LOI, A_CLAY_MI = A_CLAY_MI)]
     dt[, p2 := sptf_bd2(A_SOM_LOI = A_SOM_LOI)]
@@ -586,8 +600,9 @@ ptf_bd_all <- function(dt){
     # melt the data
     dt2 <- melt(dt, 
                 id.vars = c('id','A_SOM_LOI', "A_C_OF", "A_CLAY_MI", "A_SAND_MI", "A_SILT_MI", "A_DEPTH"),
-                measure = patterns('^p'),
-                variable.name = 'ptf_id')
+                measure = patterns('^p[0-9]'),
+                variable.name = 'ptf_id',
+                value.name = 'bd')
     dt2[,ptf_id := as.integer(gsub('p','',ptf_id))]
     
     # # merge with PTF properties
