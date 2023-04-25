@@ -70,28 +70,43 @@ m.pmn <- lm(pmn.mean~ A_C_OF+I(A_C_OF^2),data=dt1)
 p.pmn <- predict(m.pmn,newdata = data.frame(A_C_OF = dt1$A_C_OF))
 l.pmn <- paste('PMN == ', '9.119 + 1.284 * C + 0.0102 * C^2')
 
-
 # hot water carbon
 dt1.hwc <- ptf_hwc_all(dt1)
-dt1.hwc <- dt1.hwc[,list(hwc = mean(hwc,na.rm=T)),by='id']
+dt1.hwc <- dt1.hwc[,list(hwc.mean = mean(hwc,na.rm=T),
+                         hwc.se = sd(hwc,na.rm = T)/sqrt(sum(!is.na(hwc)))),by='id']
 dt1 <- merge(dt1,dt1.hwc,by='id')
-
-
+m.hwc <- lm(hwc.mean~ A_C_OF+I(A_C_OF^2),data=dt1)
+p.hwc <- predict(m.hwc,newdata = data.frame(A_C_OF = dt1$A_C_OF))
+l.hwc <- paste('HWC == ', '129.9 + 29.88 * C -0.036918 * C^2')
 
 # pH buffer capacity
 dt1.phbc <- ptf_phbc_all(dt1)
-dt1.phbc <- dt1.phbc[,list(phbc = mean(phbc,na.rm=T)),by='id']
+dt1.phbc <- dt1.phbc[,list(phbc.mean = mean(phbc,na.rm=T),
+                           phbc.se = sd(phbc,na.rm=T)/sqrt(sum(!is.na(phbc)))),by='id']
 dt1 <- merge(dt1,dt1.phbc,by='id')
-
-# carbon decomposition, minip
-dt1.cdec <- ptf_cdec_all(dt1)
-dt1.cdec <- dt1.cdec[,list(cdec = mean(cdec,na.rm=T)),by='id']
-dt1 <- merge(dt1,dt1.cdec,by='id')
+m.phbc <- lm(phbc.mean~ A_C_OF,data=dt1)
+p.phbc <- predict(m.phbc,newdata = data.frame(A_C_OF = dt1$A_C_OF))
+l.phbc <- paste('pHBC == ', '1.669 + 1.286 * C')
 
 # metal freundlich coefficient
 dt1.metal <- ptf_metals_all(dt1)
-dt1.metal <- dt1.metal[,list(metal = mean(metal,na.rm=T)),by='id']
+dt1.metal <- dt1.metal[,list(metal.mean = mean(metal,na.rm=T),
+                             metal.se = sd(metal,na.rm=T)/sqrt(sum(!is.na(metal)))),by='id']
 dt1 <- merge(dt1,dt1.metal,by='id')
+m.metal <- lm(metal.mean~ I(A_C_OF^0.5),data=dt1)
+p.metal <- predict(m.metal,newdata = data.frame(A_C_OF = dt1$A_C_OF))
+l.metal <- paste('K-freundlich == ', '-4.01 + 10.2824 * C^0.5')
+
+# carbon decomposition, minip, and assume 10% uncertainty
+dt1.cdec <- ptf_cdec_all(dt1)
+dt1.cdec <- dt1.cdec[,list(cdec.mean = mean(cdec,na.rm=T),
+                           cdec.se = mean(cdec,na.rm=T)*0.10),by='id']
+dt1 <- merge(dt1,dt1.cdec,by='id')
+m.cdec <- lm(cdec.mean~A_C_OF,data=dt1)
+p.cdec <- predict(m.cdec,newdata = data.frame(A_C_OF = dt1$A_C_OF))
+l.cdec <- paste('C-decomposition == ', '0.22 * C')
+
+dt1[, cyield := sptf_yield1(A_C_OF = A_C_OF,A_CLAY_MI = A_CLAY_MI)]
 
 # optimum crop yield (see Young et al., 2021)
 # here is the target: dt1[, cyield1 := 0.5 + (1.75 - 0.5) * (A_CLAY_MI - 4)/(38 - 4)]
@@ -167,3 +182,38 @@ p7 <- ggplot(data = dt1,aes(x = A_C_OF,y=pmn.mean)) + geom_point() + geom_line()
       labs(title = "G. Relationship between PMN and SOC",
            subtitle = "derived from 19 ptfs for mineral soils") + ptl
 
+p8 <- ggplot(data = dt1,aes(x = A_C_OF,y=hwc.mean)) + geom_point() + geom_line()+
+      geom_errorbar(aes(ymin=hwc.mean - hwc.se, ymax = hwc.mean + hwc.se),width = 0.2) +
+      geom_line(aes(y = p.hwc),col='red')+
+      ylim(0,3000) +
+      annotate('text',x = 2.5, y = 2500, label = l.hwc,parse = T,size = 4,adj=0) + 
+      xlab('organic carbon content (g/kg)') + ylab('HWC (g/kg)') + theme_bw() +
+      labs(title = "H. Relationship between HWC and SOC",
+           subtitle = "derived from 11 ptfs for mineral soils") + ptl
+
+p9 <- ggplot(data = dt1,aes(x = A_C_OF,y=phbc.mean)) + geom_point() + geom_line()+
+      geom_errorbar(aes(ymin=phbc.mean - phbc.se, ymax = phbc.mean + phbc.se),width = 0.2) +
+      geom_line(aes(y = p.phbc),col='red')+
+      ylim(0,150) +
+      annotate('text',x = 2.5, y = 120, label = l.phbc,parse = T,size = 4,adj=0) + 
+      xlab('organic carbon content (g/kg)') + ylab('pHBC (mmol H+ / kg / pH)') + theme_bw() +
+      labs(title = "I. Relationship between pHBC and SOC",
+           subtitle = "derived from 8 ptfs for mineral soils") + ptl
+
+p10 <- ggplot(data = dt1,aes(x = A_C_OF,y=metal.mean)) + geom_point() + geom_line()+
+      geom_errorbar(aes(ymin=metal.mean - metal.se, ymax = metal.mean + metal.se),width = 0.2) +
+      geom_line(aes(y = p.metal),col='red')+
+      ylim(0,150) +
+      annotate('text',x = 2.5, y = 120, label = l.metal,parse = T,size = 4,adj=0) + 
+      xlab('organic carbon content (g/kg)') + ylab('Kf') + theme_bw() +
+      labs(title = "J. Relationship between Freundlich Kf and SOC",
+           subtitle = "derived from 4 ptfs for mineral soils") + ptl
+
+p11 <- ggplot(data = dt1,aes(x = A_C_OF,y=cdec.mean)) + geom_point() + geom_line()+
+      geom_errorbar(aes(ymin=cdec.mean - cdec.se, ymax = cdec.mean + cdec.se),width = 0.2) +
+      geom_line(aes(y = p.cdec),col='red')+
+      ylim(0,25) +
+      annotate('text',x = 2.5, y = 20, label = l.cdec,parse = T,size = 4,adj=0) + 
+      xlab('organic carbon content (g/kg)') + ylab('C decomposition') + theme_bw() +
+      labs(title = "K. Relationship between C decomposition and SOC",
+           subtitle = "derived from 1 ptfs for mineral soils") + ptl

@@ -35,6 +35,9 @@ sptf_yield1 <- function(A_C_OF,A_CLAY_MI) {
   dt[,value := -1.61 + 0.179 * A_C_OF - 0.46 * (0.1 * A_C_OF)^2 + irrigation * 0.75 + 0.053 * ph + 0.16 * aridity + 
                0.013 * A_CLAY_MI + ndose * 0.018 -0.000039 * ndose^2 + 0.0039 * 0.1 * A_C_OF * ndose]
   
+  # set value outside calibration range to NA
+  dt[A_C_OF > 27, value := NA_real_]
+  
   # select output variable
   value <- dt[,value]
   
