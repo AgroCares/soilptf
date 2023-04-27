@@ -26,10 +26,13 @@ sptf_phbc1 <- function(A_C_OF, A_CLAY_MI) {
   dt <- data.table(A_C_OF = A_C_OF * 0.1,
                    A_CLAY_MI = A_CLAY_MI,
                    A_REST_MI = 100 - A_CLAY_MI,
-                   value = NA_real_ )
+                   value = NA_real_)
   
   # estimate pH buffer capacity (R2 = 0.79, n = 85)
   dt[,value := 6.38 - 0.08 * A_CLAY_MI + 2.63 * A_C_OF - 0.23 * A_REST_MI + 0.02 * A_CLAY_MI * A_REST_MI + 0.17 * A_REST_MI * A_C_OF]
+  
+  # select value
+  value <- dt[,value]
   
   # return pHBC (mmol H+ kg-1 pH-1)
   return(value)
@@ -63,6 +66,9 @@ sptf_phbc2 <- function(A_C_OF) {
   
   # estimate pH buffer capacity (R2 = 0.89, n = 89 topsoils (0-10 cm) Western Australia)
   dt[,value := 10 * (0.73 + 0.66 * A_C_OF)]
+  
+  # select value
+  value <- dt[,value]
   
   # return pHBC (mmol H+ kg-1 pH-1)
   return(value)
@@ -117,6 +123,9 @@ sptf_phbc3 <- function(A_C_OF,A_CLAY_MI) {
   dt <- melt(dt,id.vars = 'id',measure.vars = c('v1','v2','v3a','v3b','v4a','v4b','v4c'))
   dt <- dt[,list(value = mean(value,na.rm=T)),by='id']
   
+  # select value
+  value <- dt[,value]
+  
   # return pHBC (mmol H+ kg-1 pH-1)
   return(value)
   
@@ -143,10 +152,10 @@ sptf_phbc4 <- function(A_C_OF,A_CLAY_MI) {
   checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000,len = arg.length)
   checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
   
-  # make internal data.table (with SOC and clay in g/kg)
+  # make internal data.table (with SOC and clay in kg/kg)
   dt <- data.table(id = 1: length(A_C_OF),
-                   A_C_OF = A_C_OF,
-                   A_CLAY_MI = A_CLAY_MI * 10,
+                   A_C_OF = A_C_OF * 0.001,
+                   A_CLAY_MI = A_CLAY_MI * 0.01,
                    value = NA_real_)
   
   # estimate pH buffer capacity (R2 = 0.83, n = 30)
@@ -182,7 +191,7 @@ sptf_phbc5 <- function(A_C_OF) {
   arg.length <- max(length(A_C_OF))
   checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000,len = arg.length)
 
-  # make internal data.table (with SOC in %)
+  # make internal data.table
   dt <- data.table(id = 1: length(A_C_OF),
                    A_C_OF = A_C_OF,
                    value = NA_real_)
@@ -198,6 +207,9 @@ sptf_phbc5 <- function(A_C_OF) {
   
   # convert 1 kg CaCO3 / ha to mmol H+ / kg per unit pH
   dt[, value := value * (1000000 / (0.15 * bd * 100 * 100)) * 2/100.0869]
+  
+  # set values outside calibration range to NA
+  dt[A_C_OF > 20, value := NA_real_]
   
   # select value
   value <- dt[,value]
@@ -262,6 +274,9 @@ sptf_phbc6 <- function(A_C_OF,A_CLAY_MI) {
 #' @export
 sptf_phbc7 <- function(A_C_OF,A_CLAY_MI,A_PH_WA) {
   
+  # add visual bindings
+  bd = NULL
+  
   # Check input
   arg.length <- max(length(A_C_OF), length(A_CLAY_MI),length(A_PH_WA))
   checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000,len = arg.length)
@@ -270,13 +285,23 @@ sptf_phbc7 <- function(A_C_OF,A_CLAY_MI,A_PH_WA) {
   
   # make internal data.table (with SOC in %)
   dt <- data.table(id = 1: length(A_C_OF),
-                   A_C_OF = A_C_OF * 10,
+                   A_C_OF = A_C_OF * 0.1,
                    A_CLAY_MI = A_CLAY_MI,
                    A_PH_WA = A_PH_WA,
                    value = NA_real_)
   
-  # estimate pH buffer capacity  (R2 = 0.92, n = x=6 topsoils, 0-22cm, in Ghana). Note unit is mmol+/kg per unit pH
+  # give mean pH when input is missing
+  dt[is.na(A_PH_WA), A_PH_WA := 4.9]
+  
+  # estimate bulk density (in kg/m3)
+  dt[, bd := (1617 - 77.4 * log(A_C_OF*10) - 3.49 * A_C_OF*10)]
+  
+  # estimate pH buffer capacity  (R2 = 0.92, n = x=6 topsoils, 0-22cm, in Ghana). 
+  # Note unit is mmol+/kg per unit pH
   dt[,value := 4.2 - 1.1 * A_PH_WA + 1.7 * A_C_OF + 0.05 * A_CLAY_MI]
+  
+  # convert 1 ton CaCO3 / ha to mmol H+ / kg per unit pH // CaOH2
+  dt[, value := value * 1000* (1000000 / (0.22 * bd * 100 * 100)) * 2/74.09]
   
   # select value
   value <- dt[,value]
@@ -309,15 +334,15 @@ sptf_phbc8 <- function(A_C_OF,A_CLAY_MI) {
   
   # make internal data.table (with SOC in %)
   dt <- data.table(id = 1: length(A_C_OF),
-                   A_C_OF = A_C_OF * 10,
+                   A_C_OF = A_C_OF * 0.1,
                    A_CLAY_MI = A_CLAY_MI,
                    value = NA_real_)
   
-  # estimate pH buffer capacity  Note unit is mmol+/kg per unit pH
+  # estimate pH buffer capacity  Note unit is cmol+/kg per unit pH
   dt[,value := 0.11 * (A_CLAY_MI + 5 * A_C_OF * 2)]
   
   # select value
-  value <- dt[,value]
+  value <- dt[,value*10]
   
   # return pHBC (mmol H+ kg-1 pH-1)
   return(value)
@@ -385,6 +410,9 @@ sptf_ph2 <- function(A_SOM_LOI, A_PH_KCL,A_CLAY_MI) {
   
   # estiamte pH water from pH-KCL for clay soils
   dt[A_CLAY_MI > 20, value := 2.189 + 0.7748 * A_PH_KCL]
+  
+  # select value
+  value <- dt[,value]
   
   # return pH value
   return(value)

@@ -4,20 +4,14 @@
 \alias{sptf_whc8}
 \title{Calculate the water holding capacity given the pedotransferfunction of Weynants et al. 2009}
 \usage{
-sptf_whc8(A_SAND_MI, A_CLAY_MI, D_BDS, A_C_OF, mp_wp = 1500, mp_fc = 33)
+sptf_whc8(A_C_OF, A_CLAY_MI, A_SAND_MI)
 }
 \arguments{
-\item{A_SAND_MI}{(numeric) Sand content (\%)}
+\item{A_C_OF}{(numeric) Organic Carbon Content (g / kg)}
 
 \item{A_CLAY_MI}{(numeric) The clay content of the mineral soil fraction (\%).}
 
-\item{D_BDS}{(numeric) Bulk density (kg/m3)}
-
-\item{A_C_OF}{(numeric) Organic Carbon Content (g / kg)}
-
-\item{mp_wp}{(numeric) Water potential at wilting point (kPa).}
-
-\item{mp_fc}{(numeric) Water potential at field capacity (kPa).}
+\item{A_SAND_MI}{(numeric) Sand content (\%)}
 }
 \description{
 Calculate the water holding capacity given the pedotransferfunction of Weynants et al. 2009

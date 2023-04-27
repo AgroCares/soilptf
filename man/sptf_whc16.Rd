@@ -4,27 +4,14 @@
 \alias{sptf_whc16}
 \title{the water holding capacity given the pedotransferfunction of Wösten et al.2001 (Table 3), for each soil class}
 \usage{
-sptf_whc16(
-  A_CLAY_MI,
-  A_SILT_MI,
-  A_SOM_LOI,
-  A_SAND_M50 = 150,
-  mp_wp = 1500,
-  mp_fc = 33
-)
+sptf_whc16(A_SOM_LOI, A_CLAY_MI, A_SILT_MI)
 }
 \arguments{
+\item{A_SOM_LOI}{(numeric) The percentage organic matter in the soil determined by loss on ignition (\%)}
+
 \item{A_CLAY_MI}{(numeric) The clay content of the mineral soil fraction (\%).}
 
 \item{A_SILT_MI}{(numeric) Silt content (\%)}
-
-\item{A_SOM_LOI}{(numeric) The percentage organic matter in the soil determined by loss on ignition (\%)}
-
-\item{A_SAND_M50}{(numeric) description (µm)}
-
-\item{mp_wp}{(numeric) Water potential at wilting point (kPa).}
-
-\item{mp_fc}{(numeric) Water potential at field capacity (kPa).}
 }
 \description{
 the water holding capacity given the pedotransferfunction of Wösten et al.2001 (Table 3), for each soil class

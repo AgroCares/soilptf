@@ -18,10 +18,10 @@ test_that("all pmn functions works", {
   expect_equal(sptf_pmn2(A_C_OF = A_C_OF, A_SILT_MI = A_SILT_MI, A_N_RT = A_N_RT, A_PH_CC = A_PH_CC, t = 7),
                expected = c(54.49848, 231.49470), tolerance = 0.01)
 
-  expect_equal(sptf_pmn3(A_N_RT = A_N_RT, A_CLAY_MI = A_CLAY_MI),
+  expect_equal(sptf_pmn3(A_C_OF = A_C_OF,A_N_RT = A_N_RT, A_CLAY_MI = A_CLAY_MI),
                expected = c(141.85684,  54.53614), tolerance = 0.01)
 
-  expect_equal(sptf_pmn4(A_N_RT = A_N_RT, A_CLAY_MI = A_CLAY_MI),
+  expect_equal(sptf_pmn4(A_C_OF = A_C_OF,A_N_RT = A_N_RT, A_CLAY_MI = A_CLAY_MI),
                expected = c( 85.75527, 38.72754), tolerance = 0.01)
 
   expect_equal(sptf_pmn5(A_N_RT = A_N_RT, A_C_OF = A_C_OF, A_CEC_CO = A_CEC_CO, t = 7),
