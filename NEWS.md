@@ -1,6 +1,6 @@
 # Changelog soilptf
 
-## Version 0.2.1  2023-xx-xx
+## Version 0.2.1  2023-04-27
 
 ### Added
 * 12 pedotransfer functions for HWC
@@ -8,6 +8,13 @@
 * 1 function for carbon decomposition
 * 4 partition functions for freundlich coefficients for metals
 * 7 predict functions: `ptf_cec_all`,`ptf_phbc_all`,`ptf_mwd_all`,`ptf_wsa_all`,`ptf_hwc_all`,`ptf_sss_all`,and `ptf_cdec_all` 
+* all original HWC ptfs are renamed to PAW because they were wrongly named. 
+* HWC ptfs were updated
+* almost all added checkmate functions were updated
+* optimizer function and examples for EGU2023 in script in dev directory `derive_optimum_soc`
+
+### Fixed
+* calculation moisture content at given pF were fixed for all ptf_paw functions
 
 ## Version 0.2.0  2023-04-14
 
