@@ -229,7 +229,7 @@ sptf_paw5 <-  function(A_SOM_LOI, A_CLAY_MI, A_SILT_MI) {
     
     # Add visual bindings
     theta_sat = theta_res = theta_fc = alfa = n = theta_wp = NULL
-    D_BDS = A_C_OF = NULL
+    D_BDS = A_C_OF = A_SAND_MI = NULL
     
     # set default parameters for this function
     # boolean argument for top soil (1) or sub-soil (0)
@@ -453,7 +453,6 @@ sptf_paw7 <-function(A_C_OF,A_CLAY_MI,A_SILT_MI, A_SAND_MI) {
 #' Calculate the Plant Available Water (PAW) given the pedotransferfunction of Weynants et al. 2009
 #'
 #' @inheritParams sptf_bd0
-#' @param mp_wp (numeric) Water potential at wilting point (kPa).
 #'
 #' @import data.table
 #'
@@ -893,7 +892,6 @@ sptf_paw13 <- function(A_C_OF,A_CLAY_MI,A_SAND_MI) {
 #' Calculate the Plant Available Water (PAW) given the pedotransferfunction of Wösten 1997
 #'
 #' @inheritParams sptf_bd0
-#' @param topsoil (boolean) Whether top soil (1) or sub-soil (0)
 #'
 #' @import data.table
 #'
@@ -980,7 +978,6 @@ sptf_paw14 <- function(A_SOM_LOI,A_CLAY_MI,A_SILT_MI) {
 #' Calculate the Plant Available Water (PAW) given the pedotransferfunction of Wösten et al.2001
 #'
 #' @inheritParams sptf_bd0
-#' @param topsoil (boolean) Whether top soil (1) or sub-soil (0)
 #'
 #' @import data.table
 #'
@@ -1075,7 +1072,6 @@ sptf_paw15 <- function(A_SOM_LOI,A_CLAY_MI,A_SILT_MI) {
 #' Calculate the Plant Available Water (PAW) given the pedotransferfunction of Wösten et al.2001 (Table 3), for each soil class
 #'
 #' @inheritParams sptf_bd0
-#' @param mp_wp (numeric) Water potential at wilting point (kPa).
 #'
 #' @import data.table
 #'

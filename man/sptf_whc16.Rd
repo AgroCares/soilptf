@@ -12,8 +12,6 @@ sptf_whc16(A_SOM_LOI, A_CLAY_MI, A_SILT_MI)
 \item{A_CLAY_MI}{(numeric) The clay content of the mineral soil fraction (\%).}
 
 \item{A_SILT_MI}{(numeric) Silt content (\%)}
-
-\item{mp_wp}{(numeric) Water potential at wilting point (kPa).}
 }
 \description{
 the water holding capacity given the pedotransferfunction of Wösten et al.2001 (Table 3), for each soil class

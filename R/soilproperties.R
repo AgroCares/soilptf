@@ -274,6 +274,9 @@ sptf_phbc6 <- function(A_C_OF,A_CLAY_MI) {
 #' @export
 sptf_phbc7 <- function(A_C_OF,A_CLAY_MI,A_PH_WA) {
   
+  # add visual bindings
+  bd = NULL
+  
   # Check input
   arg.length <- max(length(A_C_OF), length(A_CLAY_MI),length(A_PH_WA))
   checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000,len = arg.length)

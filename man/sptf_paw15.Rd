@@ -12,8 +12,6 @@ sptf_paw15(A_SOM_LOI, A_CLAY_MI, A_SILT_MI)
 \item{A_CLAY_MI}{(numeric) The clay content of the mineral soil fraction (\%).}
 
 \item{A_SILT_MI}{(numeric) Silt content (\%)}
-
-\item{topsoil}{(boolean) Whether top soil (1) or sub-soil (0)}
 }
 \description{
 Calculate the Plant Available Water (PAW) given the pedotransferfunction of Wösten et al.2001

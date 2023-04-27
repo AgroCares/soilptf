@@ -12,8 +12,6 @@ sptf_paw8(A_C_OF, A_CLAY_MI, A_SAND_MI)
 \item{A_CLAY_MI}{(numeric) The clay content of the mineral soil fraction (\%).}
 
 \item{A_SAND_MI}{(numeric) Sand content (\%)}
-
-\item{mp_wp}{(numeric) Water potential at wilting point (kPa).}
 }
 \description{
 Calculate the Plant Available Water (PAW) given the pedotransferfunction of Weynants et al. 2009

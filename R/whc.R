@@ -189,7 +189,7 @@ sptf_whc5 <-  function(A_SOM_LOI, A_CLAY_MI, A_SILT_MI) {
     
     # Add visual bindings
     theta_sat = theta_res = theta_fc = alfa = n = theta_wp = NULL
-    A_SAND_MI = A_C_OF = theta = NULL
+    A_SAND_MI = A_C_OF = D_BDS = theta = NULL
     
     # set default parameters for this function
     # boolean argument for top soil (1) or sub-soil (0)
@@ -267,6 +267,7 @@ sptf_whc6 <-  function(A_C_OF,A_CLAY_MI, A_SAND_MI) {
     
     # Add visual bindings
     theta_sat = theta_res = theta_fc = alfa = n = theta_wp =NULL
+    D_BDS = NULL
     
     # set default parameters for this function
     mp_whc = 0
@@ -322,6 +323,7 @@ sptf_whc7 <-function(A_C_OF,A_CLAY_MI,A_SILT_MI, A_SAND_MI) {
     
     # Add visual bindings
     theta_sat = theta_res = theta_fc = alfa = n = theta_wp =NULL
+    D_BDS = . = NULL
     
     # set default parameters for this function
     A_DEPTH = 0.15
@@ -402,7 +404,6 @@ sptf_whc7 <-function(A_C_OF,A_CLAY_MI,A_SILT_MI, A_SAND_MI) {
 #' Calculate the water holding capacity given the pedotransferfunction of Weynants et al. 2009
 #'
 #' @inheritParams sptf_bd0
-#' @param mp_wp (numeric) Water potential at wilting point (kPa).
 #'
 #' @import data.table
 #'
@@ -413,6 +414,7 @@ sptf_whc8 <- function(A_C_OF,A_CLAY_MI,A_SAND_MI) {
   
   # Add visual bindings
   theta_sat = theta_res = alfa =n = theta_fc = theta_wp =  NULL
+  D_BDS = NULL
   
   # set default parameters for this function
   A_DEPTH = 0.15
@@ -704,7 +706,6 @@ sptf_whc13 <- function(A_C_OF,A_CLAY_MI,A_SAND_MI) {
 #' Calculate the water holding capacity given the pedotransferfunction of Wösten 1997
 #'
 #' @inheritParams sptf_bd0
-#' @param topsoil (boolean) Whether top soil (1) or sub-soil (0)
 #'
 #' @import data.table
 #'
@@ -782,7 +783,6 @@ sptf_whc14 <- function(A_SOM_LOI,A_CLAY_MI,A_SILT_MI) {
 #' Calculate the water holding capacity given the pedotransferfunction of Wösten et al.2001
 #'
 #' @inheritParams sptf_bd0
-#' @param topsoil (boolean) Whether top soil (1) or sub-soil (0)
 #'
 #' @import data.table
 #'
@@ -867,7 +867,6 @@ sptf_whc15 <- function(A_SOM_LOI,A_CLAY_MI,A_SILT_MI) {
 #'  the water holding capacity given the pedotransferfunction of Wösten et al.2001 (Table 3), for each soil class
 #'
 #' @inheritParams sptf_bd0
-#' @param mp_wp (numeric) Water potential at wilting point (kPa).
 #'
 #' @import data.table
 #'
