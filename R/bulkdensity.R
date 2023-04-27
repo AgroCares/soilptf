@@ -5026,6 +5026,7 @@ sptf_bd140 <- function(A_SOM_LOI, A_CLAY_MI, A_SAND_MI,A_SILT_MI) {
   checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
   checkmate::assert_numeric(A_SAND_MI, lower = 0, upper = 100, len = arg.length)
   checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_true(all(round(rowSums(data.table(A_CLAY_MI, A_SAND_MI, A_SILT_MI)),3) <= 100))
   
   # Collect data into a table (set in units %)
   dt <- data.table(A_SOM_LOI = A_SOM_LOI, 

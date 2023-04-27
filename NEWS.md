@@ -1,6 +1,6 @@
 # Changelog soilptf
 
-## Version 0.2.1  2023-04-27
+## Version 0.3.0  2023-04-27
 
 ### Added
 * 12 pedotransfer functions for HWC
@@ -15,6 +15,11 @@
 
 ### Fixed
 * calculation moisture content at given pF were fixed for all ptf_paw functions
+
+## Version 0.2.1 2023-04-24
+### Fixed
+* summing and rounding error in when checking that `A_SILT_MI`, `A_CLAY_MI`, and 
+`A_SAND_MI` never exceed 100 resolving #18
 
 ## Version 0.2.0  2023-04-14
 

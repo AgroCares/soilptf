@@ -1324,3 +1324,38 @@ test_that("Bulk density functions returns the correct values", {
   
 })
   
+
+test_that('Very slight exceeding of SILT+CLAY+SAND are accepted but no more than 100.0005',{
+  expect_equal(
+    sptf_bd140(
+      A_SOM_LOI = c(1,1,1,1),
+      A_CLAY_MI = c(33,75,1,1),
+      A_SAND_MI = c(34,24,98,1),
+      A_SILT_MI = c(33,1,1,98)
+    ),
+    expected = c(1102.4782, 1286.4414, 1072.0376,  918.9249),
+    tolerance = 0.01
+  )
+  # function if slighly exceeding rowsums 100
+  expect_equal(
+    sptf_bd140(
+      A_SOM_LOI = c(1,1,1,1),
+      A_CLAY_MI = c(33.0005,75,1,1),
+      A_SAND_MI = c(34,24.0005,98,1),
+      A_SILT_MI = c(33,1,1.0005,98)
+    ),
+    expected = c(1102.4782, 1286.4414, 1072.0376,  918.9249),
+    tolerance = 0.01
+  )
+  # test for error when just exceeding the checkmate tolerance
+  expect_error(
+    sptf_bd140(
+      A_SOM_LOI = c(1,1,1,1),
+      A_CLAY_MI = c(33.00051,75,1,1),
+      A_SAND_MI = c(34,24.00051,98,1),
+      A_SILT_MI = c(33,1,1.00051,98)
+    )
+    )
+})
+
+  
