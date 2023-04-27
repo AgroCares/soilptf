@@ -1,5 +1,5 @@
-The following types of data were removed: bulk densities less than 0.30 Mg m3 or greater than 2.30 Mg m3 and soils in
-which the sum of clay, sand, and silt contents was greater than or less than 100%
+# The following types of data were removed: bulk densities less than 0.30 Mg m3 or greater than 2.30 Mg m3 and soils in
+# which the sum of clay, sand, and silt contents was greater than or less than 100%
 
 require(data.table)
 require(soilptf)
