@@ -1187,7 +1187,7 @@ ptf_cec_all <- function(dt){
 #' These include the total N content (A_N_RT, unit mg/kg), the pH (A_PH_WA), the carbonate content (A_CACO3_IF, unit \%), the moisture content (A_H2O_T105, \%), the slope (B_SLOPE_DEGREE, unit degrees), the aspect (B_SLOPE_ASPECT, unit degrees) and the altidue (B_ALTITUDE, unit m).
 #' When added, please ensure to use the correct element name and units. 
 #' 
-#' When depth is missing, the function assumes that topsoils are used.
+#' When depth is missing, the function assumes that topsoils are used. When no land use class is given, it is assumed that land use is agriculture.
 #' 
 #' @import data.table
 #' 
@@ -1593,6 +1593,124 @@ ptf_hwc_all <- function(dt){
   # return value
   return(dt2)
   
+}
+
+#' Predict the hot water carbon level (ug/kg) with the best combination of existing ptfs from literature.
+#'
+#' @param A_SOM_LOI (numeric) The percentage of organic matter in the soil (\%).
+#' @param A_C_OF (numeric) The fraction organic carbon in the soil (g / kg).
+#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
+#' @param A_SAND_MI (numeric) The sand content of the soil (\%).
+#' @param A_SILT_MI (numeric) The silt content of the soil (\%).
+#' @param A_DEPTH (numeric) The depth of the sampled soil layer (m)
+#' @param B_LU_PTFCLASS (character) The land use categorie (options: agriculture, grassland, cropland, forest, nature)
+#' @param B_LOC_COUNTRY (character) The country code 
+#' @param nmax (integer) the maximum number of ptfs to be included (default nmax = 5)
+#' @param ... other arguments
+#' 
+#' @details 
+#' Some of the ptfs require additional information. If given, the relevant ptf's are used, otherwise they are ignored.
+#' These include the total N content (A_N_RT, unit mg/kg), the pH (A_PH_WA), the carbonate content (A_CACO3_IF, unit \%), the moisture content (A_H2O_T105, \%), the slope (B_SLOPE_DEGREE, unit degrees), the aspect (B_SLOPE_ASPECT, unit degrees) and the altidue (B_ALTITUDE, unit m).
+#' When added, please ensure to use the correct element name and units. 
+#' 
+#' When depth is missing, the function assumes that topsoils are used. When no land use class is given, it is assumed that land use is agriculture.
+#' 
+#' @import data.table
+#' 
+#' @export
+ptf_hwc <- function(A_SOM_LOI = NA_real_, A_C_OF = NA_real_, 
+                    A_CLAY_MI = NA_real_, A_SAND_MI = NA_real_, A_SILT_MI = NA_real_, 
+                    B_LU_PTFCLASS = NA_character_,
+                    A_DEPTH = 0.3, 
+                    B_LOC_COUNTRY = 'NL', 
+                    nmax = 5, ...){
+  
+  # add visual bindings
+  
+  # combine all input objects not given as default function arguments
+  obj <- list(...)
+  obj <- as.data.table(obj)
+  if(length(obj)==0){obj <- NULL}
+  
+  # read in internal table
+  ptf.mods <- as.data.table(soilptf::sptf_soilproperties)
+  ptf.mods <- ptf.mods[ptf_type=='hwc']
+  ptf.mods[,c('reference','url','soilproperties') := NULL]
+  ptf.countries <- as.data.table(soilptf::sptf_countries)
+  
+  # number of sites to predict
+  arg.length <- max(length(A_SOM_LOI), length(A_C_OF),length(A_CLAY_MI),
+                    length(A_SAND_MI),length(A_SILT_MI),
+                    length(A_DEPTH),length(B_LU_PTFCLASS),length(B_LOC_COUNTRY))
+  
+  # make internal table
+  dt <- data.table(id = 1: arg.length,
+                   A_SOM_LOI = A_SOM_LOI,
+                   A_C_OF = A_C_OF,
+                   A_CLAY_MI = A_CLAY_MI,
+                   A_SAND_MI = A_SAND_MI,
+                   A_SILT_MI = A_SILT_MI,
+                   A_DEPTH = A_DEPTH,
+                   B_LOC_COUNTRY = B_LOC_COUNTRY,
+                   B_LU_PTFCLASS = B_LU_PTFCLASS
+  )
+  
+  # add USDA soil classification
+  dt[, B_SOILTYPE := sptf_textureclass(A_CLAY_MI = A_CLAY_MI,A_SILT_MI = A_SILT_MI,
+                                       A_SAND_MI = A_SAND_MI)]
+  
+  # set a default land use when no input is given
+  dt[is.na(B_LU_PTFCLASS), B_LU_PTFCLASS := 'agriculture']
+  
+  # calculate BD with different PTF's
+  dt2 <- ptf_hwc_all(dt)
+  
+  # add B_LOC_COUNTRY and B_LU_PTFCLASS
+  dt2 <- merge(dt2, dt[, .(id, B_LOC_COUNTRY, B_LU_PTFCLASS,B_SOILTYPE)], by = "id", all.x = T)
+  
+  # add continent
+  dt2 <- merge(dt2,ptf.countries[,.(country_code,B_LOC_CONT = continent_code)], by.x = 'B_LOC_COUNTRY',by.y = 'country_code',all.x = TRUE)
+  
+  # add extra variables given as input
+  checkmate::assert_data_table(obj,nrows = nrow(dt),null.ok = TRUE)
+  dt <- cbind(dt,obj)
+  
+  # # subset the table for the requested country
+  cont.sel <- unique(ptf.countries[country_code %in% B_LOC_COUNTRY, continent_code])
+  ptf.mods <- ptf.mods[country_code %in% B_LOC_COUNTRY | continent_code %in% cont.sel]
+  ptf.mods[, ptf_id := NULL]
+  
+  # merge with PTF properties
+  dt2 <- merge(dt2,ptf.mods,by.x = 'ptf_id',by.y = 'ptf_tid')
+  
+  # select only relevant cases
+  dt2 <- dt2[!is.na(hwc) & hwc > 0 & cec < 5000]
+  
+  # add applicability factor given country, continent, depth, land use, and soil type
+  dt2[,ap := 0]
+  dt2[B_LOC_COUNTRY == country_code, ap := ap + 1]
+  dt2[B_LOC_CONT == continent_code, ap := ap + 1]
+  dt2[B_LU_PTFCLASS == landuse | landuse == 'variable' | is.na(landuse),ap := ap + 1]
+  dt2[A_DEPTH < 30 & depth < 50, ap := ap + 0.5]
+  dt2[grepl('sand',B_SOILTYPE) & grepl('sand|variable',soiltype) | is.na(soiltype), ap := ap + 0.33]
+  dt2[grepl('clay',B_SOILTYPE) & grepl('clay|variable',soiltype) | is.na(soiltype), ap := ap + 0.33]
+  dt2[grepl('loam',B_SOILTYPE) & grepl('loam|variable',soiltype) | is.na(soiltype), ap := ap + 0.33]
+  dt2[A_SOM_LOI > 20 & grepl('peat|organic',soiltype), ap := ap + 1]
+  dt2[nsample > 100, ap := ap + 1]
+  
+  # add default r2 for ptfs that are unknown
+  dt2[,r2 := as.numeric(r2)]
+  dt2[r2 > 1, r2 := r2 * 0.01]
+  dt2[is.na(r2), r2 := 0.7]
+  
+  # add order to filter the best ones
+  dt2[, oid := frank(-ap,ties.method = 'first',na.last = 'keep'),by = id]
+  
+  # estimate the mean and SD of the bulk density for nmax models
+  out <- dt2[oid <= nmax, list(bd.mean = weighted.mean(x = hwc, w = r2),
+                               bd.sd = sd(x = hwc)), by = 'id']
+  
+  return(out)
 }
 
 #' Predict the soil shear strength from soil properties via existing ptfs from literature.
