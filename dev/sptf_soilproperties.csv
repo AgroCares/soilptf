@@ -115,3 +115,15 @@
 114;72;cec;AU;OC;variable;variable;;92;69;a_c_of||a_clay_mi||a_ph_wa;tranter_2009;doi:10.1016/j.geoderma.2009.01.006
 115;73;cec;GE;EU;variable;variable;30;1533;;a_c_of||a_clay_mi||a_silt_mi||a_ph_wa;deumlich_2015;https://doi.org/10.1080/03650340.2014.961434
 116;74;cec;US;NA;variable;variable;220;12000;58;a_c_of||a_clay_mi||a_silt_mi||a_ph_wa||b_soilclass_usda;;https://doi.org/10.1080/00103629009368363
+117;1;hwc;NL;EU;variable;agriculture;30;100;83;a_c_of||a_clay_mi;ros_2011;https://edepot.wur.nl/168954
+118;2;hwc;NL;EU;variable;agriculture;30;47;55;a_c_of;ros_2011;https://edepot.wur.nl/168954
+119;3;hwc;NL;EU;variable;agriculture;30;34;64;a_c_of||a_ph_cc;ros_2011;not available
+120;4;hwc;NL;EU;variable;agriculture;30;20;37;a_c_of;vaneekeren_2009;not available
+121;5;hwc;NL;EU;variable;agriculture;30;51;93;a_c_of||a_p_al||a_ph_cc;balen_2015;not available
+122;6;hwc;NL;EU;variable;agriculture;30;120;94;a_c_of||a_p_al||a_clay_mi;balen_2015;not available
+123;7;hwc;NL;EU;variable;agriculture;30;32;42;a_c_of||a_clay_mi;fujita_2023;not available
+124;8;hwc;NL;EU;variable;agriculture;30;20;65;a_c_of;hanegraaf_2009;not available
+125;9;hwc;NL;EU;variable;agriculture;30;104;63;a_c_of||a_ph_cc;hanegraaf_2012;not available
+126;10;hwc;NL;EU;variable;agriculture;30;170;83;a_c_of||a_ph_cc;hanegraaf_2009;not available
+127;11;hwc;NL;EU;variable;agriculture;30;20;69;a_c_of||a_clay_mi;vaneekeren_2009;not available
+128;12;hwc;NL;EU;variable;agriculture;30;1033;79;a_c_of||a_clay_mi;fujita_2023;not available
