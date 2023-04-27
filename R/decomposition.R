@@ -45,6 +45,9 @@ sptf_cdec1 <- function(A_C_OF, A_N_RT, years) {
 #' @export
 sptf_cdec2 <- function(A_C_OF, years) {
   
+  # add visual bindings
+  cor_temp = temp = NULL
+  
   # Check input
   checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000)
   checkmate::assert_int(years,lower = 1)

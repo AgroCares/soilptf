@@ -170,6 +170,7 @@ sptf_paw4 <-  function(A_C_OF,A_CLAY_MI,A_SAND_MI) {
     
   # Add visual bindings
   theta_sat = theta_res = theta_fc = alfa = n = theta_wp = mp_fc = NULL
+  D_BDS = NULL
   
   # set default parameters for this function
   A_DEPTH = 0.15
@@ -228,6 +229,7 @@ sptf_paw5 <-  function(A_SOM_LOI, A_CLAY_MI, A_SILT_MI) {
     
     # Add visual bindings
     theta_sat = theta_res = theta_fc = alfa = n = theta_wp = NULL
+    D_BDS = A_C_OF = NULL
     
     # set default parameters for this function
     # boolean argument for top soil (1) or sub-soil (0)
@@ -309,6 +311,7 @@ sptf_paw6 <-  function(A_C_OF,A_CLAY_MI, A_SAND_MI) {
     
     # Add visual bindings
     theta_sat = theta_res = theta_fc = alfa = n = theta_wp =NULL
+    D_BDS = NULL
     
     # set default parameters for this function
     mp_wp = 4.2 # 1500
@@ -369,6 +372,7 @@ sptf_paw7 <-function(A_C_OF,A_CLAY_MI,A_SILT_MI, A_SAND_MI) {
     
     # Add visual bindings
     theta_sat = theta_res = theta_fc = alfa = n = theta_wp =NULL
+    D_BDS = . = NULL
     
     # set default parameters for this function
     A_DEPTH = 0.15
@@ -460,6 +464,7 @@ sptf_paw8 <- function(A_C_OF,A_CLAY_MI,A_SAND_MI) {
   
   # Add visual bindings
   theta_sat = theta_res = alfa =n = theta_fc = theta_wp =  NULL
+  D_BDS = NULL
   
   # set default parameters for this function
   A_DEPTH = 0.15
@@ -588,7 +593,7 @@ sptf_paw10 <-function(A_C_OF,A_CLAY_MI,A_SILT_MI,A_SAND_MI) {
     
   # add visual bindings
   mp = theta_wp = a = b = d = e = f = theta_fc = theta_wp = NULL
-  
+  D_BDS = NULL
   
   # set default parameters for this function
   mp_fc = 33
@@ -661,6 +666,7 @@ sptf_paw11 <- function(A_C_OF,A_CLAY_MI,A_SILT_MI) {
   
   # add visual bindings
   theta_sat = theta_res = theta_fc = alfa = n = d_g = sigma_g = psi_es = lambda = psi_b=  theta_wp = NULL
+  D_BDS = h_wp = h_fc = NULL
   
   # set default parameters for this function
   mp_fc = 2
@@ -743,6 +749,7 @@ sptf_paw12 <- function(A_C_OF,A_CLAY_MI,A_SAND_MI) {
   
   # Add visual bindings
   theta_sat = theta_res = theta_fc = alfa = n = por = psi_b = lambda =  theta_wp = NULL
+  D_BDS = h_wp = h_fc = NULL
   
   # set default parameters for this function
   mp_fc = 2.0
@@ -827,6 +834,7 @@ sptf_paw13 <- function(A_C_OF,A_CLAY_MI,A_SAND_MI) {
   
   # Add visual bindings
   theta_sat = theta_res = theta_fc = alfa = n = A_LOAM_MI = Dichtheid = theta_wp =  NULL
+  D_BDS = NULL
   
   # set default parameters for this function
   mp_fc = 2

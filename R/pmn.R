@@ -146,6 +146,9 @@ sptf_pmn2 <- function(A_C_OF, A_SILT_MI, A_N_RT, A_PH_CC, t = 7) {
 #'
 #' @export
 sptf_pmn3 <- function(A_C_OF,A_N_RT, A_CLAY_MI) {
+
+  # add visual bindings
+  A_CN_FR = NULL
   
   # Check input
   arg.length <- max(length(A_C_OF),length(A_N_RT), length(A_CLAY_MI))
@@ -187,6 +190,9 @@ sptf_pmn3 <- function(A_C_OF,A_N_RT, A_CLAY_MI) {
 #'
 #' @export
 sptf_pmn4 <- function(A_C_OF,A_N_RT, A_CLAY_MI) {
+  
+  # add visual bindings
+  A_CN_FR = NULL
   
   # Check input
   arg.length <- max(length(A_C_OF),length(A_N_RT), length(A_CLAY_MI))

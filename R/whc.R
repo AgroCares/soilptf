@@ -95,7 +95,7 @@ sptf_whc2 <- function(A_C_OF, A_SAND_MI, A_CLAY_MI) {
 sptf_whc3 <-  function(A_SAND_MI,A_CLAY_MI) {
     
     # Add visual bindings
-    theta_sat = theta_res = theta_fc = alfa = n = A = B = theta_wp =NULL
+    theta = theta_sat = theta_res = theta_fc = alfa = n = A = B = theta_wp =NULL
     
     # set default parameters for this function
     mp_whc = 0
@@ -189,6 +189,7 @@ sptf_whc5 <-  function(A_SOM_LOI, A_CLAY_MI, A_SILT_MI) {
     
     # Add visual bindings
     theta_sat = theta_res = theta_fc = alfa = n = theta_wp = NULL
+    A_SAND_MI = A_C_OF = theta = NULL
     
     # set default parameters for this function
     # boolean argument for top soil (1) or sub-soil (0)
@@ -515,7 +516,7 @@ sptf_whc10 <-function(A_C_OF,A_CLAY_MI,A_SILT_MI,A_SAND_MI) {
     
   # add visual bindings
   mp = theta_wp = a = b = d = e = f = theta_fc = theta_wp = NULL
-  
+  D_BDS = NULL
   
   # set default parameters for this function
   mp_fc = 33
@@ -568,6 +569,7 @@ sptf_whc11 <- function(A_C_OF,A_CLAY_MI,A_SILT_MI) {
   
   # add visual bindings
   theta_sat = theta_res = theta_fc = alfa = n = d_g = sigma_g = psi_es = lambda = psi_b=  theta_wp = NULL
+  D_BDS = NULL
   
   # set default parameters for this function
   mp_whc = 0
@@ -621,6 +623,7 @@ sptf_whc12 <- function(A_C_OF,A_CLAY_MI,A_SAND_MI) {
   
   # Add visual bindings
   theta_sat = theta_res = theta_fc = alfa = n = por = psi_b = lambda =  theta_wp = NULL
+  D_BDS = NULL
   
   # set default parameters for this function
   mp_fc = 2.0
@@ -669,6 +672,7 @@ sptf_whc13 <- function(A_C_OF,A_CLAY_MI,A_SAND_MI) {
   
   # Add visual bindings
   theta_sat = theta_res = theta_fc = alfa = n = A_LOAM_MI = Dichtheid = theta_wp =  NULL
+  D_BDS = NULL
   
   # Check input
   arg.length <-max(length(A_C_OF), length(A_CLAY_MI),length(A_SAND_MI))
