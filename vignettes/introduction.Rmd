@@ -1,0 +1,318 @@
+---
+title: "introduction to sptf"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{introduction to sptf}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.width=6, fig.height=4
+)
+
+```
+
+```{r setup}
+library(soilptf); library(data.table);require(ggplot2)
+```
+
+# Soilptf package
+Soil indicators helps to access quality of soils. In Netherlands, an indicator set called BLN (‘Bodemindicatoren voor Landbouwgronden in Nederland’) was developed to integrally evaluate  the quality of agricultural soils (de Haan et al., 2021). This set of soil health indicators was merged in 2023 with the soil evaluation framework of the Open Soilindex (Ros et al., 2023). 
+
+Quantifying BLN indicators often requires labour-intensive measurements, limiting their on-farm use. An alternative might be to include methods to estimate those difficult-to-measure parameters by so called pedotransferfunctions (PTFs), being empirical relationships calibrated on large datasets. The use of ptfs helps the application of soil health indicators on a much larger spatial scale at lower cost. The ptfs might also help to underpin site specific threshold values. 
+
+To support the use of soil health indicators, various ptfs have been collected from scientific literature, leading to the start of the soilptf package. Currently, the soilptf package contains a series of ptfs for various soil health indicators. 
+
+Are you interested to contribute? See the vignette `how to contribute`.
+
+
+# ptf description
+
+## bulk density
+
+### introduction
+Soil bulk density is one of the most important soil properties. On the one hand, it describes the quality of the soil since soil bulk density directly reflects soil porosity and compaction which influence water and air soil properties. On the other hand, soil bulk density is a crucial parameter used in balancing and modelling of various processes in the environment. Soil bulk density can be determined in two ways: directly in laboratory using core samples by a thermogravimetric method and indirectly using prediction methods including the use of PTFs which are equations or algorithms representing relationships between soil properties different in difficulty of their measurement or their availability. PTFs use thereby other parameters of soil to estimate its bulk density such as soil organic matter, soil organic carbon, and soil mineralogy (clay, sand or silt content).
+
+### ptfs in package
+A number of PTFs exists to estimate soil bulk density. Of 181 collected PTF’s, more than half of the PTF’s were built on data of Europe (39%) or North America (19%). Some PTFs are built on data of specific land use type, such as forest (23%), nature (3%) or agriculture (11%). More than half of the PTFs require only 1 input parameter (54%), followed by 2 parameters (20 %) and 3 parameters (16 %). Almost all PTFs use soil organic matter or soil organic carbon as input parameter, and many also use soil minerology (e.g. sand and clay content) as additional input parameters.
+
+### examples
+The function to predict the bulk density from soil properties can be used as follows:
+
+```{r bdex, eval=FALSE}
+
+  # make example for a sandy soil
+  dt <- data.table(A_SOM_LOI = 4.5, A_SAND_MI = 35, A_CLAY_MI = 7.5, A_PH_CC = 4.5)
+
+  # predict the bulk density and retreive all possible predictions of all ptfs
+  dt2 <- ptf_bd_all(dt)
+  
+  # predict the summary of all the ptfs for situation in the Ntherlands
+  dt2.sum <- ptf_bd(A_SOM_LOI = 4.5, A_SAND_MI = 35, A_CLAY_MI = 7.5, A_PH_CC = 4.5,
+                    B_LOC_COUNTRY = "NL",nmax = 5)
+ 
+```
+
+### Illustration bulk density dependency on SOC
+The bulk density declines when more SOC is available. This is illustrated below.
+
+```{r bd_fig,fig.show='asis'}
+
+# for mineral soils only: 20% OS = 10% OC = 100 g/kg
+  dt1 <- data.table(A_C_OF = seq(0.5,100,1), A_CLAY_MI = 7.5, A_SAND_MI = 60, A_PH_CC = 5.4)
+  dt1[,id := .I]
+  set.seed(124)
+  dt1[,A_CN_FR := rnorm(.N,12,2)]
+  dt1[,A_N_RT := A_C_OF * 1000 / A_CN_FR]
+  
+  # the cation exchange capacity
+  dt1.bd <- ptf_bd_all(dt1)
+  
+  # retreive the mean and standard deviation of top 10 best ones
+  dt1.bd <- dt1.bd[,list(bd.mean = mean(bd,na.rm=T),
+                         bd.se = sd(bd,na.rm=T)/sqrt(sum(!is.na(bd)))),by='id']
+  dt1 <- merge(dt1,dt1.bd,by='id')
+  m.bd <- lm(bd.mean~A_C_OF + I(log(A_C_OF)),data=dt1)
+  p.bd <- predict(m.bd,newdata = data.frame(A_C_OF = dt1$A_C_OF))
+  l.bd <- paste('CEC == ', '2125 -1.056 * C - 257 * log(C)')
+  
+  # se theme for figures of the pedotransfer functions
+  ptl <- theme(plot.subtitle=element_text(size=10, face="italic", color="black"),
+               axis.text = element_text(size = 12,colour ='black'),
+               axis.title = element_text(size = 12,colour ='black'),
+               title = element_text(size=12,colour ='black'))
+  
+  # plot the figure
+  p1 <- ggplot(data = dt1,aes(x = A_C_OF,y=bd.mean)) + geom_point() + geom_line()+
+        geom_errorbar(aes(ymin=bd.mean - bd.se, ymax = bd.mean + bd.se),width = 0.2) +
+        geom_line(aes(y = p.bd),col='red')+
+        ylim(0,3000) +
+        annotate('text',x = 25, y = 2500, label = l.bd,parse = T,size = 4,adj=0) + 
+        xlab('organic carbon content (g/kg)') + ylab('bulk density (kg/m3)') + theme_bw() +
+        labs(title = "Relationship between bulk density and SOC",
+            subtitle = "derived from 181 ptfs for mineral soils") + ptl
+  
+  # plot
+  p1
+ 
+```
+
+
+## Plant Available Water (PAW)
+
+### introduction
+The amount of plant available water can be calculated from the soil water retention curve, as it is defined as the difference in volumetric water content between field capacity (pF = 2) and wilting point (pF = 4.2). The parameters of soil retention curve are indispensable for most hydrological models and can be measured with e.g. wetting experiment in sand box, yet the measurements are time and labour intensive. Therefore, many PTFs have been developed to estimate the soil water retention parameters based on more easily measurable soil parameters such as minerology and organic matter. 
+There are mainly four types of PTF to estimate soil water retention parameters. The first type uses look-up tables listing average parameters in each texture class (class PTFs, (sensu Nasta et al., 2021)). The second type (point PTFs) estimates soil water contents at fixed matric head values, such as field capacity and wilting points. The third type (semi-physical PTFs) comprises physically sound (but semi-empirical) models based on the assumption of shape similarity between the particle-size distribution and pore-size distribution. The fourth type (parameter PTFs) is based on the data-driven estimation of parameters with multiple regression equation or more complex machine-learning approaches. 
+
+### ptfs in package
+Extensive review of different PTFs can be found elsewhere. For example, Nasta et al. (2021) tested eleven PTFs to estimate water retention using three large dataset of European soil samples. Three recent PTFs (Szabó et al., 2021; Weynants et al., 2009; Wösten et al., 1999), all using van Genuchten retention curve, proved to be accurate enough to predict water retention of the wide variety of the soils. Another review of PTFs by Vereecken (2010) showed that soil organic matter is an important predictor for water retention, especially in the wet and dry ranges. Although there have been attempts to omit organic matter (or organic carbon) due to its strong correlation with bulk density, the inclusion of both bulk density and organic matter in the PTF can better represent dynamic character of soils because bulk density is strongly influenced by other factors such as management practices and drainage (Van Looy et al., 2017).  
+
+This package containts 16 existing PTFs to estimate WHC were collected (see `sptf_soilproperties`). All PTFs requires clay content as an input parameter. Furthermore, all PTFs requires either bulk density, soil organic matter or soil organic C (or combination of some of them) as input parameters. It includes 1 class-PTF, 4 point-PTFs, 2 semi-physical PTFs, and 9 parameter PTFs.
+
+### examples
+The function to predict the levels of plant available water from soil properties can be used as follows:
+
+```{r bdex, eval=FALSE}
+
+  # make example for a sandy soil
+  dt <- data.table(A_SOM_LOI = 4.5, A_SAND_MI = 35, A_CLAY_MI = 7.5, A_PH_CC = 4.5)
+
+  # predict the bulk density and retreive all possible predictions of all ptfs
+  dt2 <- ptf_paw_all(dt)
+  
+  # predict the summary of all the ptfs for situation in the Ntherlands
+  dt2.sum <- ptf_paw(A_SOM_LOI = 4.5, A_SAND_MI = 35, A_CLAY_MI = 7.5, A_PH_CC = 4.5,
+                     B_LOC_COUNTRY = "NL",nmax = 5)
+ 
+```
+
+### Illustration paw dependency on SOC
+The amount of plant available water is positively associated with SOC. This is illustrated below.
+
+```{r bd_fig,fig.show='asis'}
+
+# for mineral soils only: 20% OS = 10% OC = 100 g/kg
+  dt1 <- data.table(A_C_OF = seq(0.5,100,1), A_CLAY_MI = 7.5, A_SAND_MI = 60, A_PH_CC = 5.4)
+  dt1[,id := .I]
+  set.seed(124)
+  dt1[,A_CN_FR := rnorm(.N,12,2)]
+  dt1[,A_N_RT := A_C_OF * 1000 / A_CN_FR]
+
+  # derive water plant available water
+  dt1.paw <- ptf_paw_all(dt1)
+  dt1.paw <- dt1.paw[,list(paw.mean = mean(paw,na.rm=T),
+                           paw.se = sd(paw,na.rm = T)/sqrt(sum(!is.na(paw)))),by='id']
+  dt1 <- merge(dt1,dt1.paw,by='id')
+  m.paw <- lm(paw.mean~ I(A_C_OF^0.5),data=dt1)
+  p.paw <- predict(m.paw,newdata = data.frame(A_C_OF = dt1$A_C_OF))
+  l.paw <- paste('PAW == ', '0.135 + 0.01193 * C^0.5')
+ 
+  
+  # se theme for figures of the pedotransfer functions
+  ptl <- theme(plot.subtitle=element_text(size=10, face="italic", color="black"),
+               axis.text = element_text(size = 12,colour ='black'),
+               axis.title = element_text(size = 12,colour ='black'),
+               title = element_text(size=12,colour ='black'))
+  
+  # plot the figure
+  p2 <- ggplot(data = dt1,aes(x = A_C_OF,y=paw.mean)) + geom_point() + geom_line()+
+        geom_errorbar(aes(ymin=paw.mean - paw.se, ymax = paw.mean + paw.se),width = 0.2) +
+        geom_line(aes(y = p.paw),col='red')+
+        ylim(0.1,0.3) +
+        annotate('text',x = 2.5, y = 0.25, label = l.whc,parse = T,size = 4,adj=0) + 
+        xlab('organic carbon content (g/kg)') + ylab('PAW (-)') + theme_bw() +
+        labs(title = "Relationship between PAW and SOC",
+             subtitle = "derived from 15 ptfs for mineral soils") + ptl
+  
+  # plot
+  p2
+ 
+```
+
+
+## Potentially mineralizable Nitrogen
+
+### introduction
+The potential of soils to supply N is usually measured with biological assays of soils. Biological assays estimate mineralizable N from gross or net increases in inorganic N during incubation from potential pools or rates calculated from long-term incubation, or from N uptake by plants grown in greenhouse or field experiments. These biological methods are considered to be the most reliable estimators but they are expensive, time-consuming and labour-intensive and their results strongly depend on experimental conditions. When the mineralizable N pool has been estimated from long-term laboratory incubations (time scale 0.5 to 3 years), it is often called potentially mineralizable N, bioavailable N or N supplying capacity (Stanford and Smith, 1972; Griffin, 2008; Nannipieri and Paul, 2009). This potentially mineralizable N pool is usually estimated along with its mineralization rate constant using a first order exponential function. The fraction that mineralizes in short-term laboratory incubations and field experiments (time scale 1 to 4 weeks) is often called net N mineralization or (actual) mineralizable N (Ros et al., 2011). For example, a widely adopted approach is the short-term anaerobic incubation quantifying the ammonium released from microbes killed by the anoxic condition in a soil-water mixture incubated for 7 up to 14 days. The difference between both approaches is that the potentially mineralizable N pool reflects the amount of organic N that can be mineralized (no environmental constraints) whereas the actual mineralizable N pool is the fraction that actually mineralizes (depending on environmental conditions).
+
+### ptfs in package
+The so-called (potentially) mineralizable nitrogen (PMN) gives insight into the microbial activity in soils and the quality of the soil organic matter with respect to its potential to supply nitrogen throughout the growing seasons. Since PMN is a time-consuming measurement, a number of pedo transfer functions have been developed. In this study, we collected 10 PTFs from literature (see `sptf_soilproperties`). Total N and organic C are the most frequently used input parameters: 4 PTFs use both, 1 PTF uses organic C only, and 5 PTFs use total N only. Of the 10 PTFs, about 3 were obtained by a linear regression model of measured PMN regressed by several soil properties. The other 7 PTFs were built to estimate parameters describing the release of N via first order kinetics or a combination of zero order and first order kinetics. 
+
+
+### examples
+The function to predict the levels of PMN from soil properties can be used as follows:
+
+```{r pmnex, eval=FALSE}
+
+  # make example for a sandy soil
+  dt <- data.table(A_SOM_LOI = 4.5, A_SAND_MI = 35, A_CLAY_MI = 7.5, A_PH_CC = 4.5)
+
+  # predict the bulk density and retreive all possible predictions of all ptfs
+  dt2 <- ptf_pmn_all(dt)
+  
+  # predict the summary of all the ptfs for situation in the Ntherlands
+  dt2.sum <- ptf_pmn(A_SOM_LOI = 4.5, A_SAND_MI = 35, A_CLAY_MI = 7.5, A_PH_CC = 4.5,
+                     B_LOC_COUNTRY = "NL",nmax = 5)
+ 
+```
+
+### Illustration pmn dependency on SOC
+The PMN increases as soon as SOC increases. This is illustrated below.
+
+```{r pmn_fig,fig.show='asis'}
+
+# for mineral soils only: 20% OS = 10% OC = 100 g/kg
+  dt1 <- data.table(A_C_OF = seq(0.5,100,1), A_CLAY_MI = 7.5, A_SAND_MI = 60, A_PH_CC = 5.4)
+  dt1[,id := .I]
+  set.seed(124)
+  dt1[,A_CN_FR := rnorm(.N,12,2)]
+  dt1[,A_N_RT := A_C_OF * 1000 / A_CN_FR]
+
+  # potentially mineralizable N
+  dt1.pmn <- ptf_pmn_all(dt1)
+  dt1.pmn <- dt1.pmn[,list(pmn.mean = mean(pmn,na.rm=T),
+                           pmn.se = sd(pmn,na.rm=T)/sqrt(sum(!is.na(pmn)))),by='id']
+  dt1 <- merge(dt1,dt1.pmn,by='id')
+  m.pmn <- lm(pmn.mean~ A_C_OF+I(A_C_OF^2),data=dt1)
+  p.pmn <- predict(m.pmn,newdata = data.frame(A_C_OF = dt1$A_C_OF))
+  l.pmn <- paste('PMN == ', '9.119 + 1.284 * C + 0.0102 * C^2') 
+  
+  # se theme for figures of the pedotransfer functions
+  ptl <- theme(plot.subtitle=element_text(size=10, face="italic", color="black"),
+               axis.text = element_text(size = 12,colour ='black'),
+               axis.title = element_text(size = 12,colour ='black'),
+               title = element_text(size=12,colour ='black'))
+  
+  # plot the figure
+  p3 <- ggplot(data = dt1,aes(x = A_C_OF,y=pmn.mean)) + geom_point() + geom_line()+
+        geom_errorbar(aes(ymin=pmn.mean - pmn.se, ymax = pmn.mean + pmn.se),width = 0.2) +
+        geom_line(aes(y = p.pmn),col='red')+
+        ylim(0,350) +
+        annotate('text',x = 2.5, y = 250, label = l.pmn,parse = T,size = 4,adj=0) + 
+        xlab('organic carbon content (g/kg)') + ylab('PMN (mg/kg)') + theme_bw() +
+        labs(title = "Relationship between PMN and SOC",
+             subtitle = "derived from 19 ptfs for mineral soils") + ptl
+  
+  # plot
+  p3
+ 
+```
+
+
+## Hot Water Carbon
+
+### introduction
+The hot water extractable carbon pool has been used in various studies to represent a labile carbon pool responsive to changes in soil, crop and fertilizer management. Compared to other indicators, HWC is frequently linked to soil biological properties while being sensitive to both tillage and organic matter addition. As such it might be an informative indicator to evaluate changes in soil quality. Since the biological activity in a soil increases with the total soil organic matter, there is often a strong relationship between total SOM and measured levels of HWC. As a consequence, differences in HWC due to management can be monitored and evaluated across soils having comparable SOM levels, otherwise the impact of management is confounded by the differences in SOM. This suggests that the relative contribution of HWC to the total levels of Carbon in soil are more robust indicator for soil quality that the HWC level itself. Similar findings have been observed for almost all extractable soil organic carbon fractions (Ros, 2011). 
+
+### ptfs in package
+Using 1024 observations from various studies done in the Netherlands during last decade confirms that the levels of HWC are positively and strongly correlated to the levels of SOM. Part of the uncertainty can be removed by using soil organic C (determined as C-kurmisch) given the lab uncertainty of the classical loss-on-ignition method used for SOM. The data used originated from the project “Zorg voor Zand” (van Eekeren et al., 2009), the public-private-partnership for Beter Bodembeheer (Fujita & Ros, 2023), projects for “Slim Landgebruik”, the long-term experiments at Wageningen UR (unpublished results), and the PhD projects of Nick van Eekeren (Van Eekeren, 2009), Joachim Deru (Deru, 2022) and Ros (Ros, 2011). It includes observations across all relevant land uses, soil types and management practices in the Netherlands. 
+
+
+### examples
+The function to predict the levels of HWC from soil properties can be used as follows:
+
+```{r hwcex, eval=FALSE}
+
+  # make example for a sandy soil
+  dt <- data.table(A_SOM_LOI = 4.5, A_SAND_MI = 35, A_CLAY_MI = 7.5, A_PH_CC = 4.5)
+
+  # predict the bulk density and retreive all possible predictions of all ptfs
+  dt2 <- ptf_hwc_all(dt)
+  
+  # predict the summary of all the ptfs for situation in the Ntherlands
+  dt2.sum <- ptf_hwc(A_SOM_LOI = 4.5, A_SAND_MI = 35, A_CLAY_MI = 7.5, A_PH_CC = 4.5,
+                     B_LOC_COUNTRY = "NL",nmax = 5)
+ 
+```
+
+### Illustration hwc dependency on SOC
+The HWC increases as soon as SOC increases. This is illustrated below.
+
+```{r hwc_fig,fig.show='asis'}
+
+# for mineral soils only: 20% OS = 10% OC = 100 g/kg
+  dt1 <- data.table(A_C_OF = seq(0.5,100,1), A_CLAY_MI = 7.5, A_SAND_MI = 60, A_PH_CC = 5.4)
+  dt1[,id := .I]
+  set.seed(124)
+  dt1[,A_CN_FR := rnorm(.N,12,2)]
+  dt1[,A_N_RT := A_C_OF * 1000 / A_CN_FR]
+
+  # potentially mineralizable N
+  dt1.pmn <- ptf_pmn_all(dt1)
+  dt1.pmn <- dt1.pmn[,list(pmn.mean = mean(pmn,na.rm=T),
+                           pmn.se = sd(pmn,na.rm=T)/sqrt(sum(!is.na(pmn)))),by='id']
+  dt1 <- merge(dt1,dt1.pmn,by='id')
+  m.pmn <- lm(pmn.mean~ A_C_OF+I(A_C_OF^2),data=dt1)
+  p.pmn <- predict(m.pmn,newdata = data.frame(A_C_OF = dt1$A_C_OF))
+  l.pmn <- paste('PMN == ', '9.119 + 1.284 * C + 0.0102 * C^2') 
+  
+  # se theme for figures of the pedotransfer functions
+  ptl <- theme(plot.subtitle=element_text(size=10, face="italic", color="black"),
+               axis.text = element_text(size = 12,colour ='black'),
+               axis.title = element_text(size = 12,colour ='black'),
+               title = element_text(size=12,colour ='black'))
+  
+  # plot the figure
+  p4 <- ggplot(data = dt1,aes(x = A_C_OF,y=hwc.mean)) + geom_point() + geom_line()+
+        geom_errorbar(aes(ymin=hwc.mean - hwc.se, ymax = hwc.mean + hwc.se),width = 0.2) +
+        geom_line(aes(y = p.hwc),col='red')+
+        ylim(0,3000) +
+        annotate('text',x = 2.5, y = 2500, label = l.hwc,parse = T,size = 4,adj=0) + 
+        xlab('organic carbon content (g/kg)') + ylab('HWC (g/kg)') + theme_bw() +
+        labs(title = "Relationship between HWC and SOC",
+             subtitle = "derived from 11 ptfs for mineral soils") + ptl
+  
+  # plot
+  p4
+ 
+```
+
+# To be continued
+
+
+
+
