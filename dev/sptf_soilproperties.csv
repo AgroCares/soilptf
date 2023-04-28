@@ -159,3 +159,23 @@
 158;14;paw;NL;EU;variable;agriculture;100;36;71;a_som_loi||a_clay_mi||a_silt_mi;wosten_1997;https://doi.org/10.1016/S0166-2481(97)80037-2
 159;15;paw;NL;EU;variable;agriculture;100;832;72;a_som_loi||a_clay_mi||a_silt_mi;wosten_2001;https://edepot.wur.nl/43272
 160;16;paw;NL;EU;variable;agriculture;100;832;95;a_som_loi||a_clay_mi||a_silt_mi;wosten_2001;https://edepot.wur.nl/43272
+161;1;pmn;;AF;variable;agriculture;15;15;;a_c_of||a_clay_mi||a_n_rt||a_ph_cc;narteh_1997;https://doi.org/10.1016/S0016-7061(96)00097-3
+162;2;pmn;CN;AS;variable;agriculture;50;27;;a_c_of||a_silt_mi||a_n_rt||a_ph_cc;zou_2018;https://doi.org/10.4236/ojss.2018.82006
+163;3;pmn;NL;EU;variable;agriculture;30;100;44;a_c_of||a_n_rt||a_clay_mi;ros_2020;https://edepot.wur.nl/168954
+164;4;pmn;NL;EU;variable;agriculture;30;47;52;a_c_of||a_n_rt||a_clay_mi;ros_2020;not available
+165;5;pmn;US;NA;variable;agriculture;30;39;65;a_c_of||a_n_rt||a_cec_co;rasiah_1995;https://doi.org/10.1080/00103629509369414
+166;6;pmn;CA;NA;variable;agriculture;30;33;29;a_c_of||a_n_rt||a_clay_mi||a_silt_mi||a_ph_cc;rasiah_1995;https://doi.org/10.1080/00103629509369414
+167;7;pmn;IN;AS;variable;agriculture;15;15;92;a_c_of||a_clay_mi;haer_2003;https://doi.org/10.1080/15324980301586
+168;8;pmn;IE;EU;variable;agriculture;10;72;89;a_n_rt||a_cec_co||a_silt_mi;herlihy_1979;https://www.jstor.org/stable/42934963
+169;9;pmn;CA;NA;variable;agriculture;15;33;78;a_n_rt;campbell_1984;https://cdnsciencepub.com/doi/pdf/10.4141/cjss84-035
+170;10;pmn;CA;NA;variable;agriculture;20;20;58;a_n_rt;simard_1993;https://doi.org/10.4141/cjss93-003
+171;11;pmn;NL;EU;variable;agriculture;30;100;44;a_c_of||a_clay_mi;ros_2011;https://edepot.wur.nl/168954
+172;12;pmn;NL;EU;variable;agriculture;30;47;52;a_c_of;ros_2011;not available
+173;13;pmn;NL;EU;variable;agriculture;30;20;37;a_c_of;vaneekeren_2009;not available
+174;14;pmn;NL;EU;variable;agriculture;30;51;68;a_c_of||a_p_al||a_ph_cc;balen_2015;not available
+175;15;pmn;NL;EU;variable;agriculture;30;120;64;a_c_of||a_p_al||a_ph_cc;balen_2015;not available
+176;16;pmn;NL;EU;variable;agriculture;30;20;15;a_c_of;hanegraaf_2009;not available
+177;17;pmn;NL;EU;variable;agriculture;30;104;31;a_c_of||a_ph_cc;hanegraaf_2012;not available
+178;18;pmn;NL;EU;variable;agriculture;30;149;21;a_c_of||a_ph_cc;hanegraaf_2009;not available
+179;19;pmn;NL;EU;variable;agriculture;30;20;25;a_c_of||a_clay_mi;vaneekeren_2009;not available
+180;20;pmn;NL;EU;variable;agriculture;30;820;31;a_c_of||a_clay_mi;fujita_2023;not available
