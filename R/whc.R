@@ -492,7 +492,7 @@ sptf_whc9 <- function(A_C_OF,A_CLAY_MI, A_SILT_MI) {
   # to be updated
   
   # Calculate water holding capacity (cm3/cm3)
-  dt[, value :=  NA_real_]
+  dt[, value :=  (23.839 + 0.530 * A_SILT_MI + 0.255 * A_CLAY_MI)*0.01]
   
   # return value
   value <- dt[, value]
@@ -536,15 +536,16 @@ sptf_whc10 <-function(A_C_OF,A_CLAY_MI,A_SILT_MI,A_SAND_MI) {
                      A_SILT_MI = A_SILT_MI,
                      A_SAND_MI = A_SAND_MI,
                      A_C_OF = A_C_OF * 0.1,
+                     A_SOM_LOI = A_C_OF * 0.1 * 2,
                      value = NA_real_)
     
     # add density (with Corg in g/kg as input)
-    dt[,D_BDS := 1617 - 77.4 * log(A_C_OF * 10) - 3.49 * A_C_OF * 10]
+    dt[,D_BDS := (1617 - 77.4 * log(A_C_OF * 10) - 3.49 * A_C_OF * 10) * 0.001]
     
     # to be updated
     
     # Calculate water holding capacity (cm3/cm3)
-    dt[, value := NA_real_]
+    dt[, value := 0.7899 - 0.0037 * A_SAND_MI + 0.01 * A_SOM_LOI -0.1315 * D_BDS]
     
     # return value
     value <- dt[, value]
