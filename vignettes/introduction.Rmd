@@ -313,6 +313,11 @@ The HWC increases as soon as SOC increases. This is illustrated below.
 
 # To be continued
 
+### introduction
 
+### ptfs in package
 
+### examples
+
+### illustration hwc dependency on SOC
 
