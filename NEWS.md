@@ -1,5 +1,10 @@
 # Changelog soilptf
 
+## Version 0.3.1  2023-04-29
+
+## Added
+* add vignette `how to contribute`
+
 ## Version 0.3.0  2023-04-27
 
 ### Added

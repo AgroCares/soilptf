@@ -89,10 +89,12 @@ If you want to add a new soil health indicator or soil function you should take 
 In the coming years we aim to develop stochastic prediciton models that can be calibrated and validated on datasets with relevant soil properties. If you have relevant (published or unpublished) datasets that can be used, please add them as csv file to the `sptf/dev` directory. 
 If you have particular datasets available that can be used as independent validation of the estimated soil health indicators, please contact the authors of this package.
 
-# How to share ideas?
+# Others
+
+## How to share ideas?
 If you detect errors or have ideas for nice additional features, you can add them in your own forked repo and ask for a pull request. If you are requesting a huge change in package structure or substantial update, please add / mark your request as issue on the sptf github page.
 
-# Naming of soil properties as function arguments
+## Naming of soil properties as function arguments
 Function arguments, often being soil properties, have an unique name, being defined in the package table `sptf_parameters`. Each element (or soil properties) is defined with the given unit, the data type, the minimum and maximum allowed values (when numeric) or the allowed options (when categorial). The name of soil properties follow a unique combination of 1 to 4 elements such as `A_N_RT` that stands for the total nitrogen content of the soil In this name, the first position reflects the analysis type (A stands for soil properties, B for field properties, F voor feedstock properties), where the second position is related to the specific element (from the periodic table or any combination of them), the third position reflects the measurement method (eg. real total = RT, cacl2 extraction = CC, Cohex extraction = CO), and the last position might add specific methodological details that are needed to differentiate from the default. For example, the element `A_MG_CO` stands for the Mg content extracted with a Cohex extration, being the adsorbed Mg content of a soil (in units mmol+/kg), whereas `A_MG_CO_PO` refers to the same element but expresses the unit as percentage occupation (PO) of the cec. For your illustration, see the package table `sptf_parameters`
 
 
