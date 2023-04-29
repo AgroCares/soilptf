@@ -8,28 +8,28 @@
 #' This function calculates the soil shear strength via various soil properties
 #'
 #' @param A_SOM_LOI (numeric) The percentage organic matter in the soil (\%).
-#' @param A_CACO3_MI (numeric) The carbonate content of the soil (\%).
+#' @param A_CACO3_IF (numeric) The carbonate content of the soil (\%).
 #'
 #' @import data.table
 #' 
 #' @references Zhang et al. (2018) Estimation of surface shear strength of undisturbed soils in the eastern part of northern China’s wind erosion area
 #'
 #' @export
-sptf_sss1 <- function(A_SOM_LOI,A_CACO3_MI) {
+sptf_sss1 <- function(A_SOM_LOI,A_CACO3_IF) {
   
   # add visual bindings
   bd = v1 = v2 = v3 = A_C_OF = NULL
   
   # Check input
-  arg.length <- max(length(A_SOM_LOI), length(A_CACO3_MI))
+  arg.length <- max(length(A_SOM_LOI), length(A_CACO3_IF))
   checkmate::assert_numeric(A_SOM_LOI, lower = 0, upper = 1000, len = arg.length)
-  checkmate::assert_numeric(A_CACO3_MI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_numeric(A_CACO3_IF, lower = 0, upper = 100, len = arg.length)
   
   # make internal data.table (density in g/cm3)
   dt <- data.table(id = 1: arg.length,
                    A_SOM_LOI = A_SOM_LOI,
                    A_C_OF = 0.5 * A_SOM_LOI * 10,
-                   A_CACO3_MI = A_CACO3_MI)
+                   A_CACO3_IF = A_CACO3_IF)
   
   # estimate bulk density (in g/cm3)
   dt[, bd := (1617 - 77.4 * log(A_C_OF) - 3.49 * A_C_OF) * 0.001]
@@ -38,7 +38,7 @@ sptf_sss1 <- function(A_SOM_LOI,A_CACO3_MI) {
   dt[, v1 := 2.448 * A_SOM_LOI + 0.882]
   
   # Estimate sss using CaCO3 (R2 = 0.45, n = 11)
-  dt[, v2 := 5.260 * A_CACO3_MI - 4.311]
+  dt[, v2 := 5.260 * A_CACO3_IF - 4.311]
   
   # Estimate sss using bulk density (R2 = 0.42, n =11)
   dt[, v3 := 29.132 * bd + 34.840]

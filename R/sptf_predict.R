@@ -106,7 +106,7 @@ ptf_bd_old <- function(A_SOM_LOI = NA_real_, A_C_OF = NA_real_,
   # add visual bindings when no input is given
   if(!'A_H2O_T105' %in% colnames(dt)){A_H2O_T105 = NULL}
   if(!'A_PH_WA' %in% colnames(dt)){A_PH_WA = NULL}
-  if(!'A_CACO3_MI' %in% colnames(dt)){A_CACO3_MI = NULL}
+  if(!'A_CACO3_IF' %in% colnames(dt)){A_CACO3_IF = NULL}
   if(!'A_N_RT' %in% colnames(dt)){A_N_RT = NULL}
   if(!'A_SAND_M50' %in% colnames(dt)){A_SAND_M50 = NULL}
   if(!'B_SLOPE_DEGREE' %in% colnames(dt)){B_SLOPE_DEGREE = NULL}
@@ -114,7 +114,7 @@ ptf_bd_old <- function(A_SOM_LOI = NA_real_, A_C_OF = NA_real_,
   if(!'B_ALTITUDE' %in% colnames(dt)){B_ALTITUDE = NULL}
   
   # add all possible inputs as NA when missing
-  cols <- c('A_PH_WA','A_CACO3_MI','A_N_RT','A_H2O_T105','A_SAND_M50','B_SLOPE_DEGREE','B_SLOPE_ASPECT','B_ALTITUDE')
+  cols <- c('A_PH_WA','A_CACO3_IF','A_N_RT','A_H2O_T105','A_SAND_M50','B_SLOPE_DEGREE','B_SLOPE_ASPECT','B_ALTITUDE')
   cols <- cols[!cols %in% colnames(dt)]
   dt[,c(cols) := NA_real_]
 
@@ -1290,7 +1290,7 @@ ptf_cec_all <- function(dt){
   p51 = p52 = p53 = p54 = p55 = p56 = p57 = p58 = p59 = p60 = p61 = p62 = NULL
   p63 = p64 = p65 = p66 = p67 = p68 = p69 = p70 = p71 = p72 = p73 = p74 = NULL
   p75 = NULL
-  num_obs = A_CACO3_MI = A_CLAY_MI = A_SAND_MI = A_SILT_MI = A_SOM_LOI = A_C_OF = A_PH_KCL = A_PH_CC = A_PH_WA = NULL
+  num_obs = A_CACO3_IF = A_CLAY_MI = A_SAND_MI = A_SILT_MI = A_SOM_LOI = A_C_OF = A_PH_KCL = A_PH_CC = A_PH_WA = NULL
   B_LU_PTFCLASS = id = A_CN_FR = B_SOILCLASS_USDA = B_CLIM_CAT1 = patterns = ptf_id = cec = NULL
   
   # make local copy
@@ -1301,7 +1301,7 @@ ptf_cec_all <- function(dt){
   
   # add all numeric inputs as NA when missing
   cols <- c('A_SOM_LOI', 'A_C_OF', 'A_CLAY_MI','A_SAND_MI','A_SILT_MI', 
-            'A_CACO3_MI','A_PH_KCL','A_PH_CC','A_PH_WA','A_CN_FR')
+            'A_CACO3_IF','A_PH_KCL','A_PH_CC','A_PH_WA','A_CN_FR')
   cols <- cols[!cols %in% colnames(dt)]
   dt[,c(cols) := NA_real_]
   
@@ -1356,7 +1356,7 @@ ptf_cec_all <- function(dt){
   dt[, p26 := sptf_cec26(A_C_OF = A_C_OF, A_CLAY_MI = A_CLAY_MI,A_SILT_MI = A_SILT_MI,A_PH_WA = A_PH_WA,B_SOILCLASS_USDA=B_SOILCLASS_USDA)]
   dt[, p27 := sptf_cec27(A_SOM_LOI = A_SOM_LOI,A_CLAY_MI = A_CLAY_MI, A_SILT_MI = A_SILT_MI,B_CLIM_CAT1=B_CLIM_CAT1)]
   dt[, p28 := sptf_cec28(A_SOM_LOI = A_SOM_LOI, A_CLAY_MI = A_CLAY_MI,A_SILT_MI = A_SILT_MI,A_PH_CC = A_PH_CC)]
-  dt[, p29 := sptf_cec29(A_SOM_LOI = A_SOM_LOI, A_CLAY_MI = A_CLAY_MI,A_SILT_MI = A_SILT_MI,A_CACO3_MI=A_CACO3_MI,A_PH_CC = A_PH_CC)]
+  dt[, p29 := sptf_cec29(A_SOM_LOI = A_SOM_LOI, A_CLAY_MI = A_CLAY_MI,A_SILT_MI = A_SILT_MI,A_CACO3_IF=A_CACO3_IF,A_PH_CC = A_PH_CC)]
   dt[, p30 := sptf_cec30(A_SOM_LOI = A_SOM_LOI, A_CLAY_MI = A_CLAY_MI)]
   dt[, p31 := sptf_cec31(A_SOM_LOI = A_SOM_LOI, A_CLAY_MI = A_CLAY_MI,B_SOILCLASS_USDA=B_SOILCLASS_USDA)]
   dt[, p32 := sptf_cec32(A_SOM_LOI = A_SOM_LOI, A_CLAY_MI = A_CLAY_MI,A_SILT_MI = A_SILT_MI,A_PH_CC = A_PH_CC)]
@@ -1377,7 +1377,7 @@ ptf_cec_all <- function(dt){
   dt[, p47 := sptf_cec47(A_SOM_LOI = A_SOM_LOI, A_CLAY_MI = A_CLAY_MI,A_SILT_MI = A_SILT_MI,B_LU_PTFCLASS = B_LU_PTFCLASS)]
   dt[, p48 := sptf_cec48(A_SOM_LOI = A_SOM_LOI, A_CLAY_MI = A_CLAY_MI)]
   dt[, p49 := sptf_cec49(A_SOM_LOI = A_SOM_LOI,A_CLAY_MI = A_CLAY_MI, A_SILT_MI = A_SILT_MI)]
-  dt[, p50 := sptf_cec50(A_SOM_LOI = A_SOM_LOI, A_CLAY_MI = A_CLAY_MI,A_SILT_MI = A_SILT_MI,A_CACO3_MI=A_CACO3_MI,A_PH_CC = A_PH_CC)]
+  dt[, p50 := sptf_cec50(A_SOM_LOI = A_SOM_LOI, A_CLAY_MI = A_CLAY_MI,A_SILT_MI = A_SILT_MI,A_CACO3_IF=A_CACO3_IF,A_PH_CC = A_PH_CC)]
   dt[, p51 := sptf_cec51(A_C_OF = A_C_OF, A_CLAY_MI = A_CLAY_MI,A_SILT_MI = A_SILT_MI, A_PH_WA = A_PH_WA)]
   dt[, p52 := sptf_cec52(A_C_OF = A_C_OF, A_CLAY_MI = A_CLAY_MI,A_SILT_MI = A_SILT_MI, A_PH_WA = A_PH_WA)]
   dt[, p53 := sptf_cec53(A_C_OF = A_C_OF, A_CLAY_MI = A_CLAY_MI,A_SILT_MI = A_SILT_MI, A_PH_WA = A_PH_WA)]
@@ -1385,11 +1385,11 @@ ptf_cec_all <- function(dt){
   dt[, p55 := sptf_cec55(A_C_OF = A_C_OF, A_CLAY_MI = A_CLAY_MI,A_SILT_MI = A_SILT_MI, A_PH_WA = A_PH_WA)]
   dt[, p56 := sptf_cec56(A_SOM_LOI = A_SOM_LOI, A_CLAY_MI = A_CLAY_MI, A_PH_WA = A_PH_WA)]
   dt[, p57 := sptf_cec57(A_SOM_LOI = A_SOM_LOI, A_SAND_MI = A_SAND_MI, A_PH_WA = A_PH_WA)]
-  dt[, p58 := sptf_cec58(A_SOM_LOI = A_SOM_LOI, A_CLAY_MI = A_CLAY_MI,A_SILT_MI = A_SILT_MI,A_CACO3_MI=A_CACO3_MI)]
+  dt[, p58 := sptf_cec58(A_SOM_LOI = A_SOM_LOI, A_CLAY_MI = A_CLAY_MI,A_SILT_MI = A_SILT_MI,A_CACO3_IF=A_CACO3_IF)]
   dt[, p59 := sptf_cec59(A_C_OF = A_C_OF, A_CLAY_MI = A_CLAY_MI)]
   dt[, p60 := sptf_cec60(A_C_OF = A_C_OF, A_CLAY_MI = A_CLAY_MI)]
   dt[, p61 := sptf_cec61(A_C_OF = A_C_OF, A_CLAY_MI = A_CLAY_MI)]
-  dt[, p62 := sptf_cec62(A_C_OF = A_C_OF, A_CLAY_MI = A_CLAY_MI,A_SILT_MI = A_SILT_MI,A_CACO3_MI=A_CACO3_MI)]
+  dt[, p62 := sptf_cec62(A_C_OF = A_C_OF, A_CLAY_MI = A_CLAY_MI,A_SILT_MI = A_SILT_MI,A_CACO3_IF=A_CACO3_IF)]
   dt[, p63 := sptf_cec63(A_C_OF = A_C_OF, A_CLAY_MI = A_CLAY_MI)]
   dt[, p64 := sptf_cec64(A_C_OF = A_C_OF, A_CLAY_MI = A_CLAY_MI)]
   dt[, p65 := sptf_cec65(A_C_OF = A_C_OF)]
@@ -1753,7 +1753,7 @@ ptf_mwd_all <- function(dt){
   p1 = p2 = p3 = p4 = p5 = p6 = p7 = p8 = p9 = p10 = p11 = p12 = p13 = p14 = p15 = NULL
   A_CLAY_MI = A_SAND_MI = A_SILT_MI = A_SOM_LOI = A_C_OF = A_PH_KCL = A_PH_WA = A_PH_CC = NULL
   num_obs = patterns = ptf_id = id = mwd = NULL
-  B_LU_PTFCLASS = A_CEC_CO = A_CACO3_MI = NULL
+  B_LU_PTFCLASS = A_CEC_CO = A_CACO3_IF = NULL
   
   # make local copy
   dt <- copy(dt)
@@ -1763,7 +1763,7 @@ ptf_mwd_all <- function(dt){
   
   # add all possible numeric inputs as NA when missing
   cols <- c('A_SOM_LOI', 'A_C_OF', 'A_CLAY_MI','A_SAND_MI','A_SILT_MI',
-            'A_CEC_CO','A_CACO3_MI','A_PH_WA','A_PH_KCL','A_PH_CC')
+            'A_CEC_CO','A_CACO3_IF','A_PH_WA','A_PH_KCL','A_PH_CC')
   cols <- cols[!cols %in% colnames(dt)]
   dt[,c(cols) := NA_real_]
   
@@ -1793,18 +1793,18 @@ ptf_mwd_all <- function(dt){
   dt[, p1 := sptf_mwd1(A_SOM_LOI = A_SOM_LOI)]
   dt[, p2 := sptf_mwd2(A_C_OF = A_C_OF, A_CLAY_MI = A_CLAY_MI,A_SILT_MI = A_SILT_MI)]
   dt[, p3 := sptf_mwd3(A_C_OF = A_C_OF, A_CEC_CO=A_CEC_CO,A_CLAY_MI = A_CLAY_MI,A_SILT_MI = A_SILT_MI,
-                        A_PH_WA = A_PH_WA, A_CACO3_MI = A_CACO3_MI)]
-  dt[, p4 := sptf_mwd4(A_C_OF = A_C_OF, A_CLAY_MI = A_CLAY_MI,A_SILT_MI = A_SILT_MI,A_CACO3_MI = A_CACO3_MI)]
+                        A_PH_WA = A_PH_WA, A_CACO3_IF = A_CACO3_IF)]
+  dt[, p4 := sptf_mwd4(A_C_OF = A_C_OF, A_CLAY_MI = A_CLAY_MI,A_SILT_MI = A_SILT_MI,A_CACO3_IF = A_CACO3_IF)]
   dt[, p5 := sptf_mwd5(A_C_OF = A_C_OF, A_CLAY_MI = A_CLAY_MI,A_PH_WA = A_PH_WA)]
   dt[, p6 := sptf_mwd6(A_C_OF = A_C_OF)]
   dt[, p7 := sptf_mwd7(A_C_OF = A_C_OF,A_SAND_MI=A_SAND_MI)]
-  dt[, p8 := sptf_mwd8(A_SOM_LOI = A_SOM_LOI, A_CLAY_MI = A_CLAY_MI,A_SILT_MI = A_SILT_MI,A_PH_WA = A_PH_WA, A_CACO3_MI = A_CACO3_MI)]
+  dt[, p8 := sptf_mwd8(A_SOM_LOI = A_SOM_LOI, A_CLAY_MI = A_CLAY_MI,A_SILT_MI = A_SILT_MI,A_PH_WA = A_PH_WA, A_CACO3_IF = A_CACO3_IF)]
   dt[, p9 := sptf_mwd9(A_C_OF = A_C_OF, A_CLAY_MI = A_CLAY_MI,A_SILT_MI = A_SILT_MI,A_PH_WA = A_PH_WA,B_LU_PTFCLASS=B_LU_PTFCLASS)]
   dt[, p10 := sptf_mwd10(A_C_OF = A_C_OF)]
   dt[, p11 := sptf_mwd11(A_C_OF = A_C_OF, A_CLAY_MI = A_CLAY_MI)]
   dt[, p12 := sptf_mwd12(A_SOM_LOI = A_SOM_LOI, A_CLAY_MI = A_CLAY_MI,A_SILT_MI = A_SILT_MI)]
   dt[, p13 := sptf_mwd13(A_SOM_LOI = A_SOM_LOI, A_CLAY_MI = A_CLAY_MI)]
-  dt[, p14 := sptf_mwd14(A_SOM_LOI = A_SOM_LOI, A_CLAY_MI = A_CLAY_MI,A_SILT_MI = A_SILT_MI,A_PH_WA = A_PH_WA, A_CACO3_MI = A_CACO3_MI)]
+  dt[, p14 := sptf_mwd14(A_SOM_LOI = A_SOM_LOI, A_CLAY_MI = A_CLAY_MI,A_SILT_MI = A_SILT_MI,A_PH_WA = A_PH_WA, A_CACO3_IF = A_CACO3_IF)]
   dt[, p15 := sptf_mwd15(A_C_OF = A_C_OF, A_PH_WA = A_PH_WA)]
   
   # melt the data
@@ -1961,7 +1961,7 @@ ptf_wsa_all <- function(dt){
   p1 = p2 = p3 = p4 = p5 = p6 = p7 = p8 = p9 = patterns = NULL
   patterns = num_obs = ptf_id = id = wsa = NULL
   A_CLAY_MI = A_SAND_MI = A_SILT_MI = A_SOM_LOI = A_C_OF = A_PH_KCL = A_PH_WA = A_PH_CC = NULL
-  A_K_AA = A_CACO3_MI = NULL
+  A_K_AA = A_CACO3_IF = NULL
   
   # make local copy
   dt <- copy(dt)
@@ -1971,7 +1971,7 @@ ptf_wsa_all <- function(dt){
   
   # add all possible inputs as NA when missing
   cols <- c('A_SOM_LOI', 'A_C_OF', 'A_CLAY_MI','A_SAND_MI','A_SILT_MI',
-            'A_CACO3_MI','A_PH_WA','A_K_AA','A_PH_KCL','A_PH_CC')
+            'A_CACO3_IF','A_PH_WA','A_K_AA','A_PH_KCL','A_PH_CC')
   cols <- cols[!cols %in% colnames(dt)]
   dt[,c(cols) := NA_real_]
   
@@ -1996,9 +1996,9 @@ ptf_wsa_all <- function(dt){
                        A_K_AA = A_K_AA, A_PH_WA = A_PH_WA)]
   dt[, p4 := sptf_wsa4(A_C_OF = A_C_OF, A_CLAY_MI = A_CLAY_MI,A_SILT_MI = A_SILT_MI)]
   dt[, p5 := sptf_wsa5(A_SOM_LOI = A_SOM_LOI, A_CLAY_MI = A_CLAY_MI,A_SILT_MI = A_SILT_MI)]
-  dt[, p6 := sptf_wsa6(A_C_OF = A_C_OF, A_CLAY_MI = A_CLAY_MI,A_SILT_MI = A_SILT_MI, A_CACO3_MI=A_CACO3_MI)]
+  dt[, p6 := sptf_wsa6(A_C_OF = A_C_OF, A_CLAY_MI = A_CLAY_MI,A_SILT_MI = A_SILT_MI, A_CACO3_IF=A_CACO3_IF)]
   dt[, p7 := sptf_wsa7(A_SOM_LOI = A_SOM_LOI, A_CLAY_MI = A_CLAY_MI,A_SILT_MI = A_SILT_MI, 
-                      A_PH_WA = A_PH_WA,A_CACO3_MI = A_CACO3_MI)]
+                      A_PH_WA = A_PH_WA,A_CACO3_IF = A_CACO3_IF)]
   dt[, p8 := sptf_wsa8(A_SOM_LOI = A_SOM_LOI, A_CLAY_MI = A_CLAY_MI)]
   dt[, p9 := sptf_wsa9(A_SOM_LOI = A_SOM_LOI, A_CLAY_MI = A_CLAY_MI, A_PH_WA = A_PH_WA)]  
   
@@ -2358,7 +2358,7 @@ ptf_sss_all <- function(dt){
   
   # add visual binding
   p1 = p2 = p3 = NULL
-  A_CACO3_MI = A_CLAY_MI = A_SAND_MI = A_SILT_MI = A_SOM_LOI = A_C_OF = A_PH_KCL = A_PH_WA = A_PH_CC = NULL
+  A_CACO3_IF = A_CLAY_MI = A_SAND_MI = A_SILT_MI = A_SOM_LOI = A_C_OF = A_PH_KCL = A_PH_WA = A_PH_CC = NULL
   num_obs = patterns = ptf_id = id = sss = NULL
   
   # make local copy
@@ -2368,7 +2368,7 @@ ptf_sss_all <- function(dt){
   if(!'id' %in% colnames(dt)){dt[,id := 1:.N]}
   
   # add all possible inputs as NA when missing
-  cols <- c('A_SOM_LOI', 'A_C_OF', 'A_CLAY_MI','A_SAND_MI','A_SILT_MI','A_CACO3_MI')
+  cols <- c('A_SOM_LOI', 'A_C_OF', 'A_CLAY_MI','A_SAND_MI','A_SILT_MI','A_CACO3_IF')
   cols <- cols[!cols %in% colnames(dt)]
   dt[,c(cols) := NA_real_]
   
@@ -2386,7 +2386,7 @@ ptf_sss_all <- function(dt){
   # dt[is.na(D_BDS), D_BDS := 1617 - 77.4 * log(A_C_OF) - 3.49 * A_C_OF]
   
   # estimate the soil shear strength
-  dt[, p1 := sptf_sss1(A_SOM_LOI = A_SOM_LOI, A_CACO3_MI = A_CACO3_MI)]
+  dt[, p1 := sptf_sss1(A_SOM_LOI = A_SOM_LOI, A_CACO3_IF = A_CACO3_IF)]
   dt[, p2 := sptf_sss2(A_SOM_LOI = A_SOM_LOI, A_CLAY_MI = A_CLAY_MI)]
   dt[, p3 := sptf_sss3(A_SOM_LOI = A_SOM_LOI, A_CLAY_MI = A_CLAY_MI)]
   
@@ -2555,7 +2555,7 @@ ptf_metals_all <- function(dt){
   if(!'id' %in% colnames(dt)){dt[,id := 1:.N]}
   
   # add all possible inputs as NA when missing
-  cols <- c('A_SOM_LOI', 'A_C_OF', 'A_CLAY_MI','A_SAND_MI','A_SILT_MI','A_CACO3_MI',
+  cols <- c('A_SOM_LOI', 'A_C_OF', 'A_CLAY_MI','A_SAND_MI','A_SILT_MI','A_CACO3_IF',
             'A_PH_WA','A_PH_CC','A_PH_KCL')
   cols <- cols[!cols %in% colnames(dt)]
   dt[,c(cols) := NA_real_]

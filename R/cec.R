@@ -1295,7 +1295,7 @@ sptf_cec28 <- function(A_SOM_LOI, A_CLAY_MI, A_SILT_MI, A_PH_CC) {
 #' @param A_SOM_LOI (numeric) The percentage organic matter in the soil (\%).
 #' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
 #' @param A_SILT_MI (numeric) The silt content of the soil (\%).
-#' @param A_CACO3_MI (numeric) The carbonate content of the soil (\%).
+#' @param A_CACO3_IF (numeric) The carbonate content of the soil (\%).
 #' @param A_PH_CC (numeric) The acidity of the soil, pH in CaCl2 (-).
 #'  
 #' @import data.table
@@ -1303,21 +1303,21 @@ sptf_cec28 <- function(A_SOM_LOI, A_CLAY_MI, A_SILT_MI, A_PH_CC) {
 #' @references Krogh et al. (2000) Cation Exchange Capacity Pedotransfer Functions For Danish Soils
 #'
 #' @export
-sptf_cec29 <- function(A_SOM_LOI, A_CLAY_MI, A_SILT_MI, A_CACO3_MI, A_PH_CC) {
+sptf_cec29 <- function(A_SOM_LOI, A_CLAY_MI, A_SILT_MI, A_CACO3_IF, A_PH_CC) {
   
   # Check input
-  arg.length <- max(length(A_SOM_LOI), length(A_CLAY_MI),length(A_PH_CC),length(A_SILT_MI),length(A_CACO3_MI))
+  arg.length <- max(length(A_SOM_LOI), length(A_CLAY_MI),length(A_PH_CC),length(A_SILT_MI),length(A_CACO3_IF))
   checkmate::assert_numeric(A_SOM_LOI, lower = 0, upper = 100,len = arg.length)
   checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
   checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, len = arg.length)
-  checkmate::assert_numeric(A_CACO3_MI, lower = 0, upper = 15, len = arg.length)
+  checkmate::assert_numeric(A_CACO3_IF, lower = 0, upper = 15, len = arg.length)
   checkmate::assert_numeric(A_PH_CC, lower = 3, upper = 12, len = arg.length)
   
   # make internal data.table
   dt <- data.table(A_SOM_LOI = A_SOM_LOI,
                    A_CLAY_MI = A_CLAY_MI,
                    A_SILT_MI = A_SILT_MI,
-                   A_CACO3_MI = A_CACO3_MI,
+                   A_CACO3_IF = A_CACO3_IF,
                    A_PH_CC = A_PH_CC,
                    value = NA_real_)
   
@@ -1333,7 +1333,7 @@ sptf_cec29 <- function(A_SOM_LOI, A_CLAY_MI, A_SILT_MI, A_CACO3_MI, A_PH_CC) {
   dt[A_SOM_LOI > 10, value := 21.11 + 1.88 * A_SOM_LOI]
   
   # update for calcareous soils (n = 136, R2 = 0.77)
-  dt[!is.na(A_CACO3_MI) & A_CACO3_MI > 0.1, value := -0.04 + 2.13 * A_SOM_LOI + 0.42 * A_CLAY_MI]
+  dt[!is.na(A_CACO3_IF) & A_CACO3_IF > 0.1, value := -0.04 + 2.13 * A_SOM_LOI + 0.42 * A_CLAY_MI]
   
   # update unit from cmol/kg to mmol/kg
   dt[, value := value * 10]
@@ -2239,7 +2239,7 @@ sptf_cec49 <- function(A_SOM_LOI, A_CLAY_MI, A_SILT_MI) {
 #' @param A_SOM_LOI (numeric) The percentage organic matter in the soil (\%).
 #' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
 #' @param A_SILT_MI (numeric) The silt content of the soil (\%).
-#' @param A_CACO3_MI (numeric) The carbonate content of the soil (\%).
+#' @param A_CACO3_IF (numeric) The carbonate content of the soil (\%).
 #' @param A_PH_CC (numeric) The acidity of the soil, pH in CaCl2 (-).
 #'  
 #' @import data.table
@@ -2247,26 +2247,26 @@ sptf_cec49 <- function(A_SOM_LOI, A_CLAY_MI, A_SILT_MI) {
 #' @references Razzaghi et al. (2021) Evaluating models to estimate cation exchange capacity of calcareous soils 
 #'
 #' @export
-sptf_cec50 <- function(A_SOM_LOI, A_CLAY_MI, A_SILT_MI, A_CACO3_MI, A_PH_CC) {
+sptf_cec50 <- function(A_SOM_LOI, A_CLAY_MI, A_SILT_MI, A_CACO3_IF, A_PH_CC) {
   
   # Check input
-  arg.length <- max(length(A_SOM_LOI), length(A_CLAY_MI),length(A_PH_CC),length(A_SILT_MI),length(A_CACO3_MI))
+  arg.length <- max(length(A_SOM_LOI), length(A_CLAY_MI),length(A_PH_CC),length(A_SILT_MI),length(A_CACO3_IF))
   checkmate::assert_numeric(A_SOM_LOI, lower = 0, upper = 100,len = arg.length)
   checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
   checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, len = arg.length)
-  checkmate::assert_numeric(A_CACO3_MI, lower = 0, upper = 15, len = arg.length)
+  checkmate::assert_numeric(A_CACO3_IF, lower = 0, upper = 15, len = arg.length)
   checkmate::assert_numeric(A_PH_CC, lower = 3, upper = 12, len = arg.length)
   
   # make internal data.table
   dt <- data.table(A_SOM_LOI = A_SOM_LOI,
                    A_CLAY_MI = A_CLAY_MI,
                    A_SILT_MI = A_SILT_MI,
-                   A_CACO3_MI = A_CACO3_MI,
+                   A_CACO3_IF = A_CACO3_IF,
                    A_PH_CC = A_PH_CC,
                    value = NA_real_)
   
   # function for CEC at 8.2 (NH4Ac) (n = 38, R2 = 0.64)
-  dt[, value := 29.9 + 0.298 * A_CLAY_MI - 0.389 * A_CACO3_MI]
+  dt[, value := 29.9 + 0.298 * A_CLAY_MI - 0.389 * A_CACO3_IF]
   
   # update unit from cmol/kg to mmol/kg
   dt[, value := value * 10]
@@ -2649,37 +2649,37 @@ sptf_cec57 <- function(A_SOM_LOI, A_SAND_MI,A_PH_WA) {
 #' @param A_SOM_LOI (numeric) The percentage organic matter in the soil (\%).
 #' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
 #' @param A_SILT_MI (numeric) The silt content of the soil (\%).
-#' @param A_CACO3_MI (numeric) The carbonate content of the soil (\%).
+#' @param A_CACO3_IF (numeric) The carbonate content of the soil (\%).
 #'  
 #' @import data.table
 #' 
 #' @references Asadzadeh et al. (2019). Predicting cationic exhcnage capacity in calcareous soils of East Azerbaijen province, northwest Iran. Cited in Razzaghi et al. (2021).
 #'
 #' @export
-sptf_cec58 <- function(A_SOM_LOI, A_CLAY_MI, A_SILT_MI, A_CACO3_MI) {
+sptf_cec58 <- function(A_SOM_LOI, A_CLAY_MI, A_SILT_MI, A_CACO3_IF) {
   
   # add visual bindings
   A_SAND_MI = NULL
   
   # Check input
-  arg.length <- max(length(A_SOM_LOI), length(A_CLAY_MI),length(A_SILT_MI),length(A_CACO3_MI))
+  arg.length <- max(length(A_SOM_LOI), length(A_CLAY_MI),length(A_SILT_MI),length(A_CACO3_IF))
   checkmate::assert_numeric(A_SOM_LOI, lower = 0, upper = 100,len = arg.length)
   checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
   checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, len = arg.length)
-  checkmate::assert_numeric(A_CACO3_MI, lower = 0, upper = 15, len = arg.length)
+  checkmate::assert_numeric(A_CACO3_IF, lower = 0, upper = 15, len = arg.length)
   
   # make internal data.table
   dt <- data.table(A_SOM_LOI = A_SOM_LOI,
                    A_CLAY_MI = A_CLAY_MI,
                    A_SAND_MI = 100 - A_CLAY_MI - A_SILT_MI,
-                   A_CACO3_MI = A_CACO3_MI,
+                   A_CACO3_IF = A_CACO3_IF,
                    value = NA_real_)
   
   # function for CEC at 8.2 (NH4Ac) (n = 417, R2 = 0.85)
-  dt[, value := 0.027 + 0.811 * A_CLAY_MI - 0.045 * A_SAND_MI + 0.168 * A_SOM_LOI - 0.091 * A_CACO3_MI]
+  dt[, value := 0.027 + 0.811 * A_CLAY_MI - 0.045 * A_SAND_MI + 0.168 * A_SOM_LOI - 0.091 * A_CACO3_IF]
   
   # update when input is missing (n = 417, R2 = 0.83)
-  dt[is.na(A_CACO3_MI), value := 0.112 + 0.878 * A_CLAY_MI + 0.127 * A_CLAY_MI / A_SOM_LOI]
+  dt[is.na(A_CACO3_IF), value := 0.112 + 0.878 * A_CLAY_MI + 0.127 * A_CLAY_MI / A_SOM_LOI]
   
   # update unit from cmol/kg to mmol/kg
   dt[, value := value * 10]
@@ -2809,31 +2809,31 @@ sptf_cec61 <- function(A_C_OF, A_CLAY_MI) {
 #' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
 #' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
 #' @param A_SILT_MI (numeric) The silt content of the soil (\%).
-#' @param A_CACO3_MI (numeric) The carbonate content of the soil (\%).
+#' @param A_CACO3_IF (numeric) The carbonate content of the soil (\%).
 #' 
 #' @import data.table
 #' 
 #' @references Kashi et al. (2014) Estimation of Soil Infiltration and Cation Exchange Capacity Based on Multiple Regression, ANN (RBF, MLP), and ANFIS Models.
 #'
 #' @export
-sptf_cec62 <- function(A_C_OF, A_CLAY_MI,A_SILT_MI,A_CACO3_MI) {
+sptf_cec62 <- function(A_C_OF, A_CLAY_MI,A_SILT_MI,A_CACO3_IF) {
   
   # add visual bindings
   bd = sar = ec = A_SAND_MI = NULL
   
   # Check input
-  arg.length <- max(length(A_C_OF), length(A_CLAY_MI),length(A_SILT_MI),length(A_CACO3_MI))
+  arg.length <- max(length(A_C_OF), length(A_CLAY_MI),length(A_SILT_MI),length(A_CACO3_IF))
   checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000,len = arg.length)
   checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
   checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, len = arg.length)
-  checkmate::assert_numeric(A_CACO3_MI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_numeric(A_CACO3_IF, lower = 0, upper = 100, len = arg.length)
   
   # make internal data.table
   dt <- data.table(A_C_OF = A_C_OF,
                    A_CLAY_MI = A_CLAY_MI,
                    A_SILT_MI = A_SILT_MI,
                    A_SAND_MI = 100 - A_CLAY_MI - A_SILT_MI,
-                   A_CACO3_MI = A_CACO3_MI,
+                   A_CACO3_IF = A_CACO3_IF,
                    value = NA_real_)
   
   # estimate bulk density (in g/cm3)
@@ -2849,7 +2849,7 @@ sptf_cec62 <- function(A_C_OF, A_CLAY_MI,A_SILT_MI,A_CACO3_MI) {
   dt[, value := 18.87 - 6.16 * bd - 0.019 * sar + 0.016 * A_SAND_MI + 0.026 * A_SILT_MI + 0.076 * A_CLAY_MI - 0.038 * ec]
   
   # when carbonate is known adapt
-  dt[, value := value - 0.07 * fifelse(is.na(A_CACO3_MI),19,A_CACO3_MI)]
+  dt[, value := value - 0.07 * fifelse(is.na(A_CACO3_IF),19,A_CACO3_IF)]
   
   # update unit from cmol/kg to mmol/kg
   dt[, value := value * 10]
