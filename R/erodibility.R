@@ -85,3 +85,4 @@ sptf_erodibility2 <- function(A_CLAY_MI,A_SILT_MI,A_C_OF) {
   
 }
 
+# see also rakkar_2019
