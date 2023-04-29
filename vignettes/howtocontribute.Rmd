@@ -1,0 +1,100 @@
+---
+title: "how to contribute?"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{how to contribute?}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(soilptf)
+```
+
+# Introduction
+The soilptf package contains a series of pedotransferfunctions to assess soil functions and soil health indicactors.Depending on basic criteria for their applicability, you can apply them for each field or nature area. This guide explains the basic structure of this package and show how you can contribute by adding your own pedotransfer function.
+
+The soilptf package has various ptfs for the following soil health indicators:
+* bulk density (bd)
+* hot water carbon (whc)
+* potentially mineralizable N (pmn)
+* cation exchange capacity (cec)
+* ph buffering capacity (phbc)
+* water stable aggregates (wsa)
+* mean weight diameter (mwd)
+* plant available water (paw), being the difference in moisture content for pF2 (field capacity) and pF4.2 (permanent wilting point)
+* water holding capacity (whc), the moisture content where the soil starts to saturate
+* soil shear strength (sss), determining the resistance to deformation by tangential (or shear) stress
+* threshold velocity (tv) for wind erosion
+* decomposition rate (dec)
+* metal buffering via freundlich coefficient (fc)
+
+# the package structure
+
+## package table with ptf properties
+All ptfs are summarized in the package tables `sptf_bulkdensity` and `sptf_soilproperties`. Over time both will be merged. The structure of these tables are defined in `R/sptf_tables.R`. Each ptf is described and categorized with the following properties: id, type, country, continent, soiltype, landuse, depth, nsample, r2, soilproperties (the desired input variables), the reference and the url where you can find te article describing the ptf.
+
+## ptf function description
+All the individual ptfs are listed in a separate R script, given in the R directory. All functions follow the same structure: 
+* the internal objects being used are set to NULL
+* internal checks are added on the function arguments using checkmate
+* add default properties if needed (optional) to enhance the applicability of the function, for example when soil properties are needed as input that are not generally available. in that case you replace the 'missing' one with the mean value of the dataset
+* combine all function arguments into an internal data.table dt
+* add the function(s) to calculate the soil health indicator or function
+* select the output variable (often called `value`) to be set as output of the function
+* return the output
+
+## ptf wrapper function: predict all indicators
+For each soil health indicator or function there has been made a wrapper function that predicts the desired output for all the individual ptfs available in the package. Examples of these functions include `sptf_bd_all` for bulk density, `sptf_cec_all` for cec and `sptf_paw` for the plant available water. The output of these wrapper function is a datatable giving the predicted value by field_id for each of the individual ptfs. The structure is a tiny data.table. 
+
+Note that this wrapper function estimates relevant properties that 1-to-1 are correlated. For example, the soil organic matter level can be calculated from the soil organic carbon level (because they represent the same property), as well the soil mineralogy for sand, clay and silt if one of the elements is missing. This feature supports broad applicability without requesting all desired inputs to be added as required inputs in the functions.
+
+## ptf predict function
+For each soil health indicator or function there is also a predict function that predicts the median value (plus standard deviation) of all the applicable soil ptfs. Examples of these functions include `sptf_bd` for bulk density and `sptf_cec` for the cation exchange capacity. These functions select the most relevant and approriate ptfs given the country, soil type, land use and depth and accounts for the differences in accuracy and reliability of the individual ptfs. 
+
+# How to contribute?
+
+## Adding a new soil ptf for an existing soil health indicator
+If you want to add a new ptf you should take the following steps:
+
+1. fork the repository for your addition
+2. update the package table `sptf_soilproperties`
+3. add the new ptf in the correct R script in directory `soilptf/R`
+4. expand the wrapper function in `soilptf/R/sptf_predict` with the new ptf
+5. add a test function in directory `soilptf/tests/testthat`
+6. do package checks
+7. update news and description file in `soilptf/R`
+8. create a pull request to merge your contribution
+
+## Adding a new soil health indicator
+If you want to add a new soil health indicator or soil function you should take the following steps:
+
+1. fork the repository for your addition
+2. update the package table `sptf_soilproperties` by adding a new ptf_type.
+3. add a new R script for the new soil health indicator in directory `soilptf/R`
+4. expand the wrapper function in `soilptf/R/sptf_predict` with a wrapper and a predict function.
+5. add relevant test function in directory `soilptf/tests/testthat`
+6. do package checks
+7. update news and description file in `soilptf/R`
+8. create a pull request to merge your contribution
+
+## Data request
+In the coming years we aim to develop stochastic prediciton models that can be calibrated and validated on datasets with relevant soil properties. If you have relevant (published or unpublished) datasets that can be used, please add them as csv file to the `sptf/dev` directory. 
+If you have particular datasets available that can be used as independent validation of the estimated soil health indicators, please contact the authors of this package.
+
+# Others
+
+## How to share ideas?
+If you detect errors or have ideas for nice additional features, you can add them in your own forked repo and ask for a pull request. If you are requesting a huge change in package structure or substantial update, please add / mark your request as issue on the sptf github page.
+
+## Naming of soil properties as function arguments
+Function arguments, often being soil properties, have an unique name, being defined in the package table `sptf_parameters`. Each element (or soil properties) is defined with the given unit, the data type, the minimum and maximum allowed values (when numeric) or the allowed options (when categorial). The name of soil properties follow a unique combination of 1 to 4 elements such as `A_N_RT` that stands for the total nitrogen content of the soil In this name, the first position reflects the analysis type (A stands for soil properties, B for field properties, F voor feedstock properties), where the second position is related to the specific element (from the periodic table or any combination of them), the third position reflects the measurement method (eg. real total = RT, cacl2 extraction = CC, Cohex extraction = CO), and the last position might add specific methodological details that are needed to differentiate from the default. For example, the element `A_MG_CO` stands for the Mg content extracted with a Cohex extration, being the adsorbed Mg content of a soil (in units mmol+/kg), whereas `A_MG_CO_PO` refers to the same element but expresses the unit as percentage occupation (PO) of the cec. For your illustration, see the package table `sptf_parameters`
+
+
