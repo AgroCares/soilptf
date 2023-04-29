@@ -2,7 +2,7 @@
 
 #' Calculate the percentage water stable aggregate
 #' 
-#' Calculate the percentage water stable aggregates for topsoils (0-20cm) in the United Kingdom given the pedotransferfunction of Stengel et al. (1984)
+#' Calculate the percentage water stable aggregates for topsoils (0-20cm) in the United Kingdom given the pedotransferfunction of Stengel et al. (1984).
 #'
 #' @param A_C_OF (numeric) The fraction organic carbon in the soil (g / kg).
 #'

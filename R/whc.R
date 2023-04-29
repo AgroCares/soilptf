@@ -518,7 +518,7 @@ sptf_whc10 <-function(A_C_OF,A_CLAY_MI,A_SILT_MI,A_SAND_MI) {
     
   # add visual bindings
   mp = theta_wp = a = b = d = e = f = theta_fc = theta_wp = NULL
-  D_BDS = NULL
+  D_BDS = A_SOM_LOI = NULL
   
   # set default parameters for this function
   mp_fc = 33

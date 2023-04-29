@@ -10,7 +10,7 @@ sptf_wsa1(A_C_OF)
 \item{A_C_OF}{(numeric) The fraction organic carbon in the soil (g / kg).}
 }
 \description{
-Calculate the percentage water stable aggregates for topsoils (0-20cm) in the United Kingdom given the pedotransferfunction of Stengel et al. (1984)
+Calculate the percentage water stable aggregates for topsoils (0-20cm) in the United Kingdom given the pedotransferfunction of Stengel et al. (1984).
 }
 \references{
 Stengel et al. (1984).Factors influencing the variation of some properties of soils in relation to their suitability for direct drilling.

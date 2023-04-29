@@ -645,11 +645,9 @@ ptf_bd <- function(A_SOM_LOI = NA_real_, A_C_OF = NA_real_,
                    B_LOC_COUNTRY = 'NL', 
                    nmax = 5, ...){
   
-  num_obs = A_CLAY_MI = A_SAND_MI = A_SILT_MI = A_SOM_LOI = A_C_OF = A_H20_T105 = NULL
-  A_DEPTH = B_ALTITUDE = B_SLOPE_DEGREE = B_SLOPE_ASPECT = A_PH_WA = A_CACO3_IF = NULL
-  A_N_RT = A_SAND_M50 = NULL
-  ptf_id = value = ap = B_LOC_CONT = landuse = depth = soiltype = r2 = oid = id =NULL
-  country_code = continent_code = num_obs = B_SOILTYPE = . = NULL
+  # add visual bindings
+  ptf_type = B_SOILTYPE = . = id = country_code = continent_code = ptf_id = cdec= ap = B_LOC_CONT = NULL
+  landuse = depth = nsample = r2 = oid = soiltype = bd = NULL
   
   # combine all input objects not given as default function arguments
   obj <- list(...)
@@ -701,7 +699,7 @@ ptf_bd <- function(A_SOM_LOI = NA_real_, A_C_OF = NA_real_,
   dt2 <- merge(dt2,ptf.mods,by = 'ptf_id')
   
   # select only relevant cases
-  dt2 <- dt2[!is.na(value) & value > 500 & value < 3000]
+  dt2 <- dt2[!is.na(bd) & bd > 500 & bd < 3000]
   
 
   # add applicability factor given country, continent, depth, land use, and soil type
@@ -722,8 +720,8 @@ ptf_bd <- function(A_SOM_LOI = NA_real_, A_C_OF = NA_real_,
   dt2[, oid := frank(-ap,ties.method = 'first',na.last = 'keep'),by = id]
   
   # estimate the mean and SD of the bulk density for nmax models
-  out <- dt2[oid <= nmax, list(bd.mean = weighted.mean(x = value, w = r2),
-                               bd.sd = sd(x = value)), by = 'id']
+  out <- dt2[oid <= nmax, list(bd.mean = weighted.mean(x = bd, w = r2),
+                               bd.sd = sd(x = bd)), by = 'id']
   
   return(out)
 }
@@ -957,6 +955,8 @@ ptf_whc <- function(A_SOM_LOI = NA_real_, A_C_OF = NA_real_,
                     nmax = 5, ...){
   
   # add visual bindings
+  ptf_type = B_SOILTYPE = . = id = country_code = continent_code = ptf_id = cdec= ap = B_LOC_CONT = NULL
+  landuse = depth = nsample = r2 = oid = soiltype= whc = NULL
   
   # combine all input objects not given as default function arguments
   obj <- list(...)
@@ -1167,6 +1167,8 @@ ptf_paw <- function(A_SOM_LOI = NA_real_, A_C_OF = NA_real_,
                     nmax = 5, ...){
   
   # add visual bindings
+  ptf_type = B_SOILTYPE = . = id = country_code = continent_code = ptf_id = cdec= ap = B_LOC_CONT = NULL
+  landuse = depth = nsample = r2 = oid = paw = soiltype = NULL
   
   # combine all input objects not given as default function arguments
   obj <- list(...)
@@ -1437,6 +1439,8 @@ ptf_cec <- function(A_SOM_LOI = NA_real_, A_C_OF = NA_real_,
                     nmax = 5, ...){
   
   # add visual bindings
+  ptf_type = B_SOILTYPE = . = id = country_code = continent_code = ptf_id = cdec= ap = B_LOC_CONT = NULL
+  landuse = depth = nsample = r2 = oid = soiltype = cec = NULL
   
   # combine all input objects not given as default function arguments
   obj <- list(...)
@@ -1625,6 +1629,8 @@ ptf_phbc <- function(A_SOM_LOI = NA_real_, A_C_OF = NA_real_,
                     nmax = 5, ...){
   
   # add visual bindings
+  ptf_type = B_SOILTYPE = . = id = country_code = continent_code = ptf_id = cdec= ap = B_LOC_CONT = NULL
+  landuse = depth = nsample = r2 = oid = soiltype = phbc = NULL
   
   # combine all input objects not given as default function arguments
   obj <- list(...)
@@ -1827,6 +1833,8 @@ ptf_mwd <- function(A_SOM_LOI = NA_real_, A_C_OF = NA_real_,
                      nmax = 5, ...){
   
   # add visual bindings
+  ptf_type = B_SOILTYPE = . = id = country_code = continent_code = ptf_id = cdec= ap = B_LOC_CONT = NULL
+  landuse = depth = nsample = r2 = oid = soiltype = mwd = NULL
   
   # combine all input objects not given as default function arguments
   obj <- list(...)
@@ -1989,7 +1997,7 @@ ptf_wsa_all <- function(dt){
   
 }
 
-#' Predict the water stable aggregates (%) with the best combination of existing ptfs from literature.
+#' Predict the water stable aggregates (\%) with the best combination of existing ptfs from literature.
 #'
 #' @param A_SOM_LOI (numeric) The percentage of organic matter in the soil (\%).
 #' @param A_C_OF (numeric) The fraction organic carbon in the soil (g / kg).
@@ -2020,6 +2028,8 @@ ptf_wsa <- function(A_SOM_LOI = NA_real_, A_C_OF = NA_real_,
                     nmax = 5, ...){
   
   # add visual bindings
+  ptf_type = B_SOILTYPE = . = id = country_code = continent_code = ptf_id = cdec= ap = B_LOC_CONT = NULL
+  landuse = depth = nsample = r2 = oid = soiltype = wsa = NULL
   
   # combine all input objects not given as default function arguments
   obj <- list(...)
@@ -2216,6 +2226,8 @@ ptf_hwc <- function(A_SOM_LOI = NA_real_, A_C_OF = NA_real_,
                     nmax = 5, ...){
   
   # add visual bindings
+  ptf_type = B_SOILTYPE = . = id = country_code = continent_code = ptf_id = cdec= ap = B_LOC_CONT = NULL
+  landuse = depth = nsample = r2 = oid = soiltype = hwc = NULL
   
   # combine all input objects not given as default function arguments
   obj <- list(...)
@@ -2398,6 +2410,8 @@ ptf_sss <- function(A_SOM_LOI = NA_real_, A_C_OF = NA_real_,
                     nmax = 5, ...){
   
   # add visual bindings
+  ptf_type = B_SOILTYPE = . = id = country_code = continent_code = ptf_id = cdec= ap = B_LOC_CONT = NULL
+  landuse = depth = nsample = r2 = oid = soiltype = sss = NULL
   
   # combine all input objects not given as default function arguments
   obj <- list(...)
@@ -2591,6 +2605,8 @@ ptf_metals <- function(A_SOM_LOI = NA_real_, A_C_OF = NA_real_,
                     nmax = 5, ...){
   
   # add visual bindings
+  ptf_type = B_SOILTYPE = . = id = country_code = continent_code = ptf_id = cdec= ap = B_LOC_CONT = NULL
+  landuse = depth = nsample = r2 = oid = soiltype = metal = NULL
   
   # combine all input objects not given as default function arguments
   obj <- list(...)
@@ -2649,7 +2665,7 @@ ptf_metals <- function(A_SOM_LOI = NA_real_, A_C_OF = NA_real_,
   dt2 <- merge(dt2,ptf.mods,by.x = 'ptf_id',by.y = 'ptf_tid')
   
   # select only relevant cases
-  dt2 <- dt2[!is.na(metals) & metals > 0]
+  dt2 <- dt2[!is.na(metal) & metal > 0]
   
   # add applicability factor given country, continent, depth, land use, and soil type
   dt2[,ap := 0]
@@ -2672,8 +2688,8 @@ ptf_metals <- function(A_SOM_LOI = NA_real_, A_C_OF = NA_real_,
   dt2[, oid := frank(-ap,ties.method = 'first',na.last = 'keep'),by = id]
   
   # estimate the mean and SD of the bulk density for nmax models
-  out <- dt2[oid <= nmax, list(metal.mean = weighted.mean(x = whc, w = r2),
-                               metal.sd = sd(x = whc)), by = 'id']
+  out <- dt2[oid <= nmax, list(metal.mean = weighted.mean(x = metal, w = r2),
+                               metal.sd = sd(x = metal)), by = 'id']
   
   return(out)
 }
@@ -2763,6 +2779,8 @@ ptf_cdec <- function(A_SOM_LOI = NA_real_, A_C_OF = NA_real_,
                      nmax = 5, ...){
   
   # add visual bindings
+  ptf_type = B_SOILTYPE = . = id = country_code = continent_code = ptf_id = cdec= ap = B_LOC_CONT = NULL
+  landuse = depth = nsample = r2 = oid = soiltype = cdec = NULL
   
   # combine all input objects not given as default function arguments
   obj <- list(...)
@@ -2982,6 +3000,8 @@ ptf_pmn <- function(A_SOM_LOI = NA_real_, A_C_OF = NA_real_,
                     nmax = 5, ...){
   
   # add visual bindings
+  ptf_type = B_SOILTYPE = . = id = country_code = continent_code = ptf_id = cdec= ap = B_LOC_CONT = NULL
+  landuse = depth = nsample = r2 = oid = soiltype = pmn = NULL
   
   # combine all input objects not given as default function arguments
   obj <- list(...)

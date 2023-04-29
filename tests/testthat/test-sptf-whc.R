@@ -107,7 +107,7 @@ test_that("water holding capacity functions returns the correct values", {
       A_SILT_MI = A_SILT_MI,
       A_C_OF = A_C_OF
     ),
-    expected = c(NA_real_,NA_real_),
+    expected = c(0.386,0.342),
     tolerance = 0.01
   )
   
@@ -118,7 +118,7 @@ test_that("water holding capacity functions returns the correct values", {
       A_SILT_MI = A_SILT_MI,
       A_SAND_MI = A_SAND_MI
     ),
-    expected = c(NA_real_,NA_real_),
+    expected = c(0.60,1.03),
     tolerance = 0.01
   )
   
