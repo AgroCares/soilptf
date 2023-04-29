@@ -2550,7 +2550,7 @@ ptf_metals_all <- function(dt){
   # dt[is.na(D_BDS), D_BDS := 1617 - 77.4 * log(A_C_OF) - 3.49 * A_C_OF]
   
   # estimate the soil shear strength
-  dt[, p1 := sptf_fc_zinc(A_SOM_LOI = A_SOM_LOI,A_CLAY_MI = A_CLAY_MI,A_PH_WA = A_PH_WA)]
+  dt[, p1 := sptf_fc_zn(A_SOM_LOI = A_SOM_LOI,A_CLAY_MI = A_CLAY_MI,A_PH_WA = A_PH_WA)]
   dt[, p2 := sptf_fc_cu(A_SOM_LOI = A_SOM_LOI,A_CLAY_MI = A_CLAY_MI,A_PH_WA = A_PH_WA)]
   dt[, p3 := sptf_fc_pb(A_SOM_LOI = A_SOM_LOI,A_CLAY_MI = A_CLAY_MI,A_PH_WA = A_PH_WA)]
   dt[, p4 := sptf_fc_cd(A_SOM_LOI = A_SOM_LOI,A_CLAY_MI = A_CLAY_MI,A_PH_WA = A_PH_WA)]
