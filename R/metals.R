@@ -13,7 +13,7 @@
 #' @references Romkens et al. (2004) Derivation of parition relationships to calculate Cd, Cu, Ni, Pb and Zn solubility and activity in soil solutions.
 #'
 #' @export
-sptf_fc_zinc <- function(A_SOM_LOI,A_CLAY_MI,A_PH_WA) {
+sptf_fc_zn <- function(A_SOM_LOI,A_CLAY_MI,A_PH_WA) {
   
   # Check input
   arg.length <- max(length(A_SOM_LOI), length(A_PH_WA), length(A_CLAY_MI))

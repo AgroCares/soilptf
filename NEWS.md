@@ -1,9 +1,18 @@
 # Changelog soilptf
 
-## Version 0.3.1  2023-04-29
+## Version 0.5.0  2023-04-29
 
 ## Added
 * add vignette `how to contribute`
+
+## Version 0.4.0 2023-04-29
+
+### Added
+* predict functions for all ptfs: `ptf_cec`,`ptf_phbc`,`ptf_mwd`,`ptf_wsa`,`ptf_hwc`,`ptf_sss`,and `ptf_cdec` 
+* package table `sptf_soilproperties` updated for metals, cec, hwc, cdec, whc and paw
+
+### Changed
+* script names for functions are updated, making them consistent with function names
 
 ## Version 0.3.0  2023-04-27
 

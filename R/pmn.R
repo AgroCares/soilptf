@@ -502,7 +502,7 @@ sptf_pmn9 <- function(A_N_RT, CULT = 1, t = 7) {
 #' 
 #' @import data.table
 #' 
-#' @references Cimard & N'dayegamiye (1993) Nitrogen -ninerahzation potential of meadow soils. Can. J. Soil Sci. 73:27-38
+#' @references Simard & N'dayegamiye (1993) Nitrogen -mineralization potential of meadow soils. Can. J. Soil Sci. 73:27-38
 #'
 #' @export
 sptf_pmn10 <- function(A_N_RT, t = 7) {
