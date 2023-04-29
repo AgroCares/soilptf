@@ -10,6 +10,9 @@
   # set empty string to NA
   d1$landuse[d1$landuse==''] <- NA_character_
   
+  # set empty continentcode to NA
+  d1[continent_code=='', continent_code := NA_character_]
+  
   # make copy for package table
   sptf_bulkdensity <- copy(d1)
   
@@ -36,6 +39,10 @@
   # set countries to lower case
   d2[, country_name := tolower(country_name)]
 
+  # set NA for north-america to NAm
+  d2[is.na(continent_code)|continent_code =='NA', continent_code := 'NAm']
+  d2[continent_code=='SA', continent_code := 'SAm']
+  
   # make copy for package table
   sptf_countries <- copy(d2)
   
@@ -45,6 +52,9 @@
 # load data
   d3 <- fread('dev/sptf_soilproperties.csv',encoding = 'UTF-8')
   
+  # set empty continentcode to NA
+  d3[continent_code=='', continent_code := NA_character_]
+  
   # make copy for package table
   sptf_soilproperties <- copy(d3)
   
@@ -53,7 +63,7 @@
   
           
   
-  # parameters ====
+# parameters
   sptf_parameters <- fread('dev/sptf_parameters.csv',encoding = 'UTF-8')
   usethis::use_data(sptf_parameters, overwrite = TRUE)
 
