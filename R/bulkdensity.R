@@ -2,10 +2,9 @@
 
 #' Documentation of all possible bulk density pedotransfer function inputs
 #' 
-#' @param A_CACO3_IF (numeric) The calcium carbonate content of the soil (\%)
 #' @param A_CEC_CO (numeric) Cation Exchange Capacity (mmol+/kg)
 #' @param A_CLAY_MI (numeric) The clay content of the mineral soil fraction (\%).
-#' @param A_C_OF  (numeric) Organic Carbon Content (g / kg)
+#' @param A_C_OF (numeric) Organic Carbon Content (g / kg)
 #' @param A_DEPTH (numeric) The depth of the sampled soil layer (m)
 #' @param A_DENSITY (numeric) Soil density (g / kg)
 #' @param A_H20_T105 (numeric) The volumetric moisture content of the soil (\%)
@@ -27,7 +26,7 @@
 #' @param A_H2O_T105 (numeric) water content measured after drying at 105 degrees (\%)
 #' 
 #' @export
-sptf_bd0 <- function(A_CACO3_IF,A_CEC_CO,A_CLAY_MI,A_C_OF,A_DEPTH,A_DENSITY,A_H20_T105,
+sptf_bd0 <- function(A_CEC_CO,A_CLAY_MI,A_C_OF,A_DEPTH,A_DENSITY,A_H20_T105,
                      A_N_RT,A_PH_CC,A_PH_WA,A_SAND_M50,A_SAND_MI,A_SILT_MI,A_SOM_LOI,
                      B_ALTITUDE,B_ROCKS_FR,B_SLOPE_ASPECT,B_SLOPE_DEGREE,mp_wp,
                      mp_fc,D_BDS,A_CACO3_IF,A_H2O_T105){return(NULL)}

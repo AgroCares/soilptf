@@ -4,7 +4,7 @@
 \alias{sptf_cec62}
 \title{Calculate the CEC}
 \usage{
-sptf_cec62(A_C_OF, A_CLAY_MI, A_SILT_MI, A_CACO3_MI)
+sptf_cec62(A_C_OF, A_CLAY_MI, A_SILT_MI, A_CACO3_IF)
 }
 \arguments{
 \item{A_C_OF}{(numeric) The carbon content of the soil (g / kg).}
@@ -13,7 +13,7 @@ sptf_cec62(A_C_OF, A_CLAY_MI, A_SILT_MI, A_CACO3_MI)
 
 \item{A_SILT_MI}{(numeric) The silt content of the soil (\%).}
 
-\item{A_CACO3_MI}{(numeric) The carbonate content of the soil (\%).}
+\item{A_CACO3_IF}{(numeric) The carbonate content of the soil (\%).}
 }
 \description{
 This function calculates the CEC at pH 8.2 for calcareous soils in Iran

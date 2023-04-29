@@ -4,7 +4,7 @@
 \alias{sptf_cec58}
 \title{Calculate the CEC}
 \usage{
-sptf_cec58(A_SOM_LOI, A_CLAY_MI, A_SILT_MI, A_CACO3_MI)
+sptf_cec58(A_SOM_LOI, A_CLAY_MI, A_SILT_MI, A_CACO3_IF)
 }
 \arguments{
 \item{A_SOM_LOI}{(numeric) The percentage organic matter in the soil (\%).}
@@ -13,7 +13,7 @@ sptf_cec58(A_SOM_LOI, A_CLAY_MI, A_SILT_MI, A_CACO3_MI)
 
 \item{A_SILT_MI}{(numeric) The silt content of the soil (\%).}
 
-\item{A_CACO3_MI}{(numeric) The carbonate content of the soil (\%).}
+\item{A_CACO3_IF}{(numeric) The carbonate content of the soil (\%).}
 }
 \description{
 This function calculates the CEC at pH 8.2 for calcareous soils in Iran
