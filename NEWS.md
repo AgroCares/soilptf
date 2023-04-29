@@ -6,6 +6,10 @@
 * add vignette `how to contribute`
 * add vignette `introduction`
 
+## Fixed
+* add missing id in wrapper functions `ptf_xxx_all'
+* add mineralogy check in `sptf_textureclass` and replace missing input when 2 of the 3 inputs are known.
+
 ## Version 0.4.1 2023-04-29
 
 ### Fixed
