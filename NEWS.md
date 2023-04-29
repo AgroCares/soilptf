@@ -4,6 +4,12 @@
 
 ## Added
 * add vignette `how to contribute`
+* add vignette `introduction`
+
+## Version 0.4.1 2023-04-29
+
+### Fixed
+* function `sptf_fc_zinc` was renamed to `sptf_fc_zn` to be consistent with other metal ptfs
 
 ## Version 0.4.0 2023-04-29
 
