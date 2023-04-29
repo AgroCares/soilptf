@@ -1,7 +1,7 @@
 Package: soilptf
 Type: Package
 Title: Estimate soil properties via pedotransferfunctions
-Version: 0.3.1.9000
+Version: 0.4.0
 Authors@R: c(person(given = "Gerard", family = "Ros", email = "gerard.ros@nmi-agro.nl", role = c("aut","cre")),
              person(given = "Kees", family = "van den Dool", email = "kees.vandendool@nmi-agro.nl", role = c("aut")),
              person(given = "Sven", family = "Verweij", email = "sven.verweij@nmi-agro.nl", role = c("aut")),
