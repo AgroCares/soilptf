@@ -115,3 +115,73 @@
 114;72;cec;AU;OC;variable;variable;;92;69;a_c_of||a_clay_mi||a_ph_wa;tranter_2009;doi:10.1016/j.geoderma.2009.01.006
 115;73;cec;GE;EU;variable;variable;30;1533;;a_c_of||a_clay_mi||a_silt_mi||a_ph_wa;deumlich_2015;https://doi.org/10.1080/03650340.2014.961434
 116;74;cec;US;NA;variable;variable;220;12000;58;a_c_of||a_clay_mi||a_silt_mi||a_ph_wa||b_soilclass_usda;;https://doi.org/10.1080/00103629009368363
+117;1;hwc;NL;EU;variable;agriculture;30;100;83;a_c_of||a_clay_mi;ros_2011;https://edepot.wur.nl/168954
+118;2;hwc;NL;EU;variable;agriculture;30;47;55;a_c_of;ros_2011;https://edepot.wur.nl/168954
+119;3;hwc;NL;EU;variable;agriculture;30;34;64;a_c_of||a_ph_cc;ros_2011;not available
+120;4;hwc;NL;EU;variable;agriculture;30;20;37;a_c_of;vaneekeren_2009;not available
+121;5;hwc;NL;EU;variable;agriculture;30;51;93;a_c_of||a_p_al||a_ph_cc;balen_2015;not available
+122;6;hwc;NL;EU;variable;agriculture;30;120;94;a_c_of||a_p_al||a_clay_mi;balen_2015;not available
+123;7;hwc;NL;EU;variable;agriculture;30;32;42;a_c_of||a_clay_mi;fujita_2023;not available
+124;8;hwc;NL;EU;variable;agriculture;30;20;65;a_c_of;hanegraaf_2009;not available
+125;9;hwc;NL;EU;variable;agriculture;30;104;63;a_c_of||a_ph_cc;hanegraaf_2012;not available
+126;10;hwc;NL;EU;variable;agriculture;30;170;83;a_c_of||a_ph_cc;hanegraaf_2009;not available
+127;11;hwc;NL;EU;variable;agriculture;30;20;69;a_c_of||a_clay_mi;vaneekeren_2009;not available
+128;12;hwc;NL;EU;variable;agriculture;30;1033;79;a_c_of||a_clay_mi;fujita_2023;not available
+129;1;whc;US;NA;variable;agriculture;15;1731;88;a_c_of||a_sand_mi||a_clay_mi;bagdal_2022;https://doi.org/10.1002/saj2.2039
+130;2;whc;US;NA;variable;agriculture;15;1731;88;a_c_of||a_sand_mi||a_clay_mi;bagdal_2022;https://doi.org/10.1002/saj2.2039
+131;3;whc;US;NA;variable;agriculture;30;10;94;a_sand_mi||a_clay_mi;saxton_1986;https://doi.org/10.2136/sssaj1986.03615995005000040039x
+132;4;whc;CA;NA;variable;agriculture;30;298;96;a_c_of||a_sand_mi||a_clay_mi;oosterveld_1980;https://library.csbe-scgab.ca/docs/journal/22/22_2_149_raw.pdf
+133;5;whc;;EU;variable;variable;100;5521;76;a_som_loi||a_clay_mi||a_silt_mi;wosten_1999;https://doi.org/10.1016/S0016-7061(98)00132-3
+134;6;whc;BE;EU;variable;variable;100;48;;a_c_of||a_sand_mi||a_clay_mi;vereecken_1989;https://doi.org/10.1097/00010694-198912000-00001
+135;7;whc;;EU;variable;variable;100;2196;;a_c_of||a_sand_mi||a_clay_mi||a_silt_mi;szabo_2021;https://doi.org/10.5194/gmd-14-151-2021
+136;8;whc;BE;EU;variable;forest;100;182;84;a_c_of||a_sand_mi||a_clay_mi;weynants_2009;https://doi:10.2136/vzj2008.0062
+137;9;whc;BR;SA;variable;variable;200;196;90;a_c_of||a_silt_mi||a_clay_mi;tomasella_1998;https://doi.org/10.1097/00010694-199803000-00003
+138;10;whc;US;NA;variable;variable;100;5350;58;a_c_of||a_sand_mi||a_clay_mi||a_silt_mi;rawls_1982;not available
+139;11;whc;US;NA;variable;variable;100;24;99;a_c_of||a_silt_mi||a_clay_mi;campbell_1992;not available
+140;12;whc;US;NA;variable;variable;;;;a_c_of||a_sand_mi||a_clay_mi;rawls_1985;not available
+141;13;whc;;;variable;agriculture;100;408;;a_c_of||a_sand_mi||a_clay_mi;tian_2021;https://doi.org/10.1016/j.still.2020.104812
+142;14;whc;NL;EU;variable;agriculture;100;36;71;a_som_loi||a_clay_mi||a_silt_mi;wosten_1997;https://doi.org/10.1016/S0166-2481(97)80037-2
+143;15;whc;NL;EU;variable;agriculture;100;832;72;a_som_loi||a_clay_mi||a_silt_mi;wosten_2001;https://edepot.wur.nl/43272
+144;16;whc;NL;EU;variable;agriculture;100;832;95;a_som_loi||a_clay_mi||a_silt_mi;wosten_2001;https://edepot.wur.nl/43272
+145;1;paw;US;NA;variable;agriculture;15;1731;88;a_c_of||a_sand_mi||a_clay_mi;bagdal_2022;https://doi.org/10.1002/saj2.2039
+146;2;paw;US;NA;variable;agriculture;15;1731;88;a_c_of||a_sand_mi||a_clay_mi;bagdal_2022;https://doi.org/10.1002/saj2.2039
+147;3;paw;US;NA;variable;agriculture;30;10;94;a_sand_mi||a_clay_mi;saxton_1986;https://doi.org/10.2136/sssaj1986.03615995005000040039x
+148;4;paw;CA;NA;variable;agriculture;30;298;96;a_c_of||a_sand_mi||a_clay_mi;oosterveld_1980;https://library.csbe-scgab.ca/docs/journal/22/22_2_149_raw.pdf
+149;5;paw;;EU;variable;variable;100;5521;76;a_som_loi||a_clay_mi||a_silt_mi;wosten_1999;https://doi.org/10.1016/S0016-7061(98)00132-3
+150;6;paw;BE;EU;variable;variable;100;48;;a_c_of||a_sand_mi||a_clay_mi;vereecken_1989;https://doi.org/10.1097/00010694-198912000-00001
+151;7;paw;;EU;variable;variable;100;2196;;a_c_of||a_sand_mi||a_clay_mi||a_silt_mi;szabo_2021;https://doi.org/10.5194/gmd-14-151-2021
+152;8;paw;BE;EU;variable;forest;100;182;84;a_c_of||a_sand_mi||a_clay_mi;weynants_2009;https://doi:10.2136/vzj2008.0062
+153;9;paw;BR;SA;variable;variable;200;196;90;a_c_of||a_silt_mi||a_clay_mi;tomasella_1998;https://doi.org/10.1097/00010694-199803000-00003
+154;10;paw;US;NA;variable;variable;100;5350;58;a_c_of||a_sand_mi||a_clay_mi||a_silt_mi;rawls_1982;not available
+155;11;paw;US;NA;variable;variable;100;24;99;a_c_of||a_silt_mi||a_clay_mi;campbell_1992;not available
+156;12;paw;US;NA;variable;variable;;;;a_c_of||a_sand_mi||a_clay_mi;rawls_1985;not available
+157;13;paw;;;variable;agriculture;100;408;;a_c_of||a_sand_mi||a_clay_mi;tian_2021;https://doi.org/10.1016/j.still.2020.104812
+158;14;paw;NL;EU;variable;agriculture;100;36;71;a_som_loi||a_clay_mi||a_silt_mi;wosten_1997;https://doi.org/10.1016/S0166-2481(97)80037-2
+159;15;paw;NL;EU;variable;agriculture;100;832;72;a_som_loi||a_clay_mi||a_silt_mi;wosten_2001;https://edepot.wur.nl/43272
+160;16;paw;NL;EU;variable;agriculture;100;832;95;a_som_loi||a_clay_mi||a_silt_mi;wosten_2001;https://edepot.wur.nl/43272
+161;1;pmn;;AF;variable;agriculture;15;15;;a_c_of||a_clay_mi||a_n_rt||a_ph_cc;narteh_1997;https://doi.org/10.1016/S0016-7061(96)00097-3
+162;2;pmn;CN;AS;variable;agriculture;50;27;;a_c_of||a_silt_mi||a_n_rt||a_ph_cc;zou_2018;https://doi.org/10.4236/ojss.2018.82006
+163;3;pmn;NL;EU;variable;agriculture;30;100;44;a_c_of||a_n_rt||a_clay_mi;ros_2020;https://edepot.wur.nl/168954
+164;4;pmn;NL;EU;variable;agriculture;30;47;52;a_c_of||a_n_rt||a_clay_mi;ros_2020;not available
+165;5;pmn;US;NA;variable;agriculture;30;39;65;a_c_of||a_n_rt||a_cec_co;rasiah_1995;https://doi.org/10.1080/00103629509369414
+166;6;pmn;CA;NA;variable;agriculture;30;33;29;a_c_of||a_n_rt||a_clay_mi||a_silt_mi||a_ph_cc;rasiah_1995;https://doi.org/10.1080/00103629509369414
+167;7;pmn;IN;AS;variable;agriculture;15;15;92;a_c_of||a_clay_mi;haer_2003;https://doi.org/10.1080/15324980301586
+168;8;pmn;IE;EU;variable;agriculture;10;72;89;a_n_rt||a_cec_co||a_silt_mi;herlihy_1979;https://www.jstor.org/stable/42934963
+169;9;pmn;CA;NA;variable;agriculture;15;33;78;a_n_rt;campbell_1984;https://cdnsciencepub.com/doi/pdf/10.4141/cjss84-035
+170;10;pmn;CA;NA;variable;agriculture;20;20;58;a_n_rt;simard_1993;https://doi.org/10.4141/cjss93-003
+171;11;pmn;NL;EU;variable;agriculture;30;100;44;a_c_of||a_clay_mi;ros_2011;https://edepot.wur.nl/168954
+172;12;pmn;NL;EU;variable;agriculture;30;47;52;a_c_of;ros_2011;not available
+173;13;pmn;NL;EU;variable;agriculture;30;20;37;a_c_of;vaneekeren_2009;not available
+174;14;pmn;NL;EU;variable;agriculture;30;51;68;a_c_of||a_p_al||a_ph_cc;balen_2015;not available
+175;15;pmn;NL;EU;variable;agriculture;30;120;64;a_c_of||a_p_al||a_ph_cc;balen_2015;not available
+176;16;pmn;NL;EU;variable;agriculture;30;20;15;a_c_of;hanegraaf_2009;not available
+177;17;pmn;NL;EU;variable;agriculture;30;104;31;a_c_of||a_ph_cc;hanegraaf_2012;not available
+178;18;pmn;NL;EU;variable;agriculture;30;149;21;a_c_of||a_ph_cc;hanegraaf_2009;not available
+179;19;pmn;NL;EU;variable;agriculture;30;20;25;a_c_of||a_clay_mi;vaneekeren_2009;not available
+180;20;pmn;NL;EU;variable;agriculture;30;820;31;a_c_of||a_clay_mi;fujita_2023;not available
+181;1;metals;NL;EU;variable;agriculture;30;1400;82;a_som_loi||a_clay_mi||a_ph_wa;romkens_2004;https://edepot.wur.nl/16988
+182;2;metals;NL;EU;variable;agriculture;30;1400;62;a_som_loi||a_clay_mi||a_ph_wa;romkens_2004;https://edepot.wur.nl/16988
+183;3;metals;NL;EU;variable;agriculture;30;1400;57;a_som_loi||a_clay_mi||a_ph_wa;romkens_2004;https://edepot.wur.nl/16988
+184;4;metals;NL;EU;variable;agriculture;30;1400;79;a_som_loi||a_clay_mi||a_ph_wa;romkens_2004;https://edepot.wur.nl/16988
+185;1;cdec;NL;EU;peat;agriculture;30;;;a_c_of||a_n_rt;wosten_1997;https://edepot.wur.nl/299664
+186;2;cdec;NL;EU;variable;agriculture;30;;;a_c_of;janssen_1984;not available
