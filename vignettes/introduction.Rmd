@@ -21,7 +21,7 @@ library(soilptf); library(data.table);require(ggplot2)
 ```
 
 # Soilptf package
-Soil indicators helps to access quality of soils. In Netherlands, an indicator set called BLN (‘Bodemindicatoren voor Landbouwgronden in Nederland’) was developed to integrally evaluate  the quality of agricultural soils (de Haan et al., 2021). This set of soil health indicators was merged in 2023 with the soil evaluation framework of the Open Soilindex (Ros et al., 2023). 
+Soil indicators help to access quality of soils. In Netherlands, an indicator set called BLN (‘Bodemindicatoren voor Landbouwgronden in Nederland’) was developed to integrally evaluate  the quality of agricultural soils (de Haan et al., 2021). This set of soil health indicators was merged in 2023 with the soil evaluation framework of the Open Soilindex (Ros et al., 2023). 
 
 Quantifying BLN indicators often requires labour-intensive measurements, limiting their on-farm use. An alternative might be to include methods to estimate those difficult-to-measure parameters by so called pedotransferfunctions (PTFs), being empirical relationships calibrated on large datasets. The use of ptfs helps the application of soil health indicators on a much larger spatial scale at lower cost. The ptfs might also help to underpin site specific threshold values. 
 
@@ -116,7 +116,7 @@ This package containts 16 existing PTFs to estimate WHC were collected (see `spt
 ### examples
 The function to predict the levels of plant available water from soil properties can be used as follows:
 
-```{r bdex, eval=FALSE}
+```{r pawdex, eval=FALSE}
 
   # make example for a sandy soil
   dt <- data.table(A_SOM_LOI = 4.5, A_SAND_MI = 35, A_CLAY_MI = 7.5, A_PH_CC = 4.5)
@@ -133,7 +133,7 @@ The function to predict the levels of plant available water from soil properties
 ### Illustration paw dependency on SOC
 The amount of plant available water is positively associated with SOC. This is illustrated below.
 
-```{r bd_fig,fig.show='asis'}
+```{r paw_fig,fig.show='asis'}
 
 # for mineral soils only: 20% OS = 10% OC = 100 g/kg
   dt1 <- data.table(A_C_OF = seq(0.5,100,1), A_CLAY_MI = 7.5, A_SAND_MI = 60, A_PH_CC = 5.4)
@@ -163,7 +163,7 @@ The amount of plant available water is positively associated with SOC. This is i
         geom_errorbar(aes(ymin=paw.mean - paw.se, ymax = paw.mean + paw.se),width = 0.2) +
         geom_line(aes(y = p.paw),col='red')+
         ylim(0.1,0.3) +
-        annotate('text',x = 2.5, y = 0.25, label = l.whc,parse = T,size = 4,adj=0) + 
+        annotate('text',x = 2.5, y = 0.25, label = l.paw,parse = T,size = 4,adj=0) + 
         xlab('organic carbon content (g/kg)') + ylab('PAW (-)') + theme_bw() +
         labs(title = "Relationship between PAW and SOC",
              subtitle = "derived from 15 ptfs for mineral soils") + ptl
@@ -281,14 +281,15 @@ The HWC increases as soon as SOC increases. This is illustrated below.
   dt1[,A_CN_FR := rnorm(.N,12,2)]
   dt1[,A_N_RT := A_C_OF * 1000 / A_CN_FR]
 
-  # potentially mineralizable N
-  dt1.pmn <- ptf_pmn_all(dt1)
-  dt1.pmn <- dt1.pmn[,list(pmn.mean = mean(pmn,na.rm=T),
-                           pmn.se = sd(pmn,na.rm=T)/sqrt(sum(!is.na(pmn)))),by='id']
-  dt1 <- merge(dt1,dt1.pmn,by='id')
-  m.pmn <- lm(pmn.mean~ A_C_OF+I(A_C_OF^2),data=dt1)
-  p.pmn <- predict(m.pmn,newdata = data.frame(A_C_OF = dt1$A_C_OF))
-  l.pmn <- paste('PMN == ', '9.119 + 1.284 * C + 0.0102 * C^2') 
+  # develop meta-ptf for hwc
+  dt1.hwc <- ptf_hwc_all(dt1)
+  dt1.hwc <- dt1.hwc[,list(hwc.mean = mean(hwc,na.rm=T),
+                           hwc.se = sd(hwc,na.rm = T)/sqrt(sum(!is.na(hwc)))),by='id']
+  dt1 <- merge(dt1,dt1.hwc,by='id')
+  m.hwc <- lm(hwc.mean~ A_C_OF+I(A_C_OF^2),data=dt1)
+  p.hwc <- predict(m.hwc,newdata = data.frame(A_C_OF = dt1$A_C_OF))
+  l.hwc <- paste('HWC == ', '129.9 + 29.88 * C -0.036918 * C^2')
+ 
   
   # se theme for figures of the pedotransfer functions
   ptl <- theme(plot.subtitle=element_text(size=10, face="italic", color="black"),
