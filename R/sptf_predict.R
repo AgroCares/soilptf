@@ -380,10 +380,13 @@ ptf_bd_all <- function(dt){
     num_obs = A_CLAY_MI = A_SAND_MI = A_SILT_MI = A_SOM_LOI = A_C_OF = A_H20_T105 = NULL
     A_DEPTH = B_ALTITUDE = B_SLOPE_DEGREE = B_SLOPE_ASPECT = A_PH_WA = A_CACO3_IF = NULL
     A_N_RT = A_SAND_M50 = A_H2O_T105 = ptf_id = patterns = NULL
-    A_PH_KCL = A_PH_CC = B_LU_PTFCLASS = NULL
+    A_PH_KCL = A_PH_CC = id = B_LU_PTFCLASS = NULL
     
     dt <- copy(dt)
-     
+    
+    # add id (as row number) when its not available
+    if(!'id' %in% colnames(dt)){dt[,id := 1:.N]}
+      
     # add all possible inputs as NA when missing
     cols <- c('A_CLAY_MI','A_SAND_MI','A_SILT_MI', 'A_C_OF', 'A_DEPTH','A_SOM_LOI',
               'A_PH_WA','A_CACO3_IF','A_N_RT','A_H2O_T105','A_SAND_M50',
@@ -858,11 +861,14 @@ ptf_whc_all <- function(dt){
   p15 = p16 = A_CLAY_MI = A_SAND_MI = A_SILT_MI = A_SOM_LOI = A_C_OF = A_H20_T105 = NULL 
   A_DEPTH = B_ALTITUDE = B_SLOPE_DEGREE = B_SLOPE_ASPECT = A_PH_WA = A_CACO3_IF = NULL
   A_N_RT = A_SAND_M50 = B_SOILTYPE_AGR = D_BDS = topsoil = NULL
-  patterns = ptf_id = country_code = continent_code = . = ptf_id = nsample = r2 = NULL
+  patterns = ptf_id =id =  country_code = continent_code = . = ptf_id = nsample = r2 = NULL
   nrep = value = error = patterns = num_obs = whc = NULL
   
   # make local copy
   dt <- copy(dt)
+  
+  # add id (as row number) when its not available
+  if(!'id' %in% colnames(dt)){dt[,id := 1:.N]}
   
   # add all possible inputs as NA when missing
   cols <- c('A_SOM_LOI', 'A_C_OF', 'A_CLAY_MI','A_SAND_MI','A_SILT_MI', 'D_BDS',
@@ -1070,11 +1076,14 @@ ptf_paw_all <- function(dt){
   p15 = p16 = A_CLAY_MI = A_SAND_MI = A_SILT_MI = A_SOM_LOI = A_C_OF = A_H20_T105 = NULL 
   A_DEPTH = B_ALTITUDE = B_SLOPE_DEGREE = B_SLOPE_ASPECT = A_PH_WA = A_CACO3_IF = NULL
   A_N_RT = A_SAND_M50 = B_SOILTYPE_AGR = D_BDS = topsoil = NULL
-  patterns = ptf_id = country_code = continent_code = . = ptf_id = nsample = r2 = NULL
+  patterns = ptf_id = id = country_code = continent_code = . = ptf_id = nsample = r2 = NULL
   nrep = value = error = patterns = num_obs = paw = NULL
   
   # make local copy
   dt <- copy(dt)
+  
+  # add id (as row number) when its not available
+  if(!'id' %in% colnames(dt)){dt[,id := 1:.N]}
   
   # add all possible inputs as NA when missing
   cols <- c('A_SOM_LOI', 'A_C_OF', 'A_CLAY_MI','A_SAND_MI','A_SILT_MI', 'D_BDS',
@@ -1282,10 +1291,13 @@ ptf_cec_all <- function(dt){
   p63 = p64 = p65 = p66 = p67 = p68 = p69 = p70 = p71 = p72 = p73 = p74 = NULL
   p75 = NULL
   num_obs = A_CACO3_MI = A_CLAY_MI = A_SAND_MI = A_SILT_MI = A_SOM_LOI = A_C_OF = A_PH_KCL = A_PH_CC = A_PH_WA = NULL
-  B_LU_PTFCLASS = A_CN_FR = B_SOILCLASS_USDA = B_CLIM_CAT1 = patterns = ptf_id = cec = NULL
+  B_LU_PTFCLASS = id = A_CN_FR = B_SOILCLASS_USDA = B_CLIM_CAT1 = patterns = ptf_id = cec = NULL
   
   # make local copy
   dt <- copy(dt)
+  
+  # add id (as row number) when its not available
+  if(!'id' %in% colnames(dt)){dt[,id := 1:.N]}
   
   # add all numeric inputs as NA when missing
   cols <- c('A_SOM_LOI', 'A_C_OF', 'A_CLAY_MI','A_SAND_MI','A_SILT_MI', 
@@ -1548,10 +1560,13 @@ ptf_phbc_all <- function(dt){
   # add visual binding
   p1 = p2 = p3 = p4 = p5 = p6 = p7 = p8 = NULL
   A_CLAY_MI = A_SAND_MI = A_SILT_MI = A_SOM_LOI = A_C_OF = A_PH_KCL = A_PH_WA = A_PH_CC = NULL
-  num_obs = patterns = ptf_id = phbc = NULL
+  num_obs = patterns = ptf_id = id = phbc = NULL
   
   # make local copy
   dt <- copy(dt)
+  
+  # add id (as row number) when its not available
+  if(!'id' %in% colnames(dt)){dt[,id := 1:.N]}
   
   # add all possible inputs as NA when missing
   cols <- c('A_SOM_LOI', 'A_C_OF', 'A_CLAY_MI','A_PH_WA','A_SAND_MI','A_SILT_MI','A_PH_KCL','A_PH_CC')
@@ -1737,11 +1752,14 @@ ptf_mwd_all <- function(dt){
   # add visual binding
   p1 = p2 = p3 = p4 = p5 = p6 = p7 = p8 = p9 = p10 = p11 = p12 = p13 = p14 = p15 = NULL
   A_CLAY_MI = A_SAND_MI = A_SILT_MI = A_SOM_LOI = A_C_OF = A_PH_KCL = A_PH_WA = A_PH_CC = NULL
-  num_obs = patterns = ptf_id = mwd = NULL
+  num_obs = patterns = ptf_id = id = mwd = NULL
   B_LU_PTFCLASS = A_CEC_CO = A_CACO3_MI = NULL
   
   # make local copy
   dt <- copy(dt)
+  
+  # add id (as row number) when its not available
+  if(!'id' %in% colnames(dt)){dt[,id := 1:.N]}
   
   # add all possible numeric inputs as NA when missing
   cols <- c('A_SOM_LOI', 'A_C_OF', 'A_CLAY_MI','A_SAND_MI','A_SILT_MI',
@@ -1941,12 +1959,15 @@ ptf_wsa_all <- function(dt){
   
   # add visual binding
   p1 = p2 = p3 = p4 = p5 = p6 = p7 = p8 = p9 = patterns = NULL
-  patterns = num_obs = ptf_id = wsa = NULL
+  patterns = num_obs = ptf_id = id = wsa = NULL
   A_CLAY_MI = A_SAND_MI = A_SILT_MI = A_SOM_LOI = A_C_OF = A_PH_KCL = A_PH_WA = A_PH_CC = NULL
   A_K_AA = A_CACO3_MI = NULL
   
   # make local copy
   dt <- copy(dt)
+  
+  # add id (as row number) when its not available
+  if(!'id' %in% colnames(dt)){dt[,id := 1:.N]}
   
   # add all possible inputs as NA when missing
   cols <- c('A_SOM_LOI', 'A_C_OF', 'A_CLAY_MI','A_SAND_MI','A_SILT_MI',
@@ -2137,10 +2158,13 @@ ptf_hwc_all <- function(dt){
   # add visual binding
   p1 = p2 = p3 = p4 = p5 = p6 = p7 = p8 = p9 = p10 = p11 = NULL
   A_P_AL = A_CLAY_MI = A_SAND_MI = A_SILT_MI = A_SOM_LOI = A_C_OF = A_PH_KCL = A_PH_WA = A_PH_CC = NULL
-  num_obs = patterns = ptf_id = hwc = NULL
+  num_obs = patterns = ptf_id = id = hwc = NULL
   
   # make local copy
   dt <- copy(dt)
+  
+  # add id (as row number) when its not available
+  if(!'id' %in% colnames(dt)){dt[,id := 1:.N]}
   
   # add all possible inputs as NA when missing
   cols <- c('A_SOM_LOI', 'A_C_OF', 'A_CLAY_MI','A_SAND_MI','A_SILT_MI','A_PH_CC','A_P_AL',
@@ -2335,10 +2359,13 @@ ptf_sss_all <- function(dt){
   # add visual binding
   p1 = p2 = p3 = NULL
   A_CACO3_MI = A_CLAY_MI = A_SAND_MI = A_SILT_MI = A_SOM_LOI = A_C_OF = A_PH_KCL = A_PH_WA = A_PH_CC = NULL
-  num_obs = patterns = ptf_id = sss = NULL
+  num_obs = patterns = ptf_id = id = sss = NULL
   
   # make local copy
   dt <- copy(dt)
+  
+  # add id (as row number) when its not available
+  if(!'id' %in% colnames(dt)){dt[,id := 1:.N]}
   
   # add all possible inputs as NA when missing
   cols <- c('A_SOM_LOI', 'A_C_OF', 'A_CLAY_MI','A_SAND_MI','A_SILT_MI','A_CACO3_MI')
@@ -2519,10 +2546,13 @@ ptf_metals_all <- function(dt){
   # add visual binding
   p1 = p2 = p3 = p4 = NULL
   A_CLAY_MI = A_SAND_MI = A_SILT_MI = A_SOM_LOI = A_C_OF = A_PH_KCL = A_PH_WA = A_PH_CC = NULL
-  num_obs = patterns = ptf_id = metal = NULL
+  num_obs = patterns = ptf_id = id = metal = NULL
   
   # make local copy
   dt <- copy(dt)
+  
+  # add id (as row number) when its not available
+  if(!'id' %in% colnames(dt)){dt[,id := 1:.N]}
   
   # add all possible inputs as NA when missing
   cols <- c('A_SOM_LOI', 'A_C_OF', 'A_CLAY_MI','A_SAND_MI','A_SILT_MI','A_CACO3_MI',
@@ -2711,10 +2741,13 @@ ptf_metals <- function(A_SOM_LOI = NA_real_, A_C_OF = NA_real_,
 ptf_cdec_all <- function(dt){
   
   # add visual binding
-  A_C_OF = A_SOM_LOI = A_N_RT = patterns = ptf_id = cdec = p1 = NULL 
+  A_C_OF = A_SOM_LOI = A_N_RT = patterns = ptf_id = id = cdec = p1 = NULL 
   
   # make local copy
   dt <- copy(dt)
+  
+  # add id (as row number) when its not available
+  if(!'id' %in% colnames(dt)){dt[,id := 1:.N]}
   
   # add all possible inputs as NA when missing
   cols <- c('A_SOM_LOI', 'A_C_OF', 'A_N_RT')
@@ -2891,10 +2924,13 @@ ptf_pmn_all <- function(dt){
   A_PH_KCL = A_PH_WA = A_PH_CC= pmn = A_P_AL = NULL
   num_obs = A_SOM_LOI = p1_p = p1 = p2 = p3 = p4 = p5 = p6 = p7 = p8 = p9 = p10 = NULL
   p11 = p12 = p13 = p14 = p15 = p16 = p17 = p18 = p19 = NULL
-  patterns = ptf_id = NULL
+  patterns = ptf_id = id = NULL
   
   # make local copy
   dt <- copy(dt)
+  
+  # add id (as row number) when its not available
+  if(!'id' %in% colnames(dt)){dt[,id := 1:.N]}
   
   # add all possible inputs as NA when missing
   cols <- c('A_C_OF','A_SOM_LOI', 'A_CLAY_MI','A_SAND_MI','A_SILT_MI',
