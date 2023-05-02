@@ -6597,7 +6597,7 @@ sptf_bd181 <- function(A_SOM_LOI, A_CLAY_MI, A_SILT_MI) {
 
 #' Calculate the bulk density given the pedotransferfunction of Ruhlmann et al. (2006)
 #'
-#' @param A_SOM_LOI (numeric) The percentage of organic matter in the soil (\%).
+#' @inheritParams sptf_bd0
 #'
 #' @import data.table
 #' 
@@ -6625,7 +6625,7 @@ sptf_bd182 <- function(A_SOM_LOI) {
 
 #' Calculate the bulk density given the pedotransferfunction of McBride et al. (2011)
 #'
-#' @param A_SOM_LOI (numeric) The percentage of organic matter in the soil (\%).
+#' @inheritParams sptf_bd0
 #'
 #' @import data.table
 #' 
@@ -6653,9 +6653,7 @@ sptf_bd183 <- function(A_SOM_LOI) {
 
 #' Calculate the bulk density given the pedotransferfunction of Schjonning et al. (2016).
 #'
-#' @param A_SOM_LOI (numeric) The percentage of organic matter in the soil (\%).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
-#' @param A_SILT_MI (numeric) The silt content of the soil (\%).
+#' @inheritParams sptf_bd0
 #'
 #' @import data.table
 #' 
@@ -6709,8 +6707,7 @@ sptf_bd184 <- function(A_SOM_LOI, A_CLAY_MI, A_SILT_MI) {
 
 #' Calculate the bulk density given the pedotransferfunction of Schjonning et al. (2016)
 #'
-#' @param A_SOM_LOI (numeric) The percentage of organic matter in the soil (\%).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
+#' @inheritParams sptf_bd0
 #' 
 #' @import data.table
 #' 
@@ -6743,8 +6740,7 @@ sptf_bd185 <- function(A_SOM_LOI,A_CLAY_MI) {
 
 #' Calculate the bulk density given the pedotransferfunction of da Silva et al. (1997).
 #'
-#' @param A_C_OF (numeric) The fraction organic carbon in the soil (g / kg).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
+#' @inheritParams sptf_bd0
 #'
 #' @import data.table
 #' 
@@ -6785,8 +6781,7 @@ sptf_bd186 <- function(A_C_OF, A_CLAY_MI) {
 
 #' Calculate the bulk density given the pedotransferfunction of Guerif & Farure (1979)
 #'
-#' @param A_SOM_LOI (numeric) The percentage of organic matter in the soil (\%).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
+#' @inheritParams sptf_bd0
 #' 
 #' @import data.table
 #' 
