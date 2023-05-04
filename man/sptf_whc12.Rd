@@ -15,9 +15,11 @@ sptf_whc12(A_C_OF, A_CLAY_MI, A_SAND_MI)
 }
 \description{
 DEPRECATED
-Note: Calculation of whc parameters may be wrong. The calculated water content is out of normal range. Original literature cannot be found on web.
 }
 \details{
+Note: Calculation of whc parameters may be wrong. The calculated water content is out of normal range. Original literature cannot be found on web.
+
+
 mp_fc must be either 10 or 33
 }
 \references{

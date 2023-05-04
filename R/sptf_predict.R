@@ -907,7 +907,7 @@ ptf_whc_all <- function(dt){
   # # PTF11: Calculation of wrc parameters may be wrong. The calculated water content is out of normal range.
   dt[, p11 := sptf_whc11(A_C_OF = A_C_OF, A_CLAY_MI = A_CLAY_MI, A_SILT_MI = A_SILT_MI)] 
   # # PTF12: Calculation of wrc parameters may be wrong. The calculated water content is out of normal range.
-  dt[, p12 := sptf_whc12(A_C_OF = A_C_OF,A_CLAY_MI = A_CLAY_MI, A_SAND_MI = A_SAND_MI)]
+  # dt[, p12 := sptf_whc12(A_C_OF = A_C_OF,A_CLAY_MI = A_CLAY_MI, A_SAND_MI = A_SAND_MI)]
   dt[, p13 := sptf_whc13(A_C_OF = A_C_OF, A_CLAY_MI = A_CLAY_MI,A_SAND_MI = A_SAND_MI)]
   dt[, p14 := sptf_whc14(A_SOM_LOI = A_SOM_LOI,A_CLAY_MI = A_CLAY_MI,A_SILT_MI = A_SILT_MI)] 
   dt[, p15 := sptf_whc15(A_SOM_LOI = A_SOM_LOI,A_CLAY_MI = A_CLAY_MI,A_SILT_MI = A_SILT_MI)] 
