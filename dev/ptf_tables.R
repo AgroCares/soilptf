@@ -5,14 +5,8 @@
   require(usethis)
   
 # load the csv file with pdtf for bulk density
-  d1 <- fread('dev/sptf_bulkdensity.csv',na.strings=NULL, dec=',')
+  d1 <- fread('dev/sptf_bulkdensity.csv',na.strings='', dec=',')
 
-  # set empty string to NA
-  d1$landuse[d1$landuse==''] <- NA_character_
-  
-  # set empty continentcode to NA
-  d1[continent_code=='', continent_code := NA_character_]
-  
   # make copy for package table
   sptf_bulkdensity <- copy(d1)
   
