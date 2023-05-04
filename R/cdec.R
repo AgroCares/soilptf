@@ -49,8 +49,8 @@ sptf_cdec2 <- function(A_C_OF, years) {
   cor_temp = temp = NULL
   
   # Check input
-  check_numeric('A_C_OF', A_C_OF, anymissing = FALSE, arg.length = arg.length)
-  checkmate::assert_numeric(years, lower = 1, len = arg.length)
+  check_numeric('A_C_OF', A_C_OF, anymissing = FALSE)
+  checkmate::assert_numeric(years, lower = 1)
   
   # combine arguments in internal table
   dt <- data.table(A_C_OF = A_C_OF,temp = 12)
