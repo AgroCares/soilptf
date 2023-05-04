@@ -5,7 +5,7 @@
 \title{Calculate the water holding capacity given the pedotransferfunction of Campbell & Shiozawa 1992
 Note: Calculation of whc parameters may be wrong. The calculated water content is out of normal range. Original literature can not be found on web.}
 \usage{
-sptf_whc11(A_CLAY_MI, A_SILT_MI, D_BDS, mp_fc = 33)
+sptf_whc11(A_C_OF, A_CLAY_MI, A_SILT_MI)
 }
 \arguments{
 \item{A_C_OF}{(numeric) Organic Carbon Content (g / kg)}
@@ -13,8 +13,6 @@ sptf_whc11(A_CLAY_MI, A_SILT_MI, D_BDS, mp_fc = 33)
 \item{A_CLAY_MI}{(numeric) The clay content of the mineral soil fraction (\%).}
 
 \item{A_SILT_MI}{(numeric) Silt content (\%)}
-
-\item{mp_fc}{(numeric) Water potential at field capacity (kPa).}
 }
 \description{
 Calculate the water holding capacity given the pedotransferfunction of Campbell & Shiozawa 1992

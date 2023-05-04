@@ -4,16 +4,14 @@
 \alias{sptf_whc6}
 \title{Calculate the water holding capacity given the pedotransferfunction of Vereecken et al. 1989}
 \usage{
-sptf_whc6(A_SAND_MI, A_CLAY_MI, D_BDS, A_C_OF, mp_fc = 33)
+sptf_whc6(A_C_OF, A_CLAY_MI, A_SAND_MI)
 }
 \arguments{
 \item{A_C_OF}{(numeric) Organic Carbon Content (g / kg)}
 
 \item{A_CLAY_MI}{(numeric) The clay content of the mineral soil fraction (\%).}
 
-\item{A_C_OF}{(numeric) Organic Carbon Content (g / kg)}
-
-\item{mp_fc}{(numeric) Water potential at field capacity (kPa).}
+\item{A_SAND_MI}{(numeric) Sand content (\%)}
 }
 \description{
 Calculate the water holding capacity given the pedotransferfunction of Vereecken et al. 1989
