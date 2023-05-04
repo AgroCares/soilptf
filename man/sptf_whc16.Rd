@@ -7,13 +7,9 @@
 sptf_whc16(A_CLAY_MI, A_SILT_MI, A_SOM_LOI, A_SAND_M50 = 150, mp_fc = 33)
 }
 \arguments{
-\item{A_CLAY_MI}{(numeric) The clay content of the mineral soil fraction (\%).}
-
-\item{A_SILT_MI}{(numeric) Silt content (\%)}
-
 \item{A_SOM_LOI}{(numeric) The percentage organic matter in the soil determined by loss on ignition (\%)}
 
-\item{A_SAND_M50}{(numeric) description (µm)}
+\item{A_CLAY_MI}{(numeric) The clay content of the mineral soil fraction (\%).}
 
 \item{mp_fc}{(numeric) Water potential at field capacity (kPa).}
 }

@@ -8,6 +8,8 @@ Note: Calculation of whc parameters may be wrong. The calculated water content i
 sptf_whc11(A_CLAY_MI, A_SILT_MI, D_BDS, mp_fc = 33)
 }
 \arguments{
+\item{A_C_OF}{(numeric) Organic Carbon Content (g / kg)}
+
 \item{A_CLAY_MI}{(numeric) The clay content of the mineral soil fraction (\%).}
 
 \item{A_SILT_MI}{(numeric) Silt content (\%)}

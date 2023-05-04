@@ -21,6 +21,8 @@ sptf_bd121(
 
 \item{A_SAND_MI}{(numeric) Sand content (\%)}
 
+\item{A_CACO3_IF}{(numeric) Carbonated Lime inorganic soil fraction (\%)}
+
 \item{A_PH_WA}{(numeric) Acidity in water (-)}
 
 \item{B_ALTITUDE}{(numeric) The altitude (m)}

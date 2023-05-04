@@ -7,7 +7,7 @@
 sptf_whc13(A_SAND_MI, A_CLAY_MI, D_BDS, A_C_OF, mp_fc = 33)
 }
 \arguments{
-\item{A_SAND_MI}{(numeric) Sand content (\%)}
+\item{A_C_OF}{(numeric) Organic Carbon Content (g / kg)}
 
 \item{A_CLAY_MI}{(numeric) The clay content of the mineral soil fraction (\%).}
 

@@ -14,6 +14,8 @@ calc_soil_porosity(
 )
 }
 \arguments{
+\item{D_BDS}{(numeric) Bulk density (kg/m3)}
+
 \item{A_SAND_MI}{(numeric) Sand content (\%)}
 
 \item{A_CLAY_MI}{(numeric) The clay content of the mineral soil fraction (\%).}

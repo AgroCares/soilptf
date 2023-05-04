@@ -14,13 +14,9 @@ sptf_whc15(
 )
 }
 \arguments{
-\item{A_CLAY_MI}{(numeric) The clay content of the mineral soil fraction (\%).}
-
-\item{A_SILT_MI}{(numeric) Silt content (\%)}
-
 \item{A_SOM_LOI}{(numeric) The percentage organic matter in the soil determined by loss on ignition (\%)}
 
-\item{A_SAND_M50}{(numeric) description (µm)}
+\item{A_CLAY_MI}{(numeric) The clay content of the mineral soil fraction (\%).}
 
 \item{topsoil}{(boolean) Whether top soil (1) or sub-soil (0)}
 

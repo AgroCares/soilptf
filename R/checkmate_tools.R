@@ -98,8 +98,6 @@ get_maxval <- function(this.parameter) {
 #'
 #' @param this.parameter (character) Quoted name of the parameter
 #'
-#' @examples
-#' enum_opts(this.parameter = "B_GWL_CLASS")
 #'
 #' @details This function wraps unlist(strsplit(sptf_parameters[code == this.parameter, options]))
 #' to return a vector of allowed values for parameters of data_type 'enum'. If the

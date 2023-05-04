@@ -13,6 +13,8 @@ sptf_bd25(A_C_OF, A_CLAY_MI, A_SILT_MI, A_H2O_T105, A_DEPTH)
 
 \item{A_SILT_MI}{(numeric) Silt content (\%)}
 
+\item{A_H2O_T105}{(numeric) water content measured after drying at 105 degrees (\%)}
+
 \item{A_DEPTH}{(numeric) The depth of the sampled soil layer (m)}
 }
 \description{

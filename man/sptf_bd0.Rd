@@ -4,7 +4,31 @@
 \alias{sptf_bd0}
 \title{Documentation of all possible bulk density pedotransfer function inputs}
 \usage{
-sptf_bd0()
+sptf_bd0(
+  A_CACO3_MI,
+  A_CEC_CO,
+  A_CLAY_MI,
+  A_C_OF,
+  A_DEPTH,
+  A_DENSITY,
+  A_H20_T105,
+  A_N_RT,
+  A_PH_CC,
+  A_PH_WA,
+  A_SAND_M50,
+  A_SAND_MI,
+  A_SILT_MI,
+  A_SOM_LOI,
+  B_ALTITUDE,
+  B_ROCKS_FR,
+  B_SLOPE_ASPECT,
+  B_SLOPE_DEGREE,
+  mp_wp,
+  mp_fc,
+  D_BDS,
+  A_CACO3_IF,
+  A_H2O_T105
+)
 }
 \arguments{
 \item{A_CACO3_MI}{(numeric) The calcium carbonate content of the soil (\%)}
@@ -46,6 +70,12 @@ sptf_bd0()
 \item{mp_wp}{(numeric) Water potential at wilting point (kPa).}
 
 \item{mp_fc}{(numeric) Water potential at field capacity (kPa).}
+
+\item{D_BDS}{(numeric) Bulk density (kg/m3)}
+
+\item{A_CACO3_IF}{(numeric) Carbonated Lime inorganic soil fraction (\%)}
+
+\item{A_H2O_T105}{(numeric) water content measured after drying at 105 degrees (\%)}
 }
 \description{
 Documentation of all possible bulk density pedotransfer function inputs

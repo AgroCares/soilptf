@@ -55,3 +55,48 @@
 #'  \item{options}{Allowed values for a parameter of type enum seperated by "||"}
 #' }
 "sptf_parameters"
+
+#' Table with background information for pedotransferfunctions in relation to other soil properties and functions
+#'
+#' This table contains background information on the applicability of pedotransferfunctions collected from literature
+#'
+#' @format A data.frame with x rows and x columns:
+#' \describe{
+#'   \item{ptf_id}{an unique number for each pedotransfer function}
+#'   \item{ptf_tid}{an unique number for each pedotransfer function per ptf_type}
+#'   \item{ptf_type}{The soil function category used in package}
+#'   \item{country_code}{The country or region where the pedotransfer function can be applied,country codes from https://datahub.io/core/country-codes}
+#'   \item{continent_code}{The continent where the pedotransfer function can be applied,country codes from https://datahub.io/core/continent-codes}
+#'   \item{soiltype}{Applicability of the ptf given USDA soil classifications}
+#'   \item{landuse}{Applicability of the ptf given landuse}
+#'   \item{depth}{Applicability of the ptf for topsoil (0-30cm) or subsoil (>30cm), given by the maximum depth observed in the datset}
+#'   \item{nsample}{The number of samples used to calibrate pedotransfunction}
+#'   \item{r2}{The explained variance of the ptf}
+#'   \item{soilproperties}{The soil properties required to estimate the bulk density}
+#'   \item{reference}{the paper describing the pedotransferfunction}
+#'   \item{url}{weblink to reference}
+#'   }
+"sptf_soilproperties"
+
+#' Table with supprting infromation for class ptfs pF curve
+#'
+#' This table contains parameters for Dutch categorial ptfs for pF curve
+#'
+#' @format A data.frame with x rows and x columns:
+#' \describe{
+#'   \item{bouwsteen}{}
+#'   \item{omschrijving}{}
+#'   \item{thres}{}
+#'   \item{thsat}{}
+#'   \item{Ks}{}
+#'   \item{alpha}{}
+#'   \item{l}{}
+#'   \item{n}{}
+#'   \item{sand}{}
+#'   \item{silt}{}
+#'   \item{clay}{}
+#'   \item{OM}{}
+#'   \item{bulkdensity}{}
+#'   \item{M50}{}
+#'   }
+"sptf_bouwsteen"

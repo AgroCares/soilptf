@@ -4,16 +4,14 @@
 \alias{sptf_whc9}
 \title{Calculate the water holding capacity given the pedotransferfunction of Tomasella & Hodnett 1998}
 \usage{
-sptf_whc9(A_CLAY_MI, A_SILT_MI, A_C_OF, mp_fc = 33)
+sptf_whc9(A_C_OF, A_CLAY_MI, A_SILT_MI)
 }
 \arguments{
+\item{A_C_OF}{(numeric) Organic Carbon Content (g / kg)}
+
 \item{A_CLAY_MI}{(numeric) The clay content of the mineral soil fraction (\%).}
 
 \item{A_SILT_MI}{(numeric) Silt content (\%)}
-
-\item{A_C_OF}{(numeric) Organic Carbon Content (g / kg)}
-
-\item{mp_fc}{(numeric) Water potential at field capacity (kPa).}
 }
 \description{
 Calculate the water holding capacity given the pedotransferfunction of Tomasella & Hodnett 1998

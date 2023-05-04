@@ -7,7 +7,7 @@
 sptf_whc5(A_SILT_MI, A_CLAY_MI, D_BDS, A_SOM_LOI, topsoil = 1, mp_fc = 33)
 }
 \arguments{
-\item{A_SILT_MI}{(numeric) Silt content (\%)}
+\item{A_SOM_LOI}{(numeric) The percentage organic matter in the soil determined by loss on ignition (\%)}
 
 \item{A_CLAY_MI}{(numeric) The clay content of the mineral soil fraction (\%).}
 
