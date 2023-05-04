@@ -1,5 +1,8 @@
 # Changelog soilptf
 
+## Version 0.5.x  2023-05-xx
+* update critical thresholds for metals
+
 ## Version 0.5.1  2023-05-xx
 
 # Fixed
