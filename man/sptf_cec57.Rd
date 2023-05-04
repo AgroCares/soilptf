@@ -7,11 +7,11 @@
 sptf_cec57(A_SOM_LOI, A_SAND_MI, A_PH_WA)
 }
 \arguments{
-\item{A_SOM_LOI}{(numeric) The percentage organic matter in the soil (\%).}
+\item{A_SOM_LOI}{(numeric) The percentage organic matter in the soil determined by loss on ignition (\%)}
 
-\item{A_SAND_MI}{(numeric) The sand content of the soil (\%).}
+\item{A_SAND_MI}{(numeric) Sand content (\%)}
 
-\item{A_PH_WA}{(numeric) The acidity of the soil, pH in water (-).}
+\item{A_PH_WA}{(numeric) Acidity in water (-)}
 }
 \description{
 This function calculates the CEC at pH 8.2 for agricultural soils (0-20cm) in Mexico

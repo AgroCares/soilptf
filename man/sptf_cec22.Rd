@@ -7,11 +7,11 @@
 sptf_cec22(A_SOM_LOI, A_CLAY_MI, A_SILT_MI)
 }
 \arguments{
-\item{A_SOM_LOI}{(numeric) The percentage organic matter in the soil (\%).}
+\item{A_SOM_LOI}{(numeric) The percentage organic matter in the soil determined by loss on ignition (\%)}
 
-\item{A_CLAY_MI}{(numeric) The clay content of the soil (\%).}
+\item{A_CLAY_MI}{(numeric) The clay content of the mineral soil fraction (\%).}
 
-\item{A_SILT_MI}{(numeric) The silt content of the soil (\%).}
+\item{A_SILT_MI}{(numeric) Silt content (\%)}
 }
 \description{
 This function calculates the CEC at pH 8.2 of loess soils (0-20cm) in Argentina

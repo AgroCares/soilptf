@@ -7,9 +7,9 @@
 sptf_cec21(A_CLAY_MI, A_SILT_MI)
 }
 \arguments{
-\item{A_CLAY_MI}{(numeric) The clay content of the soil (\%).}
+\item{A_CLAY_MI}{(numeric) The clay content of the mineral soil fraction (\%).}
 
-\item{A_SILT_MI}{(numeric) The silt content of the soil (\%).}
+\item{A_SILT_MI}{(numeric) Silt content (\%)}
 }
 \description{
 This function calculates the CEC at pH 7 of agricultural soils (variable depth) in Sudan.

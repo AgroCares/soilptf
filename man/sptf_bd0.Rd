@@ -76,6 +76,10 @@ sptf_bd0(
 \item{A_CACO3_IF}{(numeric) Carbonated Lime inorganic soil fraction (\%)}
 
 \item{A_H2O_T105}{(numeric) water content measured after drying at 105 degrees (\%)}
+
+\item{A_CN_FR}{(numeric) Carbon / Nitrogen ratio (ratio)}
+
+\item{A_PH_KCL}{(numeric) Acidity in KCl (-)}
 }
 \description{
 Documentation of all possible bulk density pedotransfer function inputs
