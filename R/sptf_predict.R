@@ -1289,7 +1289,7 @@ ptf_cec_all <- function(dt){
   p39 = p40 = p41 = p42 = p43 = p44 = p45 = p46 = p47 = p48 = p49 = p50 = NULL
   p51 = p52 = p53 = p54 = p55 = p56 = p57 = p58 = p59 = p60 = p61 = p62 = NULL
   p63 = p64 = p65 = p66 = p67 = p68 = p69 = p70 = p71 = p72 = p73 = p74 = NULL
-  p75 = NULL
+  p75 = p76 = p77 = p78 = NULL
   num_obs = A_CACO3_IF = A_CLAY_MI = A_SAND_MI = A_SILT_MI = A_SOM_LOI = A_C_OF = A_PH_KCL = A_PH_CC = A_PH_WA = NULL
   B_LU_PTFCLASS = id = A_CN_FR = B_SOILCLASS_USDA = B_CLIM_CAT1 = patterns = ptf_id = cec = NULL
   
@@ -1403,6 +1403,9 @@ ptf_cec_all <- function(dt){
   dt[, p73 := sptf_cec73(A_SOM_LOI = A_SOM_LOI, A_CLAY_MI = A_CLAY_MI,A_SILT_MI = A_SILT_MI, A_PH_WA = A_PH_WA)]
   dt[, p74 := sptf_cec74(A_C_OF = A_C_OF, A_CLAY_MI = A_CLAY_MI,A_SILT_MI = A_SILT_MI, A_PH_WA = A_PH_WA,B_SOILCLASS_USDA = B_SOILCLASS_USDA)]
   dt[, p75 := sptf_cec75(A_C_OF = A_C_OF, A_CLAY_MI = A_CLAY_MI, A_PH_CC = A_PH_CC)]
+  dt[, p76 := sptf_cec75(A_SOM_LOI = A_SOM_LOI, A_SAND_MI = A_SAND_MI, A_PH_WA = A_PH_WA)]
+  dt[, p77 := sptf_cec75(A_C_OF = A_C_OF, A_CLAY_MI,A_SILT_MI = A_SILT_MI,A_SAND_MI = A_SAND_MI, A_PH_WA = A_PH_WA)]
+  dt[, p78 := sptf_cec75(A_SOM_LOI = A_SOM_LOI, A_CLAY_MI = A_CLAY_MI,A_SILT_MI = A_SILT_MI, A_PH_WA = A_PH_WA)]
   
   # melt the data
   dt2 <- melt(dt, 

@@ -3382,6 +3382,137 @@ sptf_cec75 <- function(A_C_OF, A_CLAY_MI, A_PH_CC) {
   return(value)
   
 }
+
+#' Calculate the CEC
+#'
+#' This function calculates the CEC at pH 7 from agricultural topsoils (0-20 cm) in China
+#'
+#' @param A_SOM_LOI (numeric) The percentage organic matter in the soil (\%).
+#' @param A_SAND_MI (numeric) The sand content of the soil (\%).
+#' @param A_PH_WA (numeric) The acidity of the soil, pH in water (-)
+#' 
+#' @import data.table
+#' 
+#' @references Yunan et al. (2018) Study on Cation Exchange Capacity of Agricultural Soils
+#'
+#' @export
+sptf_cec76 <- function(A_SOM_LOI, A_SAND_MI, A_PH_WA) {
+  
+  # Check input
+  arg.length <- max(length(A_SOM_LOI), length(A_SAND_MI),length(A_PH_WA))
+  checkmate::assert_numeric(A_SOM_LOI, lower = 0, upper = 100,len = arg.length)
+  checkmate::assert_numeric(A_PH_WA, lower = 3, upper = 12, len = arg.length)
+  checkmate::assert_numeric(A_SAND_MI, lower = 0, upper = 100, len = arg.length)
+  
+  # make internal data.table (with SOM in g/kg)
+  dt <- data.table(A_SOM_LOI = A_SOM_LOI * 10,
+                   A_SAND_MI = A_SAND_MI,
+                   A_PH_WA = A_PH_WA)
+  
+  # function for CEC(n = 100, R2 = )
+  dt[, value := 14.488 - 0.233 * A_SAND_MI + 0.121 * A_SOM_LOI + 1.458 * A_PH_WA]
+  
+  # update unit from cmol/kg to mmol/kg
+  dt[, value := value * 10]
+  
+  # select output variable
+  value <- dt[,value]
+  
+  # return value (mmol+ / kg)
+  return(value)
+  
+}
+
+#' Calculate the CEC
+#'
+#' This function calculates the CEC at pH 7 from agricultural topsoils (0-30 cm) in Iran
+#'
+#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
+#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
+#' @param A_SILT_MI (numeric) The silt content of the soil (\%).
+#' @param A_SAND_MI (numeric) The sand content of the soil (\%).
+#' @param A_PH_WA (numeric) The acidity of the soil, pH in water (-)
+#' 
+#' @import data.table
+#' 
+#' @references Ghorbani et al. (2015) Estimation of Soil Cation Exchange Capacity using Multiple Regression, Artificial Neural Networks, and Adaptive Neuro-fuzzy Inference System Models in Golestan Province, Iran
+#'
+#' @export
+sptf_cec77 <- function(A_C_OF, A_CLAY_MI,A_SILT_MI,A_SAND_MI, A_PH_WA) {
+  
+  # Check input
+  arg.length <- max(length(A_C_OF), length(A_SAND_MI),length(A_SILT_MI),length(A_SAND_MI),length(A_PH_WA))
+  checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000,len = arg.length)
+  checkmate::assert_numeric(A_PH_WA, lower = 3, upper = 12, len = arg.length)
+  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_numeric(A_SAND_MI, lower = 0, upper = 100, len = arg.length)
+  
+  # make internal data.table (with SOC in %)
+  dt <- data.table(A_C_OF = A_C_OF * 0.1,
+                   A_CLAY_MI = A_CLAY_MI,
+                   A_SILT_MI = A_SILT_MI,
+                   A_SAND_MI = A_SAND_MI,
+                   A_PH_WA = A_PH_WA)
+  
+  # function for CEC(n = 220, R2 = 0.77)
+  dt[, value := 31.59 - 5.38 * A_PH_WA - 2.69 * A_C_OF + 0.17 * A_SAND_MI + 0.19 * A_SILT_MI + 0.44 * A_CLAY_MI]
+  
+  # update unit from cmol/kg to mmol/kg
+  dt[, value := value * 10]
+  
+  # select output variable
+  value <- dt[,value]
+  
+  # return value (mmol+ / kg)
+  return(value)
+  
+}
+
+#' Calculate the CEC
+#'
+#' This function calculates the CEC at pH 7 from agricultural topsoils (0-30 cm) in China
+#'
+#' @param A_SOM_LOI (numeric) The percentage organic matter in the soil (\%).
+#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
+#' @param A_SILT_MI (numeric) The silt content of the soil (\%).
+#' @param A_PH_WA (numeric) The acidity of the soil, pH in water (-)
+#' 
+#' @import data.table
+#' 
+#' @references Wang et al. (2012) Distribution and Affecting Factors of Soil Cation Exchange Capacity in Watershed of the Loess Plateau. Cited in Yunan et al. (2018).
+#'
+#' @export
+sptf_cec78 <- function(A_SOM_LOI, A_CLAY_MI,A_SILT_MI, A_PH_WA) {
+  
+  # Check input
+  arg.length <- max(length(A_SOM_LOI), length(A_SAND_MI),length(A_SILT_MI),length(A_PH_WA))
+  checkmate::assert_numeric(A_C_OF, lower = 0, upper = 100,len = arg.length)
+  checkmate::assert_numeric(A_PH_WA, lower = 3, upper = 12, len = arg.length)
+  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, len = arg.length)
+
+  
+  # make internal data.table
+  dt <- data.table(A_SOM_LOI = A_SOM_LOI,
+                   A_CLAY_MI = A_CLAY_MI,
+                   A_SILT_MI = A_SILT_MI,
+                   A_PH_WA = A_PH_WA)
+  
+  # function for CEC(n = 18, R2 = 0.99)
+  dt[, value := -43.446 + 0.508 * A_SOM_LOI + 5.145 * A_PH_WA + 0.023 * A_SILT_MI + 0.397 * A_CLAY_MI]
+  
+  # update unit from cmol/kg to mmol/kg
+  dt[, value := value * 10]
+  
+  # select output variable
+  value <- dt[,value]
+  
+  # return value (mmol+ / kg)
+  return(value)
+  
+}
+
 #
 # montecillo, tropical
 # sinoga, spain

@@ -185,3 +185,6 @@
 184;4;metals;NL;EU;variable;agriculture;30;1400;79;a_som_loi||a_clay_mi||a_ph_wa;romkens_2004;https://edepot.wur.nl/16988
 185;1;cdec;NL;EU;peat;agriculture;30;;;a_c_of||a_n_rt;wosten_1997;https://edepot.wur.nl/299664
 186;2;cdec;NL;EU;variable;agriculture;30;;;a_c_of;janssen_1984;not available
+187;75;cec;CN;AS;variable;agriculture;20;100;37;a_som_loi||a_sand_mi||a_ph_wa;yunan_2018;doi:10.1088/1757-899X/392/4/042039
+188;76;cec;IR;AS;variable;agriculture;30;220;77;a_c_of||a_clay_mi||a_silt_mi||a_sand_mi||a_ph_wa;ghorbani_2015;https://doi.org/10.1080/00103624.2015.1006367
+189;77;cec;CN;AS;loess;agriculture;30;18;99;a_som_loi||a_clay_mi||a_silt_mi||a_ph_wa;wang_2012;not available
