@@ -4,9 +4,8 @@
 #'
 #' This function calculates the decomposition of peat using first order kinetics.
 #'
-#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
-#' @param A_N_RT (numeric) The nitrogen content of the soil (mg / kg).
-#' @param years (numeric) The years for which the carbon decomposition need to be estimated.
+#' @inheritParams sptf_bd0
+#' @param years (numeric) The number of years for which the carbon decomposition need to be estimated.
 #'
 #' @import data.table
 #' 
@@ -17,9 +16,10 @@ sptf_cdec1 <- function(A_C_OF, A_N_RT, years) {
   
   # Check input
   arg.length <- max(length(A_N_RT),length(A_C_OF))
-  checkmate::assert_numeric(A_N_RT, lower = 0, upper = 10000, len = arg.length)
-  checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000, len = arg.length)
-  
+  check_numeric('A_N_RT', A_N_RT, anymissing = FALSE, arg.length = arg.length)
+  check_numeric('A_C_OF', A_C_OF, anymissing = FALSE, arg.length = arg.length)
+  checkmate::assert_numeric(years, lower = 1, len = arg.length)
+
   # estimate the potential decomposition rate (Vermeulen en Hendriks, 1996)
   kpot <- 0.016 - 0.00021 * A_C_OF *1000 / A_N_RT
   
@@ -35,8 +35,8 @@ sptf_cdec1 <- function(A_C_OF, A_N_RT, years) {
 #'
 #' This function calculates the decomposition of sand and peat soils using first order kinetics.
 #'
-#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
-#' @param years (numeric) The years for which the carbon decomposition need to be estimated.
+#' @inheritParams sptf_bd0
+#' @inheritParams sptf_cdec1
 #'
 #' @import data.table
 #' 
@@ -49,8 +49,8 @@ sptf_cdec2 <- function(A_C_OF, years) {
   cor_temp = temp = NULL
   
   # Check input
-  checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000)
-  checkmate::assert_int(years,lower = 1)
+  check_numeric('A_C_OF', A_C_OF, anymissing = FALSE, arg.length = arg.length)
+  checkmate::assert_numeric(years, lower = 1, len = arg.length)
   
   # combine arguments in internal table
   dt <- data.table(A_C_OF = A_C_OF,temp = 12)
