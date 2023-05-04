@@ -609,6 +609,8 @@ sptf_whc11 <- function(A_C_OF,A_CLAY_MI,A_SILT_MI) {
 
 #' Calculate the water holding capacity given the pedotransferfunction of Rawls & Brakensiek 1985
 #'
+#' DEPRECATED
+#' 
 #' Note: Calculation of whc parameters may be wrong. The calculated water content is out of normal range. Original literature cannot be found on web.
 #'
 #' @inheritParams sptf_bd0
@@ -621,44 +623,45 @@ sptf_whc11 <- function(A_C_OF,A_CLAY_MI,A_SILT_MI) {
 #'
 #' @references Rawls & Brakensiek (1985) Prediction of Soil Water Properties for Hydrologic Modelling
 #'
-#' @export
+#' 
 sptf_whc12 <- function(A_C_OF,A_CLAY_MI,A_SAND_MI) {
   
-  # Add visual bindings
-  theta_sat = theta_res = theta_fc = alfa = n = por = psi_b = lambda =  theta_wp = NULL
-  D_BDS = NULL
+  # # Add visual bindings
+  # theta_sat = theta_res = theta_fc = alfa = n = por = psi_b = lambda =  theta_wp = NULL
+  # D_BDS = NULL
+  # 
+  # # set default parameters for this function
+  # mp_fc = 2.0
+  # mp_wp = 4.2
+  # 
+  # # Check input
+  # arg.length <-max(length(A_C_OF), length(A_CLAY_MI),length(A_SAND_MI))
+  # checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000,len = arg.length)
+  # checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
+  # checkmate::assert_numeric(A_SAND_MI, lower = 0, upper = 100, len = arg.length)
+  # checkmate::assert_numeric(mp_wp, any.missing = FALSE)
+  # checkmate::assert_subset(mp_fc, choices = c(2, 4.2))
+  # 
+  # # Collect data into a table
+  # dt <- data.table(A_C_OF = A_C_OF,
+  #                  A_CLAY_MI = A_CLAY_MI,
+  #                  A_SAND_MI = A_SAND_MI,
+  #                  value = NA_real_
+  #                 )
+  # 
+  # # add density (with Corg in g/kg as input) in units g/cm3
+  # dt[,D_BDS := (1617 - 77.4 * log(A_C_OF) - 3.49 * A_C_OF)*0.001]
+  # 
+  # # Calcaulte parameters of water retention curve of Brooks and Corey (1964)
+  # dt[, value := calc_soil_porosity(D_BDS)]
+  # 
+  # # return value
+  # value <- dt[, value]
+  # 
+  # # return value
+  # return(value)
   
-  # set default parameters for this function
-  mp_fc = 2.0
-  mp_wp = 4.2
-  
-  # Check input
-  arg.length <-max(length(A_C_OF), length(A_CLAY_MI),length(A_SAND_MI))
-  checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000,len = arg.length)
-  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
-  checkmate::assert_numeric(A_SAND_MI, lower = 0, upper = 100, len = arg.length)
-  checkmate::assert_numeric(mp_wp, any.missing = FALSE)
-  checkmate::assert_subset(mp_fc, choices = c(2, 4.2))
-  
-  # Collect data into a table
-  dt <- data.table(A_C_OF = A_C_OF,
-                   A_CLAY_MI = A_CLAY_MI,
-                   A_SAND_MI = A_SAND_MI,
-                   value = NA_real_
-                  )
-  
-  # add density (with Corg in g/kg as input) in units g/cm3
-  dt[,D_BDS := (1617 - 77.4 * log(A_C_OF) - 3.49 * A_C_OF)*0.001]
-  
-  # Calcaulte parameters of water retention curve of Brooks and Corey (1964)
-  dt[, value := calc_soil_porosity(D_BDS)]
-  
-  # return value
-  value <- dt[, value]
-  
-  # return value
-  return(value)
-  
+  return('This function is deprecated')
 }
 
 

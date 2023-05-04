@@ -1,5 +1,9 @@
 # Changelog soilptf
 
+## Version 0.5.1.9000
+## Removed
+* function `sptf_whc12` as it most likely did not work as intended. Closes #32.
+
 ## Version 0.5.0  2023-04-29
 
 ## Added
