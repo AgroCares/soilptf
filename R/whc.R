@@ -1028,13 +1028,16 @@ calc_soil_porosity <- function(D_BDS,
                                method = "average") {
   # check inputs
   arg.length <- max(length(D_BDS))
-  checkmate::assert_subset(method, choices = c('Heinen', 'average'))
-  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length,null.ok = TRUE)
-  checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, len = arg.length,null.ok = TRUE)
-  checkmate::assert_numeric(A_SAND_MI, lower = 0, upper = 100, len = arg.length,null.ok = TRUE)
-  checkmate::assert_numeric(A_SOM_LOI, lower = 0, upper = 100, len = arg.length,null.ok = TRUE)
-  checkmate::assert_numeric(D_BDS, lower = 0, upper = 2000, len = arg.length)
-  
+  check_numeric('D_BDS', D_BDS, FALSE, arg.length)
+  checkmate::assert_subset(method, choices = c('Heinen', 'average'), empty.ok = FALSE)
+  checkmate::assert_character(method, len = 1)
+  if(method == 'Heinen'){
+    check_numeric('A_SAND_MI', A_SAND_MI, FALSE, arg.length)
+    check_numeric('A_CLAY_MI', A_CLAY_MI, FALSE, arg.length)
+    check_numeric('A_SILT_MI', A_SILT_MI, FALSE, arg.length)
+    check_numeric('A_SOM_LOI', A_SOM_LOI, FALSE, arg.length)
+  }
+
     if (method == "Heinen") {
       # Calulate soil density (g/cm3), according to Heinen 2006
       # Heinen, M., (2006) Application of a widely used denitrification model to Dutch datasets. Geoderma 133, 464e473.
