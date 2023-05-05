@@ -18,7 +18,7 @@ test_that("cec functions returns the correct values", {
   A_DEPTH <- c(0.3, 1)
   D_BDS <- c(1200, 1100)
   topsoil <- c(10, 20)
-  A_CACO3_MI = c(3, 7)
+  A_CACO3_IF = c(3, 7)
   B_LU_PTFCLASS <- c('cropland', 'grassland')
   B_SOILCLASS_USDA <- c('alfisol','andisol')
   
@@ -171,7 +171,7 @@ test_that("cec functions returns the correct values", {
     tolerance = 0.01
   )
   expect_equal(
-    sptf_cec29(A_SOM_LOI = A_SOM_LOI, A_CLAY_MI = A_CLAY_MI, A_SILT_MI = A_SILT_MI,A_CACO3_MI = A_CACO3_MI, A_PH_CC = A_PH_CC),
+    sptf_cec29(A_SOM_LOI = A_SOM_LOI, A_CLAY_MI = A_CLAY_MI, A_SILT_MI = A_SILT_MI,A_CACO3_IF = A_CACO3_IF, A_PH_CC = A_PH_CC),
     expected = c(467.6 , 190.1),
     tolerance = 0.01
   )
@@ -330,7 +330,7 @@ test_that("cec functions returns the correct values", {
   
   
   expect_equal(
-    sptf_cec50(A_SOM_LOI = A_SOM_LOI, A_CLAY_MI = A_CLAY_MI, A_SILT_MI = A_SILT_MI, A_CACO3_MI = A_CACO3_MI, A_PH_CC = A_PH_CC),
+    sptf_cec50(A_SOM_LOI = A_SOM_LOI, A_CLAY_MI = A_CLAY_MI, A_SILT_MI = A_SILT_MI, A_CACO3_IF = A_CACO3_IF, A_PH_CC = A_PH_CC),
     expected = c(317.13 , 331.37),
     tolerance = 0.01
   )
@@ -370,7 +370,7 @@ test_that("cec functions returns the correct values", {
     tolerance = 0.01
   )
   expect_equal(
-    sptf_cec58(A_SOM_LOI = A_SOM_LOI, A_CLAY_MI = A_CLAY_MI, A_SILT_MI = A_SILT_MI, A_CACO3_MI = A_CACO3_MI),
+    sptf_cec58(A_SOM_LOI = A_SOM_LOI, A_CLAY_MI = A_CLAY_MI, A_SILT_MI = A_SILT_MI, A_CACO3_IF = A_CACO3_IF),
     expected = c(82.09 , 133.00),
     tolerance = 0.01
   )
@@ -391,7 +391,7 @@ test_that("cec functions returns the correct values", {
     tolerance = 0.01
   )
   expect_equal(
-    sptf_cec62(A_C_OF = A_C_OF, A_CLAY_MI = A_CLAY_MI, A_SILT_MI = A_SILT_MI, A_CACO3_MI = A_CACO3_MI),
+    sptf_cec62(A_C_OF = A_C_OF, A_CLAY_MI = A_CLAY_MI, A_SILT_MI = A_SILT_MI, A_CACO3_IF = A_CACO3_IF),
     expected = c(245.3428 , 178.3788),
     tolerance = 0.01
   )

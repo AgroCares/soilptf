@@ -4,7 +4,7 @@
 \alias{sptf_cec29}
 \title{Calculate the CEC}
 \usage{
-sptf_cec29(A_SOM_LOI, A_CLAY_MI, A_SILT_MI, A_CACO3_MI, A_PH_CC)
+sptf_cec29(A_SOM_LOI, A_CLAY_MI, A_SILT_MI, A_CACO3_IF, A_PH_CC)
 }
 \arguments{
 \item{A_SOM_LOI}{(numeric) The percentage organic matter in the soil determined by loss on ignition (\%)}
@@ -13,7 +13,7 @@ sptf_cec29(A_SOM_LOI, A_CLAY_MI, A_SILT_MI, A_CACO3_MI, A_PH_CC)
 
 \item{A_SILT_MI}{(numeric) Silt content (\%)}
 
-\item{A_CACO3_MI}{(numeric) The calcium carbonate content of the soil (\%)}
+\item{A_CACO3_IF}{(numeric) Carbonated Lime inorganic soil fraction (\%)}
 
 \item{A_PH_CC}{(numeric) Acidity in CaCl2 (-)}
 }

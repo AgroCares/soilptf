@@ -4,7 +4,7 @@
 \alias{sptf_mwd8}
 \title{Calculate the Mean Weight Diameter}
 \usage{
-sptf_mwd8(A_SOM_LOI, A_CLAY_MI, A_SILT_MI, A_PH_WA, A_CACO3_MI)
+sptf_mwd8(A_SOM_LOI, A_CLAY_MI, A_SILT_MI, A_PH_WA, A_CACO3_IF)
 }
 \arguments{
 \item{A_SOM_LOI}{(numeric) The percentage organic matter in the soil determined by loss on ignition (\%)}
@@ -15,7 +15,7 @@ sptf_mwd8(A_SOM_LOI, A_CLAY_MI, A_SILT_MI, A_PH_WA, A_CACO3_MI)
 
 \item{A_PH_WA}{(numeric) Acidity in water (-)}
 
-\item{A_CACO3_MI}{(numeric) The calcium carbonate content of the soil (\%)}
+\item{A_CACO3_IF}{(numeric) Carbonated Lime inorganic soil fraction (\%)}
 }
 \description{
 Calculate the Mean Weight Diameter for agricultural soils (0-20cm) for Algeria, extended withh data from published results from other countries, given the pedotransferfunction of Hamel et al. (2021)

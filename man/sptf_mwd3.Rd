@@ -4,7 +4,7 @@
 \alias{sptf_mwd3}
 \title{Calculate the Mean Weight Diameter}
 \usage{
-sptf_mwd3(A_C_OF, A_CEC_CO, A_CLAY_MI, A_SILT_MI, A_PH_WA, A_CACO3_MI)
+sptf_mwd3(A_C_OF, A_CEC_CO, A_CLAY_MI, A_SILT_MI, A_PH_WA, A_CACO3_IF)
 }
 \arguments{
 \item{A_C_OF}{(numeric) Organic Carbon Content (g / kg)}
@@ -17,7 +17,7 @@ sptf_mwd3(A_C_OF, A_CEC_CO, A_CLAY_MI, A_SILT_MI, A_PH_WA, A_CACO3_MI)
 
 \item{A_PH_WA}{(numeric) Acidity in water (-)}
 
-\item{A_CACO3_MI}{(numeric) The calcium carbonate content of the soil (\%)}
+\item{A_CACO3_IF}{(numeric) Carbonated Lime inorganic soil fraction (\%)}
 }
 \description{
 Calculate the Mean Weight Diameter for soils (0-20cm) in Northwestern Algeria given the pedotransferfunction of Saidi et al. (2015)

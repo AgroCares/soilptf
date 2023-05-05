@@ -5,13 +5,11 @@
 \title{Documentation of all possible bulk density pedotransfer function inputs}
 \usage{
 sptf_bd0(
-  A_CACO3_MI,
   A_CEC_CO,
   A_CLAY_MI,
   A_C_OF,
   A_CN_FR,
   A_DEPTH,
-  A_DENSITY,
   A_H20_T105,
   A_K_AA,
   A_N_RT,
@@ -34,8 +32,6 @@ sptf_bd0(
 )
 }
 \arguments{
-\item{A_CACO3_MI}{(numeric) The calcium carbonate content of the soil (\%)}
-
 \item{A_CEC_CO}{(numeric) Cation Exchange Capacity (mmol+/kg)}
 
 \item{A_CLAY_MI}{(numeric) The clay content of the mineral soil fraction (\%).}

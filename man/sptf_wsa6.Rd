@@ -4,7 +4,7 @@
 \alias{sptf_wsa6}
 \title{Predicting the percentage water stable aggregates}
 \usage{
-sptf_wsa6(A_C_OF, A_CLAY_MI, A_SILT_MI, A_CACO3_MI)
+sptf_wsa6(A_C_OF, A_CLAY_MI, A_SILT_MI, A_CACO3_IF)
 }
 \arguments{
 \item{A_C_OF}{(numeric) Organic Carbon Content (g / kg)}
@@ -13,7 +13,7 @@ sptf_wsa6(A_C_OF, A_CLAY_MI, A_SILT_MI, A_CACO3_MI)
 
 \item{A_SILT_MI}{(numeric) Silt content (\%)}
 
-\item{A_CACO3_MI}{(numeric) The calcium carbonate content of the soil (\%)}
+\item{A_CACO3_IF}{(numeric) Carbonated Lime inorganic soil fraction (\%)}
 }
 \description{
 Calculate the water stable aggragates for brown calcareous soils (0-5 cm) within the Mediterranean basin in France given the pedotransferfunction of le Bissonnais et al. (2007)

@@ -102,19 +102,19 @@ sptf_mwd2 <- function(A_C_OF,A_CLAY_MI,A_SILT_MI) {
 #' @references Saidi et al. (2015). Using Pedotransfer Functions to Assess Aggregate Stability: Application to the Lower Cheliff Soils, Algeria
 #'
 #' @export
-sptf_mwd3 <- function(A_C_OF,A_CEC_CO,A_CLAY_MI,A_SILT_MI, A_PH_WA, A_CACO3_MI) {
+sptf_mwd3 <- function(A_C_OF,A_CEC_CO,A_CLAY_MI,A_SILT_MI, A_PH_WA, A_CACO3_IF) {
   
   # add visual bindings
   B_SOILTYPE = A_SAND_MI = A_SOM_LOI = NULL
   
   # Check input
-  arg.length <- max(length(A_C_OF), length(A_CEC_CO),length(A_CLAY_MI),length(A_SILT_MI),length(A_PH_WA),length(A_CACO3_MI))
+  arg.length <- max(length(A_C_OF), length(A_CEC_CO),length(A_CLAY_MI),length(A_SILT_MI),length(A_PH_WA),length(A_CACO3_IF))
   checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000, any.missing = FALSE,len = arg.length)
   checkmate::assert_numeric(A_CEC_CO, lower = 0, upper = 600, len = arg.length)
   checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
   checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, len = arg.length)
   checkmate::assert_numeric(A_PH_WA, lower = 2, upper = 12, len = arg.length)
-  checkmate::assert_numeric(A_CACO3_MI, lower = 0, upper = 15, len = arg.length)
+  checkmate::assert_numeric(A_CACO3_IF, lower = 0, upper = 15, len = arg.length)
   
   # Collect data into a table (SOC in %)
   dt <- data.table(A_C_OF = A_C_OF * 0.1,
@@ -124,7 +124,7 @@ sptf_mwd3 <- function(A_C_OF,A_CEC_CO,A_CLAY_MI,A_SILT_MI, A_PH_WA, A_CACO3_MI) 
                    A_SILT_MI = A_SILT_MI,
                    A_SAND_MI = 100 - A_CLAY_MI - A_SILT_MI,
                    A_PH_WA = A_PH_WA, 
-                   A_CACO3_MI = A_CACO3_MI,
+                   A_CACO3_IF = A_CACO3_IF,
                    value = NA_real_)
   
   # Estimate USDA soil type
@@ -132,14 +132,14 @@ sptf_mwd3 <- function(A_C_OF,A_CEC_CO,A_CLAY_MI,A_SILT_MI, A_PH_WA, A_CACO3_MI) 
   
   # replace missing pH and CaCo3 with mean values when inputs are missing
   dt[is.na(A_PH_WA), A_PH_WA := 7.32]
-  dt[is.na(A_CACO3_MI), A_CACO3_MI := 7.81]
+  dt[is.na(A_CACO3_IF), A_CACO3_IF := 7.81]
   dt[is.na(A_CEC_CO), A_CEC_CO := 15.8 * 10]
   
   # estimate Mean Weight Diameter in mm (n = 183, R2 = 0.67 ~ 0.71 ~ 0.91 ~ 0.94)
-  dt[grepl('sand',B_SOILTYPE), value := 0.017 * A_C_OF + 0.004 * A_SILT_MI + 0.002 * A_PH_WA + 0.018 * A_CACO3_MI + 0.14 * A_SOM_LOI + 0.0006 * A_CEC_CO + 0.052]
-  dt[grepl('silt',B_SOILTYPE), value := 0.007 * A_SILT_MI + 0.001 * A_SAND_MI + 0.05 * A_PH_WA + 2.6e-4 * A_CACO3_MI + 0.04 * A_SOM_LOI + 0.04 * 9.69 + 0.002 * A_CEC_CO - 0.3]
+  dt[grepl('sand',B_SOILTYPE), value := 0.017 * A_C_OF + 0.004 * A_SILT_MI + 0.002 * A_PH_WA + 0.018 * A_CACO3_IF + 0.14 * A_SOM_LOI + 0.0006 * A_CEC_CO + 0.052]
+  dt[grepl('silt',B_SOILTYPE), value := 0.007 * A_SILT_MI + 0.001 * A_SAND_MI + 0.05 * A_PH_WA + 2.6e-4 * A_CACO3_IF + 0.04 * A_SOM_LOI + 0.04 * 9.69 + 0.002 * A_CEC_CO - 0.3]
   dt[grepl('clay',B_SOILTYPE), value := 0.00056 * A_CEC_CO]
-  dt[grepl('silty clay',B_SOILTYPE), value := 0.005 * A_C_OF - 0.02 * A_PH_WA + 0.01 * A_CACO3_MI + 0.15 * A_SOM_LOI + 0.04 * 9.69 + 0.008 * A_CEC_CO]
+  dt[grepl('silty clay',B_SOILTYPE), value := 0.005 * A_C_OF - 0.02 * A_PH_WA + 0.01 * A_CACO3_IF + 0.15 * A_SOM_LOI + 0.04 * 9.69 + 0.008 * A_CEC_CO]
   
   # return value
   value <- dt[, value]
@@ -160,17 +160,17 @@ sptf_mwd3 <- function(A_C_OF,A_CEC_CO,A_CLAY_MI,A_SILT_MI, A_PH_WA, A_CACO3_MI) 
 #' @references Annabi et al. (2017) Spatial variability of soil aggregate stability at the scale of an agricultural region in Tunisia
 #'
 #' @export
-sptf_mwd4 <- function(A_C_OF,A_CLAY_MI,A_SILT_MI, A_CACO3_MI) {
+sptf_mwd4 <- function(A_C_OF,A_CLAY_MI,A_SILT_MI, A_CACO3_IF) {
   
   # add visual binding
   B_SOILTYPE = v1 = v2 = v3 = v4 = A_SAND_MI = NULL
   
   # Check input
-  arg.length <- max(length(A_C_OF),length(A_CLAY_MI),length(A_SILT_MI),length(A_CACO3_MI))
+  arg.length <- max(length(A_C_OF),length(A_CLAY_MI),length(A_SILT_MI),length(A_CACO3_IF))
   checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000, any.missing = FALSE,len = arg.length)
   checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
   checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, len = arg.length)
-  checkmate::assert_numeric(A_CACO3_MI, lower = 0, upper = 15, len = arg.length)
+  checkmate::assert_numeric(A_CACO3_IF, lower = 0, upper = 15, len = arg.length)
   
   # Collect data into a table (SOC and mineralogy in g/kg)
   dt <- data.table(id = 1:arg.length,
@@ -178,7 +178,7 @@ sptf_mwd4 <- function(A_C_OF,A_CLAY_MI,A_SILT_MI, A_CACO3_MI) {
                    A_CLAY_MI = A_CLAY_MI,
                    A_SILT_MI = A_SILT_MI,
                    A_SAND_MI = 100 - A_SILT_MI - A_CLAY_MI,
-                   A_CACO3_MI = A_CACO3_MI)
+                   A_CACO3_IF = A_CACO3_IF)
   
   # Estimate USDA soil type
   dt[, B_SOILTYPE := sptf_textureclass(A_CLAY_MI = A_CLAY_MI,A_SILT_MI = A_SILT_MI,A_SAND_MI = A_SAND_MI)]
@@ -186,14 +186,14 @@ sptf_mwd4 <- function(A_C_OF,A_CLAY_MI,A_SILT_MI, A_CACO3_MI) {
   # update units to g/kg
   dt[,A_CLAY_MI := A_CLAY_MI * 10]
   dt[,A_SILT_MI := A_SILT_MI * 10]
-  dt[,A_CACO3_MI := A_CACO3_MI * 10]
+  dt[,A_CACO3_IF := A_CACO3_IF * 10]
   
   # add median A_CACO3 when the input missing
-  dt[is.na(A_CACO3_MI), A_CACO3_MI := 30]
+  dt[is.na(A_CACO3_IF), A_CACO3_IF := 30]
   
   # estimate Mean Weight Diameter in mm (r = 0.624, n = 113). Units for iron adapted because of too high outputs
   dt[, v1 := 0.5227 + 0.0015 * A_CLAY_MI - 0.0121 * A_C_OF]
-  dt[, v2 := 0.9535 + 0.0036 * A_SILT_MI - 0.0272 * A_C_OF + 0.0011 * A_CACO3_MI + 0.43 * 9.2 * 0.1]
+  dt[, v2 := 0.9535 + 0.0036 * A_SILT_MI - 0.0272 * A_C_OF + 0.0011 * A_CACO3_IF + 0.43 * 9.2 * 0.1]
   dt[, v3 := 0.262 + 0.0052 * A_SILT_MI - 0.0358 * A_C_OF + 0.4784 * 9.2 * 0.1]
   dt[, v4 := 0.5502 + 0.0031 * A_SILT_MI - 0.0214 * A_C_OF + 0.4460 * 9.2 * 0.1]
   
@@ -334,18 +334,18 @@ sptf_mwd7 <- function(A_C_OF,A_SAND_MI) {
 #' @references Hamel et al. (2021). Evaluation of soil aggregate stability in Algerian northwestern soils using pedotransfer functions and artificial neural networks
 #'
 #' @export
-sptf_mwd8 <- function(A_SOM_LOI,A_CLAY_MI,A_SILT_MI,A_PH_WA, A_CACO3_MI) {
+sptf_mwd8 <- function(A_SOM_LOI,A_CLAY_MI,A_SILT_MI,A_PH_WA, A_CACO3_IF) {
   
   # add visual bindings
   B_SOILTYPE = EC = A_SAND_MI = NULL
   
   # Check input
-  arg.length <- max(length(A_SOM_LOI),length(A_CLAY_MI),length(A_SILT_MI), length(A_PH_WA), length(A_CACO3_MI))
+  arg.length <- max(length(A_SOM_LOI),length(A_CLAY_MI),length(A_SILT_MI), length(A_PH_WA), length(A_CACO3_IF))
   checkmate::assert_numeric(A_SOM_LOI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
   checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
   checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, len = arg.length)
   checkmate::assert_numeric(A_PH_WA, lower = 2, upper = 12, len = arg.length)
-  checkmate::assert_numeric(A_CACO3_MI, lower = 0, upper = 15, len = arg.length)
+  checkmate::assert_numeric(A_CACO3_IF, lower = 0, upper = 15, len = arg.length)
   
   # Collect data into a table
   dt <- data.table(A_SOM_LOI = A_SOM_LOI,
@@ -353,7 +353,7 @@ sptf_mwd8 <- function(A_SOM_LOI,A_CLAY_MI,A_SILT_MI,A_PH_WA, A_CACO3_MI) {
                    A_SILT_MI = A_SILT_MI,
                    A_SAND_MI = 100 - A_CLAY_MI - A_SILT_MI,
                    A_PH_WA = A_PH_WA,
-                   A_CACO3_MI = A_CACO3_MI,
+                   A_CACO3_IF = A_CACO3_IF,
                    value = NA_real_)
   
   # Estimate USDA soil type
@@ -361,16 +361,16 @@ sptf_mwd8 <- function(A_SOM_LOI,A_CLAY_MI,A_SILT_MI,A_PH_WA, A_CACO3_MI) {
   
   # replace missing pH with mean values when inputs are missing
   dt[is.na(A_PH_WA), A_PH_WA := 7.97]
-  dt[is.na(A_CACO3_MI), A_CACO3_MI := 17.73]
+  dt[is.na(A_CACO3_IF), A_CACO3_IF := 17.73]
   
   # set mean EC
   dt[, EC := 10.73]
   
   # estimate MWD (mm) per soil type (n = 1248, 0-20cm, R2 varies from 0.22 to 0.65)
-  dt[grepl('sand',B_SOILTYPE), value := -1.385 + 0.019 * A_CLAY_MI + 0.017 * A_SILT_MI + 0.004 * A_SAND_MI + 0.17 * A_PH_WA - 0.016 * A_CACO3_MI + 0.01* A_SOM_LOI - 0.01 * EC]
-  dt[grepl('silt',B_SOILTYPE), value := 1.179 + 0.003 * A_CLAY_MI -0.003 * A_SILT_MI - 0.004 * A_SAND_MI -0.012 * A_PH_WA +0.007 * A_CACO3_MI -0.007* A_SOM_LOI + 0.004 * EC]
-  dt[grepl('clay',B_SOILTYPE), value := 0.426 -0.003 * A_CLAY_MI +0 * A_SILT_MI +0.0046 * A_SAND_MI -0.103 * A_PH_WA +0.0037 * A_CACO3_MI +0.003* A_SOM_LOI + 0.033 * EC]
-  dt[grepl('silty clay',B_SOILTYPE), value := 0.684 -0.009 * A_CLAY_MI +0.001 * A_SILT_MI +0.002 * A_SAND_MI -0.036 * A_PH_WA -0.004 * A_CACO3_MI +0.002* A_SOM_LOI + 0.006 * EC]
+  dt[grepl('sand',B_SOILTYPE), value := -1.385 + 0.019 * A_CLAY_MI + 0.017 * A_SILT_MI + 0.004 * A_SAND_MI + 0.17 * A_PH_WA - 0.016 * A_CACO3_IF + 0.01* A_SOM_LOI - 0.01 * EC]
+  dt[grepl('silt',B_SOILTYPE), value := 1.179 + 0.003 * A_CLAY_MI -0.003 * A_SILT_MI - 0.004 * A_SAND_MI -0.012 * A_PH_WA +0.007 * A_CACO3_IF -0.007* A_SOM_LOI + 0.004 * EC]
+  dt[grepl('clay',B_SOILTYPE), value := 0.426 -0.003 * A_CLAY_MI +0 * A_SILT_MI +0.0046 * A_SAND_MI -0.103 * A_PH_WA +0.0037 * A_CACO3_IF +0.003* A_SOM_LOI + 0.033 * EC]
+  dt[grepl('silty clay',B_SOILTYPE), value := 0.684 -0.009 * A_CLAY_MI +0.001 * A_SILT_MI +0.002 * A_SAND_MI -0.036 * A_PH_WA -0.004 * A_CACO3_IF +0.002* A_SOM_LOI + 0.006 * EC]
   
   # return value
   value <- dt[, value]
@@ -604,18 +604,18 @@ sptf_mwd13 <- function(A_CLAY_MI,A_SOM_LOI) {
 #' @references Canasveras et al. (2010) Estimation of aggregate stability indices in Mediterranean soils by diffuse reflectance spectroscopy
 #'
 #' @export
-sptf_mwd14 <- function(A_SOM_LOI,A_CLAY_MI,A_SILT_MI,A_PH_WA, A_CACO3_MI) {
+sptf_mwd14 <- function(A_SOM_LOI,A_CLAY_MI,A_SILT_MI,A_PH_WA, A_CACO3_IF) {
   
   # add visual bindings
   fe = A_SAND_MI = NULL
   
   # Check input
-  arg.length <- max(length(A_SOM_LOI),length(A_CLAY_MI),length(A_SILT_MI), length(A_PH_WA), length(A_CACO3_MI))
+  arg.length <- max(length(A_SOM_LOI),length(A_CLAY_MI),length(A_SILT_MI), length(A_PH_WA), length(A_CACO3_IF))
   checkmate::assert_numeric(A_SOM_LOI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
   checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
   checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, len = arg.length)
   checkmate::assert_numeric(A_PH_WA, lower = 2, upper = 12, len = arg.length)
-  checkmate::assert_numeric(A_CACO3_MI, lower = 0, upper = 15, len = arg.length)
+  checkmate::assert_numeric(A_CACO3_IF, lower = 0, upper = 15, len = arg.length)
   
   # Collect data into a table
   dt <- data.table(A_SOM_LOI = A_SOM_LOI * 10,
@@ -623,14 +623,14 @@ sptf_mwd14 <- function(A_SOM_LOI,A_CLAY_MI,A_SILT_MI,A_PH_WA, A_CACO3_MI) {
                    A_SILT_MI = A_SILT_MI * 10,
                    A_SAND_MI = (100 - A_CLAY_MI - A_SILT_MI) * 10,
                    A_PH_WA = A_PH_WA,
-                   A_CACO3_MI = A_CACO3_MI * 10,
+                   A_CACO3_IF = A_CACO3_IF * 10,
                    value = NA_real_)
   
   # add mean Fe extractable with citrate-bicarbonate-dithionite
   dt[, fe := 8.3]
   
   # Estimate MWD (mm), R2 = 0.52, n = 80 topsoils, Spain
-  dt[, value := 2.573 - 0.001 * A_SAND_MI - 0.003 * A_CLAY_MI + 0.001 * A_CACO3_MI -0.119 * A_PH_WA + 0.012 * A_SOM_LOI + 0.042 * fe]
+  dt[, value := 2.573 - 0.001 * A_SAND_MI - 0.003 * A_CLAY_MI + 0.001 * A_CACO3_IF -0.119 * A_PH_WA + 0.012 * A_SOM_LOI + 0.042 * fe]
   
   # avoid values outside calibration range
   dt[value < 0.1 | value > 2.8, value := NA_real_]

@@ -244,32 +244,32 @@ sptf_wsa5 <- function(A_CLAY_MI,A_SILT_MI,A_SOM_LOI) {
 #' @references le Bissonnais et al. (2007) Erodibility of Mediterranean vineyard soils: relevant aggregate stability methods and significant soil variables
 #'
 #' @export
-sptf_wsa6 <- function(A_C_OF,A_CLAY_MI,A_SILT_MI,A_CACO3_MI) {
+sptf_wsa6 <- function(A_C_OF,A_CLAY_MI,A_SILT_MI,A_CACO3_IF) {
   
   # add visual bindings
   fsoc = NULL
   
   # Check input
-  arg.length <- max(length(A_C_OF), length(A_CLAY_MI),length(A_SILT_MI),length(A_CACO3_MI))
+  arg.length <- max(length(A_C_OF), length(A_CLAY_MI),length(A_SILT_MI),length(A_CACO3_IF))
   checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000, any.missing = FALSE)
   checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
   checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, len = arg.length)
-  checkmate::assert_numeric(A_CACO3_MI, lower = 0, upper = 15, len = arg.length)
+  checkmate::assert_numeric(A_CACO3_IF, lower = 0, upper = 15, len = arg.length)
   
   # Collect data into a table (units in g/kg)
   dt <- data.table(id = 1:arg.length,
                    A_C_OF = A_C_OF,
                    A_CLAY_MI = A_CLAY_MI * 10,
                    A_SILT_MI = A_SILT_MI * 10,
-                   A_CACO3_MI = A_CACO3_MI * 10,
+                   A_CACO3_IF = A_CACO3_IF * 10,
                    value = NA_real_)
   
   # set mean CaCO3 level when its value is unknown
-  dt[is.na(A_CACO3_MI), A_CACO3_MI := 456.4]
+  dt[is.na(A_CACO3_IF), A_CACO3_IF := 456.4]
   
   # estimate Aggregate Stability Index MA200 (r = 0.91, n = 68)
   dt[, fsoc := 35.6 + 52.86/(1 + 4.14e5 * exp(-0.67 * A_C_OF))]
-  dt[, value := -27.56 + 0.98 * fsoc + 0.41 * (A_CLAY_MI + A_SILT_MI) + 0.13 * A_CACO3_MI ]
+  dt[, value := -27.56 + 0.98 * fsoc + 0.41 * (A_CLAY_MI + A_SILT_MI) + 0.13 * A_CACO3_IF ]
   
   # return value (%)
   value <- dt[, value]
@@ -290,18 +290,18 @@ sptf_wsa6 <- function(A_C_OF,A_CLAY_MI,A_SILT_MI,A_CACO3_MI) {
 #' @references Canasveras et al. (2010) Estimation of aggregate stability indices in Mediterranean soils by diffuse reflectance spectroscopy
 #'
 #' @export
-sptf_wsa7 <- function(A_SOM_LOI,A_CLAY_MI,A_SILT_MI,A_PH_WA, A_CACO3_MI) {
+sptf_wsa7 <- function(A_SOM_LOI,A_CLAY_MI,A_SILT_MI,A_PH_WA, A_CACO3_IF) {
   
   # add visual bindings
   fe = A_SAND_MI = NULL
   
   # Check input
-  arg.length <- max(length(A_SOM_LOI),length(A_CLAY_MI),length(A_SILT_MI), length(A_PH_WA), length(A_CACO3_MI))
+  arg.length <- max(length(A_SOM_LOI),length(A_CLAY_MI),length(A_SILT_MI), length(A_PH_WA), length(A_CACO3_IF))
   checkmate::assert_numeric(A_SOM_LOI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
   checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
   checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, len = arg.length)
   checkmate::assert_numeric(A_PH_WA, lower = 2, upper = 12, len = arg.length)
-  checkmate::assert_numeric(A_CACO3_MI, lower = 0, upper = 15, len = arg.length)
+  checkmate::assert_numeric(A_CACO3_IF, lower = 0, upper = 15, len = arg.length)
   
   # Collect data into a table
   dt <- data.table(A_SOM_LOI = A_SOM_LOI * 10,
@@ -309,17 +309,17 @@ sptf_wsa7 <- function(A_SOM_LOI,A_CLAY_MI,A_SILT_MI,A_PH_WA, A_CACO3_MI) {
                    A_SILT_MI = A_SILT_MI * 10,
                    A_SAND_MI = (100 - A_CLAY_MI - A_SILT_MI) * 10,
                    A_PH_WA = A_PH_WA,
-                   A_CACO3_MI = A_CACO3_MI * 10,
+                   A_CACO3_IF = A_CACO3_IF * 10,
                    value = NA_real_)
   
   # add mean Fe extractable with citrate-bicarbonate-dithionite
   dt[, fe := 8.3]
   
   # set mean CaCO3 level when its value is unknown
-  dt[is.na(A_CACO3_MI), A_CACO3_MI := 310]
+  dt[is.na(A_CACO3_IF), A_CACO3_IF := 310]
   
   # Estimate wsa (g/kg), R2 = 0.37, n = 80 topsoils, Spain
-  dt[, value := 44.158 - 0.048 * A_SAND_MI - 0.087 * A_CLAY_MI + 0.002 * A_CACO3_MI +0.431 * A_PH_WA + 0.041 * A_SOM_LOI + 0.756 * fe]
+  dt[, value := 44.158 - 0.048 * A_SAND_MI - 0.087 * A_CLAY_MI + 0.002 * A_CACO3_IF +0.431 * A_PH_WA + 0.041 * A_SOM_LOI + 0.756 * fe]
   
   # avoid values outside calibration range
   dt[value < 0 | value > 499, value := NA_real_]

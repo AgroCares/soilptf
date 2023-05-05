@@ -4,7 +4,7 @@
 \alias{sptf_mwd14}
 \title{Predicting the the Mean Weight Diameter for soils}
 \usage{
-sptf_mwd14(A_SOM_LOI, A_CLAY_MI, A_SILT_MI, A_PH_WA, A_CACO3_MI)
+sptf_mwd14(A_SOM_LOI, A_CLAY_MI, A_SILT_MI, A_PH_WA, A_CACO3_IF)
 }
 \arguments{
 \item{A_SOM_LOI}{(numeric) The percentage organic matter in the soil determined by loss on ignition (\%)}
@@ -15,7 +15,7 @@ sptf_mwd14(A_SOM_LOI, A_CLAY_MI, A_SILT_MI, A_PH_WA, A_CACO3_MI)
 
 \item{A_PH_WA}{(numeric) Acidity in water (-)}
 
-\item{A_CACO3_MI}{(numeric) The calcium carbonate content of the soil (\%)}
+\item{A_CACO3_IF}{(numeric) Carbonated Lime inorganic soil fraction (\%)}
 }
 \description{
 Calculate the Mean Weight Diameter for agricultural soils (0-10cm) in southern Spain given the pedotransferfunction of Canasveras et al. (2010)
