@@ -2,8 +2,7 @@
 #'
 #' This function calculates the capacity of soils to buffer pH changes.
 #'
-#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
+#' @inheritParams sptf_bd0
 #'
 #' @import data.table
 #' 
@@ -43,7 +42,7 @@ sptf_phbc1 <- function(A_C_OF, A_CLAY_MI) {
 #'
 #' This function calculates the capacity of soils (0-10cm) in Australia to buffer pH changes in response to changes in SOC.
 #'
-#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
+#' @inheritParams sptf_bd0
 #'
 #' @import data.table
 #' 
@@ -79,8 +78,7 @@ sptf_phbc2 <- function(A_C_OF) {
 #'
 #' This function calculates the capacity of soils to buffer pH changes in response to changes in SOC.
 #'
-#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
+#' @inheritParams sptf_bd0
 #' 
 #' @import data.table
 #' 
@@ -135,8 +133,7 @@ sptf_phbc3 <- function(A_C_OF,A_CLAY_MI) {
 #'
 #' This function calculates the capacity of soils in New Zealand to buffer pH changes in response to changes in SOC.
 #'
-#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
+#' @inheritParams sptf_bd0
 #' 
 #' @import data.table
 #' 
@@ -173,7 +170,7 @@ sptf_phbc4 <- function(A_C_OF,A_CLAY_MI) {
 #'
 #' This function calculates the capacity of soils in Georgia to buffer pH changes in response to changes in SOC.
 #'
-#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
+#' @inheritParams sptf_bd0
 #' 
 #' @import data.table
 #' 
@@ -223,8 +220,7 @@ sptf_phbc5 <- function(A_C_OF) {
 #'
 #' This function calculates the capacity of soils to buffer pH changes in agricultral topsoil in Queensland (Australia) in response to changes in SOC.
 #'
-#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
+#' @inheritParams sptf_bd0
 #' 
 #' @import data.table
 #' 
@@ -261,9 +257,7 @@ sptf_phbc6 <- function(A_C_OF,A_CLAY_MI) {
 #'
 #' This function calculates the capacity of soils to buffer pH changes in response to changes in SOC, clay and pH.
 #'
-#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
-#' @param A_PH_WA (numeric) The acidity of the soil, pH in water (-)
+#' @inheritParams sptf_bd0
 #'  
 #' @import data.table
 #' 
@@ -315,8 +309,7 @@ sptf_phbc7 <- function(A_C_OF,A_CLAY_MI,A_PH_WA) {
 #'
 #' This function calculates the capacity of soils to buffer pH changes in response to changes in SOC and clay.
 #'
-#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
+#' @inheritParams sptf_bd0
 #'  
 #' @import data.table
 #' 
