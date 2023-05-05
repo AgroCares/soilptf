@@ -7,7 +7,7 @@
 sptf_hwc2(A_C_OF)
 }
 \arguments{
-\item{A_C_OF}{(numeric) The carbon content of the soil (g / kg).}
+\item{A_C_OF}{(numeric) Organic Carbon Content (g / kg)}
 }
 \description{
 This function calculates the hot water extractable carbon content for agricultural soils in the Netherlands.

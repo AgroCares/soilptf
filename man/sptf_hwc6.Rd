@@ -7,11 +7,11 @@
 sptf_hwc6(A_C_OF, A_P_AL, A_CLAY_MI)
 }
 \arguments{
-\item{A_C_OF}{(numeric) The carbon content of the soil (g / kg).}
+\item{A_C_OF}{(numeric) Organic Carbon Content (g / kg)}
 
-\item{A_P_AL}{(numeric) The phosphorus content of the soil, extracted in ammonium lactate (mg P2O5/100g)}
+\item{A_P_AL}{(numeric) Total phosphate content (mg P2O5/100 g)}
 
-\item{A_CLAY_MI}{(numeric) The clay content of the soil (\%).}
+\item{A_CLAY_MI}{(numeric) The clay content of the mineral soil fraction (\%).}
 }
 \description{
 This function calculates the hot water extractable carbon content for agricultural soils in the Netherlands. Data from various years.

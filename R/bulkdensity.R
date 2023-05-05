@@ -14,6 +14,7 @@
 #' @param A_PH_CC (numeric) Acidity in CaCl2 (-)
 #' @param A_PH_WA (numeric) Acidity in water (-)
 #' @param A_PH_KCL (numeric) Acidity in KCl (-)
+#' @param A_P_AL (numeric) Total phosphate content (mg P2O5/100 g)
 #' @param A_SAND_M50 (numeric) description (µm)
 #' @param A_SAND_MI (numeric) Sand content (\%)
 #' @param A_SILT_MI (numeric) Silt content (\%)
@@ -29,8 +30,8 @@
 #' @param A_H2O_T105 (numeric) water content measured after drying at 105 degrees (\%)
 #' 
 #' @export
-sptf_bd0 <- function(A_CACO3_MI,A_CEC_CO,A_CLAY_MI,A_C_OF,A_DEPTH,A_DENSITY,A_H20_T105,
-                     A_N_RT,A_PH_CC,A_PH_WA,A_SAND_M50,A_SAND_MI,A_SILT_MI,A_SOM_LOI,
+sptf_bd0 <- function(A_CACO3_MI,A_CEC_CO,A_CLAY_MI,A_C_OF,A_CN_FR,A_DEPTH,A_DENSITY,A_H20_T105,
+                     A_N_RT,A_PH_CC,A_PH_WA,A_PH_KCL,A_SAND_M50,A_SAND_MI,A_SILT_MI,A_SOM_LOI,
                      B_ALTITUDE,B_ROCKS_FR,B_SLOPE_ASPECT,B_SLOPE_DEGREE,mp_wp,
                      mp_fc,D_BDS,A_CACO3_IF,A_H2O_T105){return(NULL)}
 
