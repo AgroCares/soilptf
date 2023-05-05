@@ -7,15 +7,15 @@
 sptf_wsa3(A_SOM_LOI, A_CLAY_MI, A_SILT_MI, A_K_AA, A_PH_WA)
 }
 \arguments{
-\item{A_SOM_LOI}{(numeric) The percentage organic matter in the soil (\%).}
+\item{A_SOM_LOI}{(numeric) The percentage organic matter in the soil determined by loss on ignition (\%)}
 
-\item{A_CLAY_MI}{(numeric) The clay content of the soil (\%).}
+\item{A_CLAY_MI}{(numeric) The clay content of the mineral soil fraction (\%).}
 
-\item{A_SILT_MI}{(numeric) The silt content of the soil (\%).}
+\item{A_SILT_MI}{(numeric) Silt content (\%)}
 
-\item{A_K_AA}{(numeric) The potassium level in soil, extrated via ammonium acetate (mg/kg)}
+\item{A_K_AA}{(numeric) Potassium plant available, extracted with acetic acid (mg K/kg)}
 
-\item{A_PH_WA}{(numeric) The acidity of the soil, pH in water (-)}
+\item{A_PH_WA}{(numeric) Acidity in water (-)}
 }
 \description{
 Calculate the Percentage Water Stable Aggregates for agricultural soils (0-20cm) in Turkey given the pedotransferfunction of Gulser (2018)

@@ -7,13 +7,13 @@
 sptf_wsa7(A_SOM_LOI, A_CLAY_MI, A_SILT_MI, A_PH_WA, A_CACO3_MI)
 }
 \arguments{
-\item{A_SOM_LOI}{(numeric) The percentage organic matter in the soil (\%).}
+\item{A_SOM_LOI}{(numeric) The percentage organic matter in the soil determined by loss on ignition (\%)}
 
-\item{A_CLAY_MI}{(numeric) The clay content of the soil (\%).}
+\item{A_CLAY_MI}{(numeric) The clay content of the mineral soil fraction (\%).}
 
-\item{A_SILT_MI}{(numeric) The silt content of the soil (\%).}
+\item{A_SILT_MI}{(numeric) Silt content (\%)}
 
-\item{A_PH_WA}{(numeric) The acidity of the soil, pH in water (-)}
+\item{A_PH_WA}{(numeric) Acidity in water (-)}
 
 \item{A_CACO3_MI}{(numeric) The calcium carbonate content of the soil (\%)}
 }

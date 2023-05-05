@@ -4,7 +4,7 @@
 #' 
 #' Calculate the percentage water stable aggregates for topsoils (0-20cm) in the United Kingdom given the pedotransferfunction of Stengel et al. (1984).
 #'
-#' @param A_C_OF (numeric) The fraction organic carbon in the soil (g / kg).
+#' @inheritParams sptf_bd0
 #'
 #' @import data.table
 #' 
@@ -35,7 +35,7 @@ sptf_wsa1 <- function(A_C_OF) {
 #' 
 #' Calculate the percentage water stable aggregates for agricultural soils (0-15 cm) in UK given the pedotransferfunction of Ekwue (1990)
 #'
-#' @param A_SOM_LOI (numeric) The percentage organic matter in the soil (\%).
+#' @inheritParams sptf_bd0
 #'
 #' @import data.table
 #' 
@@ -75,11 +75,7 @@ sptf_wsa2 <- function(A_SOM_LOI) {
 #' 
 #' Calculate the Percentage Water Stable Aggregates for agricultural soils (0-20cm) in Turkey given the pedotransferfunction of Gulser (2018)
 #'
-#' @param A_SOM_LOI (numeric) The percentage organic matter in the soil (\%).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
-#' @param A_SILT_MI (numeric) The silt content of the soil (\%).
-#' @param A_K_AA (numeric) The potassium level in soil, extrated via ammonium acetate (mg/kg)
-#' @param A_PH_WA (numeric) The acidity of the soil, pH in water (-)
+#' @inheritParams sptf_bd0
 #' 
 #' @import data.table
 #' 
@@ -132,9 +128,7 @@ sptf_wsa3 <- function(A_SOM_LOI,A_CLAY_MI,A_SILT_MI,A_K_AA,A_PH_WA) {
 #'
 #' This function calculates the erodible fraction in Argentina for agricultural topsoils being cultivated and uncultivated.
 #'
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
-#' @param A_SILT_MI (numeric) The silt content of the soil (\%).
-#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
+#' @inheritParams sptf_bd0
 #' 
 #' @import data.table
 #' 
@@ -189,9 +183,7 @@ sptf_wsa4 <- function(A_CLAY_MI,A_SILT_MI,A_C_OF) {
 #'
 #' This function calculates the percentage water stable aggregates for alluvial soils in southern Ohio
 #'
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
-#' @param A_SILT_MI (numeric) The silt content of the soil (\%).
-#' @param A_SOM_LOI (numeric) The soil organic matter content (\%).
+#' @inheritParams sptf_bd0
 #' 
 #' @import data.table
 #' 
@@ -245,10 +237,7 @@ sptf_wsa5 <- function(A_CLAY_MI,A_SILT_MI,A_SOM_LOI) {
 #' 
 #' Calculate the water stable aggragates for brown calcareous soils (0-5 cm) within the Mediterranean basin in France given the pedotransferfunction of le Bissonnais et al. (2007)
 #'
-#' @param A_C_OF (numeric) The fraction organic carbon in the soil (g / kg).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
-#' @param A_SILT_MI (numeric) The silt content of the soil (\%).
-#' @param A_CACO3_MI (numeric) The calcium carbonate content of the soil (\%)
+#' @inheritParams sptf_bd0
 #' 
 #' @import data.table
 #' 
@@ -294,11 +283,7 @@ sptf_wsa6 <- function(A_C_OF,A_CLAY_MI,A_SILT_MI,A_CACO3_MI) {
 #' 
 #' Calculate the water stable aggragates for agricultural topsoils in Spain given the pedotransferfunction of Canasveras et al. (2010)
 #'
-#' @param A_SOM_LOI (numeric) The percentage organic matter in the soil (\%).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
-#' @param A_SILT_MI (numeric) The silt content of the soil (\%).
-#' @param A_PH_WA (numeric) The acidity of the soil, pH in water (-)
-#' @param A_CACO3_MI (numeric) The calcium carbonate content of the soil (\%)
+#' @inheritParams sptf_bd0
 #' 
 #' @import data.table
 #' 
@@ -351,8 +336,7 @@ sptf_wsa7 <- function(A_SOM_LOI,A_CLAY_MI,A_SILT_MI,A_PH_WA, A_CACO3_MI) {
 #' 
 #' Calculate the Percentage Water Stable Aggregates for tiled soils in Ontaria, Canada, given the pedotransferfunction of Perfect et al. (1993)
 #'
-#' @param A_SOM_LOI (numeric) The percentage organic matter in the soil (\%).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
+#' @inheritParams sptf_bd0
 #' 
 #' @import data.table
 #' 
@@ -389,9 +373,7 @@ sptf_wsa8 <- function(A_SOM_LOI,A_CLAY_MI) {
 #' 
 #' Calculate the Percentage Water Stable Aggregates for agricultural and forest soils (0-17cm) in Chile given the pedotransferfunction of Rivera & Bonilla (2020)
 #'
-#' @param A_SOM_LOI (numeric) The percentage organic matter in the soil (\%).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
-#' @param A_PH_WA (numeric) The acidity of the soil, pH in water (-)
+#' @inheritParams sptf_bd0
 #' 
 #' @import data.table
 #' 

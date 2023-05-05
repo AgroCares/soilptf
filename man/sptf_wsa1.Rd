@@ -7,7 +7,7 @@
 sptf_wsa1(A_C_OF)
 }
 \arguments{
-\item{A_C_OF}{(numeric) The fraction organic carbon in the soil (g / kg).}
+\item{A_C_OF}{(numeric) Organic Carbon Content (g / kg)}
 }
 \description{
 Calculate the percentage water stable aggregates for topsoils (0-20cm) in the United Kingdom given the pedotransferfunction of Stengel et al. (1984).

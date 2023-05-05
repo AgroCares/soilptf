@@ -7,11 +7,11 @@
 sptf_wsa9(A_SOM_LOI, A_CLAY_MI, A_PH_WA)
 }
 \arguments{
-\item{A_SOM_LOI}{(numeric) The percentage organic matter in the soil (\%).}
+\item{A_SOM_LOI}{(numeric) The percentage organic matter in the soil determined by loss on ignition (\%)}
 
-\item{A_CLAY_MI}{(numeric) The clay content of the soil (\%).}
+\item{A_CLAY_MI}{(numeric) The clay content of the mineral soil fraction (\%).}
 
-\item{A_PH_WA}{(numeric) The acidity of the soil, pH in water (-)}
+\item{A_PH_WA}{(numeric) Acidity in water (-)}
 }
 \description{
 Calculate the Percentage Water Stable Aggregates for agricultural and forest soils (0-17cm) in Chile given the pedotransferfunction of Rivera & Bonilla (2020)
