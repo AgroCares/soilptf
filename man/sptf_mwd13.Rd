@@ -7,9 +7,9 @@
 sptf_mwd13(A_CLAY_MI, A_SOM_LOI)
 }
 \arguments{
-\item{A_CLAY_MI}{(numeric) The clay content of the soil (\%).}
+\item{A_CLAY_MI}{(numeric) The clay content of the mineral soil fraction (\%).}
 
-\item{A_SOM_LOI}{(numeric) The soil organic matter content (\%).}
+\item{A_SOM_LOI}{(numeric) The percentage organic matter in the soil determined by loss on ignition (\%)}
 }
 \description{
 Calculate the Mean Weight Diameter (mm) for agricultural soils (0-40 cm) in Morroco given the pedotransferfunction of Bouslihim et al. (2021)

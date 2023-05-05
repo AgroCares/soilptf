@@ -7,12 +7,12 @@
 sptf_mwd15(A_C_OF, A_PH_WA)
 }
 \arguments{
-\item{A_C_OF}{(numeric) The fraction organic carbon in the soil (g / kg).}
+\item{A_C_OF}{(numeric) Organic Carbon Content (g / kg)}
 
-\item{A_PH_WA}{(numeric) The acidity of the soil, pH in water (-)}
+\item{A_PH_WA}{(numeric) Acidity in water (-)}
 }
 \description{
-Calculate the Mean Weight Diamater for agricultural topsoils (0-10cm) in Belgium given the pedotransferfunction of Shi et al. (2020)
+Calculate the Mean Weight Diameter for agricultural topsoils (0-10cm) in Belgium given the pedotransferfunction of Shi et al. (2020)
 }
 \references{
 Shi et al. (2020). Vis-NIR spectroscopic assessment of soil aggregate stability and aggregate size distribution in the Belgian Loam Belt

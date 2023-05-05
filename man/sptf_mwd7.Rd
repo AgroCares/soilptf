@@ -2,17 +2,17 @@
 % Please edit documentation in R/mwd.R
 \name{sptf_mwd7}
 \alias{sptf_mwd7}
-\title{Calculate the Mean Weight Diamater}
+\title{Calculate the Mean Weight Diameter}
 \usage{
 sptf_mwd7(A_C_OF, A_SAND_MI)
 }
 \arguments{
-\item{A_C_OF}{(numeric) The fraction organic carbon in the soil (g / kg).}
+\item{A_C_OF}{(numeric) Organic Carbon Content (g / kg)}
 
-\item{A_SAND_MI}{(numeric) The clay content of the soil (\%).}
+\item{A_SAND_MI}{(numeric) Sand content (\%)}
 }
 \description{
-Calculate the Mean Weight Diamater for agricultural soils (0-10cm) in North West of Lake Urmia in Iraqi given the pedotransferfunction of Hatamvand & Kashani (2021)
+Calculate the Mean Weight Diameter for agricultural soils (0-10cm) in North West of Lake Urmia in Iraqi given the pedotransferfunction of Hatamvand & Kashani (2021)
 }
 \references{
 Hatamvand & Kashani (2021). Estimating Wet Aggregates Stability from Easily Available Soil Properties in North West of Lake Urmia
