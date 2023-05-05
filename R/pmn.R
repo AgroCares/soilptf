@@ -547,8 +547,7 @@ sptf_pmn10 <- function(A_N_RT, t = 7) {
 #'
 #' This function calculates the PMN content for agricultural soils in the Netherlands. PMN refers to anearobic mineralizable N pool, 40 degrees for 7 days.
 #'
-#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
+#' @inheritParams sptf_bd0
 #'
 #' @import data.table
 #' 
@@ -585,7 +584,7 @@ sptf_pmn11 <- function(A_C_OF, A_CLAY_MI) {
 #'
 #' This function calculates the PMN content for agricultural soils in the Netherlands. PMN refers to anearobic mineralizable N pool, 40 degrees for 7 days.
 #'
-#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
+#' @inheritParams sptf_bd0
 #'
 #' @import data.table
 #' 
@@ -616,7 +615,7 @@ sptf_pmn12 <- function(A_C_OF) {
 #'
 #' This function calculates the PMN content for agricultural soils in the Netherlands. PMN refers to anearobic mineralizable N pool, 40 degrees for 7 days.
 #'
-#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
+#' @inheritParams sptf_bd0
 #'
 #' @import data.table
 #' 
@@ -648,9 +647,7 @@ sptf_pmn13 <- function(A_C_OF) {
 #' This function calculates the PMN content for agricultural soils in the Netherlands. PMN refers to anearobic mineralizable N pool, 40 degrees for 7 days.
 #' Experimental data from 2019.
 #'
-#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
-#' @param A_P_AL (numeric) The phosphorus content of the soil, extracted in ammonium lactate (mg P2O5/100g)
-#' @param A_PH_CC (numeric) The acidity of the soil, pH in CaCl2 (-)
+#' @inheritParams sptf_bd0
 #'
 #' @import data.table
 #' 
@@ -693,9 +690,7 @@ sptf_pmn14 <- function(A_C_OF,A_P_AL,A_PH_CC) {
 #' This function calculates the PMN content for agricultural soils in the Netherlands. PMN refers to anearobic mineralizable N pool, 40 degrees for 7 days.
 #' Data from various years.
 #'
-#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
-#' @param A_P_AL (numeric) The phosphorus content of the soil, extracted in ammonium lactate (mg P2O5/100g)
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
+#' @inheritParams sptf_bd0
 #'
 #' @import data.table
 #' 
@@ -741,7 +736,7 @@ sptf_pmn15 <- function(A_C_OF,A_P_AL,A_CLAY_MI) {
 #'
 #' This function calculates the PMN content for agricultural soils in the Netherlands. PMN refers to anearobic mineralizable N pool, 40 degrees for 7 days.
 #'
-#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
+#' @inheritParams sptf_bd0
 #'
 #' @import data.table
 #' 
@@ -774,8 +769,7 @@ sptf_pmn16 <- function(A_C_OF) {
 #' This function calculates the PMN content for agricultural soils in the Netherlands. PMN refers to anearobic mineralizable N pool, 40 degrees for 7 days.
 #' Data from various years.
 #'
-#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
-#' @param A_PH_CC (numeric) The acidity of the soil, pH in CaCl2 (-)
+#' @inheritParams sptf_bd0
 #'
 #' @import data.table
 #' 
@@ -812,8 +806,7 @@ sptf_pmn17 <- function(A_C_OF,A_PH_CC) {
 #'
 #' This function calculates the PMN content for agricultural soils in the Netherlands. PMN refers to anearobic mineralizable N pool, 40 degrees for 7 days.
 #'
-#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
-#' @param A_PH_CC (numeric) The acidity of the soil, pH in CaCl2 (-)
+#' @inheritParams sptf_bd0
 #'
 #' @import data.table
 #' 
@@ -850,8 +843,7 @@ sptf_pmn18 <- function(A_C_OF,A_PH_CC) {
 #'
 #' This function calculates the hot water extractable carbon content for agricultural soils in the Netherlands. Data from various years.
 #'
-#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
+#' @inheritParams sptf_bd0
 #'
 #' @import data.table
 #' 
@@ -888,8 +880,7 @@ sptf_pmn19 <- function(A_C_OF,A_CLAY_MI) {
 #'
 #' This function calculates the hot water extractable carbon content for agricultural soils in the Netherlands. Data from various years.
 #' 
-#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
+#' @inheritParams sptf_bd0
 #'
 #' @import data.table
 #' 
