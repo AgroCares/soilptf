@@ -4,6 +4,7 @@
   require(data.table)
   require(usethis)
   
+# sptf_bulkdensity =============================================================
 # load the csv file with pdtf for bulk density
   d1 <- fread('dev/sptf_bulkdensity.csv',na.strings=NULL, dec=',')
 
@@ -26,7 +27,8 @@
     
     # download data
     # d2 <- fread('https://pkgstore.datahub.io/core/country-list/data_csv/data/d7c9d7cfb42cb69f4422dec222dbbaa8/data_csv.csv', encoding = 'UTF-8')
-  
+
+# sptf_countries ===============================================================
 # loaddata
   d2 <- fread('dev/sptf_countries.csv',encoding = 'UTF-8')
   
@@ -42,6 +44,7 @@
   # save updated crop table
   usethis::use_data(sptf_countries,overwrite = TRUE)
   
+# sptf_soilproperties ==========================================================
 # load data
   d3 <- fread('dev/sptf_soilproperties.csv',encoding = 'UTF-8')
   
@@ -53,7 +56,7 @@
   
           
   
-  # parameters ====
+# sptf_parameters ==============================================================
   sptf_parameters <- fread('dev/sptf_parameters.csv',encoding = 'UTF-8')
   usethis::use_data(sptf_parameters, overwrite = TRUE)
 
