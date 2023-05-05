@@ -4,8 +4,7 @@
 #'
 #' This function calculates the crop yield of cereals.
 #'
-#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
+#' @inheritParams sptf_bd0
 #'
 #' @import data.table
 #' 
@@ -50,7 +49,7 @@ sptf_yield1 <- function(A_C_OF,A_CLAY_MI) {
 #'
 #' This function calculates the pH extracted with water from the pH-KCL.
 #'
-#' @param A_PH_KCL (numeric) The acidity of the soil, pH in KCL (-)
+#' @inheritParams sptf_bd0
 #'
 #' @import data.table
 #' 
@@ -74,9 +73,7 @@ sptf_ph1 <- function(A_PH_KCL) {
 #'
 #' This function calculates the pH extracted with water from the pH-KCL.
 #'
-#' @param A_SOM_LOI (numeric) The percentage organic matter in the soil (\%).
-#' @param A_PH_KCL (numeric) The acidity of the soil, pH in KCL (-).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
+#' @inheritParams sptf_bd0
 #' 
 #' @import data.table
 #' 
