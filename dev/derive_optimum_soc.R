@@ -9,6 +9,17 @@ require(ggplot2);require(patchwork)
 # --- step 1. develop meta-ptfs ----
 # make a virtual dataset for a sandy soil varying in SOC levels, and derive optimum meta-ptfs per soil function
   
+  # helper fun to extract coefficients from lm model
+  hpf <- function(tpr,m1,r,cfin){
+    
+  vals <- coefficients(m1)
+  pr <- paste(tpr," == ",round(vals[1],r[1]))
+  for(i in 2:length(vals)){ pr <- paste(pr,
+                                        fifelse(vals[i]<0,'-','+'),
+                                        round(abs(vals[i]),r[i]),
+                                        cfin[i-1])}
+  return(pr)}
+
   # for mineral soils only: 20% OS = 10% OC = 100 g/kg
   dt1 <- data.table(A_C_OF = seq(0.5,100,1), A_CLAY_MI = 7.5, A_SAND_MI = 60, A_PH_CC = 5.4)
   dt1[,id := .I]
@@ -23,25 +34,25 @@ require(ggplot2);require(patchwork)
   dt1 <- merge(dt1,dt1.bd,by='id')
   m.bd <- lm(bd.mean~A_C_OF + I(log(A_C_OF)),data=dt1)
   p.bd <- predict(m.bd,newdata = data.frame(A_C_OF = dt1$A_C_OF))
-  l.bd <- paste('CEC == ', '2125 -1.056 * C - 257 * log(C)')
+  l.bd <- hpf('BD',m.bd,r=c(0,3,0),cfin=c('*C','*log(C)'))
   
   # the cation exchange capacity
   dt1.cec <- ptf_cec_all(dt1)
   dt1.cec <- dt1.cec[,list(cec.mean = mean(cec,na.rm=T),
                            cec.se = sd(cec,na.rm=T)/sqrt(sum(!is.na(cec)))),by='id']
   dt1 <- merge(dt1,dt1.cec,by='id')
-  m.cec <- lm(cec.mean~A_C_OF + I(A_C_OF^2),data=dt1)
+  m.cec <- lm(cec.mean~A_C_OF,data=dt1)
   p.cec <- predict(m.cec,newdata = data.frame(A_C_OF = dt1$A_C_OF))
-  l.cec <- paste('CEC == ', '64.9 + 2.92 * C - 0.0019 * C^2')
-  
+  l.cec <- hpf('CEC',m.cec,r=c(1,2),cfin=c('*C'))
+
   # water stable aggregates
   dt1.wsa <- ptf_wsa_all(dt1)
   dt1.wsa <- dt1.wsa[,list(wsa.mean = mean(wsa,na.rm=T),
                            wsa.se = sd(wsa,na.rm=T)/sqrt(sum(!is.na(wsa)))),by='id']
   dt1 <- merge(dt1,dt1.wsa,by='id')
-  m.wsa <- lm(wsa.mean~A_C_OF + I(A_C_OF^2),data=dt1)
+  m.wsa <- lm(wsa.mean~A_C_OF,data=dt1)
   p.wsa <- predict(m.wsa,newdata = data.frame(A_C_OF = dt1$A_C_OF))
-  l.wsa <- paste('WSA == ', '64.2 + 1.04 * C - 0.0019 * C^2')
+  l.wsa <- hpf('WSA',m.wsa,r=c(0,3),cfin='*C')
   
   # see hamel for interpretation optimum
   dt1.mwd <- ptf_mwd_all(dt1)
@@ -50,7 +61,7 @@ require(ggplot2);require(patchwork)
   dt1 <- merge(dt1,dt1.mwd,by='id')
   m.mwd <- lm(mwd.mean~A_C_OF,data=dt1)
   p.mwd <- predict(m.mwd,newdata = data.frame(A_C_OF = dt1$A_C_OF))
-  l.mwd <- paste('MWD == ', '0.816 + 0.02634 * C')
+  l.mwd <- hpf('MWD',m.mwd,r=c(3,3),cfin='*C')
   
   # soil shearing
   dt1.sss <- ptf_sss_all(dt1)
@@ -59,7 +70,7 @@ require(ggplot2);require(patchwork)
   dt1 <- merge(dt1,dt1.sss,by='id')
   m.sss <- lm(sss.mean~A_C_OF + I(A_C_OF^2),data=dt1)
   p.sss <- predict(m.sss,newdata = data.frame(A_C_OF = dt1$A_C_OF))
-  l.sss <- paste('SSS == ', '66.62 + 0.526 * C + 0.0024 * C^2')
+  l.sss <- hpf('SSS',m.sss,r=c(1,3,4),cfin=c('*C','*C^2'))
   
   # derive water holding capacity
   dt1.whc <- ptf_whc_all(dt1)
@@ -68,8 +79,8 @@ require(ggplot2);require(patchwork)
   dt1 <- merge(dt1,dt1.whc,by='id')
   m.whc <- lm(whc.mean~I(A_C_OF^0.5),data=dt1)
   p.whc <- predict(m.whc,newdata = data.frame(A_C_OF = dt1$A_C_OF))
-  l.whc <- paste('WHC == ', '0.4228 + 0.01582 * C^0.5')
-  
+  l.whc <- hpf('WHC',m.whc,r=c(4,4),cfin=c('*C^0.5'))
+
   # derive water plant available water
   dt1.paw <- ptf_paw_all(dt1)
   dt1.paw <- dt1.paw[,list(paw.mean = mean(paw,na.rm=T),
@@ -77,8 +88,8 @@ require(ggplot2);require(patchwork)
   dt1 <- merge(dt1,dt1.paw,by='id')
   m.paw <- lm(paw.mean~ I(A_C_OF^0.5),data=dt1)
   p.paw <- predict(m.paw,newdata = data.frame(A_C_OF = dt1$A_C_OF))
-  l.paw <- paste('PAW == ', '0.135 + 0.01193 * C^0.5')
-  
+  l.paw <- hpf('PAW',m.paw,r=c(4,4),cfin=c('*C^0.5'))
+
   # potentially mineralizable N
   dt1.pmn <- ptf_pmn_all(dt1)
   dt1.pmn <- dt1.pmn[,list(pmn.mean = mean(pmn,na.rm=T),
@@ -86,8 +97,8 @@ require(ggplot2);require(patchwork)
   dt1 <- merge(dt1,dt1.pmn,by='id')
   m.pmn <- lm(pmn.mean~ A_C_OF+I(A_C_OF^2),data=dt1)
   p.pmn <- predict(m.pmn,newdata = data.frame(A_C_OF = dt1$A_C_OF))
-  l.pmn <- paste('PMN == ', '9.119 + 1.284 * C + 0.0102 * C^2')
-  
+  l.pmn <- hpf('PMN',m.pmn,r=c(2,4,4),cfin=c('*C','*C^2'))
+
   # hot water carbon
   dt1.hwc <- ptf_hwc_all(dt1)
   dt1.hwc <- dt1.hwc[,list(hwc.mean = mean(hwc,na.rm=T),
@@ -95,7 +106,7 @@ require(ggplot2);require(patchwork)
   dt1 <- merge(dt1,dt1.hwc,by='id')
   m.hwc <- lm(hwc.mean~ A_C_OF+I(A_C_OF^2),data=dt1)
   p.hwc <- predict(m.hwc,newdata = data.frame(A_C_OF = dt1$A_C_OF))
-  l.hwc <- paste('HWC == ', '129.9 + 29.88 * C -0.036918 * C^2')
+  l.hwc <- hpf('HWC',m.hwc,r=c(0,1,3),cfin=c('*C','*C^2'))
   
   # pH buffer capacity
   dt1.phbc <- ptf_phbc_all(dt1)
@@ -104,7 +115,7 @@ require(ggplot2);require(patchwork)
   dt1 <- merge(dt1,dt1.phbc,by='id')
   m.phbc <- lm(phbc.mean~ A_C_OF,data=dt1)
   p.phbc <- predict(m.phbc,newdata = data.frame(A_C_OF = dt1$A_C_OF))
-  l.phbc <- paste('pHBC == ', '1.669 + 1.286 * C')
+  l.phbc <- hpf('pHBC',m.phbc,r=c(3,3),cfin='*C')
   
   # metal freundlich coefficient
   dt1.metal <- ptf_metals_all(dt1)
@@ -120,7 +131,7 @@ require(ggplot2);require(patchwork)
   dt1.cdec <- dt1.cdec[,list(cdec.mean = mean(cdec,na.rm=T),
                              cdec.se = mean(cdec,na.rm=T)*0.10),by='id']
   dt1 <- merge(dt1,dt1.cdec,by='id')
-  m.cdec <- lm(cdec.mean~A_C_OF,data=dt1)
+  m.cdec <- lm(cdec.mean~A_C_OF-1,data=dt1)
   p.cdec <- predict(m.cdec,newdata = data.frame(A_C_OF = dt1$A_C_OF))
   l.cdec <- paste('C-decomposition == ', '0.22 * C')
   
@@ -130,7 +141,6 @@ require(ggplot2);require(patchwork)
 # optimum crop yield (see Young et al., 2021)
 # here is the target: dt1[, cyield1 := 0.5 + (1.75 - 0.5) * (A_CLAY_MI - 4)/(38 - 4)]
 # model of Oldfield, 118 kg N/ha default
-
 
 # --- step 2. define optimum SOC ----
 # here an example is given for the dataset prepared above, and its converted to a simple function to apply this procedure on new datasets.
@@ -193,9 +203,9 @@ require(ggplot2);require(patchwork)
   dt2[, ophbc :=  1 * 1000* (1000000 / (0.22 * bd * 100 * 100)) * 2/74.09]
   dt2[, cphbc := fmod(m.phbc,ophbc),by=id]
  
-  # optimum C decomposition is not higher than what can be added by annual grassland
+  # optimum C decomposition is not higher than what can be added by annual grassland over 10 years
   # kg EOS * 0.5 = kg C / ha
-  dt2[, ocdec := 3975 * 0.5 *1000 * 10/ ((2125 - 1.056 * A_C_OF - 257 * log(A_C_OF))*100*100*0.3)]
+  dt2[, ocdec := (3975 + 60 * 50) * 0.5 *1000 * 10/ ((2125 - 1.056 * A_C_OF - 257 * log(A_C_OF))*100*100*0.3)]
   dt2[, ccdec := fmod(m.cdec,ocdec),by=id]
   
   # optimum metal sorption, by default the highest one
@@ -318,6 +328,180 @@ optimcarbon <- function(xs, dtr){
                                             'hwc','pmn','cdec','wsa','mwd','dens','whc','paw')))]
     dt4[,wf := .N,by=parmc]
     dt5 <- dt4[,list(copt_av = weighted.mean(copt,w = wf))]
+    
+    out <- dt5[,copt_av]
+    
+    # return out
+    return(out)
+}
+  
+  dt.oc <- copy(dt1[,.(A_C_OF,A_CLAY_MI,A_SAND_MI,A_PH_CC)])
+  
+  # analytical solver
+  optimcarbon_fix <- function(xs, dtr){
+    
+    # make internal data.table  
+    dt.oc <- copy(dtr)[xs]
+    
+    dt.oc[, id := 1:.N]
+    
+    # estimate bulk density (Ros & de Vries, 2023)
+    dt.oc[, bd := (1617 - 77.4 * log(A_C_OF) - 3.49 * A_C_OF) ]
+    
+    # optimum density for rootability (Ros, 2023)
+    # https://math.stackexchange.com/questions/433717/how-to-solve-equations-with-logarithms-like-this-ax-b-logx-c-0
+    dt.oc[, odens := (1.75 - 0.009 * A_CLAY_MI) * 1000]
+    dt.oc[, fa := m.bd$coefficients[2]]
+    dt.oc[, fc := m.bd$coefficients[1] - odens]
+    dt.oc[, fb := m.bd$coefficients[3]]
+    dt.oc[, cdens := (fb/fa) * pracma::lambertWp((fa/fb)*exp(-fc/fb))]
+    dt.oc[,c('fa','fb','fc') := NULL]
+    
+    # optimum CEC level for soil fertility (van Erp, 2001; Ros et al, 2023)
+    dt.oc[, ocec := 100]
+    dt.oc[, ccec := (ocec - m.cec$coefficients[1])/m.cec$coefficients[2]]
+    
+    # optimum level water stable aggregates (from SHI, Moebius-Clune, 2017)
+    # The larger the MWD and GMD values are, the higher the average particle size agglomeration of soil aggregates are, and the stronger the stability of soil structure is
+    dt.oc[, owsa := 75]
+    dt.oc[, cwsa := (owsa - m.wsa$coefficients[1])/m.wsa$coefficients[2]]
+    
+    # optimum MWD value using method of Le Bissonnais (1996), cited Clergue et al. (2003)
+    # lower values are unstable, and high risk on crusttability
+    dt.oc[, omwd := 1.3]
+    dt.oc[, cmwd := (omwd - m.mwd$coefficients[1])/m.mwd$coefficients[2]]
+    
+    # for shear strength no optimum
+    dt.oc[, osss := NA_real_]
+    dt.oc[, csss := NA_real_]
+    
+    # more is better, optimum score (medium to high boundery) at 0.3 g / g (Moebius-Clune, 2017)
+    dt.oc[, owhc := 0.45]
+    dt.oc[, cwhc := ((owhc - m.whc$coefficients[1])/m.whc$coefficients[2])^2]
+    
+    # more is better, optimum score at 0.3 g / g (Moebius-Clune, 2017), border shi score 80 (from high to very high), 0.18 sand, 0.21 others
+    # if border from medium to high, then sand 0.13 and others 0.16
+    #dt.oc[, opaw := pmax(0.18,0.21 + 1:100 * (0.18 - 0.21)/50)]
+    dt.oc[, opaw := pmax(0.13,0.16 + 1:100 * (0.13 - 0.16)/50)]
+    dt.oc[, cpaw := ((opaw - m.paw$coefficients[1])/m.paw$coefficients[2])^2]
+    
+    # more is better, optimum score at 30 mg N /kg (Moebius-Clune, 2017)
+    dt.oc[, opmn := 30]
+    dt.oc[,fa := m.pmn$coefficients[3]]
+    dt.oc[,fb := m.pmn$coefficients[2]]
+    dt.oc[,fc := m.pmn$coefficients[1] - opmn]
+    dt.oc[,cpmn1 := (-fb + sqrt(fb^2 - 4 * fa * fc))/(2*fa)]
+    dt.oc[,cpmn2 := (-fb - sqrt(fb^2 - 4 * fa * fc))/(2*fa)]
+    dt.oc[cpmn1 >= 0 & cpmn2 >= 0, cpmn := pmin(cpmn1,cpmn2)]
+    dt.oc[cpmn1 >= 0 & cpmn2 < 0, cpmn := cpmn1]
+    dt.oc[cpmn1 < 0 & cpmn2 >= 0, cpmn := cpmn2]
+    dt.oc[,c('cpmn1','cpmn2','fa','fb','fc') := NULL]
+    
+    # more is better, reference value of BLN arable systems
+    dt.oc[, ohwc := 500]
+    dt.oc[,fa := m.hwc$coefficients[3]]
+    dt.oc[,fb := m.hwc$coefficients[2]]
+    dt.oc[,fc := m.hwc$coefficients[1] - ohwc]
+    dt.oc[,chwc1 := (-fb + sqrt(fb^2 - 4 * fa * fc))/(2*fa)]
+    dt.oc[,chwc2 := (-fb - sqrt(fb^2 - 4 * fa * fc))/(2*fa)]
+    dt.oc[chwc1 >= 0 & chwc2 >= 0, chwc := pmin(chwc1,chwc2)]
+    dt.oc[chwc1 >= 0 & chwc2 < 0, chwc := chwc1]
+    dt.oc[chwc1 < 0 & chwc2 >= 0, chwc := chwc2]
+    dt.oc[,c('chwc1','chwc2','fa','fb','fc') := NULL]
+    
+    # disease supressiveness
+    dt.oc[,ods := 0.99]
+    dt.oc[,b := 1.2]
+    dt.oc[,x0 := 1.7]
+    dt.oc[,v := 0.4]
+    dt.oc[,cods := log(exp(log(1/ods)/(1/v))-1)/-b+x0]
+    dt.oc[,c('b','x0','v') := NULL]
+    
+    # optimum pH buffer capacity
+    dt.oc[, ophbc :=  1 * 1000* (1000000 / (0.22 * bd * 100 * 100)) * 2/74.09]
+    dt.oc[, cphbc := (ophbc - m.phbc$coefficients[1])/m.phbc$coefficients[2]]
+    
+    # optimum C decomposition is not higher than what can be added by annual grassland
+    # kg EOS * 0.5 = kg C / ha
+    dt.oc[, ocdec := (3975 + 60 * 50) * 0.5 *1000 * 10/ ((2125 - 1.056 * A_C_OF - 257 * log(A_C_OF))*100*100*0.3)]
+    dt.oc[, ccdec := ocdec/m.cdec$coefficients[1]]
+    
+    # optimum metal sorption, by default the highest one
+    dt.oc[, ometals := 100]
+    dt.oc[, cmetals := NA_real_]
+    
+    # derive critical SOC values for metal concentrations for Ecoogical Health (de Vries et al., 2008)
+    dt.oc.metals <- shi_metals(A_PH_CC = dt.oc$A_PH_CC,
+                               A_SOM_LOI = dt.oc$A_C_OF * 2 / 10, 
+                               A_CLAY_MI = dt.oc$A_CLAY_MI
+                               )
+    
+    dt.oc[,omcd := NA_real_]
+    dt.oc[,cmcd := dt.oc.metals$a_cd_rt]
+    dt.oc[,omcu := NA_real_]
+    dt.oc[,cmcu := dt.oc.metals$a_cu_rt]
+    dt.oc[,ompb := NA_real_]
+    dt.oc[,cmpb := dt.oc.metals$a_pb_rt]
+    dt.oc[,omzn := NA_real_]
+    dt.oc[,cmzn := dt.oc.metals$a_zn_rt]
+    
+    # optimum SOC for crop yield based on Oldfield et al. (2009)
+    dt.oc[, oyield := 3]
+    #dt.oc[, cyieldo := fmod(m.cyield,3),by=id]
+    dt.oc[,fa := m.cyield$coefficients[3]]
+    dt.oc[,fb := m.cyield$coefficients[2]]
+    dt.oc[,fc := m.cyield$coefficients[1] - oyield]
+    dt.oc[,chwc1 := (-fb + sqrt(fb^2 - 4 * fa * fc))/(2*fa)]
+    dt.oc[,chwc2 := (-fb - sqrt(fb^2 - 4 * fa * fc))/(2*fa)]
+    dt.oc[chwc1 >= 0 & chwc2 >= 0, cyield1 := pmin(chwc1,chwc2)]
+    dt.oc[chwc1 >= 0 & chwc2 < 0, cyield1 := chwc1]
+    dt.oc[chwc1 < 0 & chwc2 >= 0, cyield1 := chwc2]
+    dt.oc[,c('chwc1','chwc2','fa','fb','fc') := NULL]
+    
+    # optimum SOC for crop yield based on Korschens
+    # 0.5% at 4% clay and 1.75% for 38% of clay
+    dt.oc[, cyield2 := 10* pmax(0.5,pmin(1.75,0.5 + (A_CLAY_MI -4) * (1.75-0.5)/(38-4)))]
+    dt.oc[, cyield := (cyield1 + cyield2)/2]
+    dt.oc[,c('cyield1','cyield2'):=NULL]
+    
+    # melt
+    dt3 <- melt(dt.oc,
+                id.vars = c('id','A_C_OF','A_CLAY_MI'),
+                measure=patterns(target="^o", copt = "^c"))
+    vars <- c('dens','cec','wsa','mwd','sss','whc','paw','pmn','hwc','ods','phbc','cdec','metals','cd','cu','pb','zn','yield')
+    dt3[,parm := vars[variable]]
+    
+    dt4 <- dt3[!is.na(copt)]
+    dt4[grepl('hwc|pmn|dec|ods',parm),parmc := 'darkgreen']
+    dt4[grepl('yield',parm),parmc := 'black']
+    dt4[grepl('wsa|mwd|dens|whc|paw',parm),parmc := 'skyblue']
+    dt4[grepl('phbc|cec|cu|pb|zn|cd',parm),parmc := 'orange']
+    dt4[,parm := factor(parm,levels = rev(c('yield','phbc','cec','cd','cu','pb','zn',
+                                            'hwc','ods','pmn','cdec','wsa','mwd','dens','whc','paw')))]
+    # weging contributie of soil health indicators
+    dt4[parm=='dens', wf := 2/8]
+    dt4[grepl('whc|paw',parm), wf := 1/8]
+    dt4[grepl('wsa|mwd',parm), wf := 1/8]
+    dt4[parm=='cdec', wf := 1/8]
+    dt4[parm=='hwc', wf := 4/8]
+    dt4[parm=='pmn', wf := 3/8]
+    dt4[parm=='cec', wf := 3/8]
+    dt4[parm=='phbc', wf := 1/8]
+    dt4[grepl('cu|pb|zn|cd',parm), wf := 1/32]
+    dt4[parm=='yield', wf := 8/8]
+    dt4[parm=='ods', wf := 1/8]
+    
+    dt4[grepl('hwc|pmn|dec|ods',parm),wf0 := 25]
+    dt4[grepl('yield',parm),wf0 := 25]
+    dt4[grepl('wsa|mwd|dens|whc|paw',parm),wf0 := 25]
+    dt4[grepl('phbc|cec|cu|n|pb|cd',parm),wf0 := 25]
+    
+    dt4[,wf1 := wf0 * wf]
+    
+    dt5 <- dt4[,list(copt_av = weighted.mean(copt,w = wf1),
+                     copt_oa = max(copt),
+                     copt_median = median(copt),
+                     copt_sd = sd(copt)),by=id]
     
     out <- dt5[,copt_av]
     
