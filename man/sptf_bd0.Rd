@@ -46,8 +46,6 @@ sptf_bd0(
 
 \item{A_DEPTH}{(numeric) The depth of the sampled soil layer (m)}
 
-\item{A_DENSITY}{(numeric) Soil density (g / kg)}
-
 \item{A_H20_T105}{(numeric) The volumetric moisture content of the soil (\%)}
 
 \item{A_K_AA}{(numeric) Potassium plant available, extracted with acetic acid (mg K/kg)}
