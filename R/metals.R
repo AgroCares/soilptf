@@ -4,9 +4,7 @@
 #'
 #' This function calculates the freundlich coefficient (mol/ l n /kg) for Zn from soil properties
 #'
-#' @param A_SOM_LOI (numeric) The percentage organic matter in the soil (\%).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
-#' @param A_PH_WA (numeric) The acidity of the soil, pH in water (-)
+#' @inheritParams sptf_bd0
 #'
 #' @import data.table
 #' 
@@ -42,9 +40,7 @@ sptf_fc_zn <- function(A_SOM_LOI,A_CLAY_MI,A_PH_WA) {
 #'
 #' This function calculates the freundlich coefficient (mol/ l n /kg) for cu from soil properties
 #'
-#' @param A_SOM_LOI (numeric) The percentage organic matter in the soil (\%).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
-#' @param A_PH_WA (numeric) The acidity of the soil, pH in water (-)
+#' @inheritParams sptf_bd0
 #'
 #' @import data.table
 #' 
@@ -65,7 +61,7 @@ sptf_fc_cu <- function(A_SOM_LOI,A_CLAY_MI,A_PH_WA) {
                    A_PH_WA = A_PH_WA,
                    value = NA_real_)
   
-  # precit freundlich coefficient coefficient for zinc (R2 = 0.62, n = 1400)
+  # precit freundlich coefficient coefficient for copper (R2 = 0.62, n = 1400)
   dt[,value := 10^(-3.55 + 0.48 * log10(A_SOM_LOI) + 0.18 * log10(A_CLAY_MI) + 0.16 * log(A_PH_WA))]
   
   # select value
@@ -80,9 +76,7 @@ sptf_fc_cu <- function(A_SOM_LOI,A_CLAY_MI,A_PH_WA) {
 #'
 #' This function calculates the freundlich coefficient (mol/ l n /kg) for Pb from soil properties
 #'
-#' @param A_SOM_LOI (numeric) The percentage organic matter in the soil (\%).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
-#' @param A_PH_WA (numeric) The acidity of the soil, pH in water (-)
+#' @inheritParams sptf_bd0
 #'
 #' @import data.table
 #' 
@@ -103,7 +97,7 @@ sptf_fc_pb <- function(A_SOM_LOI,A_CLAY_MI,A_PH_WA) {
                    A_PH_WA = A_PH_WA,
                    value = NA_real_)
   
-  # precit freundlich coefficient coefficient for zinc (R2 = 0.57, n = 1400)
+  # precit freundlich coefficient coefficient for lead (R2 = 0.57, n = 1400)
   dt[,value := 10^(-2.96 + 0.83 * log10(A_SOM_LOI) + 0.02 * log10(A_CLAY_MI) + 0.25 * log(A_PH_WA))]
   
   # select value
@@ -118,9 +112,7 @@ sptf_fc_pb <- function(A_SOM_LOI,A_CLAY_MI,A_PH_WA) {
 #'
 #' This function calculates the freundlich coefficient (mol/ l n /kg) for Cd from soil properties
 #'
-#' @param A_SOM_LOI (numeric) The percentage organic matter in the soil (\%).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
-#' @param A_PH_WA (numeric) The acidity of the soil, pH in water (-)
+#' @inheritParams sptf_bd0
 #'
 #' @import data.table
 #' 
@@ -141,7 +133,7 @@ sptf_fc_cd <- function(A_SOM_LOI,A_CLAY_MI,A_PH_WA) {
                    A_PH_WA = A_PH_WA,
                    value = NA_real_)
   
-  # precit freundlich coefficient coefficient for zinc (R2 = 0.79, n = 1400)
+  # precit freundlich coefficient coefficient for cadmium (R2 = 0.79, n = 1400)
   dt[,value := 10^(-4.85 + 0.58 * log10(A_SOM_LOI) + 0.28 * log10(A_CLAY_MI) + 0.27 * log(A_PH_WA))]
   
   # select value
