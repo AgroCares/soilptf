@@ -6,6 +6,15 @@
 \usage{
 sptf_mwd4(A_C_OF, A_CLAY_MI, A_SILT_MI, A_CACO3_MI)
 }
+\arguments{
+\item{A_C_OF}{(numeric) Organic Carbon Content (g / kg)}
+
+\item{A_CLAY_MI}{(numeric) The clay content of the mineral soil fraction (\%).}
+
+\item{A_SILT_MI}{(numeric) Silt content (\%)}
+
+\item{A_CACO3_MI}{(numeric) The calcium carbonate content of the soil (\%)}
+}
 \description{
 Calculate the Mean Weight Diameter for agricultural soils (0-10cm) in Tunesia given the pedotransferfunction of Annabi et al. (2017)
 }

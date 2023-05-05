@@ -153,7 +153,7 @@ sptf_mwd3 <- function(A_C_OF,A_CEC_CO,A_CLAY_MI,A_SILT_MI, A_PH_WA, A_CACO3_MI) 
 #'
 #' Calculate the Mean Weight Diameter for agricultural soils (0-10cm) in Tunesia given the pedotransferfunction of Annabi et al. (2017)
 #'
-#' @inheritParams sptf_bd0)
+#' @inheritParams sptf_bd0
 #' 
 #' @import data.table
 #' 
