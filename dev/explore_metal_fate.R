@@ -56,7 +56,9 @@ cplant <- function(crop,soiltype, a_ph_kcl,a_som_loi,a_clay_mi,a_zn_rt = NA_real
 }
 
 # estimate concentraiton for ecological health from total concentration in soil (mg/kg)
-shi_metals <- function(A_PH_CC,A_SOM_LOI,A_CLAY_MI,a_zn_rt = NA_real_,a_cu_rt= NA_real_,a_pb_rt= NA_real_,a_cd_rt= NA_real_){
+shi_metals <- function(A_PH_CC,A_SOM_LOI,A_CLAY_MI,
+                       a_zn_rt = NA_real_,a_cu_rt= NA_real_,a_pb_rt= NA_real_,a_cd_rt= NA_real_,
+                       type = 'soc_crit'){
   
   # collect data internal db.
   d0 <- data.table(id = 1:length(A_SOM_LOI),
@@ -164,7 +166,11 @@ shi_metals <- function(A_PH_CC,A_SOM_LOI,A_CLAY_MI,a_zn_rt = NA_real_,a_cu_rt= N
     d0[, som_crit_leaching := 10^((log10(kf_crit) - e0 - e2 * log10(a_clay_mi) - e3 * a_ph_cc - e4 * log10(a_c_cc))/e1)]
   }
   
-  d1 <- dcast(d0, id~metal,value.var='a_soc_crit')
+  if(type == 'soc_crit') {d1 <- dcast(d0, id~metal,value.var='a_soc_crit')}
+  if(type == 'me_crit') {
+    d1 <- dcast(d0, id~metal,value.var='m_crit_reactive')
+    setnames(d1,c('id', 'ccd','ccu','cpb','czn'))
+    }
   
   # return
   return(d1)

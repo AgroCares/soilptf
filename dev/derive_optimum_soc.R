@@ -6,22 +6,29 @@ require(data.table); require(soilptf)
 require(terra);require(sf)
 require(ggplot2);require(patchwork)
 
+rm(list=ls())
+
 # --- step 1. develop meta-ptfs ----
 # make a virtual dataset for a sandy soil varying in SOC levels, and derive optimum meta-ptfs per soil function
   
-  # helper fun to extract coefficients from lm model
+  # helper fun to extract coefficients from lm model for the label with model description
   hpf <- function(tpr,m1,r,cfin){
     
   vals <- coefficients(m1)
   pr <- paste(tpr," == ",round(vals[1],r[1]))
-  for(i in 2:length(vals)){ pr <- paste(pr,
-                                        fifelse(vals[i]<0,'-','+'),
-                                        round(abs(vals[i]),r[i]),
-                                        cfin[i-1])}
+  if(length(vals)>1){
+    for(i in 2:length(vals)){ pr <- paste(pr,
+                                          fifelse(vals[i]<0,'-','+'),
+                                          round(abs(vals[i]),r[i]),
+                                          cfin[i-1])}
+  } else {
+    pr <- paste0(pr,cfin)
+  }
+  
   return(pr)}
 
   # for mineral soils only: 20% OS = 10% OC = 100 g/kg
-  dt1 <- data.table(A_C_OF = seq(0.5,100,1), A_CLAY_MI = 7.5, A_SAND_MI = 60, A_PH_CC = 5.4)
+  dt1 <- data.table(A_C_OF = seq(0.5,100,1), A_CLAY_MI = 3.5, A_SAND_MI = 60, A_PH_CC = 5.4)
   dt1[,id := .I]
   set.seed(124)
   dt1[,A_CN_FR := rnorm(.N,12,2)]
@@ -108,6 +115,10 @@ require(ggplot2);require(patchwork)
   p.hwc <- predict(m.hwc,newdata = data.frame(A_C_OF = dt1$A_C_OF))
   l.hwc <- hpf('HWC',m.hwc,r=c(0,1,3),cfin=c('*C','*C^2'))
   
+  # disase supressiveness
+  dt1[,ods := OBIC::evaluate_logistic(A_C_OF * 2 * 0.1, b = 1.2, x0 = 1.7,v = 0.4)]
+  l.ods <- paste('DR ==','1/(1 + exp(-1.2 * (0.2*C - 1.7)))^(1/0.4)')
+  
   # pH buffer capacity
   dt1.phbc <- ptf_phbc_all(dt1)
   dt1.phbc <- dt1.phbc[,list(phbc.mean = mean(phbc,na.rm=T),
@@ -124,7 +135,7 @@ require(ggplot2);require(patchwork)
   dt1 <- merge(dt1,dt1.metal,by='id')
   m.metal <- lm(metal.mean~ I(A_C_OF^0.5),data=dt1)
   p.metal <- predict(m.metal,newdata = data.frame(A_C_OF = dt1$A_C_OF))
-  l.metal <- paste('Kf == ', '-4.01 + 10.2824 * C^0.5')
+  l.metal <- hpf('Kf',m.metal,r=c(1,1),cfin=c('*C^0.5'))
   
   # carbon decomposition, minip, and assume 10% uncertainty
   dt1.cdec <- ptf_cdec_all(dt1)
@@ -133,19 +144,42 @@ require(ggplot2);require(patchwork)
   dt1 <- merge(dt1,dt1.cdec,by='id')
   m.cdec <- lm(cdec.mean~A_C_OF-1,data=dt1)
   p.cdec <- predict(m.cdec,newdata = data.frame(A_C_OF = dt1$A_C_OF))
-  l.cdec <- paste('C-decomposition == ', '0.22 * C')
+  l.cdec <- hpf('C-decomposition',m.cdec,r=2,cfin='*C')
   
   dt1[, cyield := sptf_yield1(A_C_OF = A_C_OF,A_CLAY_MI = A_CLAY_MI)]
   m.cyield <- lm(cyield~A_C_OF + I(A_C_OF^2),data=dt1)
-
+  l.cyield <- hpf('yield',m.cyield,r=c(2,2,4),cfin=c('*C','*C^2'))
+  
+  # individual metals
+  dt2 <- shi_metals(A_PH_CC = dt1$A_PH_CC,
+                    A_SOM_LOI = dt1$A_C_OF * 2 / 10, 
+                    A_CLAY_MI = dt1$A_CLAY_MI,
+                    type ='me_crit')
+  dt1 <- merge(dt1,dt2,by='id')
+  m.cd <- lm(ccd~A_C_OF-1,data=dt1)
+  m.cu <- lm(ccu~A_C_OF + I(A_C_OF^2),data=dt1)
+  m.pb <- lm(cpb~A_C_OF + I(A_C_OF^2),data=dt1)
+  m.zn <- lm(czn~A_C_OF-1,data=dt1)
+  l.cu <- hpf('Cu',m.cu,r=c(2,2,5),cfin=c('*C','*C^2'))
+  l.pb <- hpf('Pb',m.pb,r=c(2,2,5),cfin=c('*C','*C^2'))
+  l.cd <- hpf('Cd',m.cd,r=3,cfin='*C')
+  l.zn <- hpf('Zn',m.zn,r=3,cfin='*C')
+  
+  tabfuns <- data.table(parm = c('yield','phbc','cec','cd','cu', 'zn','pb','metals',
+                                 'hwc','ods','pmn','cdec','dens','whc',
+                                 'paw','wsa','mwd','sss'),
+                        model = c(l.cyield,l.phbc,l.cec,l.cd,l.cu,l.zn,l.pb,l.metal,
+                                  l.hwc,l.ods,l.pmn,l.cdec,l.bd,l.whc,l.paw,l.wsa,
+                                  l.mwd,l.sss))
+    
 # optimum crop yield (see Young et al., 2021)
 # here is the target: dt1[, cyield1 := 0.5 + (1.75 - 0.5) * (A_CLAY_MI - 4)/(38 - 4)]
 # model of Oldfield, 118 kg N/ha default
 
-# --- step 2. define optimum SOC ----
-# here an example is given for the dataset prepared above, and its converted to a simple function to apply this procedure on new datasets.
+# --- step 2. define optimum SOC (old) ----
+ # here an example is given for the dataset prepared above, and its converted to a simple function to apply this procedure on new datasets.
  # note that this function is not yet optimized for speed
-  
+ # see optimcarbon_fx 
   # inverse helper function to derive the lowest SOC to achieve the target in soil health indicator
   fmod <- function(model,var){
     
@@ -338,10 +372,13 @@ optimcarbon <- function(xs, dtr){
   dt.oc <- copy(dt1[,.(A_C_OF,A_CLAY_MI,A_SAND_MI,A_PH_CC)])
   
   # analytical solver
-  optimcarbon_fix <- function(xs, dtr){
+  optimcarbon_fix <- function(A_C_OF,A_CLAY_MI,A_SAND_MI,A_PH_CC,type = 'copt'){
     
     # make internal data.table  
-    dt.oc <- copy(dtr)[xs]
+    dt.oc <- data.table(A_C_OF = A_C_OF,
+                        A_CLAY_MI = A_CLAY_MI,
+                        A_SAND_MI = A_SAND_MI,
+                        A_PH_CC = A_PH_CC)
     
     dt.oc[, id := 1:.N]
     
@@ -381,8 +418,8 @@ optimcarbon <- function(xs, dtr){
     
     # more is better, optimum score at 0.3 g / g (Moebius-Clune, 2017), border shi score 80 (from high to very high), 0.18 sand, 0.21 others
     # if border from medium to high, then sand 0.13 and others 0.16
-    #dt.oc[, opaw := pmax(0.18,0.21 + 1:100 * (0.18 - 0.21)/50)]
-    dt.oc[, opaw := pmax(0.13,0.16 + 1:100 * (0.13 - 0.16)/50)]
+    dt.oc[, opaw := pmax(0.18,0.21 + A_SAND_MI * (0.18 - 0.21)/50)]
+    #dt.oc[, opaw := pmax(0.13,0.16 + A_SAND_MI * (0.13 - 0.16)/50)]
     dt.oc[, cpaw := ((opaw - m.paw$coefficients[1])/m.paw$coefficients[2])^2]
     
     # more is better, optimum score at 30 mg N /kg (Moebius-Clune, 2017)
@@ -499,17 +536,402 @@ optimcarbon <- function(xs, dtr){
     dt4[,wf1 := wf0 * wf]
     
     dt5 <- dt4[,list(copt_av = weighted.mean(copt,w = wf1),
+                     copt_se = sqrt(Hmisc::wtd.var(copt,weights = wf1,normwt = F))/sqrt(.N),
                      copt_oa = max(copt),
-                     copt_median = median(copt),
-                     copt_sd = sd(copt)),by=id]
+                     copt_qant = quantile(copt,0.75),
+                     copt_median = median(copt)),by=id]
     
-    out <- dt5[,copt_av]
+    if(type=='copt'){ out <- dt5[,.(copt_av,copt_se)]}
+    if(type=='summary'){out <- dt5}
+    if(type=='all'){out <- dt4}
     
     # return out
     return(out)
   }
   
-# --- step 4. plot figures of meta-ptfs ----
+  # predict a change in carbon (expressed in delta distance to /above target)
+  predcarbon <- function(A_C_OF,A_CLAY_MI,A_SAND_MI,A_PH_CC,type = 'ddtt',type2 ='max'){
+    
+    # make internal data.table  
+    dp <- data.table(A_C_OF = A_C_OF,
+                     A_CLAY_MI = A_CLAY_MI,
+                     A_SAND_MI = A_SAND_MI,
+                     A_PH_CC = A_PH_CC)
+    
+    # add id
+    dp[, id := 1:.N]
+    
+    # estimate bulk density (Ros & de Vries, 2023)
+    dp[, bd := (1617 - 77.4 * log(A_C_OF) - 3.49 * A_C_OF) ]
+    
+    # predict oc dependent crop yield, and SHI for current situation
+    dp[, byield := predict(m.cyield,newdata = data.frame(A_C_OF))]
+    dp[A_C_OF > 30, byield := 3.3]
+    dp[, bcec := predict(m.cec,newdata = data.frame(A_C_OF))]
+    dp[, bphbc := predict(m.phbc,newdata = data.frame(A_C_OF))]
+    dp[, bmetals := predict(m.metal,newdata = data.frame(A_C_OF))]
+    dp[, bcu := predict(m.cu,newdata = data.frame(A_C_OF))]
+    dp[, bzn := predict(m.zn,newdata = data.frame(A_C_OF))]
+    dp[, bpb := predict(m.pb,newdata = data.frame(A_C_OF))]
+    dp[, bcd := predict(m.cd,newdata = data.frame(A_C_OF))]
+    dp[, bpmn := predict(m.pmn,newdata = data.frame(A_C_OF))]
+    dp[, bhwc := predict(m.hwc,newdata = data.frame(A_C_OF))]
+    dp[, bods := OBIC::evaluate_logistic(A_C_OF*2/10, b = 1.2, x0 = 1.7,v = 0.4)]
+    dp[, bcdec := predict(m.cdec,newdata = data.frame(A_C_OF))]
+    dp[, bbd :=  predict(m.bd,newdata = data.frame(A_C_OF))]
+    dp[, bwsa := predict(m.wsa,newdata = data.frame(A_C_OF))]
+    dp[, bsss := predict(m.sss,newdata = data.frame(A_C_OF))]
+    dp[, bmwd := predict(m.mwd,newdata = data.frame(A_C_OF))]
+    dp[, bwhc := predict(m.whc,newdata = data.frame(A_C_OF))]
+    dp[, bpaw := predict(m.paw,newdata = data.frame(A_C_OF))]
+    
+    # predict oc dependent crop yield, and SHI for situation with 1 g/kg C extra
+    dp[, ebyield := predict(m.cyield,newdata = data.frame(A_C_OF = A_C_OF + 1))]
+    dp[A_C_OF > 30, ebyield := 3.3]
+    dp[, ebcec := predict(m.cec,newdata = data.frame(A_C_OF =A_C_OF + 1))]
+    dp[, ebphbc := predict(m.phbc,newdata = data.frame(A_C_OF =A_C_OF + 1))]
+    dp[, ebmetals := predict(m.metal,newdata = data.frame(A_C_OF =A_C_OF + 1))]
+    dp[, ebcu := predict(m.cu,newdata = data.frame(A_C_OF =A_C_OF + 1))]
+    dp[, ebzn := predict(m.zn,newdata = data.frame(A_C_OF =A_C_OF + 1))]
+    dp[, ebpb := predict(m.pb,newdata = data.frame(A_C_OF =A_C_OF + 1))]
+    dp[, ebcd := predict(m.cd,newdata = data.frame(A_C_OF =A_C_OF + 1))]
+    dp[, ebpmn := predict(m.pmn,newdata = data.frame(A_C_OF =A_C_OF + 1))]
+    dp[, ebhwc := predict(m.hwc,newdata = data.frame(A_C_OF =A_C_OF + 1))]
+    dp[, ebods := OBIC::evaluate_logistic((A_C_OF + 1)*2/10, b = 1.2, x0 = 1.7,v = 0.4)]
+    dp[, ebcdec := predict(m.cdec,newdata = data.frame(A_C_OF =A_C_OF + 1))]
+    dp[, ebbd :=  predict(m.bd,newdata = data.frame(A_C_OF =A_C_OF + 1))]
+    dp[, ebwsa := predict(m.wsa,newdata = data.frame(A_C_OF =A_C_OF + 1))]
+    dp[, ebsss := predict(m.sss,newdata = data.frame(A_C_OF =A_C_OF + 1))]
+    dp[, ebmwd := predict(m.mwd,newdata = data.frame(A_C_OF =A_C_OF + 1))]
+    dp[, ebwhc := predict(m.whc,newdata = data.frame(A_C_OF =A_C_OF + 1))]
+    dp[, ebpaw := predict(m.paw,newdata = data.frame(A_C_OF =A_C_OF + 1))]
+    
+    # factor to estimate max
+    cfmax <- 3
+    
+    # add max per SHI, cfmax x opt
+    dp[, odens := 850]
+    dp[, ocec := cfmax * 100]
+    dp[, owsa := cfmax * 75]
+    dp[, omwd := cfmax * 1.3]
+    dp[, osss := NA_real_]
+    dp[, owhc := cfmax * 0.45]
+    dp[, opaw := cfmax * pmax(0.18,0.21 + A_SAND_MI * (0.18 - 0.21)/50)]
+    dp[, opmn := cfmax * 30]
+    dp[, ohwc := cfmax * 500]
+    dp[, oods := 1.0]
+    dp[, ophbc :=  cfmax * 1 * 1000* (1000000 / (0.22 * bd * 100 * 100)) * 2/74.09]
+    dp[, ocdec := cfmax * (3975 + 60 * 50) * 0.5 *1000 * 10/ ((2125 - 1.056 * A_C_OF - 257 * log(A_C_OF))*100*100*0.3)]
+    dp[, ometals := 100]
+
+    dt2 <- shi_metals(A_PH_CC = dp$A_PH_CC,
+                      A_SOM_LOI = dp$A_C_OF * 2 / 10, 
+                      A_CLAY_MI = dp$A_CLAY_MI,
+                      type ='me_crit')
+    dp[,omcd := cfmax * dt2$ccd]
+    dp[,omcu := cfmax * dt2$ccu]
+    dp[,ompb := cfmax * dt2$cpb]
+    dp[,omzn := cfmax * dt2$czn]
+    dp[, oyield := cfmax * 3]
+
+    if(type2 == 'max'){
+      # estimate improvement
+      dp[, iyield := (ebyield - byield)/oyield]
+      dp[, icec := (ebcec - bcec)/ocec]
+      dp[, iphbc := (ebphbc - bphbc)/ophbc]
+      dp[, imetals := (ebmetals - bmetals)/ometals]
+      dp[, icu := (ebcu - bcu)/omcu]
+      dp[, izn := (ebzn - bzn)/omzn]
+      dp[, ipb := (ebpb - bpb)/ompb]
+      dp[, icd := (ebcd - bcd)/omcd]
+      dp[, ipmn := (ebpmn - bpmn)/opmn]
+      dp[, ihwc := (ebhwc - bhwc)/ohwc]
+      dp[, iods := (ebods - bods)/oods]
+      dp[, icdec := (ebcdec - bcdec)/ocdec]
+      dp[, ibd := (ebbd - bbd)/-odens]
+      dp[, iwsa := (ebwsa - bwsa)/owsa]
+      dp[, isss := (ebsss - bsss)/osss]
+      dp[, imwd := (ebmwd - bmwd)/omwd]
+      dp[, iwhc := (ebwhc - bwhc)/owhc]
+      dp[, ipaw := (ebpaw - bpaw)/opaw]
+      
+    } else {
+      
+      # estimate improvement
+      dp[, iyield := (ebyield / byield)]
+      dp[, icec := (ebcec / bcec)]
+      dp[, iphbc := (ebphbc / bphbc)]
+      dp[, imetals := (ebmetals / bmetals)]
+      dp[, icu := (ebcu / bcu)]
+      dp[, izn := (ebzn / bzn)]
+      dp[, ipb := (ebpb / bpb)]
+      dp[, icd := (ebcd / bcd)]
+      dp[, ipmn := (ebpmn / bpmn)]
+      dp[, ihwc := (ebhwc / bhwc)]
+      dp[, iods := (ebods / bods)]
+      dp[, icdec := (ebcdec / bcdec)]
+      dp[, ibd := (ebbd / bbd)]
+      dp[, iwsa := (ebwsa / bwsa)]
+      dp[, isss := (ebsss / bsss)]
+      dp[, imwd := (ebmwd / bmwd)]
+      dp[, iwhc := (ebwhc / bwhc)]
+      dp[, ipaw := (ebpaw / bpaw)]
+      
+    }
+   
+    
+    # melt
+    cols <- colnames(dp)[grepl('^i',colnames(dp))]
+    cols <- cols[cols != 'id']
+   
+    dt3 <- melt(dp,
+                id.vars = c('id','A_C_OF','A_CLAY_MI'),
+                measure.vars = cols,
+                variable.name = 'shi',
+                value.name ='dist_to_max')
+    
+    dt4 <- dt3[!is.na(dist_to_max)]
+    dt4[grepl('hwc|pmn|dec|ods',shi),parmc := 'darkgreen']
+    dt4[grepl('yield',shi),parmc := 'black']
+    dt4[grepl('wsa|mwd|dens|bd|whc|paw',shi),parmc := 'skyblue']
+    dt4[grepl('phbc|cec|cu|pb|zn|cd',shi),parmc := 'orange']
+    dt4[,shi := factor(shi,levels = rev(c('iyield','iphbc','icec','icd','icu','ipb','izn','imetals',
+                                           'ihwc','iods','ipmn','icdec','iwsa','imwd','ibd',
+                                          'iwhc','ipaw','isss')))]
+    # weging contributie of soil health indicators
+    dt4[shi=='ibd', wf := 2/8]
+    dt4[grepl('whc|paw',shi), wf := 1/8]
+    dt4[grepl('wsa|mwd|sss',shi), wf := 1/8]
+    dt4[shi=='icdec', wf := 1/8]
+    dt4[shi=='ihwc', wf := 4/8]
+    dt4[shi=='ipmn', wf := 3/8]
+    dt4[shi=='icec', wf := 3/8]
+    dt4[shi=='iphbc', wf := 1/8]
+    dt4[grepl('cu|pb|zn|cd',shi), wf := 1/32]
+    dt4[shi=='iyield', wf := 8/8]
+    dt4[shi=='iods', wf := 1/8]
+    dt4[shi=='imetals', wf := 1/8]
+    
+    dt4[grepl('hwc|pmn|dec|ods',shi),wf0 := 25]
+    dt4[grepl('yield',shi),wf0 := 25]
+    dt4[grepl('wsa|mwd|dens|bd|whc|paw|sss',shi),wf0 := 25]
+    dt4[grepl('phbc|cec|cu|n|pb|cd|metal',shi),wf0 := 25]
+    
+    dt4[,wf1 := wf0 * wf]
+    
+    dt5 <- dt4[,list(ddtt_av = weighted.mean(dist_to_max,w = wf1),
+                     ddtt_se = sqrt(Hmisc::wtd.var(dist_to_max,weights = wf1,normwt = F))/sqrt(.N),
+                     ddtt_oa = max(dist_to_max),
+                     ddtt_qant = quantile(dist_to_max,0.75),
+                     ddtt_median = median(dist_to_max)),by=id]
+    
+    if(type=='ddtt'){ out <- dt5[,.(ddtt_av,ddtt_se)]}
+    if(type=='summary'){out <- dt5}
+    if(type=='all'){out <- dt4}
+    
+    return(out)
+    
+  }
+  
+  
+  
+# --- step 4. SHI comparison -----------
+  
+  # default soil series with variable SOC
+  dt1 <- data.table(A_C_OF = seq(0.5,100,1), A_CLAY_MI = 3.5, A_SAND_MI = 80, A_PH_CC = 5.4)
+  dt1[,id := .I]
+  set.seed(124)
+  dt1[,A_CN_FR := rnorm(.N,12,2)]
+  dt1[,A_N_RT := A_C_OF * 1000 / A_CN_FR]
+  
+  # make a course example
+  dt.coarse <- copy(dt1)
+  dt.fine <- copy(dt1)
+  dt.fine[,A_CLAY_MI := 50]
+  dt.fine[,A_SAND_MI := 20]
+  
+  # calculate optima
+  dt.coarse[,c('copt','copt_se') := optimcarbon_fix(A_C_OF,A_CLAY_MI,A_SAND_MI,A_PH_CC)]
+  dt.fine[,c('copt','copt_se') := optimcarbon_fix(A_C_OF,A_CLAY_MI,A_SAND_MI,A_PH_CC)]
+  
+  # make logistic shi
+  # a = seq(0,8,0.01)
+  # coarse shi
+  # plot(a,OBIC::evaluate_logistic(a,b=1.9,x0=1.5,v=0.4),type='l',col='black')
+  # medium shi
+  # lines(a,OBIC::evaluate_logistic(a,b=1.5,x0=2.5,v=0.5),col='blue')
+  # fine
+  # lines(a,OBIC::evaluate_logistic(a,b=1.6,x0=3.5,v=0.4),col='red')
+  
+  # calculate SHI evaluation score
+  dt.shi <- data.table(som = seq(0,8,0.01),
+                       coarse = OBIC::evaluate_logistic(seq(0,8,0.01),b=1.9,x0=1.5,v=0.4),
+                       fine = OBIC::evaluate_logistic(seq(0,8,0.01),b=1.6,x0=3.5,v=0.4))
+  
+  # convert optimum to soil score and adapt score for axis max
+  dt.coarse[,a_c_of := dt1$A_C_OF]
+  dt.coarse[,a_som_loi := a_c_of * 2 * 0.1]
+  dt.coarse[, score := a_c_of/copt]
+  dt.coarse[, score_sd := sqrt((copt_se/copt)^2 + (0.0001/a_c_of)^2) * score * sqrt(16)]
+  dt.coarse[,pscore := pmin(1,score)]
+  dt.coarse[,pscore_psd := pmin(1.2,score + score_sd)]
+  dt.coarse[,pscore_msd := score- score_sd]
+  dt.coarse[, texture := 'coarse']
+  
+  # convert optimum to soil score and adapt score for axis max
+  dt.fine[,a_c_of := A_C_OF]
+  dt.fine[,a_som_loi := a_c_of * 2 * 0.1]
+  dt.fine[, score := a_c_of/copt]
+  dt.fine[, score_sd := sqrt((copt_se/copt)^2 + (0.0001/a_c_of)^2) * score * sqrt(16)]
+  dt.fine[,pscore := pmin(1,score)]
+  dt.fine[,pscore_psd := pmin(1.2,score + score_sd)]
+  dt.fine[,pscore_msd := score- score_sd]
+  dt.fine[, texture := 'fine']
+  
+  # classification colouring for sOM
+  df.class <- data.table(xmin = rep(0,5),
+                         xmax = rep(8,5),
+                         ymin = c(0,0.25,0.5,0.75,1.00),
+                         ymax = c(0.25,0.5,0.75,1.0,1.25),
+                         classUK = c('very low', 'low', 'moderate', 'high', 'very high'),
+                         classNL = c('Vrij laag','Laag','Gemiddeld','Hoog','Vrij hoog'))
+  df.class[,classUK := factor(classUK,levels=rev(c('very low', 'low', 'moderate', 'high', 'very high')))]
+  
+  # make a polygon for uncertainty  
+  dt.poly.coarse <- rbind(dt.coarse[1:.N,.(a_som_loi,pscore=pmin(1,pscore_psd))],
+                          dt.coarse[rev(1:.N),.(a_som_loi,pscore=pmin(1,pscore_msd))])
+  dt.poly.coarse <- dt.poly.coarse[a_som_loi<=8]
+  
+  dt.poly.fine <- rbind(dt.fine[1:.N,.(a_som_loi,pscore=pmin(1,pscore_psd))],
+                        dt.fine[rev(1:.N),.(a_som_loi,pscore=pmin(1,pscore_msd))])
+  dt.poly.fine <- dt.poly.fine[a_som_loi<=8]
+  
+  legendti_col <- 'class'
+  col5 <- c('#238b45','#238b45','#ffffbf','#fdae61','#d7191c') # '#abdda4'
+  require(ggplot2)
+  
+  # plot evaluation score for sandy soil
+  p1 <- ggplot(data = dt.coarse, aes(x = a_som_loi)) +theme_bw() +
+        geom_rect(data = df.class, 
+                  aes(x = NULL, y = NULL, xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax, fill = classUK), 
+                  alpha = 0.6, show.legend = FALSE) +
+        geom_polygon(data = dt.poly.coarse,aes(x=a_som_loi,y=pscore),fill='gray75',alpha = 0.5,show.legend = F)+
+        geom_line(data = dt.coarse, 
+                  aes(y = pscore,group = texture,linetype=factor('1',levels=c('1','2')),
+                      color='1'), 
+                  linewidth = 0.8) + xlim(0,8) + 
+          theme(legend.position = c(0.75,0.25)) + 
+        geom_line(data = dt.coarse, aes(y = pmin(1,pscore_psd),linetype='2', color = '2'), linewidth = 0.4,show.legend = F)+
+        geom_line(data = dt.coarse, aes(y = pmin(1,pscore_msd),linetype='2',color = '2'),linewidth = 0.4,show.legend = F)+
+        geom_line(data = dt.shi,aes(x = som, y = coarse,linetype = '3',color='3'),linewidth = 0.8,show.legend = F)+  
+        scale_fill_manual(name = legendti_col, values=col5) +
+        scale_linetype_manual(values = c('solid','solid','dotdash'),
+                              labels = c('mean (this study)','standard deviation (this study)','SHI (Cornell)'),
+                              name ='SOM assessment') +
+        scale_color_manual(values = c('gray25','gray75','gray25'),
+                           labels = c('mean (this study)','standard deviation (this study)','SHI (Cornell)'),
+                           name ='SOM assessment'
+                           ) +
+          scale_y_continuous(limits=c(0, 1), breaks=seq(0, 1.0, by = 0.25)) +
+          xlab('Soil organic matter (%)') + ylab('Score') +
+        labs(title = "Agronomic SOM Assessment Score",
+            subtitle = "for a coarse sandy soil") + ptl
+  
+    
+  # plot evaluation score for fine textured soil
+  p2 <- ggplot(data = dt.fine, aes(x = a_som_loi)) +theme_bw() +
+        geom_rect(data = df.class, 
+                  aes(x = NULL, y = NULL, xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax, fill = classUK), 
+                  alpha = 0.6, show.legend = FALSE) +
+        geom_polygon(data = dt.poly.fine,aes(x=a_som_loi,y=pscore),fill='gray75',alpha = 0.5,show.legend = F)+
+        geom_line(data = dt.fine, 
+                  aes(y = pscore,linetype=factor('1',levels=c('1','2')),color='1'), 
+                  linewidth = 0.8) + xlim(0,8) + 
+        theme(legend.position = c(0.75,0.25)) + 
+        geom_line(data = dt.fine, aes(y = pmin(1,pscore_psd),linetype='2', color = '2'), linewidth = 0.4,show.legend = F)+
+        geom_line(data = dt.fine, aes(y = pmin(1,pscore_msd),linetype='2',color = '2'),linewidth = 0.4,show.legend = F)+
+        geom_line(data = dt.shi,aes(x = som, y = fine,linetype = '3',color='3'),linewidth = 0.8,show.legend = F)+  
+        scale_fill_manual(name = legendti_col, values=col5) +
+        scale_linetype_manual(values = c('solid','solid','dotdash'),
+                              labels = c('mean (this study)','standard deviation (this study)','SHI (Cornell)'),
+                              name ='SOM assessment') +
+        scale_color_manual(values = c('gray25','gray75','gray25'),
+                           labels = c('mean (this study)','standard deviation (this study)','SHI (Cornell)'),
+                           name ='SOM assessment') +
+        scale_y_continuous(limits=c(0, 1), breaks=seq(0, 1.0, by = 0.25)) +
+        xlab('Soil organic matter (%)') + ylab('Score') +
+        labs(title = "Agronomic SOM Assessment Score",
+         subtitle = "for a fine textured clay soil") + ptl
+  
+  p12 <- p1 | p2
+  ggsave(plot=p12,filename = "D:/ESA/04 articles/2023/som_critical_levels/shi_comparison.png",
+          width = 33, height = 17, units = c("cm"), dpi = 1200)
+  
+# --- step 5. plot per indicator -----
+  
+  # default soil series with variable SOC
+  dt1 <- data.table(A_C_OF = c(7.5,7.5), A_CLAY_MI = c(3.5,25), A_SAND_MI = c(80,20), A_PH_CC = c(5.4,6.5))
+  dt1[,id := .I]
+  dt1[,A_N_RT := A_C_OF * 1000 / 12]
+  
+  d1.opt <- optimcarbon_fix(dt1$A_C_OF,
+                            dt1$A_CLAY_MI,
+                            dt1$A_SAND_MI,
+                            dt1$A_PH_CC, 
+                            type ='all')
+  d1.opt[,parm := factor(parm,levels = rev(c('yield','phbc','cec','cd','cu', 'zn','pb',
+                                          'hwc','ods','pmn','cdec','dens','whc','paw','wsa','mwd')))]
+  d1.opt.sand <- d1.opt[id==1,]
+  d1.opt.sand[,copt_av := weighted.mean(copt,w=wf1)]
+  d1.opt.sand[,wfn := 100/.N,by='parmc']
+  d1.opt.sand[,copt_av2 := weighted.mean(copt,w=wfn)]
+  d1.opt.sand[, parmc := factor(parmc,levels= c('black','orange','darkgreen','skyblue'))]
+  
+  d1.opt.clay <- d1.opt[id==2,]
+  d1.opt.clay[,copt_av := weighted.mean(copt,w=wf1)]
+  d1.opt.clay[,wfn := 100/.N,by='parmc']
+  d1.opt.clay[,copt_av2 := weighted.mean(copt,w=wfn)]
+  d1.opt.clay[, parmc := factor(parmc,levels= c('black','orange','darkgreen','skyblue'))]
+  
+  
+  # plot the optimum SOC per soil health indicator for sandy soil
+  pf1 <-  ggplot(data = d1.opt.sand, aes(x= parm, y=copt,color=parmc)) +
+          geom_segment( aes(x=parm, xend=parm, y=0, yend=copt)) +
+          geom_hline(yintercept = d1.opt.sand$copt_av, linetype="dotted", 
+                     color = "black", linewidth=1)+
+          geom_point(size=4, alpha=0.6) +
+          theme_bw() +
+          scale_color_manual(values = c('black','orange','darkgreen','skyblue'),
+                       labels = c('crop yield','chemical','biological','physical'),
+                       name ='SOM assessment')+
+          coord_flip() + ylab('Critical SOC (g/kg)') + xlab('') +
+          theme(legend.position = c(0.8,0.8))+
+          labs(title = "Agronomic SOM Assessment per Soil Health Indicator",
+               subtitle = "for a coarse sandy soil (with 1.5% SOM, 3.5% clay and pH 5.4)") + ptl
+  
+  # plot the optimum SOC per soil health indicator for clay soil
+  pf2 <-  ggplot(data = d1.opt.clay, aes(x= parm, y=copt,color=parmc)) +
+          geom_segment( aes(x=parm, xend=parm, y=0, yend=copt)) +
+          geom_hline(yintercept = d1.opt.clay$copt_av, linetype="dotted", 
+                     color = "black", linewidth=1)+
+          geom_point(size=4, alpha=0.6) +
+          theme_bw() +
+          scale_color_manual(values = c('black','orange','darkgreen','skyblue'),
+                             labels = c('crop yield','chemical','biological','physical'),
+                             name ='SOM assessment')+
+          coord_flip() + ylab('Critical SOC (g/kg)') + xlab('') +
+          theme(legend.position = c(0.8,0.8))+
+          labs(title = "Agronomic SOM Assessment per Soil Health Indicator",
+               subtitle = "for a finetextured clay soil (with 1.5% SOM, 25% clay and pH 6.5)") + ptl
+                    
+  pf12 <- pf1 | pf2 
+  ggsave(filename = "D:/ESA/04 articles/2023/som_critical_levels/230506_opt_funcions.png",
+         plot = pf12, width = 33, height = 17, units = c("cm"), dpi = 1200)
+  
+  
+  
+  
+# --- step 6. plot figures of meta-ptfs ----
   
   # plot figures of the pedotransfer functions
   ptl <- theme(plot.subtitle=element_text(size=10, face="italic", color="black"),
@@ -625,6 +1047,14 @@ optimcarbon <- function(xs, dtr){
          labs(title = "L. Relationship between bulk density and SOC",
               subtitle = "derived from 181 ptfs for mineral soils") + ptl
   
+  p13 <- ggplot(data = dt1,aes(x = A_C_OF,y=ods)) + geom_point() + geom_line()+
+          geom_errorbar(aes(ymin=ods - 0.05, ymax = ods + 0.05),width = 0.2) +
+          ylim(0,1.2) +
+          annotate('text',x = 25, y = 0.5, label = l.ods,parse = T,size = 4,adj=0) + 
+          xlab('organic carbon content (g/kg)') + ylab('disease resistance score') + theme_bw() +
+          labs(title = "M. Relationship between disease resistance and SOC",
+               subtitle = "derived from OBIC for mineral soils") + ptl
+        
   require(patchwork)
   
   pfin <- (p1 | p2 | p3 | p4) / (p5 | p6 | p7 | p8) / (p9 | p10 | p11 | p12) 
@@ -632,7 +1062,7 @@ optimcarbon <- function(xs, dtr){
          plot = pfin, width = 65, height = 40, units = c("cm"), dpi = 1200)
 
 
-# --- step 5. apply this approach on integrator dataset ----
+# --- step 7. apply this approach on integrator dataset ----
 
   # load an earlier prepared dataset
   db.int <- readRDS('D:/ESA/04 articles/2023/som_critical_levels/dbint.rds')
@@ -663,7 +1093,7 @@ optimcarbon <- function(xs, dtr){
   }
   
 
-# --- step 6. plot the EU results ----
+# --- step 8. apply on the EU scale ----
   
   # set theme
   theme_set(theme_bw())
@@ -739,3 +1169,176 @@ optimcarbon <- function(xs, dtr){
   ggsave(filename = "D:/ESA/04 articles/2023/som_critical_levels/230427_eu_copt.png",
          plot = pm1, width = 25, height = 25, units = c("cm"), dpi = 1200)
 
+# --- step 9. apply on global scale ------
+  
+  # require packages
+  require(sf);require(terra)
+  
+  # get the rasters with soil properties 
+  rlist <- list.files('D:/DATA/01 soil/',pattern='.tif$',full.names = T)
+  rlist <- rlist[grepl('0_5',rlist)]
+  r1 <- sds(rlist)
+  names(r1) <- gsub('_mean_0_5|isric_','',names(r1))
+  r.soil <- rast(r1)  
+  names(r.soil) <- names(r1)
+  
+  # load crop area harvested as raster
+  if(FALSE){
+    
+    # get the file names of the tiffs
+    rfiles <- list.files('D:/DATA/04 crop/spam2010', pattern = '_H.tif$',full.names = TRUE)
+    
+    # read in all files and convert to spatrasters
+    r.crop <- sds(rfiles)
+    r.crop <- rast(r.crop)
+    
+    # aggregate to 0.5 x 0.5 degree
+    r.crop <- terra::aggregate(r.crop,fact = 0.5/0.083333,fun = "sum", na.rm=T)
+    
+    # adjust names
+    names(r.crop) <- stringr::str_extract(names(r.crop),'[A-Z]{4}')
+    
+    # sum all areas for all crops
+    r.crop.all = app(r.crop,fun = sum,na.rm=T)
+    names(r.crop.all) <- 'croparea'
+    
+    # reproject to isric map
+    r.crop <- resample(r.crop.all,r.soil,method='bilinear')
+    
+    # write raster
+    terra::writeRaster(r.crop,'D:/ESA/04 articles/2023/som_critical_levels/global_crops.tif', overwrite = TRUE)
+    
+    
+  } else {
+    
+    # read the raster with cropping data
+    r.crop <- rast('D:/ESA/04 articles/2023/som_critical_levels/global_crops.tif')
+    
+  }
+  
+  r.all <- c(r.soil,r.crop)
+  r.df <- as.data.frame(r.all,xy = TRUE, na.rm = FALSE)
+  r.df <- as.data.table(r.df)  
+  r.df[,id := .I]
+  
+  r.dfa <- r.df[!is.na(croparea) & croparea>0]
+  rm(r.all)
+  
+  # update units to common ones
+  r.dfa[,bdod := bdod * 1000/ 100]
+  r.dfa[,clay := clay * 0.1]
+  r.dfa[,sand := sand * 0.1]
+  r.dfa[,silt := silt * 0.1]
+  r.dfa[,ntot := ntot * 1000 / 100]
+  r.dfa[,phw := phw * 0.1]
+  r.dfa[,soc := soc * 0.1]
+  
+  cols <- colnames(r.dfa)[!grepl('^x|^y|^id|crop',colnames(r.dfa))]
+  r.dfa[, c(cols) := lapply(.SD,function(x) fifelse(x <= 0|is.na(x), 0.01,x)),.SDcols = cols]
+  r.dfa[, c(cols) := lapply(.SD,function(x) fifelse(x > quantile(x,0.99), 0.01,x)),.SDcols = cols]
+  
+  r.dfa[,a_ph_cc := 6.01 + 1.384*(2.285 - 4.819/(1 + exp(-3.935 + 0.608 *phw) + 0.092 * log(0.2)))]
+  
+  # calculate optimum soc
+  r.dfa[, c('copt','copt_se') := optimcarbon_fix(A_C_OF = soc,
+                                                 A_CLAY_MI = clay,
+                                                 A_SAND_MI = sand,
+                                                 A_PH_CC = a_ph_cc,
+                                                 type='copt')]
+  
+  # calculate the weighed average progress in Soil Health
+  r.dfa[, c('cddt','cddt_se') := predcarbon(A_C_OF = soc,
+                                           A_CLAY_MI = clay,
+                                           A_SAND_MI = sand,
+                                           A_PH_CC = a_ph_cc,
+                                           type='ddtt',type2='relative')]
+  
+  r.dfa.fin <- rbind(r.dfa,r.df[is.na(croparea) | croparea<=0],fill = T)
+  setorder(r.dfa.fin,'id')
+  saveRDS(r.dfa.fin,file='D:/ESA/04 articles/2023/som_critical_levels/dbglobal.rds')
+  saveRDS(r.dfa,file='D:/ESA/04 articles/2023/som_critical_levels/dbglobal_relchange.rds')
+# --- step 10. plot global maps ---------
+  
+  library(rnaturalearth)
+  library(rnaturalearthdata)
+  
+  # get base world map
+  world <- ne_countries(scale = "medium", returnclass = "sf")
+  world <- world[!grepl('Antarctica|Seven', world$continent),]
+  
+  r.plot <- copy(r.dfa.fin)
+  r.plot <- r.plot[!is.na(copt)]
+  
+  r.plot <- copy(r.dfa)
+  r.plot <- r.plot[!is.na(cddt)]
+  
+  # plot a basic world map plot
+  pbreaks <- c(0,14,15,16,18,20)
+  plabs <-  c('<13','13-15','15-16','16-18','18-20')
+  p1 <- ggplot(data = world) + geom_sf(color = "black", fill = "gray92") +
+        geom_tile(data = r.plot,
+                  aes(x=x,y=y,fill= cut(copt, pbreaks,labels = plabs))) +
+        scale_fill_viridis_d(direction=-1,na.translate = F)+ 
+        theme_bw() +
+        labs(fill = expression(SOC['opt'] (g/kg)))+
+        theme(text = element_text(size = 12),
+              legend.text=element_text(size=6),
+              legend.title = element_text(size=8),
+              legend.position = c(0.15,0.26),
+              legend.key.size = unit(0.5,'cm'),
+              legend.background = element_rect(fill = "white",color='white'),
+              panel.border = element_blank(),
+              plot.title = element_text(hjust = 0.5,size=14))+ 
+        xlab("") + ylab("") +
+        ggtitle("Critical SOC in croplands") +
+        coord_sf(crs = 4326)
+  ggsave(plot = p1, filename = 'D:/ESA/04 articles/2023/som_critical_levels/230506_socopt_global.png',
+         width = 20, height = 10, units = c("cm"), dpi = 1200)  
+  
+  r.plot[,cddt := cddt * 100]
+  pbreaks <- c(0,0.92,1.0,1.3,1.8,1000)
+  plabs <-  c('<0.92','0.92-1.00','1.00-1.30','1.30-1.80','>1.80')
+  r.plot[,ccddt := cut(cddt,breaks = pbreaks,labels = plabs)]
+  
+  p2 <- ggplot(data = world) + geom_sf(color = "black", fill = "gray92") +
+        geom_tile(data = r.plot,aes(x=x,y=y,fill= ccddt)) +
+        scale_fill_viridis_d(direction=-1)+ 
+        theme_bw() +
+        labs(fill = 'Change in Soil Health (%)\n per extra unit C (g/kg)') +
+        theme(text = element_text(size = 12),
+              legend.text=element_text(size=6),
+              legend.title = element_text(size=8),
+              legend.position = c(0.15,0.26),
+              legend.key.size = unit(0.5,'cm'),
+              legend.background = element_rect(fill = "white",color='white'),
+              panel.border = element_blank(),
+              plot.title = element_text(hjust = 0.5,size=14),
+              plot.subtitle = element_text(hjust=0.5,size=10,face="italic"))+ 
+        xlab("") + ylab("") +
+        ggtitle("Change in Soil Health (%)",subtitle = 'per unit change in SOC (g/kg)') +
+        coord_sf(crs = 4326)
+  ggsave(plot = p2, filename = 'D:/ESA/04 articles/2023/som_critical_levels/230506_socchange_global2.png',
+         width = 20, height = 10, units = c("cm"), dpi = 1200)
+  
+# ---- step 10 quantifying cobenefits ----
+  
+  r.dfa.fin <- readRDS('D:/ESA/04 articles/2023/som_critical_levels/dbglobal.rds')
+  r.plot <- r.dfa.fin[!is.na(copt)]
+  r.plot.d4 <- predcarbon(A_C_OF = r.plot$soc,
+                          A_CLAY_MI = r.plot$clay,
+                          A_SAND_MI = r.plot$sand,
+                          A_PH_CC = r.plot$a_ph_cc,
+                          type='all')
+  r.plot2 <- dcast(r.plot.d4,id~shi,value.var='dist_to_max')
+  r.plot[,id := .I]
+  r.plot2 <- merge(r.plot[,.(x,y,id,croparea,A_C_OF = soc)],r.plot2,by='id')
+  
+  # estimate area weighted average
+  cols <- colnames(r.plot2)[grepl('^i',colnames(r.plot2))]
+  cols <- cols[!cols =='id']
+
+  r.plot3a <- r.plot2[,lapply(.SD,function(x) weighted.mean(x,w = croparea)),.SDcols = cols]  
+  r.plot3b <- r.plot2[,lapply(.SD,function(x) sqrt(Hmisc::wtd.var(x,weights = croparea,normwt = F))),.SDcols = cols] 
+  r.plot3 <- data.table(shi = cols,dsoc = round(unlist(r.plot3a)*100,1),dsoc_sd = round(unlist(r.plot3b)*100,3))
+  
+  
