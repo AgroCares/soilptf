@@ -88,7 +88,7 @@ The bulk density declines when more SOC is available. This is illustrated below 
 ```{r bd_fig,fig.show='asis',echo=FALSE, out.width="100%", dpi = 300}
 
 # for mineral soils only: 20% OS = 10% OC = 100 g/kg
-  dt1 <- data.table(A_C_OF = seq(0.5,100,1), A_CLAY_MI = 7.5, A_SAND_MI = 60, A_PH_CC = 5.4)
+  dt1 <- data.table(A_C_OF = seq(0.5,100,1), A_CLAY_MI = 7.5, A_SAND_MI = 60, A_PH_CC = 5.4,)
   dt1[,id := .I]
   set.seed(124)
   dt1[,A_CN_FR := rnorm(.N,12,2)]
