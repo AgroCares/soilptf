@@ -172,6 +172,9 @@ rm(list=ls())
                                   l.hwc,l.ods,l.pmn,l.cdec,l.bd,l.whc,l.paw,l.wsa,
                                   l.mwd,l.sss))
     
+  fwrite(tabfuns,file = 'D:/ESA/04 articles/2023/som_critical_levels/230508 tabel functions.csv')
+  
+  
 # optimum crop yield (see Young et al., 2021)
 # here is the target: dt1[, cyield1 := 0.5 + (1.75 - 0.5) * (A_CLAY_MI - 4)/(38 - 4)]
 # model of Oldfield, 118 kg N/ha default
@@ -550,7 +553,7 @@ optimcarbon <- function(xs, dtr){
   }
   
   # predict a change in carbon (expressed in delta distance to /above target)
-  predcarbon <- function(A_C_OF,A_CLAY_MI,A_SAND_MI,A_PH_CC,type = 'ddtt',type2 ='max'){
+  predcarbon <- function(A_C_OF,A_CLAY_MI,A_SAND_MI,A_PH_CC,type = 'ddtt',type2 ='max',dsoc = 1){
     
     # make internal data.table  
     dp <- data.table(A_C_OF = A_C_OF,
@@ -586,25 +589,25 @@ optimcarbon <- function(xs, dtr){
     dp[, bpaw := predict(m.paw,newdata = data.frame(A_C_OF))]
     
     # predict oc dependent crop yield, and SHI for situation with 1 g/kg C extra
-    dp[, ebyield := predict(m.cyield,newdata = data.frame(A_C_OF = A_C_OF + 1))]
+    dp[, ebyield := predict(m.cyield,newdata = data.frame(A_C_OF = A_C_OF + dsoc))]
     dp[A_C_OF > 30, ebyield := 3.3]
-    dp[, ebcec := predict(m.cec,newdata = data.frame(A_C_OF =A_C_OF + 1))]
-    dp[, ebphbc := predict(m.phbc,newdata = data.frame(A_C_OF =A_C_OF + 1))]
-    dp[, ebmetals := predict(m.metal,newdata = data.frame(A_C_OF =A_C_OF + 1))]
-    dp[, ebcu := predict(m.cu,newdata = data.frame(A_C_OF =A_C_OF + 1))]
-    dp[, ebzn := predict(m.zn,newdata = data.frame(A_C_OF =A_C_OF + 1))]
-    dp[, ebpb := predict(m.pb,newdata = data.frame(A_C_OF =A_C_OF + 1))]
-    dp[, ebcd := predict(m.cd,newdata = data.frame(A_C_OF =A_C_OF + 1))]
-    dp[, ebpmn := predict(m.pmn,newdata = data.frame(A_C_OF =A_C_OF + 1))]
-    dp[, ebhwc := predict(m.hwc,newdata = data.frame(A_C_OF =A_C_OF + 1))]
-    dp[, ebods := OBIC::evaluate_logistic((A_C_OF + 1)*2/10, b = 1.2, x0 = 1.7,v = 0.4)]
-    dp[, ebcdec := predict(m.cdec,newdata = data.frame(A_C_OF =A_C_OF + 1))]
-    dp[, ebbd :=  predict(m.bd,newdata = data.frame(A_C_OF =A_C_OF + 1))]
-    dp[, ebwsa := predict(m.wsa,newdata = data.frame(A_C_OF =A_C_OF + 1))]
-    dp[, ebsss := predict(m.sss,newdata = data.frame(A_C_OF =A_C_OF + 1))]
-    dp[, ebmwd := predict(m.mwd,newdata = data.frame(A_C_OF =A_C_OF + 1))]
-    dp[, ebwhc := predict(m.whc,newdata = data.frame(A_C_OF =A_C_OF + 1))]
-    dp[, ebpaw := predict(m.paw,newdata = data.frame(A_C_OF =A_C_OF + 1))]
+    dp[, ebcec := predict(m.cec,newdata = data.frame(A_C_OF =A_C_OF + dsoc))]
+    dp[, ebphbc := predict(m.phbc,newdata = data.frame(A_C_OF =A_C_OF + dsoc))]
+    dp[, ebmetals := predict(m.metal,newdata = data.frame(A_C_OF =A_C_OF + dsoc))]
+    dp[, ebcu := predict(m.cu,newdata = data.frame(A_C_OF =A_C_OF + dsoc))]
+    dp[, ebzn := predict(m.zn,newdata = data.frame(A_C_OF =A_C_OF + dsoc))]
+    dp[, ebpb := predict(m.pb,newdata = data.frame(A_C_OF =A_C_OF + dsoc))]
+    dp[, ebcd := predict(m.cd,newdata = data.frame(A_C_OF =A_C_OF + dsoc))]
+    dp[, ebpmn := predict(m.pmn,newdata = data.frame(A_C_OF =A_C_OF + dsoc))]
+    dp[, ebhwc := predict(m.hwc,newdata = data.frame(A_C_OF =A_C_OF + dsoc))]
+    dp[, ebods := OBIC::evaluate_logistic((A_C_OF + dsoc)*2/10, b = 1.2, x0 = 1.7,v = 0.4)]
+    dp[, ebcdec := predict(m.cdec,newdata = data.frame(A_C_OF =A_C_OF + dsoc))]
+    dp[, ebbd :=  predict(m.bd,newdata = data.frame(A_C_OF =A_C_OF + dsoc))]
+    dp[, ebwsa := predict(m.wsa,newdata = data.frame(A_C_OF =A_C_OF + dsoc))]
+    dp[, ebsss := predict(m.sss,newdata = data.frame(A_C_OF =A_C_OF + dsoc))]
+    dp[, ebmwd := predict(m.mwd,newdata = data.frame(A_C_OF =A_C_OF + dsoc))]
+    dp[, ebwhc := predict(m.whc,newdata = data.frame(A_C_OF =A_C_OF + dsoc))]
+    dp[, ebpaw := predict(m.paw,newdata = data.frame(A_C_OF =A_C_OF + dsoc))]
     
     # factor to estimate max
     cfmax <- 3
@@ -1073,22 +1076,30 @@ optimcarbon <- function(xs, dtr){
     db.int <- fread('D:/ESA/04 articles/2023/som_critical_levels/db_final_europe.csv')
     db.int <- db.int[,.(ncu,crop_name,area_ncu,clay,ph,cn,soc_ref)]
     db.int <- db.int[,.(area = sum(area_ncu),A_CLAY_MI = clay[1],ph = ph[1],cn = cn[1],A_C_OF = soc_ref[1]*10),by=ncu]
+    db.int[,A_SAND_MI := (100-A_CLAY_MI)*0.5]
     
-    # apply the function multi-session (since function is not yet optimized)
-    require(future.apply); require(progressr)
-    plan(multisession)
+    # calculate optimum soc
+    db.int[, c('copt','copt_se') := optimcarbon_fix(A_C_OF = A_C_OF,
+                                                   A_CLAY_MI = A_CLAY_MI,
+                                                   A_SAND_MI = A_SAND_MI,
+                                                   A_PH_CC = ph,
+                                                   type='copt')]
     
-    # Run the schedule for farm evaluation
-    runcoptmodel <- function(xs) {
-      p <- progressor(along = xs, enable = TRUE)
-      dt <- future_lapply(xs, optimcarbon, dtr = db.int)
-    }
-    out <- runcoptmodel(1:nrow(db.int))
-    
-    # combine all outputs into one vector and add to original data.table
-    out <- unlist(out)
-    db.int[,copt := out]
-    saveRDS(db.int,'D:/ESA/04 articles/2023/som_critical_levels/dbint.rds')
+    # # apply the function multi-session (since function is not yet optimized)
+    # require(future.apply); require(progressr)
+    # plan(multisession)
+    # 
+    # # Run the schedule for farm evaluation
+    # runcoptmodel <- function(xs) {
+    #   p <- progressor(along = xs, enable = TRUE)
+    #   dt <- future_lapply(xs, optimcarbon, dtr = db.int)
+    # }
+    # out <- runcoptmodel(1:nrow(db.int))
+    # 
+    # # combine all outputs into one vector and add to original data.table
+    # out <- unlist(out)
+    # db.int[,copt := out]
+    # saveRDS(db.int,'D:/ESA/04 articles/2023/som_critical_levels/dbint.rds')
     
   }
   
@@ -1152,7 +1163,8 @@ optimcarbon <- function(xs, dtr){
       labs(fill = name) +
       theme(text = element_text(size = 16),
             legend.text=element_text(size=12),
-            legend.position = 'right',
+            #legend.position = 'right',
+            legend.position = c(0.2,0.8),
             legend.background = element_rect(fill = "white",color='white'),
             panel.border = element_blank(),
             plot.title = element_text(hjust = 0.5)) +
@@ -1163,10 +1175,10 @@ optimcarbon <- function(xs, dtr){
   pm1 <- visualize(raster = r.fin,
                  layer = 'copt_dif',
                  name = "Distance to Copt\n(g/kg)",
-                 breaks = c(-1000,0,5,10,50),
+                 breaks = c(-5000,0,5,10,50),
                  labels = c('< 0','0-5','5-10','>10'),
-                 ftitle = 'Distance to optimum soil C content (g/kg)')
-  ggsave(filename = "D:/ESA/04 articles/2023/som_critical_levels/230427_eu_copt.png",
+                 ftitle = 'Distance to critical soil C content (g/kg)')
+  ggsave(filename = "D:/ESA/04 articles/2023/som_critical_levels/230508_eu_copt.png",
          plot = pm1, width = 25, height = 25, units = c("cm"), dpi = 1200)
 
 # --- step 9. apply on global scale ------
@@ -1176,7 +1188,7 @@ optimcarbon <- function(xs, dtr){
   
   # get the rasters with soil properties 
   rlist <- list.files('D:/DATA/01 soil/',pattern='.tif$',full.names = T)
-  rlist <- rlist[grepl('0_5',rlist)]
+  rlist <- rlist[grepl('0_5',rlist)|grepl('soc_',rlist)]
   r1 <- sds(rlist)
   names(r1) <- gsub('_mean_0_5|isric_','',names(r1))
   r.soil <- rast(r1)  
@@ -1224,6 +1236,11 @@ optimcarbon <- function(xs, dtr){
   r.dfa <- r.df[!is.na(croparea) & croparea>0]
   rm(r.all)
   
+  # update SOC for first 30 cm and filter values > 0
+  r.dfa[, soc := (5 * soc + 10 * soc_mean_5_15 + 15 * soc_mean_15_30)/30]
+  r.dfa[,c('soc_mean_15_30', 'soc_mean_5_15') := NULL]
+  #r.dfa <- r.dfa[soc>0]
+  
   # update units to common ones
   r.dfa[,bdod := bdod * 1000/ 100]
   r.dfa[,clay := clay * 0.1]
@@ -1246,21 +1263,32 @@ optimcarbon <- function(xs, dtr){
                                                  A_PH_CC = a_ph_cc,
                                                  type='copt')]
   
-  # calculate the weighed average progress in Soil Health
+  # calculate the weighed average progress in Soil Health after change 1 unit
   r.dfa[, c('cddt','cddt_se') := predcarbon(A_C_OF = soc,
                                            A_CLAY_MI = clay,
                                            A_SAND_MI = sand,
                                            A_PH_CC = a_ph_cc,
                                            type='ddtt',type2='relative')]
   
-  r.dfa.fin <- rbind(r.dfa,r.df[is.na(croparea) | croparea<=0],fill = T)
-  setorder(r.dfa.fin,'id')
-  saveRDS(r.dfa.fin,file='D:/ESA/04 articles/2023/som_critical_levels/dbglobal.rds')
-  saveRDS(r.dfa,file='D:/ESA/04 articles/2023/som_critical_levels/dbglobal_relchange.rds')
+  # calculate the weighed average progress in Soil Health after change 10 unit
+  r.dfa[, c('cddt10','cddt10_se') := predcarbon(A_C_OF = soc,
+                                            A_CLAY_MI = clay,
+                                            A_SAND_MI = sand,
+                                            A_PH_CC = a_ph_cc,
+                                            type='ddtt',type2='relative',
+                                            dsoc = 10)]
+  
+  #r.dfa.fin <- rbind(r.dfa,r.df[is.na(croparea) | croparea<=0],fill = T)
+  #setorder(r.dfa.fin,'id')
+  saveRDS(r.dfa,file='D:/ESA/04 articles/2023/som_critical_levels/dbglobal.rds')
+  #saveRDS(r.dfa,file='D:/ESA/04 articles/2023/som_critical_levels/dbglobal_relchange.rds')
+  
 # --- step 10. plot global maps ---------
   
   library(rnaturalearth)
   library(rnaturalearthdata)
+  
+  r.dfa.fin <- readRDS('D:/ESA/04 articles/2023/som_critical_levels/dbglobal.rds')
   
   # get base world map
   world <- ne_countries(scale = "medium", returnclass = "sf")
@@ -1268,11 +1296,12 @@ optimcarbon <- function(xs, dtr){
   
   r.plot <- copy(r.dfa.fin)
   r.plot <- r.plot[!is.na(copt)]
+  r.plot[,cdiff := copt- soc]
   
   r.plot <- copy(r.dfa)
   r.plot <- r.plot[!is.na(cddt)]
   
-  # plot a basic world map plot
+  # plot a basic world map plot (using dbglobal.rds)
   pbreaks <- c(0,14,15,16,18,20)
   plabs <-  c('<13','13-15','15-16','16-18','18-20')
   p1 <- ggplot(data = world) + geom_sf(color = "black", fill = "gray92") +
@@ -1292,9 +1321,36 @@ optimcarbon <- function(xs, dtr){
         xlab("") + ylab("") +
         ggtitle("Critical SOC in croplands") +
         coord_sf(crs = 4326)
-  ggsave(plot = p1, filename = 'D:/ESA/04 articles/2023/som_critical_levels/230506_socopt_global.png',
+  ggsave(plot = p1, filename = 'D:/ESA/04 articles/2023/som_critical_levels/230508_socopt_global.png',
          width = 20, height = 10, units = c("cm"), dpi = 1200)  
   
+  # plot difference critical and current (using dbglobal.rds)
+  pbreaks <- c(-1000,-10,0,10,1000)
+  plabs <-  c('< -10','-10 - 0','0 - 10','>10')
+  r.plot[,ccdiff := cut(cdiff,breaks = pbreaks,labels = plabs)]
+  
+  p2 <- ggplot(data = world) + geom_sf(color = "black", fill = "gray92") +
+    geom_tile(data = r.plot,aes(x=x,y=y,fill= ccdiff)) +
+    scale_fill_viridis_d(direction=-1)+ 
+    theme_bw() +
+    labs(fill = 'Difference in SOC\n critical minus current') +
+    theme(text = element_text(size = 12),
+          legend.text=element_text(size=6),
+          legend.title = element_text(size=8),
+          legend.position = c(0.15,0.26),
+          legend.key.size = unit(0.5,'cm'),
+          legend.background = element_rect(fill = "white",color='white'),
+          panel.border = element_blank(),
+          plot.title = element_text(hjust = 0.5,size=14),
+          plot.subtitle = element_text(hjust=0.5,size=10,face="italic"))+ 
+    xlab("") + ylab("") +
+    ggtitle("Difference between critical and current SOC (g/kg)") +
+    coord_sf(crs = 4326)
+  ggsave(plot = p2, filename = 'D:/ESA/04 articles/2023/som_critical_levels/230506_soc_critdiff.png',
+         width = 20, height = 10, units = c("cm"), dpi = 1200)
+  
+  
+  # plot relative change (using dbglobal.rds)
   r.plot[,cddt := cddt * 100]
   pbreaks <- c(0,0.92,1.0,1.3,1.8,1000)
   plabs <-  c('<0.92','0.92-1.00','1.00-1.30','1.30-1.80','>1.80')
@@ -1320,15 +1376,77 @@ optimcarbon <- function(xs, dtr){
   ggsave(plot = p2, filename = 'D:/ESA/04 articles/2023/som_critical_levels/230506_socchange_global2.png',
          width = 20, height = 10, units = c("cm"), dpi = 1200)
   
+  # plot relative change with 10 g C/kg (using dbglobal_relchange.rds)
+  r.plot[,cddt := (cddt -1)* 100]
+  pbreaks <- c(0,0.92,1.0,1.3,1.8,1000)
+  plabs <-  c('<0.92','0.92-1.00','1.00-1.30','1.30-1.80','>1.80')
+  r.plot[,ccddt := cut(cddt,breaks = pbreaks,labels = plabs)]
+  
+  r.plot[,cddt10 := (cddt10 -1)* 100]
+  pbreaks <- c(0,5,10,15,30,1000)
+  plabs <-  c('<5','5-10','10-15','15-30','>30')
+  r.plot[,ccddt10 := cut(cddt10,breaks = pbreaks,labels = plabs)]
+  
+  p3 <- ggplot(data = world) + geom_sf(color = "black", fill = "gray92") +
+        geom_tile(data = r.plot,aes(x=x,y=y,fill= ccddt10)) +
+        scale_fill_viridis_d(direction=-1)+ 
+        theme_bw() +
+        labs(fill = 'Change in Soil Health (%)\n per 1% increase of SOC') +
+        theme(text = element_text(size = 12),
+              legend.text=element_text(size=6),
+              legend.title = element_text(size=8),
+              legend.position = c(0.15,0.26),
+              legend.key.size = unit(0.5,'cm'),
+              legend.background = element_rect(fill = "white",color='white'),
+              panel.border = element_blank(),
+              plot.title = element_text(hjust = 0.5,size=14),
+              plot.subtitle = element_text(hjust=0.5,size=10,face="italic"))+ 
+        xlab("") + ylab("") +
+        ggtitle("Change in Soil Health (%)",subtitle = 'per 1% change in SOC') +
+        coord_sf(crs = 4326)
+  ggsave(plot = p3, filename = 'D:/ESA/04 articles/2023/som_critical_levels/230506_socchange_global3_10.png',
+         width = 20, height = 10, units = c("cm"), dpi = 1200)
+
+  # soc current (g/kg)
+  pbreaks <- c(0,5,10,15,30,1000)
+  plabs <-  c('<5','5-10','10-15','15-30','>30')
+  r.plot[,csoc := cut(soc,breaks = pbreaks,labels = plabs)]
+  p4 <- ggplot(data = world) + geom_sf(color = "black", fill = "gray92") +
+        geom_tile(data = r.plot,aes(x=x,y=y,fill= csoc)) +
+        scale_fill_viridis_d(direction=-1)+ 
+        theme_bw() +
+        labs(fill = 'Current SOC (g / kg)') +
+        theme(text = element_text(size = 12),
+              legend.text=element_text(size=6),
+              legend.title = element_text(size=8),
+              legend.position = c(0.15,0.26),
+              legend.key.size = unit(0.5,'cm'),
+              legend.background = element_rect(fill = "white",color='white'),
+              panel.border = element_blank(),
+              plot.title = element_text(hjust = 0.5,size=14),
+              plot.subtitle = element_text(hjust=0.5,size=10,face="italic"))+ 
+        xlab("") + ylab("") +
+        ggtitle("Current SOC in topsoil (0-30cm)") +
+        coord_sf(crs = 4326)
+  ggsave(plot = p4, filename = 'D:/ESA/04 articles/2023/som_critical_levels/230508_currentsoc.png',
+         width = 20, height = 10, units = c("cm"), dpi = 1200)
+  
+  d.bp <- r.plot[,.(id,current = soc,critical = copt)]
+  d.bp <- melt(d.bp,id.vars='id',value.name='soc')  
+  p4 <- ggplot(d.bp,aes(x = soc)) + 
+        geom_density(data = d.bp[variable=='original'],fill='red',alpha=0.2) + 
+        geom_density(data = d.bp[variable=='critical'],fill='blue',alpha=1)
+  
 # ---- step 10 quantifying cobenefits ----
   
+  # relative change in SHI by 10 g C kg-1 extra C
   r.dfa.fin <- readRDS('D:/ESA/04 articles/2023/som_critical_levels/dbglobal.rds')
-  r.plot <- r.dfa.fin[!is.na(copt)]
+  r.plot <- r.dfa.fin[!is.na(cddt)]
   r.plot.d4 <- predcarbon(A_C_OF = r.plot$soc,
                           A_CLAY_MI = r.plot$clay,
                           A_SAND_MI = r.plot$sand,
                           A_PH_CC = r.plot$a_ph_cc,
-                          type='all')
+                          type='all',dsoc = 10)
   r.plot2 <- dcast(r.plot.d4,id~shi,value.var='dist_to_max')
   r.plot[,id := .I]
   r.plot2 <- merge(r.plot[,.(x,y,id,croparea,A_C_OF = soc)],r.plot2,by='id')
@@ -1340,5 +1458,5 @@ optimcarbon <- function(xs, dtr){
   r.plot3a <- r.plot2[,lapply(.SD,function(x) weighted.mean(x,w = croparea)),.SDcols = cols]  
   r.plot3b <- r.plot2[,lapply(.SD,function(x) sqrt(Hmisc::wtd.var(x,weights = croparea,normwt = F))),.SDcols = cols] 
   r.plot3 <- data.table(shi = cols,dsoc = round(unlist(r.plot3a)*100,1),dsoc_sd = round(unlist(r.plot3b)*100,3))
-  
+r.plot3  
   

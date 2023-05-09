@@ -3441,7 +3441,7 @@ sptf_cec76 <- function(A_SOM_LOI, A_SAND_MI, A_PH_WA) {
 sptf_cec77 <- function(A_C_OF, A_CLAY_MI,A_SILT_MI,A_SAND_MI, A_PH_WA) {
   
   # Check input
-  arg.length <- max(length(A_C_OF), length(A_SAND_MI),length(A_SILT_MI),length(A_SAND_MI),length(A_PH_WA))
+  arg.length <- max(length(A_C_OF), length(A_CLAY_MI),length(A_SILT_MI),length(A_SAND_MI),length(A_PH_WA))
   checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000,len = arg.length)
   checkmate::assert_numeric(A_PH_WA, lower = 3, upper = 12, len = arg.length)
   checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
@@ -3486,7 +3486,7 @@ sptf_cec77 <- function(A_C_OF, A_CLAY_MI,A_SILT_MI,A_SAND_MI, A_PH_WA) {
 sptf_cec78 <- function(A_SOM_LOI, A_CLAY_MI,A_SILT_MI, A_PH_WA) {
   
   # Check input
-  arg.length <- max(length(A_SOM_LOI), length(A_SAND_MI),length(A_SILT_MI),length(A_PH_WA))
+  arg.length <- max(length(A_SOM_LOI), length(A_CLAY_MI),length(A_SILT_MI),length(A_PH_WA))
   checkmate::assert_numeric(A_SOM_LOI, lower = 0, upper = 100,len = arg.length)
   checkmate::assert_numeric(A_PH_WA, lower = 3, upper = 12, len = arg.length)
   checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
