@@ -5,7 +5,7 @@ test_that("decomposition functions returns the correct values", {
   
   
   # Define test data
-  A_C_OF <- c(500, 200)
+  A_C_OF <- c(50, 20)
   A_N_RT <- c(1500, 2500)
   years <- c(5, 25)
   
@@ -13,7 +13,7 @@ test_that("decomposition functions returns the correct values", {
   
   expect_equal(
     sptf_cdec1(A_C_OF = A_C_OF, A_N_RT = A_N_RT, years = years),
-    expected = c(-154.982225, -4.040268),
+    expected = c(2.2, 6.02),
     tolerance = 0.01
   )
   

@@ -4,7 +4,7 @@
 \alias{sptf_cec29}
 \title{Calculate the CEC}
 \usage{
-sptf_cec29(A_SOM_LOI, A_CLAY_MI, A_SILT_MI, A_CACO3_MI, A_PH_CC)
+sptf_cec29(A_SOM_LOI, A_CLAY_MI, A_SILT_MI, A_CACO3_IF, A_PH_CC)
 }
 \arguments{
 \item{A_SOM_LOI}{(numeric) The percentage organic matter in the soil (\%).}
@@ -13,7 +13,7 @@ sptf_cec29(A_SOM_LOI, A_CLAY_MI, A_SILT_MI, A_CACO3_MI, A_PH_CC)
 
 \item{A_SILT_MI}{(numeric) The silt content of the soil (\%).}
 
-\item{A_CACO3_MI}{(numeric) The carbonate content of the soil (\%).}
+\item{A_CACO3_IF}{(numeric) The carbonate content of the soil (\%).}
 
 \item{A_PH_CC}{(numeric) The acidity of the soil, pH in CaCl2 (-).}
 }

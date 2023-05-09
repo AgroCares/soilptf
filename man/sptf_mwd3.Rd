@@ -4,7 +4,7 @@
 \alias{sptf_mwd3}
 \title{Calculate the Mean Weight Diamater}
 \usage{
-sptf_mwd3(A_C_OF, A_CEC_CO, A_CLAY_MI, A_SILT_MI, A_PH_WA, A_CACO3_MI)
+sptf_mwd3(A_C_OF, A_CEC_CO, A_CLAY_MI, A_SILT_MI, A_PH_WA, A_CACO3_IF)
 }
 \arguments{
 \item{A_C_OF}{(numeric) The fraction organic carbon in the soil (g / kg).}
@@ -17,7 +17,7 @@ sptf_mwd3(A_C_OF, A_CEC_CO, A_CLAY_MI, A_SILT_MI, A_PH_WA, A_CACO3_MI)
 
 \item{A_PH_WA}{(numeric) The acidity of the soil, pH in water (-)}
 
-\item{A_CACO3_MI}{(numeric) The calcium carbonate content of the soil (\%)}
+\item{A_CACO3_IF}{(numeric) The calcium carbonate content of the soil (\%)}
 }
 \description{
 Calculate the Mean Weight Diamater for soils (0-20cm) in Northwestern Algeria given the pedotransferfunction of Saidi et al. (2015)
