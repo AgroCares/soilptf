@@ -1403,9 +1403,9 @@ ptf_cec_all <- function(dt){
   dt[, p73 := sptf_cec73(A_SOM_LOI = A_SOM_LOI, A_CLAY_MI = A_CLAY_MI,A_SILT_MI = A_SILT_MI, A_PH_WA = A_PH_WA)]
   dt[, p74 := sptf_cec74(A_C_OF = A_C_OF, A_CLAY_MI = A_CLAY_MI,A_SILT_MI = A_SILT_MI, A_PH_WA = A_PH_WA,B_SOILCLASS_USDA = B_SOILCLASS_USDA)]
   dt[, p75 := sptf_cec75(A_C_OF = A_C_OF, A_CLAY_MI = A_CLAY_MI, A_PH_CC = A_PH_CC)]
-  dt[, p76 := sptf_cec75(A_SOM_LOI = A_SOM_LOI, A_SAND_MI = A_SAND_MI, A_PH_WA = A_PH_WA)]
-  dt[, p77 := sptf_cec75(A_C_OF = A_C_OF, A_CLAY_MI,A_SILT_MI = A_SILT_MI,A_SAND_MI = A_SAND_MI, A_PH_WA = A_PH_WA)]
-  dt[, p78 := sptf_cec75(A_SOM_LOI = A_SOM_LOI, A_CLAY_MI = A_CLAY_MI,A_SILT_MI = A_SILT_MI, A_PH_WA = A_PH_WA)]
+  dt[, p76 := sptf_cec76(A_SOM_LOI = A_SOM_LOI, A_SAND_MI = A_SAND_MI, A_PH_WA = A_PH_WA)]
+  dt[, p77 := sptf_cec77(A_C_OF = A_C_OF, A_CLAY_MI,A_SILT_MI = A_SILT_MI,A_SAND_MI = A_SAND_MI, A_PH_WA = A_PH_WA)]
+  dt[, p78 := sptf_cec78(A_SOM_LOI = A_SOM_LOI, A_CLAY_MI = A_CLAY_MI,A_SILT_MI = A_SILT_MI, A_PH_WA = A_PH_WA)]
   
   # melt the data
   dt2 <- melt(dt, 
