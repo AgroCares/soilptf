@@ -1406,6 +1406,9 @@ ptf_cec_all <- function(dt){
   dt[, p76 := sptf_cec76(A_SOM_LOI = A_SOM_LOI, A_SAND_MI = A_SAND_MI, A_PH_WA = A_PH_WA)]
   dt[, p77 := sptf_cec77(A_C_OF = A_C_OF, A_CLAY_MI,A_SILT_MI = A_SILT_MI,A_SAND_MI = A_SAND_MI, A_PH_WA = A_PH_WA)]
   dt[, p78 := sptf_cec78(A_SOM_LOI = A_SOM_LOI, A_CLAY_MI = A_CLAY_MI,A_SILT_MI = A_SILT_MI, A_PH_WA = A_PH_WA)]
+  dt[, p79 := sptf_cec79(A_C_OF = A_C_OF, A_CLAY_MI = A_CLAY_MI)]
+  dt[, p80 := sptf_cec80(A_C_OF = A_C_OF)]
+  dt[, p81 := sptf_cec81(A_C_OF = A_C_OF)]
   
   # melt the data
   dt2 <- melt(dt, 
@@ -1809,6 +1812,7 @@ ptf_mwd_all <- function(dt){
   dt[, p13 := sptf_mwd13(A_SOM_LOI = A_SOM_LOI, A_CLAY_MI = A_CLAY_MI)]
   dt[, p14 := sptf_mwd14(A_SOM_LOI = A_SOM_LOI, A_CLAY_MI = A_CLAY_MI,A_SILT_MI = A_SILT_MI,A_PH_WA = A_PH_WA, A_CACO3_IF = A_CACO3_IF)]
   dt[, p15 := sptf_mwd15(A_C_OF = A_C_OF, A_PH_WA = A_PH_WA)]
+  dt[, p16 := sptf_mwd16(A_C_OF = A_C_OF)]
   
   # melt the data
   dt2 <- melt(dt, 
@@ -2004,6 +2008,7 @@ ptf_wsa_all <- function(dt){
                       A_PH_WA = A_PH_WA,A_CACO3_IF = A_CACO3_IF)]
   dt[, p8 := sptf_wsa8(A_SOM_LOI = A_SOM_LOI, A_CLAY_MI = A_CLAY_MI)]
   dt[, p9 := sptf_wsa9(A_SOM_LOI = A_SOM_LOI, A_CLAY_MI = A_CLAY_MI, A_PH_WA = A_PH_WA)]  
+  dt[, p10 := sptf_wsa10(A_C_OF = A_C_OF)] 
   
   # melt the data
   dt2 <- melt(dt, 
