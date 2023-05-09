@@ -4,10 +4,10 @@
 
 ### Added
 * in dev, update critical thresholds for metals
+* add bd188, cec79 to cec81, mwd16, penetration resistance pr1 and wsa10
 
 ### Changed
 * in dev, update derivation critical soc for paper
-* add bd188, cec79 to cec81, mwd16, penetration resistance pr1 and wsa10
 
 ## Version 0.5.1  2023-05-09
 
