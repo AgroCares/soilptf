@@ -1,9 +1,9 @@
 # Changelog soilptf
 
-## Version 0.5.1  2023-05-xx
+## Version 0.5.1  2023-05-09
 
 # Fixed
-* NA as abbreviation for North America causes errors due to confusion with NA, issue #3
+* NAm and SAm as abbreviation for North and South America causes errors due to confusion with NA, issue #3
 * replace `assert_int` with `assert_integer` for years in `sptf_cdec1`, issue #26
 * ensure correct CN ratios in `sptf_cdec1`, issue #26
 
@@ -12,6 +12,7 @@
 
 # Added
 * options for parameter `B_SOILCLASS_USDA` in `sptf_parameters`, issue #23
+* add ptfs cec75, cec76 and cec77
 
 ## Version 0.5.0  2023-04-29
 
