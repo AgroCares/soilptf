@@ -3513,6 +3513,105 @@ sptf_cec78 <- function(A_SOM_LOI, A_CLAY_MI,A_SILT_MI, A_PH_WA) {
   
 }
 
+#' Calculate the CEC
+#'
+#' This function calculates the CEC at pH 8.2 for various land use soils in Australia
+#'
+#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
+#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
+#' 
+#' @import data.table
+#' 
+#' @references Hallsworth and Wilkinson (1958). The contribution of clay and orgnai cmatter to the cation exchange capacity of soils.
+#'
+#' @export
+sptf_cec79 <- function(A_C_OF, A_CLAY_MI) {
+  
+  # Check input
+  arg.length <- max(length(A_C_OF), length(A_CLAY_MI))
+  checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000,len = arg.length)
+  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
+  
+  # make internal data.table (both in %)
+  dt <- data.table(A_C_OF = A_C_OF * 0.1,
+                   A_CLAY_MI = A_CLAY_MI,
+                   value = NA_real_)
+  
+  # function for CEC  (n =  , R2 =  )
+  dt[, value := (5.13 + 0.23 * A_CLAY_MI + 2.27 * A_C_OF) * 10]
+  
+  # select output variable
+  value <- dt[,value]
+  
+  # return value (mmol+ / kg)
+  return(value)
+  
+}
+
+#' Calculate the CEC
+#'
+#' This function calculates the CEC at pH 8.2 for agricultural red soil in Australia
+#'
+#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
+#' 
+#' @import data.table
+#' 
+#' @references Chan et al. (1992) Organic Carbon and Associated Soil Properties of a Red Earth after 10 years of Rotation under Different Stubble and Tillage Practices 
+#'
+#' @export
+sptf_cec80 <- function(A_C_OF) {
+  
+  # Check input
+  arg.length <- max(length(A_C_OF))
+  checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000,len = arg.length)
+  
+  # make internal data.table (both in %)
+  dt <- data.table(A_C_OF = A_C_OF * 0.1,
+                   value = NA_real_)
+  
+  # function for CEC  (n = 10 , R2 =  0.91)
+  dt[, value := (0.123 + 2.97 * A_C_OF) * 10]
+  
+  # select output variable
+  value <- dt[,value]
+  
+  # return value (mmol+ / kg)
+  return(value)
+  
+}
+
+#' Calculate the CEC
+#'
+#' This function calculates the CEC at pH 8.2 for agricultural red soil in Spain
+#'
+#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
+#' 
+#' @import data.table
+#' 
+#' @references Caravaca et al. (1991). Organic matter, nutrient contents and cation exchange capacity in fine fractions from semiarid calcareous soils
+#'
+#' @export
+sptf_cec81 <- function(A_C_OF) {
+  
+  # Check input
+  arg.length <- max(length(A_C_OF))
+  checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000,len = arg.length)
+  
+  # make internal data.table (both in %)
+  dt <- data.table(A_C_OF = A_C_OF * 0.1,
+                   value = NA_real_)
+  
+  # function for CEC  (n = 20 , R2 =  0.89)
+  dt[, value := (9.45 + 4.9 * A_C_OF) * 10]
+  
+  # select output variable
+  value <- dt[,value]
+  
+  # return value (mmol+ / kg)
+  return(value)
+  
+}
+
 #
 # montecillo, tropical
 # sinoga, spain

@@ -46,6 +46,52 @@ sptf_yield1 <- function(A_C_OF,A_CLAY_MI) {
   
 }
 
+
+#' Calculate the penetration resistance using ptfs of da Silva and Kay (1997)
+#'
+#' @param A_C_OF (numeric) The fraction organic carbon in the soil (g / kg).
+#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
+#'
+#' @import data.table
+#' 
+#' @references Kay et al. (1997) Sensitivity of soil structure to changes in organic carbon content:Predictions using pedotransfer functions Cites in: da Silva et al. (1997)  Management versus inherent properties effects on bulk density and relative compaction. Soil Tillage Res.
+#'
+#' @export
+pr1 <- function(A_C_OF, A_CLAY_MI) {
+  
+  # add visual bindings
+  theta = bd = pc = pd = pe = NULL
+  
+  # Check input
+  arg.length <- max(length(A_C_OF), length(A_CLAY_MI))
+  checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000, any.missing = FALSE,len = arg.length)
+  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
+  
+  # Collect data into a table
+  dt <- data.table(A_C_OF = A_C_OF, 
+                   A_CLAY_MI = A_CLAY_MI,
+                   value = NA_real_)
+  
+  # estimate bulk density in g/cm3
+  dt[,bd := 0.001 * (1617 - 77.4 * log(A_C_OF) - 3.49 * A_C_OF)]
+  
+  # moisture content, %, can be derived via ptf for field capacity
+  dt[ ,theta := 0.18]
+  
+  # estimate penetration resistance
+  dt[, pc := exp(-3.67 + 0.765 * 0.1 * A_C_OF - 0.145 * A_CLAY_MI)]
+  dt[, pd := -0.481 + 0.208 * 0.1 * A_C_OF - 0.124 * A_CLAY_MI]
+  dt[, pe := 3.85 + 0.0963 * A_CLAY_MI]
+  dt[, value := pc * theta^pd * bd^pe]
+  
+  # return value
+  value <- dt[, value]
+  
+  # return value
+  return(value)
+  
+}
+
 #' Calculate the pH-water value from pH-KCL
 #'
 #' This function calculates the pH extracted with water from the pH-KCL.
@@ -114,7 +160,12 @@ sptf_ph2 <- function(A_SOM_LOI, A_PH_KCL,A_CLAY_MI) {
   
 }
 
+
+
 # The influence of organic matter on aggregate stability in some British soils
 # K. CHANEY, R.S. SWIFT
 
-
+# minansy (2011)
+# plot(ph,6.01 + 1.384*(2.285 - 4.819/(1 + exp(-3.935 + 0.608 *ph) + 0.092 * log(0.2))))
+# lines(ph,-0.05+0.9*ph + 0.14 * log(0.2))
+              

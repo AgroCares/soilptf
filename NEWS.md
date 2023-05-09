@@ -1,5 +1,14 @@
 # Changelog soilptf
 
+## Version 0.5.2  2023-05-10
+
+### Added
+* in dev, update critical thresholds for metals
+* add bd188, cec79 to cec81, mwd16, penetration resistance pr1 and wsa10
+
+### Changed
+* in dev, update derivation critical soc for paper
+
 ## Version 0.5.1  2023-05-09
 
 # Fixed

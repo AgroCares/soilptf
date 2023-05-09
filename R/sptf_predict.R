@@ -1289,7 +1289,7 @@ ptf_cec_all <- function(dt){
   p39 = p40 = p41 = p42 = p43 = p44 = p45 = p46 = p47 = p48 = p49 = p50 = NULL
   p51 = p52 = p53 = p54 = p55 = p56 = p57 = p58 = p59 = p60 = p61 = p62 = NULL
   p63 = p64 = p65 = p66 = p67 = p68 = p69 = p70 = p71 = p72 = p73 = p74 = NULL
-  p75 = p76 = p77 = p78 = NULL
+  p75 = p76 = p77 = p78 = p79 = p80 = p81 = NULL
   num_obs = A_CACO3_IF = A_CLAY_MI = A_SAND_MI = A_SILT_MI = A_SOM_LOI = A_C_OF = A_PH_KCL = A_PH_CC = A_PH_WA = NULL
   B_LU_PTFCLASS = id = A_CN_FR = B_SOILCLASS_USDA = B_CLIM_CAT1 = patterns = ptf_id = cec = NULL
   
@@ -1406,6 +1406,9 @@ ptf_cec_all <- function(dt){
   dt[, p76 := sptf_cec76(A_SOM_LOI = A_SOM_LOI, A_SAND_MI = A_SAND_MI, A_PH_WA = A_PH_WA)]
   dt[, p77 := sptf_cec77(A_C_OF = A_C_OF, A_CLAY_MI,A_SILT_MI = A_SILT_MI,A_SAND_MI = A_SAND_MI, A_PH_WA = A_PH_WA)]
   dt[, p78 := sptf_cec78(A_SOM_LOI = A_SOM_LOI, A_CLAY_MI = A_CLAY_MI,A_SILT_MI = A_SILT_MI, A_PH_WA = A_PH_WA)]
+  dt[, p79 := sptf_cec79(A_C_OF = A_C_OF, A_CLAY_MI = A_CLAY_MI)]
+  dt[, p80 := sptf_cec80(A_C_OF = A_C_OF)]
+  dt[, p81 := sptf_cec81(A_C_OF = A_C_OF)]
   
   # melt the data
   dt2 <- melt(dt, 
@@ -1753,7 +1756,7 @@ ptf_phbc <- function(A_SOM_LOI = NA_real_, A_C_OF = NA_real_,
 ptf_mwd_all <- function(dt){
   
   # add visual binding
-  p1 = p2 = p3 = p4 = p5 = p6 = p7 = p8 = p9 = p10 = p11 = p12 = p13 = p14 = p15 = NULL
+  p1 = p2 = p3 = p4 = p5 = p6 = p7 = p8 = p9 = p10 = p11 = p12 = p13 = p14 = p15 = p16 = NULL
   A_CLAY_MI = A_SAND_MI = A_SILT_MI = A_SOM_LOI = A_C_OF = A_PH_KCL = A_PH_WA = A_PH_CC = NULL
   num_obs = patterns = ptf_id = id = mwd = NULL
   B_LU_PTFCLASS = A_CEC_CO = A_CACO3_IF = NULL
@@ -1809,6 +1812,7 @@ ptf_mwd_all <- function(dt){
   dt[, p13 := sptf_mwd13(A_SOM_LOI = A_SOM_LOI, A_CLAY_MI = A_CLAY_MI)]
   dt[, p14 := sptf_mwd14(A_SOM_LOI = A_SOM_LOI, A_CLAY_MI = A_CLAY_MI,A_SILT_MI = A_SILT_MI,A_PH_WA = A_PH_WA, A_CACO3_IF = A_CACO3_IF)]
   dt[, p15 := sptf_mwd15(A_C_OF = A_C_OF, A_PH_WA = A_PH_WA)]
+  dt[, p16 := sptf_mwd16(A_C_OF = A_C_OF)]
   
   # melt the data
   dt2 <- melt(dt, 
@@ -1961,7 +1965,7 @@ ptf_mwd <- function(A_SOM_LOI = NA_real_, A_C_OF = NA_real_,
 ptf_wsa_all <- function(dt){
   
   # add visual binding
-  p1 = p2 = p3 = p4 = p5 = p6 = p7 = p8 = p9 = patterns = NULL
+  p1 = p2 = p3 = p4 = p5 = p6 = p7 = p8 = p9 = p10 = patterns = NULL
   patterns = num_obs = ptf_id = id = wsa = NULL
   A_CLAY_MI = A_SAND_MI = A_SILT_MI = A_SOM_LOI = A_C_OF = A_PH_KCL = A_PH_WA = A_PH_CC = NULL
   A_K_AA = A_CACO3_IF = NULL
@@ -2004,6 +2008,7 @@ ptf_wsa_all <- function(dt){
                       A_PH_WA = A_PH_WA,A_CACO3_IF = A_CACO3_IF)]
   dt[, p8 := sptf_wsa8(A_SOM_LOI = A_SOM_LOI, A_CLAY_MI = A_CLAY_MI)]
   dt[, p9 := sptf_wsa9(A_SOM_LOI = A_SOM_LOI, A_CLAY_MI = A_CLAY_MI, A_PH_WA = A_PH_WA)]  
+  dt[, p10 := sptf_wsa10(A_C_OF = A_C_OF)] 
   
   # melt the data
   dt2 <- melt(dt, 
@@ -2765,8 +2770,8 @@ ptf_cdec_all <- function(dt){
   # dt[is.na(D_BDS), D_BDS := 1617 - 77.4 * log(A_C_OF) - 3.49 * A_C_OF]
   
   # estimate the percentage hot water carbon (mg/kg)
-  dt[A_SOM_LOI > 20, p1 := sptf_cdec1(A_C_OF = A_C_OF, A_N_RT = A_N_RT, years = 10)]
-  dt[A_SOM_LOI <= 20, p1 := sptf_cdec2(A_C_OF = A_C_OF, years = 10)]
+  dt[A_SOM_LOI > 20, p1 := sptf_cdec1(A_C_OF = A_C_OF, A_N_RT = A_N_RT, years = 10L)]
+  dt[A_SOM_LOI <= 20, p1 := sptf_cdec2(A_C_OF = A_C_OF, years = 10L)]
  
   # melt the data
   dt2 <- melt(dt, 

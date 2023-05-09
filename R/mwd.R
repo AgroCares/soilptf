@@ -711,6 +711,41 @@ sptf_mwd15 <- function(A_C_OF,A_PH_WA) {
   return(value)
   
 }
+
+#' Predicting the the Mean Weight Diameter for soils
+#'
+#' Calculate the Mean Weight Diamater for agricultural topsoils (0-28cm) in France.
+#'
+#' @param A_C_OF (numeric) The fraction organic carbon in the soil (g / kg).
+#' 
+#' @import data.table
+#' 
+#' @references Chenu et al. (2000) Organic Matter Influence on Clay Wettability and Soil Aggregate Stability
+#' 
+#' @export
+sptf_mwd16 <- function(A_C_OF) {
+  
+  # add visual bindings
+  swc = NULL
+  
+  # Check input
+  arg.length <- max(length(A_C_OF))
+  checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000, any.missing = FALSE,len = arg.length)
+
+  # Collect data into a table
+  dt <- data.table(A_C_OF = A_C_OF,
+                   value = NA_real_)
+  
+  # estimate MWD (mm) for 15 topsoils from forst and cropped fields, loamy soils (n = 15, R2 = 0.6654)
+  dt[,value := 0.514 * A_C_OF + 0.0697]
+  
+  # return MWD value (mm)
+  value <- dt[, value]
+  
+  # return value
+  return(value)
+  
+}
 # see paper of Purushothaman et al. (2022) for 17 PTFs
 # see Bhattacharya, https://doi.org/10.1002/agj2.20469
 # le bissonnais, gomez, annabi

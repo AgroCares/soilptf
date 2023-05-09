@@ -180,3 +180,10 @@
 179;CL;SAm;variable;variable;225;1007;0,67;a_som_loi||a_clay_mi||a_sand_mi||a_silt_mi||a_ph_wa;melendez_2017;
 180;CL;SAm;variable;variable;225;632;0,32;a_som_loi||a_clay_mi||a_sand_mi;melendez_2017;
 181;EG;AS;variable;agriculture;30;160;0,79;a_som_loi||a_clay_mi||a_silt_mi;abdel_2019;https://doi.org/10.1080/00103624.2019.1654504
+182;DE;EU;variable;variable;30;170;0,979;a_som_loi;ruhlmann_2006;https://doi:10.1016/j.geoderma.2005.01.024
+183;CA;NAm;variable;agriculture;30;282;0,21;a_som_loi;mcbride_2011;https://doi.org/10.2136/ssh2012-53-1-4
+184;DK;EU;variable;variable;100;79;0,77;a_som_loi||a_clay_mi||a_silt_mi;schjonning_2016;
+185;SE;EU;variable;agriculture;150;277;0,9;a_som_loi||a_clay_mi;schjonning_2016;
+186;CA;NAm;variable;agriculture;15;144;0,83;a_c_of||a_clay_mi;dasilva_1997;
+187;UK;EU;variable;agriculture;30;91;0,87;a_som_loi||a_clay_mi;guerif_1979;
+188;US;NAm;variable;variable;30;2721;;a_som_loi||a_clay_mi||a_sand_mi;rawls_1983;not available
