@@ -57,7 +57,7 @@ sptf_yield1 <- function(A_C_OF,A_CLAY_MI) {
 #' @references Kay et al. (1997) Sensitivity of soil structure to changes in organic carbon content:Predictions using pedotransfer functions Cites in: da Silva et al. (1997)  Management versus inherent properties effects on bulk density and relative compaction. Soil Tillage Res.
 #'
 #' @export
-pr_1 <- function(A_C_OF, A_CLAY_MI) {
+pr1 <- function(A_C_OF, A_CLAY_MI) {
   
   # add visual bindings
   theta = bd = pc = pd = pe = NULL
