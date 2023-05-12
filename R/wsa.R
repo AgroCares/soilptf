@@ -412,4 +412,35 @@ sptf_wsa9 <- function(A_SOM_LOI,A_CLAY_MI,A_PH_WA) {
   
 }
 
+#' Predicting the percentage water stable aggregates
+#' 
+#' Calculate the Percentage Water Stable Aggregates for a soils (0-5 cm) in Australia
+#'
+#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
+#' 
+#' @import data.table
+#' 
+#' @references Chan et al. (1992) Organic Carbon and Associated Soil Properties of a Red Earth after 10 years of Rotation under Different Stubble and Tillage Practices 
+#'
+#' @export
+sptf_wsa10 <- function(A_C_OF) {
+  
+  # Check input
+  arg.length <- max(length(A_C_OF))
+  checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000,len = arg.length)
+  
+  # make internal data.table (both in %)
+  dt <- data.table(A_C_OF = A_C_OF * 0.1,
+                   value = NA_real_)
+  
+  # function for wsa  (n = 10 , R2 =  0.672)
+  dt[, value := 32.08 * A_C_OF - 5.8]
+  
+  # select output variable
+  value <- dt[,value]
+  
+  # return value (mmol+ / kg)
+  return(value)
+  
+}
 

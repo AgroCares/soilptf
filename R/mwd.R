@@ -135,7 +135,7 @@ sptf_mwd3 <- function(A_C_OF,A_CEC_CO,A_CLAY_MI,A_SILT_MI, A_PH_WA, A_CACO3_IF) 
   dt[is.na(A_CACO3_IF), A_CACO3_IF := 7.81]
   dt[is.na(A_CEC_CO), A_CEC_CO := 15.8 * 10]
   
-  # estimate Mean Weight Diameter in mm (n = 183, R2 = 0.67 ~ 0.71 ~ 0.91 ~ 0.94)
+  # estimate Mean Weight Diamater in mm (n = 183, R2 = 0.67 ~ 0.71 ~ 0.91 ~ 0.94)
   dt[grepl('sand',B_SOILTYPE), value := 0.017 * A_C_OF + 0.004 * A_SILT_MI + 0.002 * A_PH_WA + 0.018 * A_CACO3_IF + 0.14 * A_SOM_LOI + 0.0006 * A_CEC_CO + 0.052]
   dt[grepl('silt',B_SOILTYPE), value := 0.007 * A_SILT_MI + 0.001 * A_SAND_MI + 0.05 * A_PH_WA + 2.6e-4 * A_CACO3_IF + 0.04 * A_SOM_LOI + 0.04 * 9.69 + 0.002 * A_CEC_CO - 0.3]
   dt[grepl('clay',B_SOILTYPE), value := 0.00056 * A_CEC_CO]
@@ -674,6 +674,41 @@ sptf_mwd15 <- function(A_C_OF,A_PH_WA) {
   
   # estimate MWD (mm) for 83 topsoils (0-10 cm) in Belgium (R2 = 0.85, n = 85)
   dt[,value := 1.2 + 0.527 * A_C_OF - 0.174 * A_PH_WA - 0.015 * swc]
+  
+  # return MWD value (mm)
+  value <- dt[, value]
+  
+  # return value
+  return(value)
+  
+}
+
+#' Predicting the the Mean Weight Diameter for soils
+#'
+#' Calculate the Mean Weight Diamater for agricultural topsoils (0-28cm) in France.
+#'
+#' @param A_C_OF (numeric) The fraction organic carbon in the soil (g / kg).
+#' 
+#' @import data.table
+#' 
+#' @references Chenu et al. (2000) Organic Matter Influence on Clay Wettability and Soil Aggregate Stability
+#' 
+#' @export
+sptf_mwd16 <- function(A_C_OF) {
+  
+  # add visual bindings
+  swc = NULL
+  
+  # Check input
+  arg.length <- max(length(A_C_OF))
+  checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000, any.missing = FALSE,len = arg.length)
+
+  # Collect data into a table
+  dt <- data.table(A_C_OF = A_C_OF,
+                   value = NA_real_)
+  
+  # estimate MWD (mm) for 15 topsoils from forst and cropped fields, loamy soils (n = 15, R2 = 0.6654)
+  dt[,value := 0.514 * A_C_OF + 0.0697]
   
   # return MWD value (mm)
   value <- dt[, value]

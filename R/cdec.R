@@ -16,14 +16,18 @@ sptf_cdec1 <- function(A_C_OF, A_N_RT, years) {
   
   # Check input
   arg.length <- max(length(A_N_RT),length(A_C_OF))
-  check_numeric('A_N_RT', A_N_RT, anymissing = FALSE, arg.length = arg.length)
-  check_numeric('A_C_OF', A_C_OF, anymissing = FALSE, arg.length = arg.length)
   checkmate::assert_numeric(years, lower = 1, len = arg.length)
-
+  checkmate::assert_numeric(A_N_RT, lower = 0, upper = 20000, len = arg.length)
+  checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000, len = arg.length)
+  
+  # estimate the CN ratio and check for really unrealistic values
+  cnratio <- A_C_OF *1000 / A_N_RT
+  checkmate::assert_numeric(cnratio, lower = 1, upper = 100)
+  
   # estimate the potential decomposition rate (Vermeulen en Hendriks, 1996)
   kpot <- 0.016 - 0.00021 * A_C_OF *1000 / A_N_RT
   
-  # estimate carbon decomposition
+  # estimate carbon decomposition (g / kg lost after x years)
   value <- A_C_OF * (1 - exp(-kpot * years))
   
   # return value
@@ -49,11 +53,15 @@ sptf_cdec2 <- function(A_C_OF, years) {
   cor_temp = temp = NULL
   
   # Check input
-  check_numeric('A_C_OF', A_C_OF, anymissing = FALSE)
-  checkmate::assert_numeric(years, lower = 1)
+  checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000)
+  checkmate::assert_integer(years,lower=1)
+  checkmate::assert_true(length(years)==1 | length(years)==length(A_C_OF)|(length(A_C_OF)==1 & length(years)>0))
   
   # combine arguments in internal table
-  dt <- data.table(A_C_OF = A_C_OF,temp = 12)
+  dt <- data.table(id = 1:length(A_C_OF),
+                   A_C_OF = A_C_OF,
+                   temp = 12,
+                   years = years)
   
   # add correction factor for annual temperature
   dt[, cor_temp := ifelse(temp<=-1,0,ifelse(temp<=9,0.1*(temp+1),ifelse(temp<=27,2^((temp-9)/9),4)))]

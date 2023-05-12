@@ -6813,3 +6813,59 @@ sptf_bd187 <- function(A_SOM_LOI,A_CLAY_MI) {
   return(value)
   
 }
+
+#' Calculate the bulk density given the pedotransferfunction of Rawls (1983)
+#'
+#' @param A_SOM_LOI (numeric) The percentage of organic matter in the soil (\%).
+#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
+#' @param A_SAND_MI (numeric) The clay content of the soil (\%).
+#' 
+#' @import data.table
+#' 
+#' @references Rawls (1983)
+#'
+#' @export
+sptf_bd188 <- function(A_SOM_LOI,A_CLAY_MI,A_SAND_MI) {
+  
+  # add visual bindings
+  bdm = NULL
+  
+  # check input
+  arg.length <- max(length(A_SOM_LOI), length(A_CLAY_MI),length(A_SAND_MI))
+  checkmate::assert_numeric(A_SOM_LOI, lower = 0, upper = 1000, any.missing = FALSE,len = arg.length)
+  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_numeric(A_SAND_MI, lower = 0, upper = 100, len = arg.length)
+  
+  # Collect data into a table
+  dt <- data.table(id = 1: arg.length,
+                   A_SOM_LOI = A_SOM_LOI, 
+                   A_CLAY_MI = A_CLAY_MI,
+                   A_SAND_MI =  A_SAND_MI,
+                   value = NA_real_)
+  
+  # estimate soil density in kg / m3 (n = 2721, R2 = unknown)
+  dt[A_CLAY_MI > 90,bdm := 1.2]
+  dt[A_CLAY_MI > 80 & A_CLAY_MI <= 90,bdm := 1.3]
+  dt[A_CLAY_MI <= 10 & A_SAND_MI <= 50, bdm := 1.2]
+  dt[A_CLAY_MI <= 10 & A_SAND_MI > 50 & A_SAND_MI <= 70, bdm := 1.3]
+  dt[A_CLAY_MI <= 10 & A_SAND_MI > 70 & A_SAND_MI <= 80, bdm := 1.4]
+  dt[A_CLAY_MI <= 10 & A_SAND_MI > 80, bdm := 1.55]
+  dt[A_SAND_MI <= 10 & A_CLAY_MI <= 50, bdm := 1.45]
+  dt[A_SAND_MI > 10 & A_SAND_MI <= 30 & A_CLAY_MI <= 20, bdm := 1.25]
+  dt[A_SAND_MI > 10 & A_SAND_MI <= 30 & A_CLAY_MI > 20 & A_CLAY_MI <= 40, bdm := 1.30]
+  dt[A_SAND_MI > 30 & A_SAND_MI <= 50 & A_CLAY_MI <= 20, bdm := 1.3]
+  dt[A_SAND_MI > 30 & A_SAND_MI <= 50 & A_CLAY_MI > 20 & A_CLAY_MI <= 40, bdm := 1.5]
+  dt[A_SAND_MI > 30 & A_SAND_MI <= 40 & A_CLAY_MI > 30, bdm := 1.45]
+  dt[A_SAND_MI > 40 & A_SAND_MI <= 50 & A_CLAY_MI > 30, bdm := 1.55]
+  dt[A_SAND_MI > 50 & A_SAND_MI <= 60 & A_CLAY_MI > 30, bdm := 1.60]
+  dt[A_SAND_MI > 60 & A_CLAY_MI > 20 & A_CLAY_MI <= 40, bdm := 1.65]
+  
+  dt[, value := 100/(A_SOM_LOI/0.224 + (100-A_SOM_LOI)/bdm)]
+  
+  # return value
+  value <- dt[, value]
+  
+  # return value
+  return(value)
+  
+}
