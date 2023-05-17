@@ -30,7 +30,7 @@
 #' 
 #' @export
 sptf_bd0 <- function(A_CEC_CO,A_CLAY_MI,A_C_OF,A_CN_FR,A_DEPTH,A_H20_T105, A_K_AA,
-                     A_N_RT,A_PH_CC,A_PH_WA,A_PH_KCL,A_SAND_M50,A_SAND_MI,A_SILT_MI,A_SOM_LOI,
+                     A_N_RT,A_PH_CC,A_PH_WA,A_PH_KCL,A_P_AL,A_SAND_M50,A_SAND_MI,A_SILT_MI,A_SOM_LOI,
                      B_ALTITUDE,B_ROCKS_FR,B_SLOPE_ASPECT,B_SLOPE_DEGREE,mp_wp,
                      mp_fc,D_BDS,A_CACO3_IF,A_H2O_T105){return(NULL)}
 

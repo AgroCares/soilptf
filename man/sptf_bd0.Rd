@@ -16,6 +16,7 @@ sptf_bd0(
   A_PH_CC,
   A_PH_WA,
   A_PH_KCL,
+  A_P_AL,
   A_SAND_M50,
   A_SAND_MI,
   A_SILT_MI,
@@ -54,6 +55,8 @@ sptf_bd0(
 
 \item{A_PH_KCL}{(numeric) Acidity in KCl (-)}
 
+\item{A_P_AL}{(numeric) Total phosphate content (mg P2O5/100 g)}
+
 \item{A_SAND_M50}{(numeric) description (µm)}
 
 \item{A_SAND_MI}{(numeric) Sand content (\%)}
@@ -79,8 +82,6 @@ sptf_bd0(
 \item{A_CACO3_IF}{(numeric) Carbonated Lime inorganic soil fraction (\%)}
 
 \item{A_H2O_T105}{(numeric) water content measured after drying at 105 degrees (\%)}
-
-\item{A_P_AL}{(numeric) Total phosphate content (mg P2O5/100 g)}
 }
 \description{
 Documentation of all possible bulk density pedotransfer function inputs
