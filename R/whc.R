@@ -15,10 +15,10 @@ sptf_whc1 <- function(A_C_OF, A_SAND_MI, A_CLAY_MI) {
   theta_pwp = theta_fc = NULL
   
   # Check input
-  arg.length <-max(length(A_C_OF), length(A_SAND_MI), length(A_CLAY_MI))
-  checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000,len = arg.length)
-  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
-  checkmate::assert_numeric(A_SAND_MI, lower = 0, upper = 100, len = arg.length)
+  arg.length <- max(length(A_C_OF), length(A_SAND_MI), length(A_CLAY_MI))
+  check_numeric('A_C_OF', A_C_OF, FALSE, arg.length)
+  check_numeric('A_SAND_MI', A_SAND_MI, FALSE, arg.length)
+  check_numeric('A_CLAY_MI', A_CLAY_MI, FALSE, arg.length)
   
   # Collect data into a table (set in units %)
   dt <- data.table(A_C_OF = A_C_OF * 0.1,
@@ -50,6 +50,11 @@ sptf_whc1 <- function(A_C_OF, A_SAND_MI, A_CLAY_MI) {
 #'
 #' @export
 sptf_whc2 <- function(A_C_OF, A_SAND_MI, A_CLAY_MI) {
+  # Check input
+  arg.length <-  max(length(A_C_OF), length(A_SAND_MI), length(A_CLAY_MI))
+  check_numeric('A_C_OF', A_C_OF, FALSE, arg.length)
+  check_numeric('A_SAND_MI', A_SAND_MI, FALSE, arg.length)
+  check_numeric('A_CLAY_MI', A_CLAY_MI, FALSE, arg.length)
   
   # add visual bindings
   theta_wp = theta_fc = NULL
@@ -92,7 +97,12 @@ sptf_whc2 <- function(A_C_OF, A_SAND_MI, A_CLAY_MI) {
 #' @references Saxton et al.(1986) Estimating Generalized Soil-water Characteristics from Texture
 #'
 #' @export
-sptf_whc3 <-  function(A_SAND_MI,A_CLAY_MI) {
+sptf_whc3 <- function(A_SAND_MI, A_CLAY_MI, mp_fc = 33) {
+    # Check input
+    arg.length <- max(length(A_SAND_MI), length(A_CLAY_MI))
+    check_numeric('A_SAND_MI', A_SAND_MI, FALSE, arg.length)
+    check_numeric('A_CLAY_MI', A_CLAY_MI, FALSE, arg.length)
+    checkmate::assert_true(mp_fc > 10)
     
     # Add visual bindings
     theta = theta_sat = theta_res = theta_fc = alfa = n = A = B = theta_wp =NULL
@@ -109,6 +119,9 @@ sptf_whc3 <-  function(A_SAND_MI,A_CLAY_MI) {
     dt <- data.table(A_SAND_MI = A_SAND_MI,
                      A_CLAY_MI = A_CLAY_MI,
                      value = NA_real_)
+    
+    # wilting point
+    mp_wp = 1500
     
     # Calculate parameter values
     dt[, A := 100 * exp(-4.396 - 0.0715 * A_CLAY_MI - 0.000488 * A_SAND_MI ^ 2 - 0.00004285 * A_SAND_MI ^ 2 * A_CLAY_MI)]
@@ -132,14 +145,13 @@ sptf_whc3 <-  function(A_SAND_MI,A_CLAY_MI) {
 #' @import data.table
 #'
 #' @details
-#' For this function A_DEPTH should be between 0.08 and 0.18
+#' For this function, A_DEPTH should be between 0.08 and 1.8 m
 #'
 #'
 #' @references Oosterveld and Chang (1980) Empirical relations between laboratory determinations of soil texture and moisture retention
 #'
 #' @export
-sptf_whc4 <-  function(A_C_OF,A_CLAY_MI,A_SAND_MI) {
-    
+sptf_whc4 <- function(A_C_OF, A_CLAY_MI, A_SAND_MI) {
   # Add visual bindings
   theta_sat = theta_res = theta_fc = alfa = n = theta_wp = mp_fc = NULL
   
@@ -149,10 +161,10 @@ sptf_whc4 <-  function(A_C_OF,A_CLAY_MI,A_SAND_MI) {
   
   # Check input
   arg.length <-max(length(A_C_OF), length(A_CLAY_MI),length(A_SAND_MI))
-  checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000,len = arg.length)
-  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
-  checkmate::assert_numeric(A_SAND_MI, lower = 0, upper = 100, len = arg.length)
-  checkmate::assert_numeric(A_DEPTH, lower = 0.08, upper = 0.180) 
+  check_numeric('A_C_OF', A_C_OF, FALSE, arg.length)
+  check_numeric('A_CLAY_MI', A_CLAY_MI, FALSE, arg.length)
+  check_numeric('A_SAND_MI', A_SAND_MI, FALSE, arg.length)
+  checkmate::assert_numeric(A_DEPTH, lower = 0.08, upper = 1.80) 
   
   # Collect data into a table (set in units %, depth in cm)
   dt <- data.table(A_C_OF = A_C_OF,
@@ -172,7 +184,6 @@ sptf_whc4 <-  function(A_C_OF,A_CLAY_MI,A_SAND_MI) {
   
   # return value
   return(value)
-    
   }
 
 
@@ -198,11 +209,11 @@ sptf_whc5 <-  function(A_SOM_LOI, A_CLAY_MI, A_SILT_MI) {
     mp_whc = 0
     
     # Check input
-    arg.length <-max(length(A_SOM_LOI), length(A_CLAY_MI),length(A_SAND_MI))
-    checkmate::assert_numeric(A_SOM_LOI, lower = 0, upper = 100,len = arg.length)
-    checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
-    checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, len = arg.length)
-    
+    arg.length <- max(length(A_SILT_MI), length(A_CLAY_MI), length(A_SOM_LOI))
+    check_numeric('A_SILT_MI', A_SILT_MI, FALSE, arg.length)
+    check_numeric('A_CLAY_MI', A_CLAY_MI, FALSE, arg.length)
+    check_numeric('A_SOM_LOI', A_SOM_LOI, FALSE, arg.length)
+
     # Collect data into a table (set in units %)
     dt <- data.table(A_SILT_MI = A_SILT_MI,
                      A_CLAY_MI = A_CLAY_MI,
@@ -210,6 +221,9 @@ sptf_whc5 <-  function(A_SOM_LOI, A_CLAY_MI, A_SILT_MI) {
                      A_C_OF = A_SOM_LOI * 0.5 * 10,
                      topsoil = topsoil,
                      value = NA_real_ )
+    
+    # wilting point
+    mp_wp = 1500
     
     # add density (g / cm3)
     dt[,D_BDS := (1617 - 77.4 * log(A_C_OF) - 3.49 * A_C_OF)*0.001]
@@ -221,7 +235,7 @@ sptf_whc5 <-  function(A_SOM_LOI, A_CLAY_MI, A_SILT_MI) {
        - 0.0000733 * A_SOM_LOI * A_CLAY_MI - 0.000619 * D_BDS * A_CLAY_MI
        - 0.001183 * D_BDS * A_SOM_LOI - 0.0001664 * topsoil * A_SILT_MI]
     
-    dt[,  alfa      := exp(
+    dt[,  alfa := exp(
       -14.96 + 0.03135 * A_CLAY_MI + 0.0351 * A_SILT_MI + 0.646 * A_SOM_LOI
       + 15.29 * D_BDS - 0.192 * topsoil - 4.671 * D_BDS ^ 2 - 0.000781 * A_CLAY_MI ^ 2
       - 0.00687 * A_SOM_LOI ^ 2 + 0.0449 / A_SOM_LOI + 0.0663 * log(A_SILT_MI)
@@ -229,7 +243,7 @@ sptf_whc5 <-  function(A_SOM_LOI, A_CLAY_MI, A_SILT_MI) {
       + 0.00673 * topsoil * A_CLAY_MI
     )]
     
-    dt[, n         := 1 + exp(
+    dt[, n := 1 + exp(
       -25.23 - 0.02195 * A_CLAY_MI + 0.0074 * A_SILT_MI - 0.1940 * A_SOM_LOI
       + 45.5 * D_BDS - 7.24 * D_BDS ^ 2 + 0.0003658 * A_CLAY_MI ^ 2
       + 0.002885 * A_SOM_LOI ^ 2 - 12.81 / D_BDS - 0.1524 / A_SILT_MI - 0.01958 / A_SOM_LOI
@@ -274,9 +288,9 @@ sptf_whc6 <-  function(A_C_OF,A_CLAY_MI, A_SAND_MI) {
     
     # Check input
     arg.length <-max(length(A_C_OF), length(A_CLAY_MI),length(A_SAND_MI))
-    checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000,len = arg.length)
-    checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
-    checkmate::assert_numeric(A_SAND_MI, lower = 0, upper = 100, len = arg.length)
+    check_numeric('A_C_OF', A_C_OF, FALSE, arg.length)
+    check_numeric('A_CLAY_MI', A_CLAY_MI, FALSE, arg.length)
+    check_numeric('A_SAND_MI', A_SAND_MI, FALSE, arg.length)
     
     # Collect data into a table (set in units %)
     dt <- data.table(A_SAND_MI = A_SAND_MI,
@@ -284,7 +298,7 @@ sptf_whc6 <-  function(A_C_OF,A_CLAY_MI, A_SAND_MI) {
                      A_C_OF = A_C_OF * 0.1,
                      value = NA_real_
                     )
-    
+
     # add density
     dt[,D_BDS := (1617 - 77.4 * log(A_C_OF * 10) - 3.49 * A_C_OF * 10)*0.001]
     
@@ -292,6 +306,7 @@ sptf_whc6 <-  function(A_C_OF,A_CLAY_MI, A_SAND_MI) {
     dt[, theta_sat := 0.81 - 0.283 * D_BDS + 0.001 * A_CLAY_MI]
     dt[, theta_res := 0.015 + 0.005 * A_CLAY_MI + 0.014 * A_C_OF]
     dt[, alfa := exp(-2.486 + 0.025 * A_SAND_MI - 0.351 * A_C_OF - 2.617 * D_BDS - 0.023 * A_CLAY_MI)]
+    dt[, n := exp(0.053 - 0.009 * A_SAND_MI - 0.013 * A_CLAY_MI + 0.00015 * A_SAND_MI ^ 2)]
     dt[, n := exp(0.053 - 0.009 * A_SAND_MI - 0.013 * A_CLAY_MI + 0.00015 * A_SAND_MI^2)]
     
     # Calculate volumetric water content at field capacity (cm3/cm3) and wilting point
@@ -331,12 +346,12 @@ sptf_whc7 <-function(A_C_OF,A_CLAY_MI,A_SILT_MI, A_SAND_MI) {
     mp_fc = 33
     
     # Check input
-    arg.length <-max(length(A_C_OF), length(A_CLAY_MI),length(A_SAND_MI),length(A_SILT_MI))
-    checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000,len = arg.length)
-    checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
-    checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, len = arg.length)
-    checkmate::assert_numeric(A_SAND_MI, lower = 0, upper = 100, len = arg.length)
-    
+    arg.length <-max(length(A_C_OF), length(A_CLAY_MI),length(A_SILT_MI),length(A_SAND_MI))
+    check_numeric('A_C_OF', A_C_OF, FALSE, arg.length)
+    check_numeric('A_CLAY_MI', A_CLAY_MI, FALSE, arg.length)
+    check_numeric('A_SILT_MI', A_SILT_MI, FALSE, arg.length)
+    check_numeric('A_SAND_MI', A_SAND_MI, FALSE, arg.length)
+
     # Collect data into a table (set in units %, and depth in cm)
     dt <- data.table(A_C_OF = A_C_OF * 0.1,
                     A_CLAY_MI = A_CLAY_MI,
@@ -422,9 +437,9 @@ sptf_whc8 <- function(A_C_OF,A_CLAY_MI,A_SAND_MI) {
   
   # Check input
   arg.length <-max(length(A_C_OF), length(A_CLAY_MI),length(A_SAND_MI))
-  checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000,len = arg.length)
-  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
-  checkmate::assert_numeric(A_SAND_MI, lower = 0, upper = 100, len = arg.length)
+  check_numeric('A_SAND_MI', A_SAND_MI, FALSE, arg.length)
+  check_numeric('A_CLAY_MI', A_CLAY_MI, FALSE, arg.length)
+  check_numeric('A_C_OF', A_C_OF, FALSE, arg.length)
   
   # Collect data into a table (set in units %)
   dt <- data.table(A_SAND_MI = A_SAND_MI,
@@ -433,7 +448,7 @@ sptf_whc8 <- function(A_C_OF,A_CLAY_MI,A_SAND_MI) {
                    value = NA_real_
                   )
   
-  # add density (with Corg in g/kg as input) as g/cm3
+    # add density (with Corg in g/kg as input) as g/cm3
   dt[,D_BDS := (1617 - 77.4 * log(A_C_OF * 10) - 3.49 * A_C_OF * 10) * 0.001]
   
   # Calculate water retention parameters
@@ -476,9 +491,9 @@ sptf_whc9 <- function(A_C_OF,A_CLAY_MI, A_SILT_MI) {
   
   # Check input
   arg.length <-max(length(A_C_OF), length(A_CLAY_MI),length(A_SILT_MI))
-  checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000,len = arg.length)
-  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
-  checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, len = arg.length)
+  check_numeric('A_C_OF', A_C_OF, FALSE, arg.length)
+  check_numeric('A_CLAY_MI', A_CLAY_MI, FALSE, arg.length)
+  check_numeric('A_SILT_MI', A_SILT_MI, FALSE, arg.length)
   checkmate::assert_subset(mp_fc, choices = c(10, 33), empty.ok = FALSE)
   
   # Collect data into a table (set in units %)
@@ -515,7 +530,6 @@ sptf_whc9 <- function(A_C_OF,A_CLAY_MI, A_SILT_MI) {
 #'
 #' @export
 sptf_whc10 <-function(A_C_OF,A_CLAY_MI,A_SILT_MI,A_SAND_MI) {
-    
   # add visual bindings
   mp = theta_wp = a = b = d = e = f = theta_fc = theta_wp = NULL
   D_BDS = A_SOM_LOI = NULL
@@ -525,10 +539,10 @@ sptf_whc10 <-function(A_C_OF,A_CLAY_MI,A_SILT_MI,A_SAND_MI) {
   
   # Check input
   arg.length <-max(length(A_C_OF), length(A_CLAY_MI),length(A_SILT_MI),length(A_SAND_MI))
-  checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000,len = arg.length)
-  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
-  checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, len = arg.length)
-  checkmate::assert_numeric(A_SAND_MI, lower = 0, upper = 100, len = arg.length)
+  check_numeric('A_C_OF', A_C_OF, FALSE, arg.length)
+  check_numeric('A_CLAY_MI', A_CLAY_MI, FALSE, arg.length)
+  check_numeric('A_SILT_MI', A_SILT_MI, FALSE, arg.length)
+  check_numeric('A_SAND_MI', A_SAND_MI, FALSE, arg.length)
   checkmate::assert_subset(mp_fc, choices = c(10, 33), empty.ok = FALSE)
   
     # Collect data into a table (set in units %)
@@ -569,7 +583,6 @@ sptf_whc10 <-function(A_C_OF,A_CLAY_MI,A_SILT_MI,A_SAND_MI) {
 #'
 #' @export
 sptf_whc11 <- function(A_C_OF,A_CLAY_MI,A_SILT_MI) {
-  
   # add visual bindings
   theta_sat = theta_res = theta_fc = alfa = n = d_g = sigma_g = psi_es = lambda = psi_b=  theta_wp = NULL
   D_BDS = NULL
@@ -579,9 +592,9 @@ sptf_whc11 <- function(A_C_OF,A_CLAY_MI,A_SILT_MI) {
   
   # Check input
   arg.length <-max(length(A_C_OF), length(A_CLAY_MI),length(A_SILT_MI))
-  checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000,len = arg.length)
-  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
-  checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, len = arg.length)
+  check_numeric('A_C_OF', A_C_OF, FALSE, arg.length)
+  check_numeric('A_CLAY_MI', A_CLAY_MI, FALSE, arg.length)
+  check_numeric('A_SILT_MI', A_SILT_MI, FALSE, arg.length)
   checkmate::assert_numeric(mp_whc, any.missing = FALSE)
   
   # Collect data into a table
@@ -633,10 +646,10 @@ sptf_whc12 <- function(A_C_OF,A_CLAY_MI,A_SAND_MI) {
   mp_wp = 4.2
   
   # Check input
-  arg.length <-max(length(A_C_OF), length(A_CLAY_MI),length(A_SAND_MI))
-  checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000,len = arg.length)
-  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
-  checkmate::assert_numeric(A_SAND_MI, lower = 0, upper = 100, len = arg.length)
+  arg.length <- max(length(A_C_OF), length(A_CLAY_MI), length(A_SAND_MI))
+  check_numeric('A_C_OF', A_C_OF, FALSE, arg.length)
+  check_numeric('A_CLAY_MI', A_CLAY_MI, FALSE, arg.length)
+  check_numeric('A_SAND_MI', A_SAND_MI, FALSE, arg.length)
   checkmate::assert_numeric(mp_wp, any.missing = FALSE)
   checkmate::assert_subset(mp_fc, choices = c(2, 4.2))
   
@@ -672,16 +685,16 @@ sptf_whc12 <- function(A_C_OF,A_CLAY_MI,A_SAND_MI) {
 #'
 #' @export
 sptf_whc13 <- function(A_C_OF,A_CLAY_MI,A_SAND_MI) {
-  
+
   # Add visual bindings
   theta_sat = theta_res = theta_fc = alfa = n = A_LOAM_MI = Dichtheid = theta_wp =  NULL
   D_BDS = NULL
   
   # Check input
   arg.length <-max(length(A_C_OF), length(A_CLAY_MI),length(A_SAND_MI))
-  checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000,len = arg.length)
-  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
-  checkmate::assert_numeric(A_SAND_MI, lower = 0, upper = 100, len = arg.length)
+  check_numeric('A_C_OF', A_C_OF, FALSE, arg.length)
+  check_numeric('A_CLAY_MI', A_CLAY_MI, FALSE, arg.length)
+  check_numeric('A_SAND_MI', A_SAND_MI, FALSE, arg.length)
 
   # Collect data into a table (set in units %)
   dt <- data.table(A_C_OF = A_C_OF * 0.1,
@@ -725,10 +738,15 @@ sptf_whc14 <- function(A_SOM_LOI,A_CLAY_MI,A_SILT_MI) {
   mp_wp = 4.2
   
   # Check input
-  arg.length <-max(length(A_SOM_LOI), length(A_CLAY_MI),length(A_SILT_MI))
-  checkmate::assert_numeric(A_SOM_LOI, lower = 0, upper = 100,len = arg.length)
-  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
-  checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, len = arg.length)
+  arg.length <-
+    max(
+      length(A_CLAY_MI),
+      length(A_SILT_MI),
+      length(A_SOM_LOI)
+    )
+  check_numeric('A_SOM_LOI', A_SOM_LOI, FALSE, arg.length)
+  check_numeric('A_CLAY_MI', A_CLAY_MI, FALSE, arg.length)
+  check_numeric('A_SILT_MI', A_SILT_MI, FALSE, arg.length)
   checkmate::assert_numeric(mp_fc, any.missing = FALSE)
   checkmate::assert_numeric(mp_wp, any.missing = FALSE)
   
@@ -740,6 +758,9 @@ sptf_whc14 <- function(A_SOM_LOI,A_CLAY_MI,A_SILT_MI) {
                    topsoil = topsoil,
                    A_LOAM_MI = (A_CLAY_MI + A_SILT_MI),
                    value = NA_real_  )
+  
+  # wilting point
+  mp_wp = 1500
   
   # For sandy soils
   dt[A_CLAY_MI < 8, Dichtheid := 1 / (
@@ -803,11 +824,10 @@ sptf_whc15 <- function(A_SOM_LOI,A_CLAY_MI,A_SILT_MI) {
   
   # Check input
   arg.length <-max(length(A_SOM_LOI), length(A_CLAY_MI),length(A_SILT_MI))
-  checkmate::assert_numeric(A_SOM_LOI, lower = 0, upper = 100,len = arg.length)
-  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
-  checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, len = arg.length)
+  check_numeric('A_SOM_LOI', A_SOM_LOI, FALSE, arg.length)
+  check_numeric('A_CLAY_MI', A_CLAY_MI, FALSE, arg.length)
+  check_numeric('A_SILT_MI', A_SILT_MI, FALSE, arg.length)
   checkmate::assert_numeric(mp_fc, any.missing = FALSE)
-  checkmate::assert_numeric(mp_wp, any.missing = FALSE)
   
   # Collect data into a table, with loam content (< 50 um)
   dt <- data.table(A_CLAY_MI = A_CLAY_MI,
@@ -817,7 +837,7 @@ sptf_whc15 <- function(A_SOM_LOI,A_CLAY_MI,A_SILT_MI) {
                    A_LOAM_MI = (A_CLAY_MI + A_SILT_MI),
                    value = NA_real_
                   )
-  
+
   # For sandy soils
   dt[A_CLAY_MI < 8, Dichtheid := 1 / (
     -7.58 + 0.01791 * A_SOM_LOI + 0.0326 * topsoil - 0.00338 * A_SAND_M50 +
@@ -868,6 +888,8 @@ sptf_whc15 <- function(A_SOM_LOI,A_CLAY_MI,A_SILT_MI) {
 #'  the water holding capacity given the pedotransferfunction of Wösten et al.2001 (Table 3), for each soil class
 #'
 #' @inheritParams sptf_bd0
+
+
 #'
 #' @import data.table
 #'
@@ -888,9 +910,9 @@ sptf_whc16 <- function(A_SOM_LOI,A_CLAY_MI,A_SILT_MI) {
   
   # Check input
   arg.length <-max(length(A_SOM_LOI), length(A_CLAY_MI),length(A_SILT_MI))
-  checkmate::assert_numeric(A_SOM_LOI, lower = 0, upper = 100,len = arg.length)
-  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
-  checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, len = arg.length)
+  check_numeric('A_SOM_LOI', A_SOM_LOI, FALSE, arg.length)
+  check_numeric('A_CLAY_MI', A_CLAY_MI, FALSE, arg.length)
+  check_numeric('A_SILT_MI', A_SILT_MI, FALSE, arg.length)
   checkmate::assert_numeric(mp_fc, any.missing = FALSE)
   checkmate::assert_numeric(mp_wp, any.missing = FALSE)
   
@@ -903,7 +925,7 @@ sptf_whc16 <- function(A_SOM_LOI,A_CLAY_MI,A_SILT_MI) {
                    A_SAND_M50 = A_SAND_M50,
                    A_LOAM_MI = (A_CLAY_MI + A_SILT_MI),
                    value = NA_real_)
-  
+
   dt[A_CLAY_MI <= 8, CF1 := 0]
   dt[A_CLAY_MI > 8, CF1 := 1]
   
@@ -1006,13 +1028,16 @@ calc_soil_porosity <- function(D_BDS,
                                method = "average") {
   # check inputs
   arg.length <- max(length(D_BDS))
-  checkmate::assert_subset(method, choices = c('Heinen', 'average'))
-  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length,null.ok = TRUE)
-  checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, len = arg.length,null.ok = TRUE)
-  checkmate::assert_numeric(A_SAND_MI, lower = 0, upper = 100, len = arg.length,null.ok = TRUE)
-  checkmate::assert_numeric(A_SOM_LOI, lower = 0, upper = 100, len = arg.length,null.ok = TRUE)
-  checkmate::assert_numeric(D_BDS, lower = 0, upper = 2000, len = arg.length)
-  
+  check_numeric('D_BDS', D_BDS, FALSE, arg.length)
+  checkmate::assert_subset(method, choices = c('Heinen', 'average'), empty.ok = FALSE)
+  checkmate::assert_character(method, len = 1)
+  if(method == 'Heinen'){
+    check_numeric('A_SAND_MI', A_SAND_MI, FALSE, arg.length)
+    check_numeric('A_CLAY_MI', A_CLAY_MI, FALSE, arg.length)
+    check_numeric('A_SILT_MI', A_SILT_MI, FALSE, arg.length)
+    check_numeric('A_SOM_LOI', A_SOM_LOI, FALSE, arg.length)
+  }
+
     if (method == "Heinen") {
       # Calulate soil density (g/cm3), according to Heinen 2006
       # Heinen, M., (2006) Application of a widely used denitrification model to Dutch datasets. Geoderma 133, 464e473.
