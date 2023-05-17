@@ -7,13 +7,13 @@
 sptf_cec43(A_C_OF, A_CLAY_MI, A_SILT_MI, A_PH_CC)
 }
 \arguments{
-\item{A_C_OF}{(numeric) The carbon content of the soil (g / kg).}
+\item{A_C_OF}{(numeric) Organic Carbon Content (g / kg)}
 
-\item{A_CLAY_MI}{(numeric) The clay content of the soil (\%).}
+\item{A_CLAY_MI}{(numeric) The clay content of the mineral soil fraction (\%).}
 
-\item{A_SILT_MI}{(numeric) The silt content of the soil (\%).}
+\item{A_SILT_MI}{(numeric) Silt content (\%)}
 
-\item{A_PH_CC}{(numeric) The acidity of the soil, pH in CaCl2 (-).}
+\item{A_PH_CC}{(numeric) Acidity in CaCl2 (-)}
 }
 \description{
 This function calculates the effective CEC at sample pH for agricultural soils at various depths in Nigeria

@@ -7,11 +7,11 @@
 sptf_ph2(A_SOM_LOI, A_PH_KCL, A_CLAY_MI)
 }
 \arguments{
-\item{A_SOM_LOI}{(numeric) The percentage organic matter in the soil (\%).}
+\item{A_SOM_LOI}{(numeric) The percentage organic matter in the soil determined by loss on ignition (\%)}
 
-\item{A_PH_KCL}{(numeric) The acidity of the soil, pH in KCL (-).}
+\item{A_PH_KCL}{(numeric) Acidity in KCl (-)}
 
-\item{A_CLAY_MI}{(numeric) The clay content of the soil (\%).}
+\item{A_CLAY_MI}{(numeric) The clay content of the mineral soil fraction (\%).}
 }
 \description{
 This function calculates the pH extracted with water from the pH-KCL.

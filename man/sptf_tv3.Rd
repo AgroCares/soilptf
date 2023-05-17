@@ -7,9 +7,9 @@
 sptf_tv3(A_CLAY_MI, A_SILT_MI)
 }
 \arguments{
-\item{A_CLAY_MI}{(numeric) The clay content of the soil (\%).}
+\item{A_CLAY_MI}{(numeric) The clay content of the mineral soil fraction (\%).}
 
-\item{A_SILT_MI}{(numeric) The silt content of the soil (\%).}
+\item{A_SILT_MI}{(numeric) Silt content (\%)}
 }
 \description{
 Calculate the threshold velocity for wind erosion for agicultural soils in Hungary

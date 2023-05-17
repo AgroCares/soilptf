@@ -2,8 +2,7 @@
 #'
 #' Calculate the threshold velocity for wind erosion for soils in Iran.
 #'
-#' @param A_SOM_LOI (numeric) The percentage organic matter in the soil (\%).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
+#' @inheritParams sptf_bd0
 #' @param A_AMWD_DM (numeric) The aggregate mean weight diameter in mm (dry aggregate stability).
 #'
 #' @import data.table
@@ -58,8 +57,7 @@ sptf_tv1 <- function(A_SOM_LOI,A_CLAY_MI,A_AMWD_DM = NA_real_) {
 #'
 #' Calculate the threshold velocity for soils sensitive to wind erosion in Hungary
 #'
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
-#' @param A_SILT_MI (numeric) The silt content of the soil (\%).
+#' @inheritParams sptf_bd0
 #' 
 #' @import data.table
 #' 
@@ -111,8 +109,7 @@ sptf_tv2 <- function(A_CLAY_MI,A_SILT_MI) {
 #'
 #' Calculate the threshold velocity for wind erosion for agicultural soils in Hungary
 #'
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
-#' @param A_SILT_MI (numeric) The silt content of the soil (\%).
+#' @inheritParams sptf_bd0
 #' 
 #' @import data.table
 #' 

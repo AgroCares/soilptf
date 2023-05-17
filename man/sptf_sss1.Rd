@@ -7,9 +7,9 @@
 sptf_sss1(A_SOM_LOI, A_CACO3_IF)
 }
 \arguments{
-\item{A_SOM_LOI}{(numeric) The percentage organic matter in the soil (\%).}
+\item{A_SOM_LOI}{(numeric) The percentage organic matter in the soil determined by loss on ignition (\%)}
 
-\item{A_CACO3_IF}{(numeric) The carbonate content of the soil (\%).}
+\item{A_CACO3_IF}{(numeric) Carbonated Lime inorganic soil fraction (\%)}
 }
 \description{
 This function calculates the soil shear strength via various soil properties

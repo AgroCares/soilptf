@@ -7,8 +7,7 @@
 #'
 #' This function calculates the soil shear strength via various soil properties
 #'
-#' @param A_SOM_LOI (numeric) The percentage organic matter in the soil (\%).
-#' @param A_CACO3_IF (numeric) The carbonate content of the soil (\%).
+#' @inheritParams sptf_bd0
 #'
 #' @import data.table
 #' 
@@ -59,8 +58,7 @@ sptf_sss1 <- function(A_SOM_LOI,A_CACO3_IF) {
 #'
 #' This function calculates the soil shear strength via various soil properties for soils (8-12 cm) in Denmark and Belgium 
 #'
-#' @param A_SOM_LOI (numeric) The percentage organic matter in the soil (\%).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
+#' @inheritParams sptf_bd0
 #'
 #' @import data.table
 #' 
@@ -116,8 +114,7 @@ sptf_sss2 <- function(A_SOM_LOI,A_CLAY_MI) {
 #'
 #' This function calculates the soil shear strength via various soil properties for agricultural soils in Denmark
 #'
-#' @param A_SOM_LOI (numeric) The percentage organic matter in the soil (\%).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
+#' @inheritParams sptf_bd0
 #'
 #' @import data.table
 #' 

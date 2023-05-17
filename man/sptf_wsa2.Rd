@@ -7,7 +7,7 @@
 sptf_wsa2(A_SOM_LOI)
 }
 \arguments{
-\item{A_SOM_LOI}{(numeric) The percentage organic matter in the soil (\%).}
+\item{A_SOM_LOI}{(numeric) The percentage organic matter in the soil determined by loss on ignition (\%)}
 }
 \description{
 Calculate the percentage water stable aggregates for agricultural soils (0-15 cm) in UK given the pedotransferfunction of Ekwue (1990)

@@ -7,13 +7,13 @@
 sptf_cec74(A_C_OF, A_CLAY_MI, A_SILT_MI, A_PH_WA, B_SOILCLASS_USDA)
 }
 \arguments{
-\item{A_C_OF}{(numeric) The carbon content of the soil (g / kg).}
+\item{A_C_OF}{(numeric) Organic Carbon Content (g / kg)}
 
-\item{A_CLAY_MI}{(numeric) The clay content of the soil (\%).}
+\item{A_CLAY_MI}{(numeric) The clay content of the mineral soil fraction (\%).}
 
-\item{A_SILT_MI}{(numeric) The silt content of the soil (\%).}
+\item{A_SILT_MI}{(numeric) Silt content (\%)}
 
-\item{A_PH_WA}{(numeric) The acidity of the soil, pH in water (-).}
+\item{A_PH_WA}{(numeric) Acidity in water (-)}
 
 \item{B_SOILCLASS_USDA}{The soil type class according to the USDA Soil Taxonomy (https://en.wikipedia.org/wiki/USDA_soil_taxonomy)}
 }

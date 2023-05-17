@@ -4,8 +4,7 @@
 #'
 #' This function calculates the hot water extractable carbon content for agricultural soils in the Netherlands.
 #'
-#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
+#' @inheritParams sptf_bd0
 #'
 #' @import data.table
 #' 
@@ -39,7 +38,7 @@ sptf_hwc1 <- function(A_C_OF, A_CLAY_MI) {
 #'
 #' This function calculates the hot water extractable carbon content for agricultural soils in the Netherlands.
 #'
-#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
+#' @inheritParams sptf_bd0
 #'
 #' @import data.table
 #' 
@@ -69,8 +68,7 @@ sptf_hwc2 <- function(A_C_OF) {
 #'
 #' This function calculates the hot water extractable carbon content for agricultural soils in the Netherlands.
 #'
-#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
-#' @param A_PH_CC (numeric) The acidity of the soil, pH in CaCl2 (-)
+#' @inheritParams sptf_bd0
 #'
 #' @import data.table
 #' 
@@ -107,7 +105,7 @@ sptf_hwc3 <- function(A_C_OF,A_PH_CC) {
 #'
 #' This function calculates the hot water extractable carbon content for grassland soils in the Netherlands.
 #'
-#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
+#' @inheritParams sptf_bd0
 #'
 #' @import data.table
 #' 
@@ -138,9 +136,7 @@ sptf_hwc4 <- function(A_C_OF) {
 #'
 #' This function calculates the hot water extractable carbon content for agricultural soils in the Netherlands. Experimental data from 2019.
 #'
-#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
-#' @param A_P_AL (numeric) The phosphorus content of the soil, extracted in ammonium lactate (mg P2O5/100g)
-#' @param A_PH_CC (numeric) The acidity of the soil, pH in CaCl2 (-)
+#' @inheritParams sptf_bd0
 #'
 #' @import data.table
 #' 
@@ -182,9 +178,7 @@ sptf_hwc5 <- function(A_C_OF,A_P_AL,A_PH_CC) {
 #'
 #' This function calculates the hot water extractable carbon content for agricultural soils in the Netherlands. Data from various years.
 #'
-#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
-#' @param A_P_AL (numeric) The phosphorus content of the soil, extracted in ammonium lactate (mg P2O5/100g)
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
+#' @inheritParams sptf_bd0
 #'
 #' @import data.table
 #' 
@@ -229,8 +223,7 @@ sptf_hwc6 <- function(A_C_OF,A_P_AL,A_CLAY_MI) {
 #'
 #' This function calculates the hot water extractable carbon content for agricultural soils in the Netherlands. Data from various years.
 #'
-#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
+#' @inheritParams sptf_bd0
 #'
 #' @import data.table
 #' 
@@ -264,7 +257,7 @@ sptf_hwc7 <- function(A_C_OF,A_CLAY_MI) {
 #'
 #' This function calculates the hot water extractable carbon content for agricultural soils in the Netherlands. 
 #'
-#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
+#' @inheritParams sptf_bd0
 #'
 #' @import data.table
 #' 
@@ -296,8 +289,7 @@ sptf_hwc8 <- function(A_C_OF) {
 #'
 #' This function calculates the hot water extractable carbon content for agricultural soils in the Netherlands. Data from various years.
 #'
-#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
-#' @param A_PH_CC (numeric) The acidity of the soil, pH in CaCl2 (-)
+#' @inheritParams sptf_bd0
 #'
 #' @import data.table
 #' 
@@ -334,8 +326,7 @@ sptf_hwc9 <- function(A_C_OF,A_PH_CC) {
 #'
 #' This function calculates the hot water extractable carbon content for agricultural soils in the Netherlands. Data from various years.
 #'
-#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
-#' @param A_PH_CC (numeric) The acidity of the soil, pH in CaCl2 (-)
+#' @inheritParams sptf_bd0
 #'
 #' @import data.table
 #' 
@@ -372,8 +363,7 @@ sptf_hwc10 <- function(A_C_OF,A_PH_CC) {
 #'
 #' This function calculates the hot water extractable carbon content for agricultural soils in the Netherlands. Data from various years.
 #'
-#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
+#' @inheritParams sptf_bd0
 #'
 #' @import data.table
 #' 
@@ -410,8 +400,7 @@ sptf_hwc11 <- function(A_C_OF,A_CLAY_MI) {
 #'
 #' This function calculates the hot water extractable carbon content for agricultural soils in the Netherlands. Data from various sources.
 #' 
-#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
+#' @inheritParams sptf_bd0
 #'
 #' @import data.table
 #' 

@@ -2,19 +2,19 @@
 % Please edit documentation in R/mwd.R
 \name{sptf_mwd5}
 \alias{sptf_mwd5}
-\title{Calculate the Mean Weight Diamater}
+\title{Calculate the Mean Weight Diameter}
 \usage{
 sptf_mwd5(A_C_OF, A_CLAY_MI, A_PH_WA)
 }
 \arguments{
-\item{A_C_OF}{(numeric) The fraction organic carbon in the soil (g / kg).}
+\item{A_C_OF}{(numeric) Organic Carbon Content (g / kg)}
 
-\item{A_CLAY_MI}{(numeric) The clay content of the soil (\%).}
+\item{A_CLAY_MI}{(numeric) The clay content of the mineral soil fraction (\%).}
 
-\item{A_PH_WA}{(numeric) The acidity of the soil, pH in water (-)}
+\item{A_PH_WA}{(numeric) Acidity in water (-)}
 }
 \description{
-Calculate the Mean Weight Diamater for agricultural soils (0-20 cm) in Serbia given the pedotransferfunction of Ciric et al. (2012)
+Calculate the Mean Weight Diameter for agricultural soils (0-20 cm) in Serbia given the pedotransferfunction of Ciric et al. (2012)
 }
 \references{
 Ciric et al. (2012) Soil dry aggregate size distribution: effects of soil type and land use

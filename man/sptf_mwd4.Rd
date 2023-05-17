@@ -2,21 +2,21 @@
 % Please edit documentation in R/mwd.R
 \name{sptf_mwd4}
 \alias{sptf_mwd4}
-\title{Calculate the Mean Weight Diamater}
+\title{Calculate the Mean Weight Diameter}
 \usage{
 sptf_mwd4(A_C_OF, A_CLAY_MI, A_SILT_MI, A_CACO3_IF)
 }
 \arguments{
-\item{A_C_OF}{(numeric) The fraction organic carbon in the soil (g / kg).}
+\item{A_C_OF}{(numeric) Organic Carbon Content (g / kg)}
 
-\item{A_CLAY_MI}{(numeric) The clay content of the soil (\%).}
+\item{A_CLAY_MI}{(numeric) The clay content of the mineral soil fraction (\%).}
 
-\item{A_SILT_MI}{(numeric) The silt content of the soil (\%).}
+\item{A_SILT_MI}{(numeric) Silt content (\%)}
 
-\item{A_CACO3_IF}{(numeric) The calcium carbonate content of the soil (\%)}
+\item{A_CACO3_IF}{(numeric) Carbonated Lime inorganic soil fraction (\%)}
 }
 \description{
-Calculate the Mean Weight Diamater for agricultural soils (0-10cm) in Tunesia given the pedotransferfunction of Annabi et al. (2017)
+Calculate the Mean Weight Diameter for agricultural soils (0-10cm) in Tunesia given the pedotransferfunction of Annabi et al. (2017)
 }
 \references{
 Annabi et al. (2017) Spatial variability of soil aggregate stability at the scale of an agricultural region in Tunisia

@@ -7,11 +7,11 @@
 sptf_cdec1(A_C_OF, A_N_RT, years)
 }
 \arguments{
-\item{A_C_OF}{(numeric) The carbon content of the soil (g / kg).}
+\item{A_C_OF}{(numeric) Organic Carbon Content (g / kg)}
 
-\item{A_N_RT}{(numeric) The nitrogen content of the soil (mg / kg).}
+\item{A_N_RT}{(numeric) Total nitrogen content (mg N/ kg)}
 
-\item{years}{(numeric) The years for which the carbon decomposition need to be estimated.}
+\item{years}{(numeric) The number of years for which the carbon decomposition need to be estimated.}
 }
 \description{
 This function calculates the decomposition of peat using first order kinetics.

@@ -8,12 +8,15 @@ sptf_bd0(
   A_CEC_CO,
   A_CLAY_MI,
   A_C_OF,
+  A_CN_FR,
   A_DEPTH,
-  A_DENSITY,
   A_H20_T105,
+  A_K_AA,
   A_N_RT,
   A_PH_CC,
   A_PH_WA,
+  A_PH_KCL,
+  A_P_AL,
   A_SAND_M50,
   A_SAND_MI,
   A_SILT_MI,
@@ -36,17 +39,23 @@ sptf_bd0(
 
 \item{A_C_OF}{(numeric) Organic Carbon Content (g / kg)}
 
+\item{A_CN_FR}{(numeric) Carbon / Nitrogen ratio (ratio)}
+
 \item{A_DEPTH}{(numeric) The depth of the sampled soil layer (m)}
 
-\item{A_DENSITY}{(numeric) Soil density (g / kg)}
-
 \item{A_H20_T105}{(numeric) The volumetric moisture content of the soil (\%)}
+
+\item{A_K_AA}{(numeric) Potassium plant available, extracted with acetic acid (mg K/kg)}
 
 \item{A_N_RT}{(numeric) Total nitrogen content (mg N/ kg)}
 
 \item{A_PH_CC}{(numeric) Acidity in CaCl2 (-)}
 
 \item{A_PH_WA}{(numeric) Acidity in water (-)}
+
+\item{A_PH_KCL}{(numeric) Acidity in KCl (-)}
+
+\item{A_P_AL}{(numeric) Total phosphate content (mg P2O5/100 g)}
 
 \item{A_SAND_M50}{(numeric) description (µm)}
 

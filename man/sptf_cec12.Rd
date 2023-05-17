@@ -7,7 +7,7 @@
 sptf_cec12(A_C_OF, B_LU_PTFCLASS)
 }
 \arguments{
-\item{A_C_OF}{(numeric) The carbon content of the soil (g / kg).}
+\item{A_C_OF}{(numeric) Organic Carbon Content (g / kg)}
 
 \item{B_LU_PTFCLASS}{(character) The land use category (options: agriculture, grassland, cropland, forest, nature)}
 }

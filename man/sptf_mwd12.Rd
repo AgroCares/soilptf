@@ -7,11 +7,11 @@
 sptf_mwd12(A_SOM_LOI, A_CLAY_MI, A_SILT_MI)
 }
 \arguments{
-\item{A_SOM_LOI}{(numeric) The soil organic matter content (\%).}
+\item{A_SOM_LOI}{(numeric) The percentage organic matter in the soil determined by loss on ignition (\%)}
 
-\item{A_CLAY_MI}{(numeric) The clay content of the soil (\%).}
+\item{A_CLAY_MI}{(numeric) The clay content of the mineral soil fraction (\%).}
 
-\item{A_SILT_MI}{(numeric) The silt content of the soil (\%).}
+\item{A_SILT_MI}{(numeric) Silt content (\%)}
 }
 \description{
 Calculate the Mean Weight Diameter (mm) for agricultural topsoils (0-30cm) in India given the pedotransferfunction of Bhattacharya et al. (2021)

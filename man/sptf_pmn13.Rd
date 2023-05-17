@@ -7,7 +7,7 @@
 sptf_pmn13(A_C_OF)
 }
 \arguments{
-\item{A_C_OF}{(numeric) The carbon content of the soil (g / kg).}
+\item{A_C_OF}{(numeric) Organic Carbon Content (g / kg)}
 }
 \description{
 This function calculates the PMN content for agricultural soils in the Netherlands. PMN refers to anearobic mineralizable N pool, 40 degrees for 7 days.

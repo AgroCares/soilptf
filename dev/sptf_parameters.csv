@@ -1,20 +1,27 @@
 code;parameter;unit;product;element;method1;method2;data_type;value_min;value_max;explanation;enum;options
-A_CACO3_IF;Carbonated Lime;%;A;CACO3;IF;;num;0.1;50;;FALSE;
-A_CEC_CO;Cation Exchange Capacity;mmol+/kg;A;CEC;CO;;num;1;1000;;FALSE;
-A_CLAY_MI;Clay content;%;A;CLAY;MI;;num;0.1;75;;FALSE;
-A_C_OF;Organic Carbon Content;g / kg;A;C;OF;;num;0.1;600;;FALSE;
-A_DENSITY_SA;Dry bulk density;g/cm3;A;DENSITY;SA;;num;0.5;3;;FALSE;
-A_DEPTH;Depth of the soil layer;m;A;DEPTH;;;num;0;2;;FALSE;
-A_H2O_T105;The volumetric moisture content of the soil;%;A;H2O;T105;;num;0;100;;FALSE;
-A_N_RT;Total nitrogen content;mg N/ kg;A;N;RT;;num;1;30000;;FALSE;
-A_PH_CC;Acidity in CaCl2;-;A;PH;CC;;num;3;10;;FALSE;
-A_PH_WA;Acidity in water;-;A;PH;WA;;num;3;10;;FALSE;
-A_SAND_M50;Particle size of the mass median of the sandfraction (50-2000µm);µm;A;SAND;M50;;num;50;2000;;FALSE;
-A_SAND_MI;Sand content;%;A;SAND;MI;;num;0.1;100;;FALSE;
-A_SILT_MI;Silt content;%;A;SILT;MI;;num;0.1;100;;FALSE;
-A_SOM_LOI;Organic matter content;%;A;SOM;LOI;;num;0.5;75;;FALSE;
-B_ALTITUDE;The altitude of the soil surface;m;B;ALTITUDE;;;num;-414;8849;;FALSE;
-B_SLOPE_ASPECT;Slope aspect of the field;degrees;B;SLOPE;ASPECT;;num;0;360;;FALSE;
-B_SLOPE_DEGREE;Slope of the field;degrees;B;SLOPE;DEGREE;;num;0;30;;FALSE;
-D_BDS;Bulk density;kg / m3;D;BDS;;;num;100;1900;;FALSE;
-B_SOILCLASS_USDA;Soil type class according to USDA Soil Taconomy;-;B;SOILCLASS;USDA;;char;;;;TRUE;"""alfisol||andisol||aridisol||entisol||gelisol||inceptisol||mollisol||oxisol||spodosol||ultisol||vertisol||histosol"
+A_AMWD_DM;Dry aggregate stability, expressed as the aggregate mean weight diameter;mm;A;AMWD;DM;"";num;;;"";FALSE;""
+A_CACO3_IF;Carbonated Lime;%;A;CACO3;IF;"";num;0.1;50;"";FALSE;""
+A_CEC_CO;Cation Exchange Capacity;mmol+/kg;A;CEC;CO;"";num;1;1000;"";FALSE;""
+A_CLAY_MI;Clay content;%;A;CLAY;MI;"";num;0.1;75;"";FALSE;""
+A_CN_FR;Carbon / Nitrogen ratio;ratio;A;CN;FR;"";num;5;40;"";FALSE;""
+A_C_OF;Organic Carbon Content;g / kg;A;C;OF;"";num;0.1;600;"";FALSE;""
+A_DEPTH;Depth of the soil layer;m;A;DEPTH;"";"";num;0;2;"";FALSE;""
+A_H2O_T105;The volumetric moisture content of the soil;%;A;H2O;T105;"";num;0;100;"";FALSE;""
+A_K_AA;Potassium plant available, extracted with acetic acid;mg K/kg;A;K;AA;"";num;1;500;"";FALSE;""
+A_N_RT;Total nitrogen content;mg N/ kg;A;N;RT;"";num;1;30000;"";FALSE;""
+A_PH_CC;Acidity in CaCl2;-;A;PH;CC;"";num;3;10;"";FALSE;""
+A_PH_KCL;Acidity in KCl;-;A;PH;KCL;"";num;3;10;"";FALSE;""
+A_PH_WA;Acidity in water;-;A;PH;WA;"";num;3;10;"";FALSE;""
+A_SAND_M50;Particle size of the mass median of the sandfraction (50-2000µm);µm;A;SAND;M50;"";num;50;2000;"";FALSE;""
+A_SAND_MI;Sand content;%;A;SAND;MI;"";num;0.1;100;"";FALSE;""
+A_SILT_MI;Silt content;%;A;SILT;MI;"";num;0.1;100;"";FALSE;""
+A_SOM_LOI;Organic matter content;%;A;SOM;LOI;"";num;0.5;75;"";FALSE;""
+B_ALTITUDE;The altitude of the soil surface;m;B;ALTITUDE;"";"";num;-414;8849;"";FALSE;""
+B_LOC_CONT;Code denoting a continent;"";B;LOC;CONT;"";char;;;"";TRUE;EU||NAm||NA||SA||SAm||AS||AF||OC||AN
+B_LOC_COUNTRY;Two letter country code according to ISO3166-1;"";B;LOC;COUNTRY;"";char;;;This is a synonym of B_COUNTRY_ISO31661_2, all changes should be applied to B_COUNTRY_ISO31661_2.;TRUE;TW||AF||AL||DZ||AS||AD||AO||AI||AQ||AG||AR||AM||AW||AU||AT||AZ||BS||BH||BD||BB||BY||BE||BZ||BJ||BM||BT||BO||BQ||BA||BW||BV||BR||IO||VG||BN||BG||BF||BI||CV||KH||CM||CA||KY||CF||TD||CL||CN||HK||MO||CX||CC||CO||KM||CG||CK||CR||HR||CU||CW||CY||CZ||CI||KP||CD||DK||DJ||DM||DO||EC||EG||SV||GQ||ER||EE||SZ||ET||FK||FO||FJ||FI||FR||GF||PF||TF||GA||GM||GE||DE||GH||GI||GR||GL||GD||GP||GU||GT||GG||GN||GW||GY||HT||HM||VA||HN||HU||IS||IN||ID||IR||IQ||IE||IM||IL||IT||JM||JP||JE||JO||KZ||KE||KI||KW||KG||LA||LV||LB||LS||LR||LY||LI||LT||LU||MG||MW||MY||MV||ML||MT||MH||MQ||MR||MU||YT||MX||FM||MC||MN||ME||MS||MA||MZ||MM||NR||NP||NL||NC||NZ||NI||NE||NG||NU||NF||MP||NO||OM||PK||PW||PA||PG||PY||PE||PH||PN||PL||PT||PR||QA||KR||MD||RO||RU||RW||RE||BL||SH||KN||LC||MF||PM||VC||WS||SM||ST||NA||SA||SN||RS||SC||SL||SG||SX||SK||SI||SB||SO||ZA||GS||SS||ES||LK||PS||SD||SR||SJ||SE||CH||SY||TJ||TH||MK||TL||TG||TK||TO||TT||TN||TR||TM||TC||TV||UG||UA||AE||GB||TZ||UM||VI||US||UY||UZ||VU||VE||VN||WF||EH||YE||ZM||ZW||AX||XK
+B_LU_PTFCLASS;Landuse category for applicability of pedotransferfunctions;"";B;LU;PTFCLASS;"";char;;;"";TRUE;agriculture||grassland||cropland||forest||nature
+B_ROCKS_FR;Fraction of the soil that is rocks;unitless;B;ROCKS;FR;"";num;0;1;"";FALSE;""
+B_SLOPE_ASPECT;Slope aspect of the field;degrees;B;SLOPE;ASPECT;"";num;0;360;"";FALSE;""
+B_SLOPE_DEGREE;Slope of the field;degrees;B;SLOPE;DEGREE;"";num;0;30;"";FALSE;""
+B_SOILTYPE_USDA;The soil type class according to the USDA Soil Taxonomy;"";B;SOILTYPE;USDA;"";char;;;https://en.wikipedia.org/wiki/USDA_soil_taxonomy;TRUE;alfisol||andisol||aridisol||entisol||gelisol||inceptisol||mollisol||oxisol||spodosol||ultisol||vertisol||histosol
+D_BDS;Bulk density;kg / m3;D;BDS;"";"";num;100;1900;"";FALSE;""

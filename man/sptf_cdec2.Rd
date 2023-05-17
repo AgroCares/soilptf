@@ -7,9 +7,9 @@
 sptf_cdec2(A_C_OF, years)
 }
 \arguments{
-\item{A_C_OF}{(numeric) The carbon content of the soil (g / kg).}
+\item{A_C_OF}{(numeric) Organic Carbon Content (g / kg)}
 
-\item{years}{(numeric) The years for which the carbon decomposition need to be estimated.}
+\item{years}{(numeric) The number of years for which the carbon decomposition need to be estimated.}
 }
 \description{
 This function calculates the decomposition of sand and peat soils using first order kinetics.

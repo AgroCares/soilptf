@@ -7,7 +7,7 @@
 sptf_ph1(A_PH_KCL)
 }
 \arguments{
-\item{A_PH_KCL}{(numeric) The acidity of the soil, pH in KCL (-)}
+\item{A_PH_KCL}{(numeric) Acidity in KCl (-)}
 }
 \description{
 This function calculates the pH extracted with water from the pH-KCL.

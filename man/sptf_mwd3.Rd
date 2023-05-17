@@ -2,25 +2,25 @@
 % Please edit documentation in R/mwd.R
 \name{sptf_mwd3}
 \alias{sptf_mwd3}
-\title{Calculate the Mean Weight Diamater}
+\title{Calculate the Mean Weight Diameter}
 \usage{
 sptf_mwd3(A_C_OF, A_CEC_CO, A_CLAY_MI, A_SILT_MI, A_PH_WA, A_CACO3_IF)
 }
 \arguments{
-\item{A_C_OF}{(numeric) The fraction organic carbon in the soil (g / kg).}
+\item{A_C_OF}{(numeric) Organic Carbon Content (g / kg)}
 
-\item{A_CEC_CO}{(numeric) The Cation Exchange Capacity (mmol+/kg).}
+\item{A_CEC_CO}{(numeric) Cation Exchange Capacity (mmol+/kg)}
 
-\item{A_CLAY_MI}{(numeric) The clay content of the soil (\%).}
+\item{A_CLAY_MI}{(numeric) The clay content of the mineral soil fraction (\%).}
 
-\item{A_SILT_MI}{(numeric) The silt content of the soil (\%).}
+\item{A_SILT_MI}{(numeric) Silt content (\%)}
 
-\item{A_PH_WA}{(numeric) The acidity of the soil, pH in water (-)}
+\item{A_PH_WA}{(numeric) Acidity in water (-)}
 
-\item{A_CACO3_IF}{(numeric) The calcium carbonate content of the soil (\%)}
+\item{A_CACO3_IF}{(numeric) Carbonated Lime inorganic soil fraction (\%)}
 }
 \description{
-Calculate the Mean Weight Diamater for soils (0-20cm) in Northwestern Algeria given the pedotransferfunction of Saidi et al. (2015)
+Calculate the Mean Weight Diameter for soils (0-20cm) in Northwestern Algeria given the pedotransferfunction of Saidi et al. (2015)
 }
 \references{
 Saidi et al. (2015). Using Pedotransfer Functions to Assess Aggregate Stability: Application to the Lower Cheliff Soils, Algeria

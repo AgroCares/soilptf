@@ -1,4 +1,7 @@
 # Changelog soilptf
+## Version 0.5.3 2023-05-17
+### Changed
+* Improved the function input documentation
 
 ## Version 0.5.2  2023-05-10
 

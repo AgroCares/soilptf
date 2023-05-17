@@ -7,11 +7,11 @@
 sptf_wsa5(A_CLAY_MI, A_SILT_MI, A_SOM_LOI)
 }
 \arguments{
-\item{A_CLAY_MI}{(numeric) The clay content of the soil (\%).}
+\item{A_CLAY_MI}{(numeric) The clay content of the mineral soil fraction (\%).}
 
-\item{A_SILT_MI}{(numeric) The silt content of the soil (\%).}
+\item{A_SILT_MI}{(numeric) Silt content (\%)}
 
-\item{A_SOM_LOI}{(numeric) The soil organic matter content (\%).}
+\item{A_SOM_LOI}{(numeric) The percentage organic matter in the soil determined by loss on ignition (\%)}
 }
 \description{
 Calculate the percentage water stable aggregates (%) for variable alluvial soils (0-10cm) in southern Ohio.

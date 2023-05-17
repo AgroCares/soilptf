@@ -7,9 +7,9 @@
 sptf_cec66(A_SOM_LOI, A_CLAY_MI)
 }
 \arguments{
-\item{A_SOM_LOI}{(numeric) The organi cmatter content of the soil (\%).}
+\item{A_SOM_LOI}{(numeric) The percentage organic matter in the soil determined by loss on ignition (\%)}
 
-\item{A_CLAY_MI}{(numeric) The clay content of the soil (\%).}
+\item{A_CLAY_MI}{(numeric) The clay content of the mineral soil fraction (\%).}
 }
 \description{
 This function calculates the CEC for soils in Iraq

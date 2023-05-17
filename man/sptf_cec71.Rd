@@ -7,9 +7,9 @@
 sptf_cec71(A_C_OF, A_CLAY_MI)
 }
 \arguments{
-\item{A_C_OF}{(numeric) The carbon content of the soil (g / kg).}
+\item{A_C_OF}{(numeric) Organic Carbon Content (g / kg)}
 
-\item{A_CLAY_MI}{(numeric) The clay content of the soil (\%).}
+\item{A_CLAY_MI}{(numeric) The clay content of the mineral soil fraction (\%).}
 }
 \description{
 This function calculates the CEC at pH 8.2 for various land use soils in Ireland

@@ -34,9 +34,7 @@ sptf_erodibility1 <- function(A_AMWD_DM) {
 #'
 #' This function calculates the erodible fraction in Argentina
 #'
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
-#' @param A_SILT_MI (numeric) The silt content of the soil (\%).
-#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
+#' @inheritParams sptf_bd0
 #' 
 #' @import data.table
 #' 

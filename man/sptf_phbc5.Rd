@@ -7,7 +7,7 @@
 sptf_phbc5(A_C_OF)
 }
 \arguments{
-\item{A_C_OF}{(numeric) The carbon content of the soil (g / kg).}
+\item{A_C_OF}{(numeric) Organic Carbon Content (g / kg)}
 }
 \description{
 This function calculates the capacity of soils in Georgia to buffer pH changes in response to changes in SOC.

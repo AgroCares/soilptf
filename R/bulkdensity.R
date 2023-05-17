@@ -4,13 +4,16 @@
 #' 
 #' @param A_CEC_CO (numeric) Cation Exchange Capacity (mmol+/kg)
 #' @param A_CLAY_MI (numeric) The clay content of the mineral soil fraction (\%).
-#' @param A_C_OF (numeric) Organic Carbon Content (g / kg)
+#' @param A_C_OF  (numeric) Organic Carbon Content (g / kg)
+#' @param A_CN_FR (numeric) Carbon / Nitrogen ratio (ratio)
 #' @param A_DEPTH (numeric) The depth of the sampled soil layer (m)
-#' @param A_DENSITY (numeric) Soil density (g / kg)
 #' @param A_H20_T105 (numeric) The volumetric moisture content of the soil (\%)
+#' @param A_K_AA (numeric) Potassium plant available, extracted with acetic acid (mg K/kg)
 #' @param A_N_RT (numeric) Total nitrogen content (mg N/ kg)
 #' @param A_PH_CC (numeric) Acidity in CaCl2 (-)
 #' @param A_PH_WA (numeric) Acidity in water (-)
+#' @param A_PH_KCL (numeric) Acidity in KCl (-)
+#' @param A_P_AL (numeric) Total phosphate content (mg P2O5/100 g)
 #' @param A_SAND_M50 (numeric) description (µm)
 #' @param A_SAND_MI (numeric) Sand content (\%)
 #' @param A_SILT_MI (numeric) Silt content (\%)
@@ -26,8 +29,8 @@
 #' @param A_H2O_T105 (numeric) water content measured after drying at 105 degrees (\%)
 #' 
 #' @export
-sptf_bd0 <- function(A_CEC_CO,A_CLAY_MI,A_C_OF,A_DEPTH,A_DENSITY,A_H20_T105,
-                     A_N_RT,A_PH_CC,A_PH_WA,A_SAND_M50,A_SAND_MI,A_SILT_MI,A_SOM_LOI,
+sptf_bd0 <- function(A_CEC_CO,A_CLAY_MI,A_C_OF,A_CN_FR,A_DEPTH,A_H20_T105, A_K_AA,
+                     A_N_RT,A_PH_CC,A_PH_WA,A_PH_KCL,A_P_AL,A_SAND_M50,A_SAND_MI,A_SILT_MI,A_SOM_LOI,
                      B_ALTITUDE,B_ROCKS_FR,B_SLOPE_ASPECT,B_SLOPE_DEGREE,mp_wp,
                      mp_fc,D_BDS,A_CACO3_IF,A_H2O_T105){return(NULL)}
 
@@ -6596,7 +6599,7 @@ sptf_bd181 <- function(A_SOM_LOI, A_CLAY_MI, A_SILT_MI) {
 
 #' Calculate the bulk density given the pedotransferfunction of Ruhlmann et al. (2006)
 #'
-#' @param A_SOM_LOI (numeric) The percentage of organic matter in the soil (\%).
+#' @inheritParams sptf_bd0
 #'
 #' @import data.table
 #' 
@@ -6624,7 +6627,7 @@ sptf_bd182 <- function(A_SOM_LOI) {
 
 #' Calculate the bulk density given the pedotransferfunction of McBride et al. (2011)
 #'
-#' @param A_SOM_LOI (numeric) The percentage of organic matter in the soil (\%).
+#' @inheritParams sptf_bd0
 #'
 #' @import data.table
 #' 
@@ -6652,9 +6655,7 @@ sptf_bd183 <- function(A_SOM_LOI) {
 
 #' Calculate the bulk density given the pedotransferfunction of Schjonning et al. (2016).
 #'
-#' @param A_SOM_LOI (numeric) The percentage of organic matter in the soil (\%).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
-#' @param A_SILT_MI (numeric) The silt content of the soil (\%).
+#' @inheritParams sptf_bd0
 #'
 #' @import data.table
 #' 
@@ -6708,8 +6709,7 @@ sptf_bd184 <- function(A_SOM_LOI, A_CLAY_MI, A_SILT_MI) {
 
 #' Calculate the bulk density given the pedotransferfunction of Schjonning et al. (2016)
 #'
-#' @param A_SOM_LOI (numeric) The percentage of organic matter in the soil (\%).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
+#' @inheritParams sptf_bd0
 #' 
 #' @import data.table
 #' 
@@ -6742,8 +6742,7 @@ sptf_bd185 <- function(A_SOM_LOI,A_CLAY_MI) {
 
 #' Calculate the bulk density given the pedotransferfunction of da Silva et al. (1997).
 #'
-#' @param A_C_OF (numeric) The fraction organic carbon in the soil (g / kg).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
+#' @inheritParams sptf_bd0
 #'
 #' @import data.table
 #' 
@@ -6784,8 +6783,7 @@ sptf_bd186 <- function(A_C_OF, A_CLAY_MI) {
 
 #' Calculate the bulk density given the pedotransferfunction of Guerif & Farure (1979)
 #'
-#' @param A_SOM_LOI (numeric) The percentage of organic matter in the soil (\%).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
+#' @inheritParams sptf_bd0
 #' 
 #' @import data.table
 #' 

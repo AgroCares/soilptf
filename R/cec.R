@@ -4,8 +4,7 @@
 #'
 #' This function calculates the CEC at pH 6.5 from SOM and clay content.
 #'
-#' @param A_SOM_LOI (numeric) The percentage organic matter in the soil (\%).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
+#' @inheritParams sptf_bd0
 #'
 #' @import data.table
 #' 
@@ -39,9 +38,7 @@ sptf_cec1 <- function(A_SOM_LOI, A_CLAY_MI) {
 #'
 #' This function calculates the CEC at 8.2
 #'
-#' @param A_SOM_LOI (numeric) The percentage organic matter in the soil (\%).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
-#' @param A_PH_KCL (numeric) The acidity of the soil, pH in KCL (-)
+#' @inheritParams sptf_bd0
 #' 
 #' @import data.table
 #' 
@@ -78,9 +75,7 @@ sptf_cec2 <- function(A_SOM_LOI, A_CLAY_MI, A_PH_KCL) {
 #'
 #' This function calculates the CEC at 8.2
 #'
-#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
-#' @param A_PH_CC (numeric) The acidity of the soil, pH in CaCl2 (-)
+#' @inheritParams sptf_bd0
 #' 
 #' @import data.table
 #' 
@@ -126,9 +121,7 @@ sptf_cec3 <- function(A_C_OF, A_CLAY_MI, A_PH_CC) {
 #'
 #' This function calculates the CEC at pH 6.5 for agricultural and natural soils in Winconsin (USA).
 #'
-#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
-#' @param A_PH_CC (numeric) The acidity of the soil, pH in CaCl2 (-)
+#' @inheritParams sptf_bd0
 #' 
 #' @import data.table
 #' 
@@ -166,8 +159,7 @@ sptf_cec4 <- function(A_C_OF, A_CLAY_MI, A_PH_CC) {
 #'
 #' This function calculates the CEC at pH 8.2 for agricultural soils in the Netherlands.
 #'
-#' @param A_SOM_LOI (numeric) The percentage organic matter in the soil (\%).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
+#' @inheritParams sptf_bd0
 #' 
 #' @import data.table
 #' 
@@ -200,10 +192,7 @@ sptf_cec5 <- function(A_SOM_LOI, A_CLAY_MI) {
 #'
 #' This function calculates the CEC at pH 8.2 for agricultural soils in the Netherlands.
 #'
-#' @param A_SOM_LOI (numeric) The percentage organic matter in the soil (\%).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
-#' @param A_SILT_MI (numeric) The silt content of the soil (\%)
-#' @param A_PH_CC (numeric) The acidity of the soil, pH in CaCl2 (-)
+#' @inheritParams sptf_bd0
 #'  
 #' @import data.table
 #' 
@@ -243,9 +232,7 @@ sptf_cec6 <- function(A_SOM_LOI, A_CLAY_MI, A_SILT_MI, A_PH_CC) {
 #'
 #' This function calculates the CEC at pH 8.2 for sandy agricultural soils in the Netherlands.
 #'
-#' @param A_SOM_LOI (numeric) The percentage organic matter in the soil (\%).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
-#' @param A_PH_CC (numeric) The acidity of the soil, pH in CaCl2 (-).
+#' @inheritParams sptf_bd0
 #' @param B_LU_PTFCLASS (character) The land use category (options: agriculture, grassland, cropland, forest, nature)
 #'  
 #' @import data.table
@@ -296,11 +283,8 @@ sptf_cec7 <- function(A_SOM_LOI, A_CLAY_MI, A_PH_CC,B_LU_PTFCLASS) {
 #'
 #' This function calculates the CEC at pH 8.2 for peaty agricultural soils in the Netherlands.
 #'
-#' @param A_SOM_LOI (numeric) The percentage organic matter in the soil (\%).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
-#' @param A_PH_CC (numeric) The acidity of the soil, pH in CaCl2 (-).
-#' @param A_CN_FR (numeric) The carbon-to-nitrogen ratio of the soil organic matter (-)
-#' @param B_LU_PTFCLASS (character) The land use category (options: agriculture, grassland, cropland, forest, nature)
+#' @inheritParams sptf_bd0
+#' @inheritParams sptf_cec7
 #'  
 #' @import data.table
 #' 
@@ -348,10 +332,8 @@ sptf_cec8 <- function(A_SOM_LOI, A_CLAY_MI, A_PH_CC,A_CN_FR,B_LU_PTFCLASS) {
 #'
 #' This function calculates the CEC at pH 8.2 for clay agricultural soils
 #'
-#' @param A_SOM_LOI (numeric) The percentage organic matter in the soil (\%).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
-#' @param A_PH_CC (numeric) The acidity of the soil, pH in CaCl2 (-).
-#' @param B_LU_PTFCLASS (character) The land use category (options: agriculture, grassland, cropland, forest, nature)
+#' @inheritParams sptf_bd0
+#' @inheritParams sptf_cec7
 #'  
 #' @import data.table
 #' 
@@ -394,10 +376,8 @@ sptf_cec9 <- function(A_SOM_LOI, A_CLAY_MI, A_PH_CC,B_LU_PTFCLASS) {
 #'
 #' This function calculates the CEC at pH of sample for forest topsoils (0-30cm) in Switzerland
 #'
-#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
-#' @param A_PH_CC (numeric) The acidity of the soil, pH in CaCl2 (-).
-#' @param B_LU_PTFCLASS (character) The land use category (options: agriculture, grassland, cropland, forest, nature)
+#' @inheritParams sptf_bd0
+#' @inheritParams sptf_cec7
 #'  
 #' @import data.table
 #' 
@@ -439,10 +419,8 @@ sptf_cec10 <- function(A_C_OF, A_CLAY_MI, A_PH_CC,B_LU_PTFCLASS) {
 #'
 #' This function calculates the CEC at pH of sample for forest soils (including all horizons) in Switzerland
 #'
-#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
-#' @param A_PH_CC (numeric) The acidity of the soil, pH in CaCl2 (-).
-#' @param B_LU_PTFCLASS (character) The land use category (options: agriculture, grassland, cropland, forest, nature)
+#' @inheritParams sptf_bd0
+#' @inheritParams sptf_cec7
 #'  
 #' @import data.table
 #' 
@@ -483,9 +461,9 @@ sptf_cec11 <- function(A_C_OF, A_CLAY_MI, A_PH_CC,B_LU_PTFCLASS) {
 #' Calculate the CEC
 #'
 #' This function calculates the CEC at pH 7 for tropical forest soils in Brazil
-#'
-#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
-#' @param B_LU_PTFCLASS (character) The land use category (options: agriculture, grassland, cropland, forest, nature)
+#' 
+#' @inheritParams sptf_bd0
+#' @inheritParams sptf_cec7
 #'  
 #' @import data.table
 #' 
@@ -535,8 +513,7 @@ sptf_cec12 <- function(A_C_OF, B_LU_PTFCLASS) {
 #'
 #' This function calculates the CEC at pH 7 of agricultural soils (0-22 cm) in Quebec.
 #'
-#' @param A_SOM_LOI (numeric) The percentage organic matter in the soil (\%).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
+#' @inheritParams sptf_bd0
 #' 
 #' @import data.table
 #' 
@@ -570,8 +547,7 @@ sptf_cec13 <- function(A_SOM_LOI, A_CLAY_MI) {
 #'
 #' This function calculates the CEC at pH 7 of agricultural and forest top soils (0-22 cm) in Ohio.
 #'
-#' @param A_SOM_LOI (numeric) The percentage organic matter in the soil (\%).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
+#' @inheritParams sptf_bd0
 #' 
 #' @import data.table
 #' 
@@ -618,8 +594,7 @@ sptf_cec14 <- function(A_SOM_LOI, A_CLAY_MI) {
 #'
 #' This function calculates the CEC at pH 8.2 of agricultural soils in Maryland.
 #'
-#' @param A_SOM_LOI (numeric) The percentage organic matter in the soil (\%).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
+#' @inheritParams sptf_bd0
 #' 
 #' @import data.table
 #' 
@@ -653,9 +628,7 @@ sptf_cec15 <- function(A_SOM_LOI, A_CLAY_MI) {
 #'
 #' This function calculates the CEC at pH 8.2 for agricultural soils in US
 #'
-#' @param A_SOM_LOI (numeric) The percentage organic matter in the soil (\%).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
-#' @param A_PH_WA (numeric) The acidity of the soil, pH in water (-).
+#' @inheritParams sptf_bd0
 #'  
 #' @import data.table
 #' 
@@ -698,8 +671,8 @@ sptf_cec16 <- function(A_SOM_LOI, A_CLAY_MI, A_PH_WA) {
 #'
 #' This function calculates the CEC at pH 7 for natural grassland soils in China.
 #'
-#' @param A_SOM_LOI (numeric) The percentage organic matter in the soil (\%).
-#' @param B_LU_PTFCLASS (character) The land use category (options: agriculture, grassland, cropland, forest, nature)
+#' @inheritParams sptf_bd0
+#' @inheritParams sptf_cec7
 #'  
 #' @import data.table
 #' 
@@ -738,8 +711,7 @@ sptf_cec17 <- function(A_SOM_LOI, B_LU_PTFCLASS) {
 #'
 #' This function calculates the CEC at pH 7 of agricultural soils in Florida.
 #'
-#' @param A_SOM_LOI (numeric) The percentage organic matter in the soil (\%).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
+#' @inheritParams sptf_bd0
 #' 
 #' @import data.table
 #' 
@@ -773,8 +745,7 @@ sptf_cec18 <- function(A_SOM_LOI, A_CLAY_MI) {
 #'
 #' This function calculates the CEC at pH 8 of agricultural soils in Winconsin.
 #'
-#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
+#' @inheritParams sptf_bd0
 #' 
 #' @import data.table
 #' 
@@ -808,9 +779,7 @@ sptf_cec19 <- function(A_C_OF, A_CLAY_MI) {
 #'
 #' This function calculates the CEC at pH 7 of forest topsoils (0-30 cm) in Nigeria.
 #'
-#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
-#' @param A_PH_WA (numeric) The acidity of the soil, pH in water (-).
+#' @inheritParams sptf_bd0
 #' 
 #' @import data.table
 #' 
@@ -858,8 +827,7 @@ sptf_cec20 <- function(A_C_OF, A_CLAY_MI,A_PH_WA) {
 #'
 #' This function calculates the CEC at pH 7 of agricultural soils (variable depth) in Sudan.
 #'
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
-#' @param A_SILT_MI (numeric) The silt content of the soil (\%).
+#' @inheritParams sptf_bd0
 #' 
 #' @import data.table
 #' 
@@ -911,9 +879,7 @@ sptf_cec21 <- function(A_CLAY_MI,A_SILT_MI) {
 #'
 #' This function calculates the CEC at pH 8.2 of loess soils (0-20cm) in Argentina
 #'
-#' @param A_SOM_LOI (numeric) The percentage organic matter in the soil (\%).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
-#' @param A_SILT_MI (numeric) The silt content of the soil (\%).
+#' @inheritParams sptf_bd0
 #' 
 #' @import data.table
 #' 
@@ -949,9 +915,7 @@ sptf_cec22 <- function(A_SOM_LOI,A_CLAY_MI,A_SILT_MI) {
 #'
 #' This function calculates the CEC at pH 7 of forest and nature non-calcareous soils in continental USA.
 #'
-#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
-#' @param A_PH_CC (numeric) The acidity of the soil, pH in CaCl2 (-).
+#' @inheritParams sptf_bd0
 #' 
 #' @import data.table
 #' 
@@ -1006,9 +970,7 @@ sptf_cec23 <- function(A_C_OF,A_CLAY_MI,A_PH_CC) {
 #'
 #' This function calculates the CEC at pH 7 of forest and nature soils in continental USA.
 #'
-#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
-#' @param A_PH_CC (numeric) The acidity of the soil, pH in CaCl2 (-).
+#' @inheritParams sptf_bd0
 #' 
 #' @import data.table
 #' 
@@ -1052,9 +1014,7 @@ sptf_cec24 <- function(A_C_OF,A_CLAY_MI,A_PH_CC) {
 #'
 #' This function calculates the CEC at pH 7 of soils in continental USA where SOC is lower than 80 g/kg.
 #'
-#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
-#' @param A_PH_CC (numeric) The acidity of the soil, pH in CaCl2 (-).
+#' @inheritParams sptf_bd0
 #' 
 #' @import data.table
 #' 
@@ -1092,10 +1052,7 @@ sptf_cec25 <- function(A_C_OF,A_CLAY_MI,A_PH_CC) {
 #'
 #' This function calculates the CEC at pH 7 of soils in continental USA per taxonomic order stratification group.
 #'
-#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
-#' @param A_SILT_MI (numeric) The silt content of the soil (\%).
-#' @param A_PH_WA (numeric) The acidity of the soil, pH in water (-).
+#' @inheritParams sptf_bd0
 #' @param B_SOILCLASS_USDA The soil type class according to the USDA Soil Taxonomy (https://en.wikipedia.org/wiki/USDA_soil_taxonomy)
 #' 
 #' @import data.table
@@ -1189,9 +1146,7 @@ sptf_cec26 <- function(A_C_OF,A_CLAY_MI,A_SILT_MI,A_PH_WA,B_SOILCLASS_USDA) {
 #'
 #' This function calculates the effective CEC at pH of sample for agricultural topsoils (0-20cm) in Africa
 #'
-#' @param A_SOM_LOI (numeric) The percentage organic matter in the soil (\%).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
-#' @param A_SILT_MI (numeric) The clay content of the soil (\%).
+#' @inheritParams sptf_bd0
 #' @param B_CLIM_CAT1 (character) The climatic region (options: lowland humid (LLH), highland humid (HLH), subhumid (SH) and non humid (NH))
 #'  
 #' @import data.table
@@ -1243,10 +1198,7 @@ sptf_cec27 <- function(A_SOM_LOI, A_CLAY_MI, A_SILT_MI,B_CLIM_CAT1) {
 #'
 #' This function calculates the effective CEC at pH of sample for agricultural Danish soils
 #'
-#' @param A_SOM_LOI (numeric) The percentage organic matter in the soil (\%).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
-#' @param A_SILT_MI (numeric) The silt content of the soil (\%)
-#' @param A_PH_CC (numeric) The acidity of the soil, pH in CaCl2 (-)
+#' @inheritParams sptf_bd0
 #'  
 #' @import data.table
 #' 
@@ -1292,11 +1244,7 @@ sptf_cec28 <- function(A_SOM_LOI, A_CLAY_MI, A_SILT_MI, A_PH_CC) {
 #'
 #' This function calculates the effective CEC at pH of sample for agricultural Danish topsoils
 #'
-#' @param A_SOM_LOI (numeric) The percentage organic matter in the soil (\%).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
-#' @param A_SILT_MI (numeric) The silt content of the soil (\%).
-#' @param A_CACO3_IF (numeric) The carbonate content of the soil (\%).
-#' @param A_PH_CC (numeric) The acidity of the soil, pH in CaCl2 (-).
+#' @inheritParams sptf_bd0
 #'  
 #' @import data.table
 #' 
@@ -1350,8 +1298,7 @@ sptf_cec29 <- function(A_SOM_LOI, A_CLAY_MI, A_SILT_MI, A_CACO3_IF, A_PH_CC) {
 #'
 #' This function calculates the effective CEC at sample pH at various depths of agricultural soils in New Jersey
 #'
-#' @param A_SOM_LOI (numeric) The percentage organic matter in the soil (\%).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
+#' @inheritParams sptf_bd0
 #' 
 #' @import data.table
 #' 
@@ -1385,8 +1332,7 @@ sptf_cec30 <- function(A_SOM_LOI, A_CLAY_MI) {
 #'
 #' This function calculates the effective CEC at sample pH at topsoil of agricultural soils in New Jersey.  
 #'
-#' @param A_SOM_LOI (numeric) The percentage organic matter in the soil (\%).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
+#' @inheritParams sptf_bd0
 #' @param B_SOILCLASS_USDA The soil type class according to the USDA Soil Taxonomy (https://en.wikipedia.org/wiki/USDA_soil_taxonomy)
 #'  
 #' @import data.table
@@ -1435,10 +1381,7 @@ sptf_cec31 <- function(A_SOM_LOI, A_CLAY_MI,B_SOILCLASS_USDA = NA) {
 #'
 #' This function calculates the CEC at pH 7 for agricultural Chinese topsoils
 #'
-#' @param A_SOM_LOI (numeric) The percentage organic matter in the soil (\%).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
-#' @param A_SILT_MI (numeric) The silt content of the soil (\%).
-#' @param A_PH_CC (numeric) The acidity of the soil, pH in CaCl2 (-).
+#' @inheritParams sptf_bd0
 #'  
 #' @import data.table
 #' 
@@ -1483,9 +1426,7 @@ sptf_cec32 <- function(A_SOM_LOI, A_CLAY_MI, A_SILT_MI, A_PH_CC) {
 #'
 #' This function calculates the CEC at pH 7
 #'
-#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
-#' @param A_PH_CC (numeric) The acidity of the soil, pH in CaCl2 (-)
+#' @inheritParams sptf_bd0
 #' 
 #' @import data.table
 #' 
@@ -1527,9 +1468,7 @@ sptf_cec33 <- function(A_C_OF, A_CLAY_MI, A_PH_CC) {
 #'
 #' This function calculates the CEC at pH 7 for forest and natural grassland soils in eastern Canada
 #'
-#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
-#' @param A_PH_CC (numeric) The acidity of the soil, pH in CaCl2 (-)
+#' @inheritParams sptf_bd0
 #' @param B_LU_PTFCLASS (character) The land use category (options: agriculture, grassland, cropland, forest, nature)
 #'  
 #' @import data.table
@@ -1574,9 +1513,7 @@ sptf_cec34 <- function(A_C_OF, A_CLAY_MI, A_PH_CC,B_LU_PTFCLASS) {
 #'
 #' This function calculates the CEC at pH 7
 #'
-#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
-#' @param A_PH_CC (numeric) The acidity of the soil, pH in CaCl2 (-)
+#' @inheritParams sptf_bd0
 #' 
 #' @import data.table
 #' 
@@ -1615,8 +1552,7 @@ sptf_cec35 <- function(A_C_OF, A_CLAY_MI, A_PH_CC) {
 #'
 #' This function calculates the CEC at pH 7
 #'
-#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
+#' @inheritParams sptf_bd0
 #' 
 #' @import data.table
 #' 
@@ -1653,8 +1589,7 @@ sptf_cec36 <- function(A_C_OF, A_CLAY_MI) {
 #'
 #' This function calculates the CEC at pH 8.2 in agricultural soils in Indiana.
 #'
-#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
+#' @inheritParams sptf_bd0
 #' 
 #' @import data.table
 #' 
@@ -1691,8 +1626,7 @@ sptf_cec37 <- function(A_C_OF, A_CLAY_MI) {
 #'
 #' This function calculates the CEC at pH 7 for chernozemic soils in Saskatchewan province of Canada.
 #'
-#' @param A_SOM_LOI (numeric) The percentage organic matter in the soil (\%).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
+#' @inheritParams sptf_bd0
 #' 
 #' @import data.table
 #' 
@@ -1733,8 +1667,7 @@ sptf_cec38 <- function(A_SOM_LOI, A_CLAY_MI) {
 #'
 #' This function calculates the CEC at pH 7
 #'
-#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
+#' @inheritParams sptf_bd0
 #' 
 #' @import data.table
 #' 
@@ -1770,8 +1703,7 @@ sptf_cec39 <- function(A_C_OF, A_CLAY_MI) {
 #'
 #' This function calculates the CEC at pH 7
 #'
-#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
+#' @inheritParams sptf_bd0
 #' 
 #' @import data.table
 #' 
@@ -1808,8 +1740,7 @@ sptf_cec40 <- function(A_C_OF, A_CLAY_MI) {
 #'
 #' This function calculates the CEC at pH 7 for forests soils in Mississippi, Ohio, Wisconsin, North Carolina and Florida.
 #'
-#' @param A_SOM_LOI (numeric) The percentage organic matter in the soil (\%).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
+#' @inheritParams sptf_bd0
 #' 
 #' @import data.table
 #' 
@@ -1859,9 +1790,7 @@ sptf_cec41 <- function(A_SOM_LOI, A_CLAY_MI) {
 #'
 #' This function calculates the CEC at pH 7 for agricultural soils in Cameroon
 #'
-#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
-#' @param A_SILT_MI (numeric) The silt content of the soil (\%).
+#' @inheritParams sptf_bd0
 #'  
 #' @import data.table
 #' 
@@ -1918,10 +1847,7 @@ sptf_cec42 <- function(A_C_OF, A_CLAY_MI, A_SILT_MI) {
 #'
 #' This function calculates the effective CEC at sample pH for agricultural soils at various depths in Nigeria
 #'
-#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
-#' @param A_SILT_MI (numeric) The silt content of the soil (\%).
-#' @param A_PH_CC (numeric) The acidity of the soil, pH in CaCl2 (-).
+#' @inheritParams sptf_bd0
 #'  
 #' @import data.table
 #' 
@@ -1966,10 +1892,7 @@ sptf_cec43 <- function(A_C_OF, A_CLAY_MI, A_SILT_MI, A_PH_CC) {
 #'
 #' This function calculates the effective CEC at sample pH for agricultural topsoils in Nigeria
 #'
-#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
-#' @param A_SILT_MI (numeric) The silt content of the soil (\%).
-#' @param A_PH_CC (numeric) The acidity of the soil, pH in CaCl2 (-).
+#' @inheritParams sptf_bd0
 #'  
 #' @import data.table
 #' 
@@ -2014,9 +1937,7 @@ sptf_cec44 <- function(A_C_OF, A_CLAY_MI, A_SILT_MI, A_PH_CC) {
 #'
 #' This function calculates the CEC at pH 7 at agricultural sites in Finland
 #'
-#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
-#' @param A_PH_WA (numeric) The acidity of the soil, pH in water (-)
+#' @inheritParams sptf_bd0
 #' 
 #' @import data.table
 #' 
@@ -2053,12 +1974,11 @@ sptf_cec45 <- function(A_C_OF, A_CLAY_MI, A_PH_WA) {
 }
 
 
-' Calculate the CEC
+#' Calculate the CEC
 #'
 #' This function calculates the CEC at pH 7 at agricultural sites at various depths in Tanzania
 #'
-#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
+#' @inheritParams sptf_bd0
 #' 
 #' @import data.table
 #' 
@@ -2095,10 +2015,8 @@ sptf_cec46 <- function(A_C_OF, A_CLAY_MI) {
 #'
 #' This function calculates the effective CEC at pH of sample for agricultural topsoils (0-20cm) in Africa
 #'
-#' @param A_SOM_LOI (numeric) The percentage organic matter in the soil (\%).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
-#' @param A_SILT_MI (numeric) The clay content of the soil (\%).
-#' @param B_LU_PTFCLASS (character) The land use category (options: agriculture, grassland, cropland, forest, nature)
+#' @inheritParams sptf_bd0
+#' @inheritParams sptf_cec7
 #'  
 #' @import data.table
 #' 
@@ -2152,8 +2070,7 @@ sptf_cec47 <- function(A_SOM_LOI, A_CLAY_MI, A_SILT_MI,B_LU_PTFCLASS) {
 #'
 #' This function calculates the CEC at pH 6.5 for agricultural fields at two depths in Central Iran.
 #'
-#' @param A_SOM_LOI (numeric) The percentage organic matter in the soil (\%).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
+#' @inheritParams sptf_bd0
 #'
 #' @import data.table
 #' 
@@ -2187,9 +2104,7 @@ sptf_cec48 <- function(A_SOM_LOI, A_CLAY_MI) {
 #'
 #' This function calculates the effective CEC at pH 7 for agricultural topsoils (0-30cm) in Iraqi
 #'
-#' @param A_SOM_LOI (numeric) The percentage organic matter in the soil (\%).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
-#' @param A_SILT_MI (numeric) The clay content of the soil (\%).
+#' @inheritParams sptf_bd0
 #'  
 #' @import data.table
 #' 
@@ -2236,11 +2151,7 @@ sptf_cec49 <- function(A_SOM_LOI, A_CLAY_MI, A_SILT_MI) {
 #'
 #' This function calculates the CEC at pH 8.2 for calcareous soils in Iran, Texas, USA, Cuba and Kenya
 #'
-#' @param A_SOM_LOI (numeric) The percentage organic matter in the soil (\%).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
-#' @param A_SILT_MI (numeric) The silt content of the soil (\%).
-#' @param A_CACO3_IF (numeric) The carbonate content of the soil (\%).
-#' @param A_PH_CC (numeric) The acidity of the soil, pH in CaCl2 (-).
+#' @inheritParams sptf_bd0
 #'  
 #' @import data.table
 #' 
@@ -2283,10 +2194,7 @@ sptf_cec50 <- function(A_SOM_LOI, A_CLAY_MI, A_SILT_MI, A_CACO3_IF, A_PH_CC) {
 #'
 #' This function calculates the CEC at pH 8.2 for various land uses in Iran
 #'
-#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
-#' @param A_SILT_MI (numeric) The silt content of the soil (\%).
-#' @param A_PH_WA (numeric) The acidity of the soil, pH in water (-).
+#' @inheritParams sptf_bd0
 #'  
 #' @import data.table
 #' 
@@ -2330,10 +2238,7 @@ sptf_cec51 <- function(A_C_OF, A_CLAY_MI, A_SILT_MI, A_PH_WA) {
 #'
 #' This function calculates the CEC at pH 8.2 for various land uses in Iraq
 #'
-#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
-#' @param A_SILT_MI (numeric) The silt content of the soil (\%).
-#' @param A_PH_WA (numeric) The acidity of the soil, pH in water (-).
+#' @inheritParams sptf_bd0
 #'  
 #' @import data.table
 #' 
@@ -2377,10 +2282,7 @@ sptf_cec52 <- function(A_C_OF, A_CLAY_MI, A_SILT_MI, A_PH_WA) {
 #'
 #' This function calculates the CEC at pH 8.2 for various land uses in Spain
 #'
-#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
-#' @param A_SILT_MI (numeric) The silt content of the soil (\%).
-#' @param A_PH_WA (numeric) The acidity of the soil, pH in water (-).
+#' @inheritParams sptf_bd0
 #'  
 #' @import data.table
 #' 
@@ -2424,11 +2326,8 @@ sptf_cec53 <- function(A_C_OF, A_CLAY_MI, A_SILT_MI, A_PH_WA) {
 #'
 #' This function calculates the CEC at pH 8.2 for various land uses in USA, Spain, Iran and Iraq.
 #'
-#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
-#' @param A_SILT_MI (numeric) The silt content of the soil (\%).
-#' @param A_PH_WA (numeric) The acidity of the soil, pH in water (-).
-#' @param B_LU_PTFCLASS (character) The land use category (options: agriculture, grassland, cropland, forest, nature)
+#' @inheritParams sptf_bd0
+#' @inheritParams sptf_cec7
 #'   
 #' @import data.table
 #' 
@@ -2485,10 +2384,7 @@ sptf_cec54 <- function(A_C_OF, A_CLAY_MI, A_SILT_MI, A_PH_WA,B_LU_PTFCLASS) {
 #'
 #' This function calculates the CEC at pH 8.2 for various land uses in USA, Spain, Iran and Iraq.
 #'
-#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
-#' @param A_SILT_MI (numeric) The silt content of the soil (\%).
-#' @param A_PH_WA (numeric) The acidity of the soil, pH in water (-).
+#' @inheritParams sptf_bd0
 #'   
 #' @import data.table
 #' 
@@ -2542,9 +2438,7 @@ sptf_cec55 <- function(A_C_OF, A_CLAY_MI, A_SILT_MI, A_PH_WA) {
 #'
 #' This function calculates the CEC at pH 8.2 for calcareous soils (0-20cm) in Mexico
 #'
-#' @param A_SOM_LOI (numeric) The percentage organic matter in the soil (\%).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
-#' @param A_PH_WA (numeric) The acidity of the soil, pH in water (-).
+#' @inheritParams sptf_bd0
 #'  
 #' @import data.table
 #' 
@@ -2595,9 +2489,7 @@ sptf_cec56 <- function(A_SOM_LOI, A_CLAY_MI,A_PH_WA) {
 #'
 #' This function calculates the CEC at pH 8.2 for agricultural soils (0-20cm) in Mexico
 #'
-#' @param A_SOM_LOI (numeric) The percentage organic matter in the soil (\%).
-#' @param A_SAND_MI (numeric) The sand content of the soil (\%).
-#' @param A_PH_WA (numeric) The acidity of the soil, pH in water (-).
+#' @inheritParams sptf_bd0
 #'  
 #' @import data.table
 #' 
@@ -2646,10 +2538,7 @@ sptf_cec57 <- function(A_SOM_LOI, A_SAND_MI,A_PH_WA) {
 #'
 #' This function calculates the CEC at pH 8.2 for calcareous soils in Iran
 #'
-#' @param A_SOM_LOI (numeric) The percentage organic matter in the soil (\%).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
-#' @param A_SILT_MI (numeric) The silt content of the soil (\%).
-#' @param A_CACO3_IF (numeric) The carbonate content of the soil (\%).
+#' @inheritParams sptf_bd0
 #'  
 #' @import data.table
 #' 
@@ -2696,8 +2585,7 @@ sptf_cec58 <- function(A_SOM_LOI, A_CLAY_MI, A_SILT_MI, A_CACO3_IF) {
 #'
 #' This function calculates the CEC at pH 8.2 for soil in Lower Namoi Valley, Australia. 
 #'
-#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
+#' @inheritParams sptf_bd0
 #' 
 #' @import data.table
 #' 
@@ -2731,8 +2619,7 @@ sptf_cec59 <- function(A_C_OF, A_CLAY_MI) {
 #'
 #' This function calculates the CEC at pH 8.2 for calcareous soils in various countries across all continents
 #' 
-#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
+#' @inheritParams sptf_bd0
 #' 
 #' @import data.table
 #' 
@@ -2768,8 +2655,7 @@ sptf_cec60 <- function(A_C_OF, A_CLAY_MI) {
 #'
 #' This function calculates the CEC at pH 8.2 for calcareous soils in Iran
 #'
-#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
+#' @inheritParams sptf_bd0
 #' 
 #' @import data.table
 #' 
@@ -2806,10 +2692,7 @@ sptf_cec61 <- function(A_C_OF, A_CLAY_MI) {
 #'
 #' This function calculates the CEC at pH 8.2 for calcareous soils in Iran
 #'
-#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
-#' @param A_SILT_MI (numeric) The silt content of the soil (\%).
-#' @param A_CACO3_IF (numeric) The carbonate content of the soil (\%).
+#' @inheritParams sptf_bd0
 #' 
 #' @import data.table
 #' 
@@ -2866,8 +2749,7 @@ sptf_cec62 <- function(A_C_OF, A_CLAY_MI,A_SILT_MI,A_CACO3_IF) {
 #'
 #' This function calculates the CEC for soils in Italy
 #'
-#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
+#' @inheritParams sptf_bd0
 #' 
 #' @import data.table
 #' 
@@ -2901,8 +2783,7 @@ sptf_cec63 <- function(A_C_OF, A_CLAY_MI) {
 #'
 #' This function calculates the CEC for agricultural soils (0-20cm) in New Zealand
 #'
-#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
+#' @inheritParams sptf_bd0
 #' 
 #' @import data.table
 #' 
@@ -2936,7 +2817,7 @@ sptf_cec64 <- function(A_C_OF, A_CLAY_MI) {
 #'
 #' This function calculates the effective CEC at pH 7 for agricultural topsoils (0-30cm) in Iran.
 #'
-#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
+#' @inheritParams sptf_bd0
 #'  
 #' @import data.table
 #' 
@@ -2970,8 +2851,7 @@ sptf_cec65 <- function(A_C_OF) {
 #'
 #' This function calculates the CEC for soils in Iraq
 #'
-#' @param A_SOM_LOI (numeric) The organi cmatter content of the soil (\%).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
+#' @inheritParams sptf_bd0
 #' 
 #' @import data.table
 #' 
@@ -3005,8 +2885,7 @@ sptf_cec66 <- function(A_SOM_LOI, A_CLAY_MI) {
 #'
 #' This function calculates the CEC for soils in Iran
 #'
-#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
+#' @inheritParams sptf_bd0
 #' 
 #' @import data.table
 #' 
@@ -3040,8 +2919,7 @@ sptf_cec67 <- function(A_C_OF, A_CLAY_MI) {
 #'
 #' This function calculates the CEC for soils in New Zealand
 #'
-#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
+#' @inheritParams sptf_bd0
 #' 
 #' @import data.table
 #' 
@@ -3075,8 +2953,7 @@ sptf_cec68 <- function(A_C_OF, A_CLAY_MI) {
 #'
 #' This function calculates the CEC at pH 7 for soils in India, variable land uses
 #'
-#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
+#' @inheritParams sptf_bd0
 #' 
 #' @import data.table
 #' 
@@ -3110,8 +2987,7 @@ sptf_cec69 <- function(A_C_OF, A_CLAY_MI) {
 #'
 #' This function calculates the CEC at pH 7 for forage soils in Quebec.
 #'
-#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
+#' @inheritParams sptf_bd0
 #' 
 #' @import data.table
 #' 
@@ -3145,8 +3021,7 @@ sptf_cec70 <- function(A_C_OF, A_CLAY_MI) {
 #'
 #' This function calculates the CEC at pH 8.2 for various land use soils in Ireland
 #'
-#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
+#' @inheritParams sptf_bd0
 #' 
 #' @import data.table
 #' 
@@ -3179,10 +3054,8 @@ sptf_cec71 <- function(A_C_OF, A_CLAY_MI) {
 #' Calculate the CEC
 #'
 #' This function calculates the CEC at pH 8.2 for various land use soils in Ireland
-#'
-#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
-#' @param A_PH_WA (numeric) The acidity of the soil, pH in water (-).
+#' 
+#' @inheritParams sptf_bd0
 #' 
 #' @import data.table
 #' 
@@ -3218,10 +3091,7 @@ sptf_cec72 <- function(A_C_OF, A_CLAY_MI,A_PH_WA) {
 #'
 #' This function calculates the effective CEC at pH 7 for agricultural topsoils (0-30cm) in Germany
 #'
-#' @param A_SOM_LOI (numeric) The percentage organic matter in the soil (\%).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
-#' @param A_SILT_MI (numeric) The clay content of the soil (\%).
-#' @param A_PH_WA (numeric) The acidity of the soil, pH in water (-).
+#' @inheritParams sptf_bd0
 #'   
 #' @import data.table
 #' 
@@ -3270,10 +3140,7 @@ sptf_cec73 <- function(A_SOM_LOI, A_CLAY_MI, A_SILT_MI,A_PH_WA) {
 #'
 #' This function calculates the CEC at pH 7 of soils in continental USA per taxonomic order stratification group.
 #'
-#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
-#' @param A_SILT_MI (numeric) The silt content of the soil (\%).
-#' @param A_PH_WA (numeric) The acidity of the soil, pH in water (-).
+#' @inheritParams sptf_bd0
 #' @param B_SOILCLASS_USDA The soil type class according to the USDA Soil Taxonomy (https://en.wikipedia.org/wiki/USDA_soil_taxonomy)
 #' 
 #' @import data.table
@@ -3347,9 +3214,7 @@ sptf_cec74 <- function(A_C_OF,A_CLAY_MI,A_SILT_MI,A_PH_WA,B_SOILCLASS_USDA) {
 #'
 #' This function calculates the CEC at pH 7
 #'
-#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
-#' @param A_PH_CC (numeric) The acidity of the soil, pH in CaCl2 (-)
+#' @inheritParams sptf_bd0
 #' 
 #' @import data.table
 #' 

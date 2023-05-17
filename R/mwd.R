@@ -1,8 +1,8 @@
-#' Calculate the Mean Weight Diamater
+#' Calculate the Mean Weight Diameter
 #' 
-#' Calculate the Mean Weight Diamater for agricultural British soils (0-20cm) given the pedotransferfunction of Chaney and Swift (1984)
+#' Calculate the Mean Weight Diameter for agricultural British soils (0-20cm) given the pedotransferfunction of Chaney and Swift (1984)
 #'
-#' @param A_SOM_LOI (numeric) The percentage organic matter in the soil (\%).
+#' @inheritParams sptf_bd0
 #'
 #' @import data.table
 #' 
@@ -22,7 +22,7 @@ sptf_mwd1 <- function(A_SOM_LOI) {
                    A_SOM_LOI = A_SOM_LOI,
                    value = NA_real_)
   
-  # estimate Mean Weight Diamater (n = 26, R2 = 0.74)
+  # estimate Mean Weight Diameter (n = 26, R2 = 0.74)
   dt[, v1 := A_SOM_LOI * 24 + 31]
   
   # estimate for Stirling soil series (n = 14)
@@ -46,13 +46,11 @@ sptf_mwd1 <- function(A_SOM_LOI) {
   
 }
 
-#' Calculate the Mean Weight Diamater
+#' Calculate the Mean Weight Diameter
 #' 
-#' Calculate the Mean Weight Diamater for agricultural top soils (0-20cm) in New Zealand given the pedotransferfunction of Haynes et al. (1991)
+#' Calculate the Mean Weight Diameter for agricultural top soils (0-20cm) in New Zealand given the pedotransferfunction of Haynes et al. (1991)
 #'
-#' @param A_C_OF (numeric) The fraction organic carbon in the soil (g / kg).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
-#' @param A_SILT_MI (numeric) The silt content of the soil (\%).
+#' @inheritParams sptf_bd0
 #'
 #' @import data.table
 #' 
@@ -80,7 +78,7 @@ sptf_mwd2 <- function(A_C_OF,A_CLAY_MI,A_SILT_MI) {
   # Estimate USDA soil type
   dt[, B_SOILTYPE := sptf_textureclass(A_CLAY_MI = A_CLAY_MI,A_SILT_MI = A_SILT_MI,A_SAND_MI = A_SAND_MI)]
   
-  # estimate Mean Weight Diamater (n = 3x26 = 26, R2 = 0.44 to 0.59)
+  # estimate Mean Weight Diameter (n = 3x26 = 26, R2 = 0.44 to 0.59)
   dt[B_SOILTYPE =='sandy loam', value := 0.60 * A_C_OF + 0.65]
   dt[B_SOILTYPE == 'silt loam', value := 1.09 * A_C_OF - 0.86]
   dt[B_SOILTYPE == 'clay loam', value := 0.62 * A_C_OF + 0.27]
@@ -93,16 +91,11 @@ sptf_mwd2 <- function(A_C_OF,A_CLAY_MI,A_SILT_MI) {
   
 }
 
-#' Calculate the Mean Weight Diamater
+#' Calculate the Mean Weight Diameter
 #' 
-#' Calculate the Mean Weight Diamater for soils (0-20cm) in Northwestern Algeria given the pedotransferfunction of Saidi et al. (2015)
+#' Calculate the Mean Weight Diameter for soils (0-20cm) in Northwestern Algeria given the pedotransferfunction of Saidi et al. (2015)
 #'
-#' @param A_C_OF (numeric) The fraction organic carbon in the soil (g / kg).
-#' @param A_CEC_CO (numeric) The Cation Exchange Capacity (mmol+/kg).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
-#' @param A_SILT_MI (numeric) The silt content of the soil (\%).
-#' @param A_PH_WA (numeric) The acidity of the soil, pH in water (-)
-#' @param A_CACO3_IF (numeric) The calcium carbonate content of the soil (\%)
+#' @inheritParams sptf_bd0
 #' 
 #' @import data.table
 #' 
@@ -156,14 +149,11 @@ sptf_mwd3 <- function(A_C_OF,A_CEC_CO,A_CLAY_MI,A_SILT_MI, A_PH_WA, A_CACO3_IF) 
   
 }
 
-#' Calculate the Mean Weight Diamater
+#' Calculate the Mean Weight Diameter
 #'
-#' Calculate the Mean Weight Diamater for agricultural soils (0-10cm) in Tunesia given the pedotransferfunction of Annabi et al. (2017)
+#' Calculate the Mean Weight Diameter for agricultural soils (0-10cm) in Tunesia given the pedotransferfunction of Annabi et al. (2017)
 #'
-#' @param A_C_OF (numeric) The fraction organic carbon in the soil (g / kg).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
-#' @param A_SILT_MI (numeric) The silt content of the soil (\%).
-#' @param A_CACO3_IF (numeric) The calcium carbonate content of the soil (\%)
+#' @inheritParams sptf_bd0
 #' 
 #' @import data.table
 #' 
@@ -201,7 +191,7 @@ sptf_mwd4 <- function(A_C_OF,A_CLAY_MI,A_SILT_MI, A_CACO3_IF) {
   # add median A_CACO3 when the input missing
   dt[is.na(A_CACO3_IF), A_CACO3_IF := 30]
   
-  # estimate Mean Weight Diamater in mm (r = 0.624, n = 113). Units for iron adapted because of too high outputs
+  # estimate Mean Weight Diameter in mm (r = 0.624, n = 113). Units for iron adapted because of too high outputs
   dt[, v1 := 0.5227 + 0.0015 * A_CLAY_MI - 0.0121 * A_C_OF]
   dt[, v2 := 0.9535 + 0.0036 * A_SILT_MI - 0.0272 * A_C_OF + 0.0011 * A_CACO3_IF + 0.43 * 9.2 * 0.1]
   dt[, v3 := 0.262 + 0.0052 * A_SILT_MI - 0.0358 * A_C_OF + 0.4784 * 9.2 * 0.1]
@@ -222,13 +212,11 @@ sptf_mwd4 <- function(A_C_OF,A_CLAY_MI,A_SILT_MI, A_CACO3_IF) {
   
 }
 
-#' Calculate the Mean Weight Diamater
+#' Calculate the Mean Weight Diameter
 #'
-#' Calculate the Mean Weight Diamater for agricultural soils (0-20 cm) in Serbia given the pedotransferfunction of Ciric et al. (2012)
+#' Calculate the Mean Weight Diameter for agricultural soils (0-20 cm) in Serbia given the pedotransferfunction of Ciric et al. (2012)
 #'
-#' @param A_C_OF (numeric) The fraction organic carbon in the soil (g / kg).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
-#' @param A_PH_WA (numeric) The acidity of the soil, pH in water (-)
+#' @inheritParams sptf_bd0
 #' 
 #' @import data.table
 #' 
@@ -258,7 +246,7 @@ sptf_mwd5 <- function(A_C_OF, A_CLAY_MI, A_PH_WA) {
   # estimate bulk density (in g / cm3)
   dt[, bd := (1617 - 77.4 * log(A_C_OF) - 3.49 * A_C_OF) * 0.001]
   
-  # estimate Mean Weight Diamater (n = 120, R2 = 0.63)
+  # estimate Mean Weight Diameter (n = 120, R2 = 0.63)
   # estimate water retention at -33 kPa from clay content
   dt[, value := -4.731 + 7.453 * bd + 0.200 * (-14.2099 + 8.3147 * A_CLAY_MI^0.5) - 0.570 * A_PH_WA]
   
@@ -270,11 +258,11 @@ sptf_mwd5 <- function(A_C_OF, A_CLAY_MI, A_PH_WA) {
   
 }
 
-#' Calculate the Mean Weight Diamater
+#' Calculate the Mean Weight Diameter
 #'
-#' Calculate the Mean Weight Diamater for agricultural soils (0-20cm) in the Loess Plateau of China given the pedotransferfunction of Gao et al. (2019)
+#' Calculate the Mean Weight Diameter for agricultural soils (0-20cm) in the Loess Plateau of China given the pedotransferfunction of Gao et al. (2019)
 #'
-#' @param A_C_OF (numeric) The fraction organic carbon in the soil (g / kg).
+#' @inheritParams sptf_bd0
 #'
 #' @import data.table
 #' 
@@ -290,7 +278,7 @@ sptf_mwd6 <- function(A_C_OF) {
   dt <- data.table(A_C_OF = A_C_OF,
                    value = NA_real_)
   
-  # estimate Mean Weight Diamater (n = 6 fields, x treatments, R2 = 0.95)
+  # estimate Mean Weight Diameter (n = 6 fields, x treatments, R2 = 0.95)
   dt[, value := 0.2077 + 0.1145 * A_C_OF]
   
   # return value (mm)
@@ -301,12 +289,11 @@ sptf_mwd6 <- function(A_C_OF) {
   
 }
 
-#' Calculate the Mean Weight Diamater
+#' Calculate the Mean Weight Diameter
 #'
-#' Calculate the Mean Weight Diamater for agricultural soils (0-10cm) in North West of Lake Urmia in Iraqi given the pedotransferfunction of Hatamvand & Kashani (2021)
+#' Calculate the Mean Weight Diameter for agricultural soils (0-10cm) in North West of Lake Urmia in Iraqi given the pedotransferfunction of Hatamvand & Kashani (2021)
 #'
-#' @param A_C_OF (numeric) The fraction organic carbon in the soil (g / kg).
-#' @param A_SAND_MI (numeric) The clay content of the soil (\%).
+#' @inheritParams sptf_bd0
 #' 
 #' @import data.table
 #' 
@@ -325,7 +312,7 @@ sptf_mwd7 <- function(A_C_OF,A_SAND_MI) {
                    A_SAND_MI = A_SAND_MI,
                    value = NA_real_)
   
-  # estimate Mean Weight Diamater (n = 100, R2 = 0.83)
+  # estimate Mean Weight Diameter (n = 100, R2 = 0.83)
   dt[, value := 0.192 + 0.132 * A_C_OF + 0.007 * A_SAND_MI]
   
   # return value (mm)
@@ -336,15 +323,11 @@ sptf_mwd7 <- function(A_C_OF,A_SAND_MI) {
   
 }
 
-#' Calculate the Mean Weight Diamater
+#' Calculate the Mean Weight Diameter
 #'
-#' Calculate the Mean Weight Diamater for agricultural soils (0-20cm) for Algeria, extended withh data from published results from other countries, given the pedotransferfunction of Hamel et al. (2021)
+#' Calculate the Mean Weight Diameter for agricultural soils (0-20cm) for Algeria, extended withh data from published results from other countries, given the pedotransferfunction of Hamel et al. (2021)
 #'
-#' @param A_SOM_LOI (numeric) The percentage organic matter in the soil (\%).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
-#' @param A_SILT_MI (numeric) The silt content of the soil (\%).
-#' @param A_PH_WA (numeric) The acidity of the soil, pH in water (-)
-#' @param A_CACO3_IF (numeric) The calcium carbonate content of the soil (\%)
+#' @inheritParams sptf_bd0
 #' 
 #' @import data.table
 #' 
@@ -397,14 +380,11 @@ sptf_mwd8 <- function(A_SOM_LOI,A_CLAY_MI,A_SILT_MI,A_PH_WA, A_CACO3_IF) {
   
 }
 
-#' Calculate the Mean Weight Diamater
+#' Calculate the Mean Weight Diameter
 #'
-#' Calculate the Mean Weight Diamater for variable land uses in France (0-20cm) given the pedotransferfunction of Clergue et al. (2023)
+#' Calculate the Mean Weight Diameter for variable land uses in France (0-20cm) given the pedotransferfunction of Clergue et al. (2023)
 #'
-#' @param A_C_OF (numeric) The fraction organic carbon in the soil (g / kg).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
-#' @param A_SILT_MI (numeric) The silt content of the soil (\%).
-#' @param A_PH_WA (numeric) The acidity of the soil, pH in water (-)
+#' @inheritParams sptf_bd0
 #' @param B_LU_PTFCLASS (character) The land use category (options: agriculture, grassland, cropland, forest, nature)
 #' 
 #' @import data.table
@@ -453,11 +433,11 @@ sptf_mwd9 <- function(A_C_OF,A_CLAY_MI,A_SILT_MI,A_PH_WA, B_LU_PTFCLASS) {
   
 }
 
-#' Calculate the Mean Weight Diamater
+#' Calculate the Mean Weight Diameter
 #'
-#' Calculate the Mean Weight Diamater for brown calcareous soils (0-5 cm) within the Mediterranean basin in France given the pedotransferfunction of le Bissonnais et al. (2007)
+#' Calculate the Mean Weight Diameter for brown calcareous soils (0-5 cm) within the Mediterranean basin in France given the pedotransferfunction of le Bissonnais et al. (2007)
 #'
-#' @param A_C_OF (numeric) The fraction organic carbon in the soil (g / kg).
+#' @inheritParams sptf_bd0
 #' 
 #' @import data.table
 #' 
@@ -473,7 +453,7 @@ sptf_mwd10 <- function(A_C_OF) {
   dt <- data.table(A_C_OF = A_C_OF,
                    value = NA_real_)
   
-  # estimate Mean Weight Diamater (r = 0.917, n = 68)
+  # estimate Mean Weight Diameter (r = 0.917, n = 68)
   dt[, value := 0.001 * (exp(4.83 + 2.76/(1 + 7e8 * exp(-1.014 * A_C_OF)))-1)]
   
   # return value (mm)
@@ -485,12 +465,11 @@ sptf_mwd10 <- function(A_C_OF) {
 }
 
 
-#' Calculate the Mean Weight Diamater
+#' Calculate the Mean Weight Diameter
 #'
 #' Calculate the Mean Weight Diameter given for soils (0-20cm) in Italy the pedotransferfunction of Bazzoffi et al. (1994)
 #'
-#' @param A_C_OF (numeric) The fraction organic carbon in the soil (g / kg).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
+#' @inheritParams sptf_bd0
 #' 
 #' @import data.table
 #' 
@@ -524,9 +503,7 @@ sptf_mwd11 <- function(A_C_OF,A_CLAY_MI) {
 #'
 #' Calculate the Mean Weight Diameter (mm) for agricultural topsoils (0-30cm) in India given the pedotransferfunction of Bhattacharya et al. (2021)
 #'
-#' @param A_SOM_LOI (numeric) The soil organic matter content (\%).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
-#' @param A_SILT_MI (numeric) The silt content of the soil (\%).
+#' @inheritParams sptf_bd0
 #' 
 #' @import data.table
 #' 
@@ -570,8 +547,7 @@ sptf_mwd12 <- function(A_SOM_LOI,A_CLAY_MI,A_SILT_MI) {
 #'
 #' Calculate the Mean Weight Diameter (mm) for agricultural soils (0-40 cm) in Morroco given the pedotransferfunction of Bouslihim et al. (2021)
 #'
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
-#' @param A_SOM_LOI (numeric) The soil organic matter content (\%).
+#' @inheritParams sptf_bd0
 #' 
 #' @import data.table
 #' 
@@ -619,13 +595,9 @@ sptf_mwd13 <- function(A_CLAY_MI,A_SOM_LOI) {
 
 #' Predicting the the Mean Weight Diameter for soils
 #'
-#' Calculate the Mean Weight Diamater for agricultural soils (0-10cm) in southern Spain given the pedotransferfunction of Canasveras et al. (2010)
+#' Calculate the Mean Weight Diameter for agricultural soils (0-10cm) in southern Spain given the pedotransferfunction of Canasveras et al. (2010)
 #'
-#' @param A_SOM_LOI (numeric) The percentage organic matter in the soil (\%).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
-#' @param A_SILT_MI (numeric) The silt content of the soil (\%).
-#' @param A_PH_WA (numeric) The acidity of the soil, pH in water (-)
-#' @param A_CACO3_IF (numeric) The calcium carbonate content of the soil (\%)
+#' @inheritParams sptf_bd0
 #' 
 #' @import data.table
 #' 
@@ -673,10 +645,9 @@ sptf_mwd14 <- function(A_SOM_LOI,A_CLAY_MI,A_SILT_MI,A_PH_WA, A_CACO3_IF) {
 
 #' Predicting the the Mean Weight Diameter for soils
 #'
-#' Calculate the Mean Weight Diamater for agricultural topsoils (0-10cm) in Belgium given the pedotransferfunction of Shi et al. (2020)
+#' Calculate the Mean Weight Diameter for agricultural topsoils (0-10cm) in Belgium given the pedotransferfunction of Shi et al. (2020)
 #'
-#' @param A_C_OF (numeric) The fraction organic carbon in the soil (g / kg).
-#' @param A_PH_WA (numeric) The acidity of the soil, pH in water (-)
+#' @inheritParams sptf_bd0
 #' 
 #' @import data.table
 #' 
