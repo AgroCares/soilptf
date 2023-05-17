@@ -17,12 +17,14 @@ test_that('Carbon decomposition functions work',{
           length = 5)
     )
     )
+  # improve unrealistic cn ratio
+  dt[A_N_RT == 10000 & A_C_OF == 1, A_C_OF := 10]
+  dt[A_N_RT == 50 & A_C_OF == 250, A_N_RT := 2500]
   
   expect_equal(
-    sptf_cdec1(A_C_OF = dt$A_C_OF, A_N_RT = dt$A_N_RT, year = rep(100,10)),
     expected = c(6.927213e-01,  4.157815e+01,  8.292904e+01,  1.238001e+02,
-                 1.646756e+02,  7.976791e-01,  4.783101e+01 , 8.292904e+01 ,
-                 8.172597e+00 ,-2.013675e+47),
+                 1.646756e+02,  7.9381882,  4.783101e+01 , 8.292904e+01 ,
+                 8.172597e+00 ,-162.1803177),
     tolerance = 0.1
   )
   
