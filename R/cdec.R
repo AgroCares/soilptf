@@ -54,7 +54,7 @@ sptf_cdec2 <- function(A_C_OF, years) {
   
   # Check input
   checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000)
-  checkmate::assert_integer(years,lower=1)
+  checkmate::assert_numeric(years,lower=1)
   checkmate::assert_true(length(years)==1 | length(years)==length(A_C_OF)|(length(A_C_OF)==1 & length(years)>0))
   
   # combine arguments in internal table
