@@ -17,6 +17,7 @@ source('R/sptf_predict.R')
 source('R/bulkdensity.R') 
 source('R/whc.R')
 source('R/pmn.R')
+source('R/checkmate_tools.R')
 
 ##  Make a test set -------
 
@@ -53,6 +54,23 @@ dt[, B_DEPTH := 0.3]
 #                  B_LU_PTFCLASS = NA
 # )
 
+# Draw histograms of clay, som, ph, pal
+# dtm <- melt(dt, id.vars = "id", measure.vars= c("A_CLAY_MI", "A_SOM_LOI" ,"A_PH_CC",  "A_P_AL" ))
+# ggplot(dtm) + geom_histogram(aes(x = value)) + 
+#   facet_wrap(.~ variable, ncol=4, scale = "free") + theme_classic() +
+#   xlab("") + ylab("Number of fields")
+gclay <- ggplot(dt) + geom_histogram(aes(x = A_CLAY_MI)) + theme_classic() + 
+  xlab("Clay (%)") + ylab("Number of fields")
+gsom <- ggplot(dt) + geom_histogram(aes(x = A_SOM_LOI)) + theme_classic() + 
+  xlab("SOM (%)") + ylab("Number of fields")
+gph <- ggplot(dt) + geom_histogram(aes(x = A_PH_CC)) + theme_classic() + 
+  xlab("pH") + ylab("Number of fields")
+gpal <- ggplot(dt) + geom_histogram(aes(x = A_P_AL)) + theme_classic() + 
+  xlab("PAL (mg P2O5/100g)") + ylab("Number of fields")
+ggarrange(gclay, gsom, gph, gpal, ncol = 4)
+#ggsave(file = paste0(projectdr, "figs/hist_clay_ph_som_pal.jpeg"),bg = "white", width = 8, height = 2)
+
+
 
 # BD ----------------------------
 ## Estimate BD with all PTFs ----
@@ -63,6 +81,18 @@ dt[, B_SLOPE_ASPECT := 0]
 dt[, B_ALTITUDE := 0]
 dt[, A_PH_WA := A_PH_CC]
 dt[, A_CACO3_MI := A_CACO3_IF]
+dt[, A_H2O_T105 :=  17]
+dt[, A_DEPTH :=  B_DEPTH]
+dt[A_CACO3_IF < 0.1, A_CACO3_IF :=  0.1]
+# scale texture when the sum if more than 100%
+dt[, cf_tex :=  1]
+dt[(A_CLAY_MI+A_SAND_MI+A_SILT_MI) > 100, cf_tex := 100/(A_CLAY_MI+A_SAND_MI+A_SILT_MI)]
+dt[, A_CLAY_MI := A_CLAY_MI * cf_tex]
+dt[, A_SAND_MI := A_SAND_MI * cf_tex]
+dt[, A_SILT_MI := A_SILT_MI * cf_tex]
+dt[A_CLAY_MI+A_SAND_MI+A_SILT_MI >100, A_SAND_MI := A_SAND_MI - ((A_CLAY_MI+A_SAND_MI+A_SILT_MI) - 100)]
+
+dt[, A_SAND_M50 := 157.5]
 
 dt3 <- ptf_bd_all(dt)  # --> obtained values includes strange values (-21675.11  64435.66)! To be checked
 # # dt2 <- merge(dt2,ptf.mods,by = 'ptf_id')
@@ -229,11 +259,15 @@ tb <- tb[order(N, decreasing = T)]
 ## Estimate water holding capacity  ---------
 
 # Calculate average of predicted BD (kg/m3)
-dt[, D_BDS_kg_m3 := ptf_bd2(A_SOM_LOI = A_SOM_LOI,A_CLAY_MI = A_CLAY_MI, 
+dt[, D_BDS_kg_m3 := ptf_bd(A_SOM_LOI = A_SOM_LOI,A_CLAY_MI = A_CLAY_MI, 
                       A_SAND_MI = A_SAND_MI, A_SILT_MI = A_SILT_MI, 
-                      B_DEPTH = B_DEPTH, 
+                      A_DEPTH = A_DEPTH, 
+                      A_H2O_T105 = A_H2O_T105, B_SLOPE_DEGREE = B_SLOPE_DEGREE,
+                      B_SLOPE_ASPECT = B_SLOPE_ASPECT, B_ALTITUDE = B_ALTITUDE, A_PH_WA = A_PH_WA, 
+                      A_CACO3_MI = A_CACO3_MI, A_CACO3_IF = A_CACO3_IF,
                       B_LU_PTFCLASS = 'agriculture',  # should actually include 'cropland' and 'grassland' too
                       B_LOC_COUNTRY = 'NL')$bd.mean]
+
 # convert kg/m3 to g/cm3
 dt[, D_BDS := D_BDS_kg_m3 / 1000]
 

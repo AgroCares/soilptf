@@ -628,13 +628,16 @@ ptf_bd <- function(A_SOM_LOI = NA_real_, A_C_OF = NA_real_,
                    B_LU_PTFCLASS = NA_real_,
                    A_DEPTH = 0.3, 
                    B_LOC_COUNTRY = 'NL', 
+                   A_PH_WA = NA_real_, A_CACO3_IF = NA_real_,
+                   A_H2O_T105 = 17, B_SLOPE_DEGREE = 0, B_SLOPE_ASPECT = 0,
+                   B_ALTITUDE = 0, 
                    nmax = 5, ...){
   
-  num_obs = A_CLAY_MI = A_SAND_MI = A_SILT_MI = A_SOM_LOI = A_C_OF = A_H20_T105 = NULL
-  A_DEPTH = B_ALTITUDE = B_SLOPE_DEGREE = B_SLOPE_ASPECT = A_PH_WA = A_CACO3_IF = NULL
-  A_N_RT = A_SAND_M50 = NULL
-  ptf_id = value = ap = B_LOC_CONT = landuse = depth = soiltype = r2 = oid = id =NULL
-  country_code = continent_code = num_obs = B_SOILTYPE = . = NULL
+  # num_obs = A_CLAY_MI = A_SAND_MI = A_SILT_MI = A_SOM_LOI = A_C_OF = A_H20_T105 = NULL
+  # A_DEPTH = B_ALTITUDE = B_SLOPE_DEGREE = B_SLOPE_ASPECT = A_PH_WA = A_CACO3_IF = NULL
+  # A_N_RT = A_SAND_M50 = NULL
+  # ptf_id = value = ap = B_LOC_CONT = landuse = depth = soiltype = r2 = oid = id =NULL
+  # country_code = continent_code = num_obs = B_SOILTYPE = . = NULL
   
   # combine all input objects not given as default function arguments
   obj <- list(...)
@@ -659,7 +662,13 @@ ptf_bd <- function(A_SOM_LOI = NA_real_, A_C_OF = NA_real_,
                    A_SILT_MI = A_SILT_MI,
                    A_DEPTH = A_DEPTH,
                    B_LOC_COUNTRY = B_LOC_COUNTRY,
-                   B_LU_PTFCLASS = B_LU_PTFCLASS
+                   B_LU_PTFCLASS = B_LU_PTFCLASS,
+                   A_PH_WA = A_PH_WA, 
+                   A_CACO3_IF = A_CACO3_IF,
+                   A_H2O_T105 = A_H2O_T105, 
+                   B_SLOPE_DEGREE = B_SLOPE_DEGREE,
+                   B_SLOPE_ASPECT = B_SLOPE_ASPECT, 
+                   B_ALTITUDE = B_ALTITUDE
   )
   
   # calculate BD with different PTF's
