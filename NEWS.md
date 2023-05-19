@@ -1,4 +1,75 @@
 # Changelog soilptf
+## Version 0.5.3 2023-05-17
+### Changed
+* Improved the function input documentation
+
+## Version 0.5.2  2023-05-10
+
+### Added
+* in dev, update critical thresholds for metals
+* add bd188, cec79 to cec81, mwd16, penetration resistance pr1 and wsa10
+
+### Changed
+* in dev, update derivation critical soc for paper
+
+## Version 0.5.1  2023-05-09
+
+# Fixed
+* NAm and SAm as abbreviation for North and South America causes errors due to confusion with NA, issue #3
+* replace `assert_int` with `assert_integer` for years in `sptf_cdec1`, issue #26
+* ensure correct CN ratios in `sptf_cdec1`, issue #26
+
+# Changed
+* all elements for A_CACO3_MI replaced with A_CACO3_IF, issue #30
+
+# Added
+* options for parameter `B_SOILCLASS_USDA` in `sptf_parameters`, issue #23
+* add ptfs cec75, cec76 and cec77
+
+## Version 0.5.0  2023-04-29
+
+## Added
+* add vignette `how to contribute`
+* add vignette `introduction`
+
+## Fixed
+* add missing id in wrapper functions `ptf_xxx_all'
+* add mineralogy check in `sptf_textureclass` and replace missing input when 2 of the 3 inputs are known.
+
+## Version 0.4.1 2023-04-29
+
+### Fixed
+* function `sptf_fc_zinc` was renamed to `sptf_fc_zn` to be consistent with other metal ptfs
+
+## Version 0.4.0 2023-04-29
+
+### Added
+* predict functions for all ptfs: `ptf_cec`,`ptf_phbc`,`ptf_mwd`,`ptf_wsa`,`ptf_hwc`,`ptf_sss`,and `ptf_cdec` 
+* package table `sptf_soilproperties` updated for metals, cec, hwc, cdec, whc and paw
+
+### Changed
+* script names for functions are updated, making them consistent with function names
+
+## Version 0.3.0  2023-04-27
+
+### Added
+* 12 pedotransfer functions for HWC
+* 10 pedotransfer functions for PMN
+* 1 function for carbon decomposition
+* 4 partition functions for freundlich coefficients for metals
+* 7 predict functions: `ptf_cec_all`,`ptf_phbc_all`,`ptf_mwd_all`,`ptf_wsa_all`,`ptf_hwc_all`,`ptf_sss_all`,and `ptf_cdec_all` 
+* all original HWC ptfs are renamed to PAW because they were wrongly named. 
+* HWC ptfs were updated
+* optimizer function and examples for EGU2023 in script in dev directory `derive_optimum_soc`
+
+### Fixed
+* calculation moisture content at given pF were fixed for all ptf_paw functions
+* all added checkmate functions were updated
+
+## Version 0.2.1 2023-04-24
+### Fixed
+* summing and rounding error in when checking that `A_SILT_MI`, `A_CLAY_MI`, and 
+`A_SAND_MI` never exceed 100 resolving #18
 
 ## Version 0.2.0  2023-04-14
 

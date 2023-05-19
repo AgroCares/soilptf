@@ -2,8 +2,7 @@
 % Please edit documentation in R/sptf_predict.R
 \name{ptf_bd}
 \alias{ptf_bd}
-\title{Predict the bulk density with the best combination of existing ptfs from literature.
-(modified version, using the support function ptf_bd_all)}
+\title{Predict the bulk density with the best combination of existing ptfs from literature.}
 \usage{
 ptf_bd(
   A_SOM_LOI = NA_real_,
@@ -41,7 +40,6 @@ ptf_bd(
 }
 \description{
 Predict the bulk density with the best combination of existing ptfs from literature.
-(modified version, using the support function ptf_bd_all)
 }
 \details{
 Some of the ptfs require additional information. If given, the relevant ptf's are used, otherwise they are ignored.

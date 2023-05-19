@@ -7,11 +7,11 @@
 sptf_cec27(A_SOM_LOI, A_CLAY_MI, A_SILT_MI, B_CLIM_CAT1)
 }
 \arguments{
-\item{A_SOM_LOI}{(numeric) The percentage organic matter in the soil (\%).}
+\item{A_SOM_LOI}{(numeric) The percentage organic matter in the soil determined by loss on ignition (\%)}
 
-\item{A_CLAY_MI}{(numeric) The clay content of the soil (\%).}
+\item{A_CLAY_MI}{(numeric) The clay content of the mineral soil fraction (\%).}
 
-\item{A_SILT_MI}{(numeric) The clay content of the soil (\%).}
+\item{A_SILT_MI}{(numeric) Silt content (\%)}
 
 \item{B_CLIM_CAT1}{(character) The climatic region (options: lowland humid (LLH), highland humid (HLH), subhumid (SH) and non humid (NH))}
 }

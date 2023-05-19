@@ -7,11 +7,11 @@
 sptf_cec45(A_C_OF, A_CLAY_MI, A_PH_WA)
 }
 \arguments{
-\item{A_C_OF}{(numeric) The carbon content of the soil (g / kg).}
+\item{A_C_OF}{(numeric) Organic Carbon Content (g / kg)}
 
-\item{A_CLAY_MI}{(numeric) The clay content of the soil (\%).}
+\item{A_CLAY_MI}{(numeric) The clay content of the mineral soil fraction (\%).}
 
-\item{A_PH_WA}{(numeric) The acidity of the soil, pH in water (-)}
+\item{A_PH_WA}{(numeric) Acidity in water (-)}
 }
 \description{
 This function calculates the CEC at pH 7 at agricultural sites in Finland

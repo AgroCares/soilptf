@@ -4,8 +4,7 @@
 #'
 #' This function calculates the CEC at pH 6.5 from SOM and clay content.
 #'
-#' @param A_SOM_LOI (numeric) The percentage organic matter in the soil (\%).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
+#' @inheritParams sptf_bd0
 #'
 #' @import data.table
 #' 
@@ -20,8 +19,8 @@ sptf_cec1 <- function(A_SOM_LOI, A_CLAY_MI) {
   checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
   
   # make internal data.table
-  dt <- data.table(A_SOM_LOI = A_SOM_LOI * 0.01,
-                   A_CLAY_MI = A_CLAY_MI * 0.01)
+  dt <- data.table(A_SOM_LOI = A_SOM_LOI,
+                   A_CLAY_MI = A_CLAY_MI)
   
   # function for B-horizont of podzols / haplaquods (p30, inputs are in g/g)
   # other soils follow second one (here approxied by clay content)
@@ -39,9 +38,7 @@ sptf_cec1 <- function(A_SOM_LOI, A_CLAY_MI) {
 #'
 #' This function calculates the CEC at 8.2
 #'
-#' @param A_SOM_LOI (numeric) The percentage organic matter in the soil (\%).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
-#' @param A_PH_KCL (numeric) The acidity of the soil, pH in KCL (-)
+#' @inheritParams sptf_bd0
 #' 
 #' @import data.table
 #' 
@@ -78,9 +75,7 @@ sptf_cec2 <- function(A_SOM_LOI, A_CLAY_MI, A_PH_KCL) {
 #'
 #' This function calculates the CEC at 8.2
 #'
-#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
-#' @param A_PH_CC (numeric) The acidity of the soil, pH in CaCl2 (-)
+#' @inheritParams sptf_bd0
 #' 
 #' @import data.table
 #' 
@@ -126,9 +121,7 @@ sptf_cec3 <- function(A_C_OF, A_CLAY_MI, A_PH_CC) {
 #'
 #' This function calculates the CEC at pH 6.5 for agricultural and natural soils in Winconsin (USA).
 #'
-#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
-#' @param A_PH_CC (numeric) The acidity of the soil, pH in CaCl2 (-)
+#' @inheritParams sptf_bd0
 #' 
 #' @import data.table
 #' 
@@ -166,8 +159,7 @@ sptf_cec4 <- function(A_C_OF, A_CLAY_MI, A_PH_CC) {
 #'
 #' This function calculates the CEC at pH 8.2 for agricultural soils in the Netherlands.
 #'
-#' @param A_SOM_LOI (numeric) The percentage organic matter in the soil (\%).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
+#' @inheritParams sptf_bd0
 #' 
 #' @import data.table
 #' 
@@ -200,10 +192,7 @@ sptf_cec5 <- function(A_SOM_LOI, A_CLAY_MI) {
 #'
 #' This function calculates the CEC at pH 8.2 for agricultural soils in the Netherlands.
 #'
-#' @param A_SOM_LOI (numeric) The percentage organic matter in the soil (\%).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
-#' @param A_SILT_MI (numeric) The silt content of the soil (\%)
-#' @param A_PH_CC (numeric) The acidity of the soil, pH in CaCl2 (-)
+#' @inheritParams sptf_bd0
 #'  
 #' @import data.table
 #' 
@@ -243,9 +232,7 @@ sptf_cec6 <- function(A_SOM_LOI, A_CLAY_MI, A_SILT_MI, A_PH_CC) {
 #'
 #' This function calculates the CEC at pH 8.2 for sandy agricultural soils in the Netherlands.
 #'
-#' @param A_SOM_LOI (numeric) The percentage organic matter in the soil (\%).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
-#' @param A_PH_CC (numeric) The acidity of the soil, pH in CaCl2 (-).
+#' @inheritParams sptf_bd0
 #' @param B_LU_PTFCLASS (character) The land use category (options: agriculture, grassland, cropland, forest, nature)
 #'  
 #' @import data.table
@@ -260,7 +247,7 @@ sptf_cec7 <- function(A_SOM_LOI, A_CLAY_MI, A_PH_CC,B_LU_PTFCLASS) {
   checkmate::assert_numeric(A_SOM_LOI, lower = 0, upper = 100,len = arg.length)
   checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
   checkmate::assert_numeric(A_PH_CC, lower = 3, upper = 12, len = arg.length)
-  checkmate::assert_character(B_LU_PTFCLASS,length = arg.length)
+  checkmate::assert_character(B_LU_PTFCLASS,len = arg.length)
   checkmate::assert_subset(B_LU_PTFCLASS, choices = c('agriculture', 'grassland', 'cropland', 'forest', 'nature'))
   
   # make internal data.table
@@ -296,11 +283,8 @@ sptf_cec7 <- function(A_SOM_LOI, A_CLAY_MI, A_PH_CC,B_LU_PTFCLASS) {
 #'
 #' This function calculates the CEC at pH 8.2 for peaty agricultural soils in the Netherlands.
 #'
-#' @param A_SOM_LOI (numeric) The percentage organic matter in the soil (\%).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
-#' @param A_PH_CC (numeric) The acidity of the soil, pH in CaCl2 (-).
-#' @param A_CN_FR (numeric) The carbon-to-nitrogen ratio of the soil organic matter (-)
-#' @param B_LU_PTFCLASS (character) The land use category (options: agriculture, grassland, cropland, forest, nature)
+#' @inheritParams sptf_bd0
+#' @inheritParams sptf_cec7
 #'  
 #' @import data.table
 #' 
@@ -315,7 +299,7 @@ sptf_cec8 <- function(A_SOM_LOI, A_CLAY_MI, A_PH_CC,A_CN_FR,B_LU_PTFCLASS) {
   checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
   checkmate::assert_numeric(A_PH_CC, lower = 3, upper = 12, len = arg.length)
   checkmate::assert_numeric(A_CN_FR, lower = 6, upper = 40, len = arg.length)
-  checkmate::assert_character(B_LU_PTFCLASS,length = arg.length)
+  checkmate::assert_character(B_LU_PTFCLASS,len = arg.length)
   checkmate::assert_subset(B_LU_PTFCLASS, choices = c('agriculture', 'grassland', 'cropland', 'forest', 'nature'))
   
   # make internal data.table
@@ -348,10 +332,8 @@ sptf_cec8 <- function(A_SOM_LOI, A_CLAY_MI, A_PH_CC,A_CN_FR,B_LU_PTFCLASS) {
 #'
 #' This function calculates the CEC at pH 8.2 for clay agricultural soils
 #'
-#' @param A_SOM_LOI (numeric) The percentage organic matter in the soil (\%).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
-#' @param A_PH_CC (numeric) The acidity of the soil, pH in CaCl2 (-).
-#' @param B_LU_PTFCLASS (character) The land use category (options: agriculture, grassland, cropland, forest, nature)
+#' @inheritParams sptf_bd0
+#' @inheritParams sptf_cec7
 #'  
 #' @import data.table
 #' 
@@ -365,7 +347,7 @@ sptf_cec9 <- function(A_SOM_LOI, A_CLAY_MI, A_PH_CC,B_LU_PTFCLASS) {
   checkmate::assert_numeric(A_SOM_LOI, lower = 0, upper = 100,len = arg.length)
   checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
   checkmate::assert_numeric(A_PH_CC, lower = 3, upper = 12, len = arg.length)
-  checkmate::assert_character(B_LU_PTFCLASS,length = arg.length)
+  checkmate::assert_character(B_LU_PTFCLASS,len = arg.length)
   checkmate::assert_subset(B_LU_PTFCLASS, choices = c('agriculture', 'grassland', 'cropland', 'forest', 'nature'))
   
   # make internal data.table
@@ -394,10 +376,8 @@ sptf_cec9 <- function(A_SOM_LOI, A_CLAY_MI, A_PH_CC,B_LU_PTFCLASS) {
 #'
 #' This function calculates the CEC at pH of sample for forest topsoils (0-30cm) in Switzerland
 #'
-#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
-#' @param A_PH_CC (numeric) The acidity of the soil, pH in CaCl2 (-).
-#' @param B_LU_PTFCLASS (character) The land use category (options: agriculture, grassland, cropland, forest, nature)
+#' @inheritParams sptf_bd0
+#' @inheritParams sptf_cec7
 #'  
 #' @import data.table
 #' 
@@ -411,7 +391,7 @@ sptf_cec10 <- function(A_C_OF, A_CLAY_MI, A_PH_CC,B_LU_PTFCLASS) {
   checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000,len = arg.length)
   checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
   checkmate::assert_numeric(A_PH_CC, lower = 2, upper = 12, len = arg.length)
-  checkmate::assert_character(B_LU_PTFCLASS,length = arg.length)
+  checkmate::assert_character(B_LU_PTFCLASS,len = arg.length)
   checkmate::assert_subset(B_LU_PTFCLASS, choices = c('agriculture', 'grassland', 'cropland', 'forest', 'nature'))
   
   # make internal data.table
@@ -439,10 +419,8 @@ sptf_cec10 <- function(A_C_OF, A_CLAY_MI, A_PH_CC,B_LU_PTFCLASS) {
 #'
 #' This function calculates the CEC at pH of sample for forest soils (including all horizons) in Switzerland
 #'
-#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
-#' @param A_PH_CC (numeric) The acidity of the soil, pH in CaCl2 (-).
-#' @param B_LU_PTFCLASS (character) The land use category (options: agriculture, grassland, cropland, forest, nature)
+#' @inheritParams sptf_bd0
+#' @inheritParams sptf_cec7
 #'  
 #' @import data.table
 #' 
@@ -456,7 +434,7 @@ sptf_cec11 <- function(A_C_OF, A_CLAY_MI, A_PH_CC,B_LU_PTFCLASS) {
   checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000,len = arg.length)
   checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
   checkmate::assert_numeric(A_PH_CC, lower = 2, upper = 12, len = arg.length)
-  checkmate::assert_character(B_LU_PTFCLASS,length = arg.length)
+  checkmate::assert_character(B_LU_PTFCLASS,len = arg.length)
   checkmate::assert_subset(B_LU_PTFCLASS, choices = c('agriculture', 'grassland', 'cropland', 'forest', 'nature'))
   
   # make internal data.table
@@ -483,9 +461,9 @@ sptf_cec11 <- function(A_C_OF, A_CLAY_MI, A_PH_CC,B_LU_PTFCLASS) {
 #' Calculate the CEC
 #'
 #' This function calculates the CEC at pH 7 for tropical forest soils in Brazil
-#'
-#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
-#' @param B_LU_PTFCLASS (character) The land use category (options: agriculture, grassland, cropland, forest, nature)
+#' 
+#' @inheritParams sptf_bd0
+#' @inheritParams sptf_cec7
 #'  
 #' @import data.table
 #' 
@@ -500,7 +478,7 @@ sptf_cec12 <- function(A_C_OF, B_LU_PTFCLASS) {
   # Check input
   arg.length <- max(length(A_C_OF),length(B_LU_PTFCLASS))
   checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000,len = arg.length)
-  checkmate::assert_character(B_LU_PTFCLASS,length = arg.length)
+  checkmate::assert_character(B_LU_PTFCLASS,len = arg.length)
   checkmate::assert_subset(B_LU_PTFCLASS, choices = c('agriculture', 'grassland', 'cropland', 'forest', 'nature'))
   
   # make internal data.table
@@ -535,8 +513,7 @@ sptf_cec12 <- function(A_C_OF, B_LU_PTFCLASS) {
 #'
 #' This function calculates the CEC at pH 7 of agricultural soils (0-22 cm) in Quebec.
 #'
-#' @param A_SOM_LOI (numeric) The percentage organic matter in the soil (\%).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
+#' @inheritParams sptf_bd0
 #' 
 #' @import data.table
 #' 
@@ -570,8 +547,7 @@ sptf_cec13 <- function(A_SOM_LOI, A_CLAY_MI) {
 #'
 #' This function calculates the CEC at pH 7 of agricultural and forest top soils (0-22 cm) in Ohio.
 #'
-#' @param A_SOM_LOI (numeric) The percentage organic matter in the soil (\%).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
+#' @inheritParams sptf_bd0
 #' 
 #' @import data.table
 #' 
@@ -618,8 +594,7 @@ sptf_cec14 <- function(A_SOM_LOI, A_CLAY_MI) {
 #'
 #' This function calculates the CEC at pH 8.2 of agricultural soils in Maryland.
 #'
-#' @param A_SOM_LOI (numeric) The percentage organic matter in the soil (\%).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
+#' @inheritParams sptf_bd0
 #' 
 #' @import data.table
 #' 
@@ -653,9 +628,7 @@ sptf_cec15 <- function(A_SOM_LOI, A_CLAY_MI) {
 #'
 #' This function calculates the CEC at pH 8.2 for agricultural soils in US
 #'
-#' @param A_SOM_LOI (numeric) The percentage organic matter in the soil (\%).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
-#' @param A_PH_WA (numeric) The acidity of the soil, pH in water (-).
+#' @inheritParams sptf_bd0
 #'  
 #' @import data.table
 #' 
@@ -698,8 +671,8 @@ sptf_cec16 <- function(A_SOM_LOI, A_CLAY_MI, A_PH_WA) {
 #'
 #' This function calculates the CEC at pH 7 for natural grassland soils in China.
 #'
-#' @param A_SOM_LOI (numeric) The percentage organic matter in the soil (\%).
-#' @param B_LU_PTFCLASS (character) The land use category (options: agriculture, grassland, cropland, forest, nature)
+#' @inheritParams sptf_bd0
+#' @inheritParams sptf_cec7
 #'  
 #' @import data.table
 #' 
@@ -711,7 +684,7 @@ sptf_cec17 <- function(A_SOM_LOI, B_LU_PTFCLASS) {
   # Check input
   arg.length <- max(length(A_SOM_LOI),length(B_LU_PTFCLASS))
   checkmate::assert_numeric(A_SOM_LOI, lower = 0, upper = 100,len = arg.length)
-  checkmate::assert_character(B_LU_PTFCLASS,length = arg.length)
+  checkmate::assert_character(B_LU_PTFCLASS,len = arg.length)
   checkmate::assert_subset(B_LU_PTFCLASS, choices = c('agriculture', 'grassland', 'cropland', 'forest', 'nature'))
   
   # make internal data.table (ASOM in g/kg)
@@ -738,8 +711,7 @@ sptf_cec17 <- function(A_SOM_LOI, B_LU_PTFCLASS) {
 #'
 #' This function calculates the CEC at pH 7 of agricultural soils in Florida.
 #'
-#' @param A_SOM_LOI (numeric) The percentage organic matter in the soil (\%).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
+#' @inheritParams sptf_bd0
 #' 
 #' @import data.table
 #' 
@@ -773,8 +745,7 @@ sptf_cec18 <- function(A_SOM_LOI, A_CLAY_MI) {
 #'
 #' This function calculates the CEC at pH 8 of agricultural soils in Winconsin.
 #'
-#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
+#' @inheritParams sptf_bd0
 #' 
 #' @import data.table
 #' 
@@ -808,9 +779,7 @@ sptf_cec19 <- function(A_C_OF, A_CLAY_MI) {
 #'
 #' This function calculates the CEC at pH 7 of forest topsoils (0-30 cm) in Nigeria.
 #'
-#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
-#' @param A_PH_WA (numeric) The acidity of the soil, pH in water (-).
+#' @inheritParams sptf_bd0
 #' 
 #' @import data.table
 #' 
@@ -843,7 +812,7 @@ sptf_cec20 <- function(A_C_OF, A_CLAY_MI,A_PH_WA) {
   dt[, v5 := 10 * (-13.93 + 2.645 * A_PH_WA + 0.0446 * A_CLAY_MI + 2.267 * A_C_OF)]
   
   # Estimate mean value
-  dt <- melt(dt,id.vars = 'id',measure.vars = c('v1','v2','v3','v4','v5','v6'))
+  dt <- melt(dt,id.vars = 'id',measure.vars = c('v1','v2','v3','v4','v5'))
   dt <- dt[,list(value = mean(value,na.rm=T)),by='id']
   
   # select output variable
@@ -858,8 +827,7 @@ sptf_cec20 <- function(A_C_OF, A_CLAY_MI,A_PH_WA) {
 #'
 #' This function calculates the CEC at pH 7 of agricultural soils (variable depth) in Sudan.
 #'
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
-#' @param A_SILT_MI (numeric) The silt content of the soil (\%).
+#' @inheritParams sptf_bd0
 #' 
 #' @import data.table
 #' 
@@ -911,9 +879,7 @@ sptf_cec21 <- function(A_CLAY_MI,A_SILT_MI) {
 #'
 #' This function calculates the CEC at pH 8.2 of loess soils (0-20cm) in Argentina
 #'
-#' @param A_SOM_LOI (numeric) The percentage organic matter in the soil (\%).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
-#' @param A_SILT_MI (numeric) The silt content of the soil (\%).
+#' @inheritParams sptf_bd0
 #' 
 #' @import data.table
 #' 
@@ -949,9 +915,7 @@ sptf_cec22 <- function(A_SOM_LOI,A_CLAY_MI,A_SILT_MI) {
 #'
 #' This function calculates the CEC at pH 7 of forest and nature non-calcareous soils in continental USA.
 #'
-#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
-#' @param A_PH_CC (numeric) The acidity of the soil, pH in CaCl2 (-).
+#' @inheritParams sptf_bd0
 #' 
 #' @import data.table
 #' 
@@ -1006,9 +970,7 @@ sptf_cec23 <- function(A_C_OF,A_CLAY_MI,A_PH_CC) {
 #'
 #' This function calculates the CEC at pH 7 of forest and nature soils in continental USA.
 #'
-#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
-#' @param A_PH_CC (numeric) The acidity of the soil, pH in CaCl2 (-).
+#' @inheritParams sptf_bd0
 #' 
 #' @import data.table
 #' 
@@ -1052,9 +1014,7 @@ sptf_cec24 <- function(A_C_OF,A_CLAY_MI,A_PH_CC) {
 #'
 #' This function calculates the CEC at pH 7 of soils in continental USA where SOC is lower than 80 g/kg.
 #'
-#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
-#' @param A_PH_CC (numeric) The acidity of the soil, pH in CaCl2 (-).
+#' @inheritParams sptf_bd0
 #' 
 #' @import data.table
 #' 
@@ -1092,10 +1052,7 @@ sptf_cec25 <- function(A_C_OF,A_CLAY_MI,A_PH_CC) {
 #'
 #' This function calculates the CEC at pH 7 of soils in continental USA per taxonomic order stratification group.
 #'
-#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
-#' @param A_SILT_MI (numeric) The silt content of the soil (\%).
-#' @param A_PH_WA (numeric) The acidity of the soil, pH in water (-).
+#' @inheritParams sptf_bd0
 #' @param B_SOILCLASS_USDA The soil type class according to the USDA Soil Taxonomy (https://en.wikipedia.org/wiki/USDA_soil_taxonomy)
 #' 
 #' @import data.table
@@ -1111,9 +1068,10 @@ sptf_cec26 <- function(A_C_OF,A_CLAY_MI,A_SILT_MI,A_PH_WA,B_SOILCLASS_USDA) {
   checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
   checkmate::assert_numeric(A_PH_WA, lower = 2, upper = 12, len = arg.length)
   checkmate::assert_character(B_SOILCLASS_USDA,len = arg.length)
-  checkmate::assert_subset(B_SOILCLASS_USDA,choiced = c('alfisol','andisol','aridisol','entisol',
+  checkmate::assert_subset(B_SOILCLASS_USDA,choices = c('alfisol','andisol','aridisol','entisol',
                                                         'gelisol','inceptisol','mollisol','oxisol',
-                                                        'spodosol','ultisol','vertisol','histosol'))
+                                                        'spodosol','ultisol','vertisol','histosol',
+                                                        NA_character_))
   
   # make internal data.table (assuming that Corg equals total C, units in \%)
   dt <- data.table(A_C_OF = A_C_OF * 0.1,
@@ -1188,9 +1146,7 @@ sptf_cec26 <- function(A_C_OF,A_CLAY_MI,A_SILT_MI,A_PH_WA,B_SOILCLASS_USDA) {
 #'
 #' This function calculates the effective CEC at pH of sample for agricultural topsoils (0-20cm) in Africa
 #'
-#' @param A_SOM_LOI (numeric) The percentage organic matter in the soil (\%).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
-#' @param A_SILT_MI (numeric) The clay content of the soil (\%).
+#' @inheritParams sptf_bd0
 #' @param B_CLIM_CAT1 (character) The climatic region (options: lowland humid (LLH), highland humid (HLH), subhumid (SH) and non humid (NH))
 #'  
 #' @import data.table
@@ -1210,8 +1166,8 @@ sptf_cec27 <- function(A_SOM_LOI, A_CLAY_MI, A_SILT_MI,B_CLIM_CAT1) {
   checkmate::assert_numeric(A_SOM_LOI, lower = 0, upper = 100,len = arg.length)
   checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
   checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, len = arg.length)
-  checkmate::assert_character(B_CLIM_CAT1,length = arg.length)
-  checkmate::assert_subset(B_CLIM_CAT1, choices = c('LLH', 'HLH', 'SH', 'NH'))
+  checkmate::assert_character(B_CLIM_CAT1,len = arg.length)
+  checkmate::assert_subset(B_CLIM_CAT1, choices = c('LLH', 'HLH', 'SH', 'NH',NA_character_))
   
   # make internal data.table
   dt <- data.table(A_SOM_LOI = A_SOM_LOI,
@@ -1242,10 +1198,7 @@ sptf_cec27 <- function(A_SOM_LOI, A_CLAY_MI, A_SILT_MI,B_CLIM_CAT1) {
 #'
 #' This function calculates the effective CEC at pH of sample for agricultural Danish soils
 #'
-#' @param A_SOM_LOI (numeric) The percentage organic matter in the soil (\%).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
-#' @param A_SILT_MI (numeric) The silt content of the soil (\%)
-#' @param A_PH_CC (numeric) The acidity of the soil, pH in CaCl2 (-)
+#' @inheritParams sptf_bd0
 #'  
 #' @import data.table
 #' 
@@ -1291,32 +1244,28 @@ sptf_cec28 <- function(A_SOM_LOI, A_CLAY_MI, A_SILT_MI, A_PH_CC) {
 #'
 #' This function calculates the effective CEC at pH of sample for agricultural Danish topsoils
 #'
-#' @param A_SOM_LOI (numeric) The percentage organic matter in the soil (\%).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
-#' @param A_SILT_MI (numeric) The silt content of the soil (\%).
-#' @param A_CACO3_MI (numeric) The carbonate content of the soil (\%).
-#' @param A_PH_CC (numeric) The acidity of the soil, pH in CaCl2 (-).
+#' @inheritParams sptf_bd0
 #'  
 #' @import data.table
 #' 
 #' @references Krogh et al. (2000) Cation Exchange Capacity Pedotransfer Functions For Danish Soils
 #'
 #' @export
-sptf_cec29 <- function(A_SOM_LOI, A_CLAY_MI, A_SILT_MI, A_CACO3_MI, A_PH_CC) {
+sptf_cec29 <- function(A_SOM_LOI, A_CLAY_MI, A_SILT_MI, A_CACO3_IF, A_PH_CC) {
   
   # Check input
-  arg.length <- max(length(A_SOM_LOI), length(A_CLAY_MI),length(A_PH_CC),length(A_SILT_MI),length(A_CACO3_MI))
+  arg.length <- max(length(A_SOM_LOI), length(A_CLAY_MI),length(A_PH_CC),length(A_SILT_MI),length(A_CACO3_IF))
   checkmate::assert_numeric(A_SOM_LOI, lower = 0, upper = 100,len = arg.length)
   checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
   checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, len = arg.length)
-  checkmate::assert_numeric(A_CACO3_MI, lower = 0, upper = 15, len = arg.length)
+  checkmate::assert_numeric(A_CACO3_IF, lower = 0, upper = 15, len = arg.length)
   checkmate::assert_numeric(A_PH_CC, lower = 3, upper = 12, len = arg.length)
   
   # make internal data.table
   dt <- data.table(A_SOM_LOI = A_SOM_LOI,
                    A_CLAY_MI = A_CLAY_MI,
                    A_SILT_MI = A_SILT_MI,
-                   A_CACO3_MI = A_CACO3_MI,
+                   A_CACO3_IF = A_CACO3_IF,
                    A_PH_CC = A_PH_CC,
                    value = NA_real_)
   
@@ -1332,7 +1281,7 @@ sptf_cec29 <- function(A_SOM_LOI, A_CLAY_MI, A_SILT_MI, A_CACO3_MI, A_PH_CC) {
   dt[A_SOM_LOI > 10, value := 21.11 + 1.88 * A_SOM_LOI]
   
   # update for calcareous soils (n = 136, R2 = 0.77)
-  dt[!is.na(A_CACO3_MI) & A_CACO3_MI > 0.1, value := -0.04 + 2.13 * A_SOM_LOI + 0.42 * A_CLAY_MI]
+  dt[!is.na(A_CACO3_IF) & A_CACO3_IF > 0.1, value := -0.04 + 2.13 * A_SOM_LOI + 0.42 * A_CLAY_MI]
   
   # update unit from cmol/kg to mmol/kg
   dt[, value := value * 10]
@@ -1349,8 +1298,7 @@ sptf_cec29 <- function(A_SOM_LOI, A_CLAY_MI, A_SILT_MI, A_CACO3_MI, A_PH_CC) {
 #'
 #' This function calculates the effective CEC at sample pH at various depths of agricultural soils in New Jersey
 #'
-#' @param A_SOM_LOI (numeric) The percentage organic matter in the soil (\%).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
+#' @inheritParams sptf_bd0
 #' 
 #' @import data.table
 #' 
@@ -1384,8 +1332,7 @@ sptf_cec30 <- function(A_SOM_LOI, A_CLAY_MI) {
 #'
 #' This function calculates the effective CEC at sample pH at topsoil of agricultural soils in New Jersey.  
 #'
-#' @param A_SOM_LOI (numeric) The percentage organic matter in the soil (\%).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
+#' @inheritParams sptf_bd0
 #' @param B_SOILCLASS_USDA The soil type class according to the USDA Soil Taxonomy (https://en.wikipedia.org/wiki/USDA_soil_taxonomy)
 #'  
 #' @import data.table
@@ -1403,9 +1350,10 @@ sptf_cec31 <- function(A_SOM_LOI, A_CLAY_MI,B_SOILCLASS_USDA = NA) {
   checkmate::assert_numeric(A_SOM_LOI, lower = 0, upper = 100,len = arg.length)
   checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
   checkmate::assert_character(B_SOILCLASS_USDA,len = arg.length)
-  checkmate::assert_subset(B_SOILCLASS_USDA,choiced = c('alfisol','andisol','aridisol','entisol',
+  checkmate::assert_subset(B_SOILCLASS_USDA,choices = c('alfisol','andisol','aridisol','entisol',
                                                         'gelisol','inceptisol','mollisol','oxisol',
-                                                        'spodosol','ultisol','vertisol','histosol'))
+                                                        'spodosol','ultisol','vertisol','histosol',
+                                                        NA_character_))
   # make internal data.table
   dt <- data.table(A_SOM_LOI = A_SOM_LOI,
                    A_CLAY_MI = A_CLAY_MI,
@@ -1433,10 +1381,7 @@ sptf_cec31 <- function(A_SOM_LOI, A_CLAY_MI,B_SOILCLASS_USDA = NA) {
 #'
 #' This function calculates the CEC at pH 7 for agricultural Chinese topsoils
 #'
-#' @param A_SOM_LOI (numeric) The percentage organic matter in the soil (\%).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
-#' @param A_SILT_MI (numeric) The silt content of the soil (\%).
-#' @param A_PH_CC (numeric) The acidity of the soil, pH in CaCl2 (-).
+#' @inheritParams sptf_bd0
 #'  
 #' @import data.table
 #' 
@@ -1481,9 +1426,7 @@ sptf_cec32 <- function(A_SOM_LOI, A_CLAY_MI, A_SILT_MI, A_PH_CC) {
 #'
 #' This function calculates the CEC at pH 7
 #'
-#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
-#' @param A_PH_CC (numeric) The acidity of the soil, pH in CaCl2 (-)
+#' @inheritParams sptf_bd0
 #' 
 #' @import data.table
 #' 
@@ -1523,51 +1466,9 @@ sptf_cec33 <- function(A_C_OF, A_CLAY_MI, A_PH_CC) {
 
 #' Calculate the CEC
 #'
-#' This function calculates the CEC at pH 7
-#'
-#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
-#' @param A_PH_CC (numeric) The acidity of the soil, pH in CaCl2 (-)
-#' 
-#' @import data.table
-#' 
-#' @references Thiere et al. (1986). Analyse des Zusammenhanges von Austauschkapazit€at (T-Wert), Kornung, organischer Bodensubstanz und Bodenreaktion fur verbreitete € Substrat- und Horizontgruppen. Cited in Liao & Zhu (2015).
-#'
-#' @export
-sptf_cec34 <- function(A_C_OF, A_CLAY_MI, A_PH_CC) {
-  
-  # Check input
-  arg.length <- max(length(A_C_OF), length(A_CLAY_MI))
-  checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000,len = arg.length)
-  checkmate::assert_numeric(A_PH_CC, lower = 3, upper = 12, len = arg.length)
-  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
-  
-  # make internal data.table (with clay and Corg in %)
-  dt <- data.table(A_C_OF = A_C_OF * 0.1,
-                   A_CLAY_MI = A_CLAY_MI,
-                   A_PH_CC = A_PH_CC)
-  
-  # function for CEC(n = , R2 = )
-  dt[, value := -3.30 + 0.46 * A_CLAY_MI + 3.06 * A_C_OF + 0.77 * A_PH_CC]
-  
-  # update unit from cmol/kg to mmol/kg
-  dt[, value := value * 10]
-  
-  # select output variable
-  value <- dt[,value]
-  
-  # return value (mmol+ / kg)
-  return(value)
-  
-}
-
-#' Calculate the CEC
-#'
 #' This function calculates the CEC at pH 7 for forest and natural grassland soils in eastern Canada
 #'
-#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
-#' @param A_PH_CC (numeric) The acidity of the soil, pH in CaCl2 (-)
+#' @inheritParams sptf_bd0
 #' @param B_LU_PTFCLASS (character) The land use category (options: agriculture, grassland, cropland, forest, nature)
 #'  
 #' @import data.table
@@ -1577,15 +1478,12 @@ sptf_cec34 <- function(A_C_OF, A_CLAY_MI, A_PH_CC) {
 #' @export
 sptf_cec34 <- function(A_C_OF, A_CLAY_MI, A_PH_CC,B_LU_PTFCLASS) {
   
-  # add visual bindings
-  B_LU_PTFCLASS = NULL
-  
   # Check input
   arg.length <- max(length(A_C_OF), length(A_CLAY_MI),length(B_LU_PTFCLASS))
   checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000,len = arg.length)
   checkmate::assert_numeric(A_PH_CC, lower = 3, upper = 12, len = arg.length)
   checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
-  checkmate::assert_character(B_LU_PTFCLASS,length = arg.length)
+  checkmate::assert_character(B_LU_PTFCLASS,len = arg.length)
   checkmate::assert_subset(B_LU_PTFCLASS, choices = c('agriculture', 'grassland', 'cropland', 'forest', 'nature'))
   
   # make internal data.table (with clay and Corg in %)
@@ -1615,9 +1513,7 @@ sptf_cec34 <- function(A_C_OF, A_CLAY_MI, A_PH_CC,B_LU_PTFCLASS) {
 #'
 #' This function calculates the CEC at pH 7
 #'
-#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
-#' @param A_PH_CC (numeric) The acidity of the soil, pH in CaCl2 (-)
+#' @inheritParams sptf_bd0
 #' 
 #' @import data.table
 #' 
@@ -1656,8 +1552,7 @@ sptf_cec35 <- function(A_C_OF, A_CLAY_MI, A_PH_CC) {
 #'
 #' This function calculates the CEC at pH 7
 #'
-#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
+#' @inheritParams sptf_bd0
 #' 
 #' @import data.table
 #' 
@@ -1694,8 +1589,7 @@ sptf_cec36 <- function(A_C_OF, A_CLAY_MI) {
 #'
 #' This function calculates the CEC at pH 8.2 in agricultural soils in Indiana.
 #'
-#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
+#' @inheritParams sptf_bd0
 #' 
 #' @import data.table
 #' 
@@ -1732,8 +1626,7 @@ sptf_cec37 <- function(A_C_OF, A_CLAY_MI) {
 #'
 #' This function calculates the CEC at pH 7 for chernozemic soils in Saskatchewan province of Canada.
 #'
-#' @param A_SOM_LOI (numeric) The percentage organic matter in the soil (\%).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
+#' @inheritParams sptf_bd0
 #' 
 #' @import data.table
 #' 
@@ -1774,8 +1667,7 @@ sptf_cec38 <- function(A_SOM_LOI, A_CLAY_MI) {
 #'
 #' This function calculates the CEC at pH 7
 #'
-#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
+#' @inheritParams sptf_bd0
 #' 
 #' @import data.table
 #' 
@@ -1811,8 +1703,7 @@ sptf_cec39 <- function(A_C_OF, A_CLAY_MI) {
 #'
 #' This function calculates the CEC at pH 7
 #'
-#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
+#' @inheritParams sptf_bd0
 #' 
 #' @import data.table
 #' 
@@ -1849,8 +1740,7 @@ sptf_cec40 <- function(A_C_OF, A_CLAY_MI) {
 #'
 #' This function calculates the CEC at pH 7 for forests soils in Mississippi, Ohio, Wisconsin, North Carolina and Florida.
 #'
-#' @param A_SOM_LOI (numeric) The percentage organic matter in the soil (\%).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
+#' @inheritParams sptf_bd0
 #' 
 #' @import data.table
 #' 
@@ -1900,9 +1790,7 @@ sptf_cec41 <- function(A_SOM_LOI, A_CLAY_MI) {
 #'
 #' This function calculates the CEC at pH 7 for agricultural soils in Cameroon
 #'
-#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
-#' @param A_SILT_MI (numeric) The silt content of the soil (\%).
+#' @inheritParams sptf_bd0
 #'  
 #' @import data.table
 #' 
@@ -1959,10 +1847,7 @@ sptf_cec42 <- function(A_C_OF, A_CLAY_MI, A_SILT_MI) {
 #'
 #' This function calculates the effective CEC at sample pH for agricultural soils at various depths in Nigeria
 #'
-#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
-#' @param A_SILT_MI (numeric) The silt content of the soil (\%).
-#' @param A_PH_CC (numeric) The acidity of the soil, pH in CaCl2 (-).
+#' @inheritParams sptf_bd0
 #'  
 #' @import data.table
 #' 
@@ -1982,7 +1867,7 @@ sptf_cec43 <- function(A_C_OF, A_CLAY_MI, A_SILT_MI, A_PH_CC) {
   checkmate::assert_numeric(A_PH_CC, lower = 3, upper = 12, len = arg.length)
   
   # make internal data.table (soc in %)
-  dt <- data.table(A_C_OF = A_C_OF * 0.1,
+  dt <- data.table(A_C_OF = A_C_OF,
                    A_CLAY_MI = A_CLAY_MI,
                    A_SILT_MI = A_SILT_MI,
                    A_SAND_MI = 100 - A_CLAY_MI - A_SILT_MI,
@@ -1990,7 +1875,7 @@ sptf_cec43 <- function(A_C_OF, A_CLAY_MI, A_SILT_MI, A_PH_CC) {
                    value = NA_real_)
   
   # function for CEC at pH 7 (NH4Ac) at various depths (all data, n = 2124, R2 = 0.577)
-  dt[, value := -15.681 + 0.118 * A_CLAY_MI + 4.097 * A_PH_CC * 0.124 - A_SAND_MI + 0.0887 * A_C_OF]
+  dt[, value := -15.681 + 0.118 * A_CLAY_MI + 4.097 * A_PH_CC - 0.124 * A_SAND_MI + 0.0887 * A_C_OF]
   
   # update unit from cmol/kg to mmol/kg
   dt[, value := value * 10]
@@ -2007,10 +1892,7 @@ sptf_cec43 <- function(A_C_OF, A_CLAY_MI, A_SILT_MI, A_PH_CC) {
 #'
 #' This function calculates the effective CEC at sample pH for agricultural topsoils in Nigeria
 #'
-#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
-#' @param A_SILT_MI (numeric) The silt content of the soil (\%).
-#' @param A_PH_CC (numeric) The acidity of the soil, pH in CaCl2 (-).
+#' @inheritParams sptf_bd0
 #'  
 #' @import data.table
 #' 
@@ -2030,7 +1912,7 @@ sptf_cec44 <- function(A_C_OF, A_CLAY_MI, A_SILT_MI, A_PH_CC) {
   checkmate::assert_numeric(A_PH_CC, lower = 3, upper = 12, len = arg.length)
   
   # make internal data.table (soc in %)
-  dt <- data.table(A_C_OF = A_C_OF * 0.1,
+  dt <- data.table(A_C_OF = A_C_OF,
                    A_CLAY_MI = A_CLAY_MI,
                    A_SILT_MI = A_SILT_MI,
                    A_SAND_MI = 100 - A_CLAY_MI - A_SILT_MI,
@@ -2055,9 +1937,7 @@ sptf_cec44 <- function(A_C_OF, A_CLAY_MI, A_SILT_MI, A_PH_CC) {
 #'
 #' This function calculates the CEC at pH 7 at agricultural sites in Finland
 #'
-#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
-#' @param A_PH_WA (numeric) The acidity of the soil, pH in water (-)
+#' @inheritParams sptf_bd0
 #' 
 #' @import data.table
 #' 
@@ -2094,12 +1974,11 @@ sptf_cec45 <- function(A_C_OF, A_CLAY_MI, A_PH_WA) {
 }
 
 
-' Calculate the CEC
+#' Calculate the CEC
 #'
 #' This function calculates the CEC at pH 7 at agricultural sites at various depths in Tanzania
 #'
-#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
+#' @inheritParams sptf_bd0
 #' 
 #' @import data.table
 #' 
@@ -2136,10 +2015,8 @@ sptf_cec46 <- function(A_C_OF, A_CLAY_MI) {
 #'
 #' This function calculates the effective CEC at pH of sample for agricultural topsoils (0-20cm) in Africa
 #'
-#' @param A_SOM_LOI (numeric) The percentage organic matter in the soil (\%).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
-#' @param A_SILT_MI (numeric) The clay content of the soil (\%).
-#' @param B_LU_PTFCLASS (character) The land use category (options: agriculture, grassland, cropland, forest, nature)
+#' @inheritParams sptf_bd0
+#' @inheritParams sptf_cec7
 #'  
 #' @import data.table
 #' 
@@ -2158,7 +2035,7 @@ sptf_cec47 <- function(A_SOM_LOI, A_CLAY_MI, A_SILT_MI,B_LU_PTFCLASS) {
   checkmate::assert_numeric(A_SOM_LOI, lower = 0, upper = 100,len = arg.length)
   checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
   checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, len = arg.length)
-  checkmate::assert_character(B_LU_PTFCLASS,length = arg.length)
+  checkmate::assert_character(B_LU_PTFCLASS,len =arg.length)
   checkmate::assert_subset(B_LU_PTFCLASS, choices = c('agriculture', 'grassland', 'cropland', 'forest', 'nature'))
   
   # make internal data.table
@@ -2193,8 +2070,7 @@ sptf_cec47 <- function(A_SOM_LOI, A_CLAY_MI, A_SILT_MI,B_LU_PTFCLASS) {
 #'
 #' This function calculates the CEC at pH 6.5 for agricultural fields at two depths in Central Iran.
 #'
-#' @param A_SOM_LOI (numeric) The percentage organic matter in the soil (\%).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
+#' @inheritParams sptf_bd0
 #'
 #' @import data.table
 #' 
@@ -2228,9 +2104,7 @@ sptf_cec48 <- function(A_SOM_LOI, A_CLAY_MI) {
 #'
 #' This function calculates the effective CEC at pH 7 for agricultural topsoils (0-30cm) in Iraqi
 #'
-#' @param A_SOM_LOI (numeric) The percentage organic matter in the soil (\%).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
-#' @param A_SILT_MI (numeric) The clay content of the soil (\%).
+#' @inheritParams sptf_bd0
 #'  
 #' @import data.table
 #' 
@@ -2277,37 +2151,33 @@ sptf_cec49 <- function(A_SOM_LOI, A_CLAY_MI, A_SILT_MI) {
 #'
 #' This function calculates the CEC at pH 8.2 for calcareous soils in Iran, Texas, USA, Cuba and Kenya
 #'
-#' @param A_SOM_LOI (numeric) The percentage organic matter in the soil (\%).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
-#' @param A_SILT_MI (numeric) The silt content of the soil (\%).
-#' @param A_CACO3_MI (numeric) The carbonate content of the soil (\%).
-#' @param A_PH_CC (numeric) The acidity of the soil, pH in CaCl2 (-).
+#' @inheritParams sptf_bd0
 #'  
 #' @import data.table
 #' 
 #' @references Razzaghi et al. (2021) Evaluating models to estimate cation exchange capacity of calcareous soils 
 #'
 #' @export
-sptf_cec50 <- function(A_SOM_LOI, A_CLAY_MI, A_SILT_MI, A_CACO3_MI, A_PH_CC) {
+sptf_cec50 <- function(A_SOM_LOI, A_CLAY_MI, A_SILT_MI, A_CACO3_IF, A_PH_CC) {
   
   # Check input
-  arg.length <- max(length(A_SOM_LOI), length(A_CLAY_MI),length(A_PH_CC),length(A_SILT_MI),length(A_CACO3_MI))
+  arg.length <- max(length(A_SOM_LOI), length(A_CLAY_MI),length(A_PH_CC),length(A_SILT_MI),length(A_CACO3_IF))
   checkmate::assert_numeric(A_SOM_LOI, lower = 0, upper = 100,len = arg.length)
   checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
   checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, len = arg.length)
-  checkmate::assert_numeric(A_CACO3_MI, lower = 0, upper = 15, len = arg.length)
+  checkmate::assert_numeric(A_CACO3_IF, lower = 0, upper = 15, len = arg.length)
   checkmate::assert_numeric(A_PH_CC, lower = 3, upper = 12, len = arg.length)
   
   # make internal data.table
   dt <- data.table(A_SOM_LOI = A_SOM_LOI,
                    A_CLAY_MI = A_CLAY_MI,
                    A_SILT_MI = A_SILT_MI,
-                   A_CACO3_MI = A_CACO3_MI,
+                   A_CACO3_IF = A_CACO3_IF,
                    A_PH_CC = A_PH_CC,
                    value = NA_real_)
   
   # function for CEC at 8.2 (NH4Ac) (n = 38, R2 = 0.64)
-  dt[, value := 29.9 + 0.298 * A_CLAY_MI - 0.389 * A_CACO3_MI]
+  dt[, value := 29.9 + 0.298 * A_CLAY_MI - 0.389 * A_CACO3_IF]
   
   # update unit from cmol/kg to mmol/kg
   dt[, value := value * 10]
@@ -2324,10 +2194,7 @@ sptf_cec50 <- function(A_SOM_LOI, A_CLAY_MI, A_SILT_MI, A_CACO3_MI, A_PH_CC) {
 #'
 #' This function calculates the CEC at pH 8.2 for various land uses in Iran
 #'
-#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
-#' @param A_SILT_MI (numeric) The silt content of the soil (\%).
-#' @param A_PH_WA (numeric) The acidity of the soil, pH in water (-).
+#' @inheritParams sptf_bd0
 #'  
 #' @import data.table
 #' 
@@ -2354,7 +2221,7 @@ sptf_cec51 <- function(A_C_OF, A_CLAY_MI, A_SILT_MI, A_PH_WA) {
                    A_PH_WA = A_PH_WA)
   
   # function for CEC at 8.2 (NH4Ac) (n = 65, R2 = 0.52)
-  dt[, value := 9.47 + 0.48 * A_CLAY_MI - 0.24 * A_SILT_MI - 035 * A_SAND_MI + 3.13 * A_PH_WA - 0.233 * A_C_OF]
+  dt[, value := 9.47 + 0.48 * A_CLAY_MI - 0.24 * A_SILT_MI - 0.35 * A_SAND_MI + 3.13 * A_PH_WA - 0.233 * A_C_OF]
   
   # update unit from cmol/kg to mmol/kg
   dt[, value := value * 10]
@@ -2371,10 +2238,7 @@ sptf_cec51 <- function(A_C_OF, A_CLAY_MI, A_SILT_MI, A_PH_WA) {
 #'
 #' This function calculates the CEC at pH 8.2 for various land uses in Iraq
 #'
-#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
-#' @param A_SILT_MI (numeric) The silt content of the soil (\%).
-#' @param A_PH_WA (numeric) The acidity of the soil, pH in water (-).
+#' @inheritParams sptf_bd0
 #'  
 #' @import data.table
 #' 
@@ -2418,10 +2282,7 @@ sptf_cec52 <- function(A_C_OF, A_CLAY_MI, A_SILT_MI, A_PH_WA) {
 #'
 #' This function calculates the CEC at pH 8.2 for various land uses in Spain
 #'
-#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
-#' @param A_SILT_MI (numeric) The silt content of the soil (\%).
-#' @param A_PH_WA (numeric) The acidity of the soil, pH in water (-).
+#' @inheritParams sptf_bd0
 #'  
 #' @import data.table
 #' 
@@ -2448,7 +2309,7 @@ sptf_cec53 <- function(A_C_OF, A_CLAY_MI, A_SILT_MI, A_PH_WA) {
                    A_PH_WA = A_PH_WA)
   
   # function for CEC at 8.2 (NH4Ac) (n = 40, R2 = 0.82)
-  dt[, value := 25.219 + 0.132 * A_CLAY_MI +216.7 * A_SILT_MI - 0.054 * A_SAND_MI -2.445 * A_PH_WA + 0.865 * A_C_OF]
+  dt[, value := 25.219 + 0.132 * A_CLAY_MI +0.02167 * A_SILT_MI - 0.054 * A_SAND_MI -2.445 * A_PH_WA + 0.865 * A_C_OF]
   
   # update unit from cmol/kg to mmol/kg
   dt[, value := value * 10]
@@ -2465,11 +2326,8 @@ sptf_cec53 <- function(A_C_OF, A_CLAY_MI, A_SILT_MI, A_PH_WA) {
 #'
 #' This function calculates the CEC at pH 8.2 for various land uses in USA, Spain, Iran and Iraq.
 #'
-#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
-#' @param A_SILT_MI (numeric) The silt content of the soil (\%).
-#' @param A_PH_WA (numeric) The acidity of the soil, pH in water (-).
-#' @param B_LU_PTFCLASS (character) The land use category (options: agriculture, grassland, cropland, forest, nature)
+#' @inheritParams sptf_bd0
+#' @inheritParams sptf_cec7
 #'   
 #' @import data.table
 #' 
@@ -2487,7 +2345,7 @@ sptf_cec54 <- function(A_C_OF, A_CLAY_MI, A_SILT_MI, A_PH_WA,B_LU_PTFCLASS) {
   checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
   checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, len = arg.length)
   checkmate::assert_numeric(A_PH_WA, lower = 3, upper = 12, len = arg.length)
-  checkmate::assert_character(B_LU_PTFCLASS,length = arg.length)
+  checkmate::assert_character(B_LU_PTFCLASS,len =arg.length)
   checkmate::assert_subset(B_LU_PTFCLASS, choices = c('agriculture', 'grassland', 'cropland', 'forest', 'nature'))
   
   # make internal data.table (SOC in %)
@@ -2526,10 +2384,7 @@ sptf_cec54 <- function(A_C_OF, A_CLAY_MI, A_SILT_MI, A_PH_WA,B_LU_PTFCLASS) {
 #'
 #' This function calculates the CEC at pH 8.2 for various land uses in USA, Spain, Iran and Iraq.
 #'
-#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
-#' @param A_SILT_MI (numeric) The silt content of the soil (\%).
-#' @param A_PH_WA (numeric) The acidity of the soil, pH in water (-).
+#' @inheritParams sptf_bd0
 #'   
 #' @import data.table
 #' 
@@ -2583,9 +2438,7 @@ sptf_cec55 <- function(A_C_OF, A_CLAY_MI, A_SILT_MI, A_PH_WA) {
 #'
 #' This function calculates the CEC at pH 8.2 for calcareous soils (0-20cm) in Mexico
 #'
-#' @param A_SOM_LOI (numeric) The percentage organic matter in the soil (\%).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
-#' @param A_PH_WA (numeric) The acidity of the soil, pH in water (-).
+#' @inheritParams sptf_bd0
 #'  
 #' @import data.table
 #' 
@@ -2636,9 +2489,7 @@ sptf_cec56 <- function(A_SOM_LOI, A_CLAY_MI,A_PH_WA) {
 #'
 #' This function calculates the CEC at pH 8.2 for agricultural soils (0-20cm) in Mexico
 #'
-#' @param A_SOM_LOI (numeric) The percentage organic matter in the soil (\%).
-#' @param A_SAND_MI (numeric) The sand content of the soil (\%).
-#' @param A_PH_WA (numeric) The acidity of the soil, pH in water (-).
+#' @inheritParams sptf_bd0
 #'  
 #' @import data.table
 #' 
@@ -2687,40 +2538,37 @@ sptf_cec57 <- function(A_SOM_LOI, A_SAND_MI,A_PH_WA) {
 #'
 #' This function calculates the CEC at pH 8.2 for calcareous soils in Iran
 #'
-#' @param A_SOM_LOI (numeric) The percentage organic matter in the soil (\%).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
-#' @param A_SILT_MI (numeric) The silt content of the soil (\%).
-#' @param A_CACO3_MI (numeric) The carbonate content of the soil (\%).
+#' @inheritParams sptf_bd0
 #'  
 #' @import data.table
 #' 
 #' @references Asadzadeh et al. (2019). Predicting cationic exhcnage capacity in calcareous soils of East Azerbaijen province, northwest Iran. Cited in Razzaghi et al. (2021).
 #'
 #' @export
-sptf_cec58 <- function(A_SOM_LOI, A_CLAY_MI, A_SILT_MI, A_CACO3_MI) {
+sptf_cec58 <- function(A_SOM_LOI, A_CLAY_MI, A_SILT_MI, A_CACO3_IF) {
   
   # add visual bindings
   A_SAND_MI = NULL
   
   # Check input
-  arg.length <- max(length(A_SOM_LOI), length(A_CLAY_MI),length(A_SILT_MI),length(A_CACO3_MI))
+  arg.length <- max(length(A_SOM_LOI), length(A_CLAY_MI),length(A_SILT_MI),length(A_CACO3_IF))
   checkmate::assert_numeric(A_SOM_LOI, lower = 0, upper = 100,len = arg.length)
   checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
   checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, len = arg.length)
-  checkmate::assert_numeric(A_CACO3_MI, lower = 0, upper = 15, len = arg.length)
+  checkmate::assert_numeric(A_CACO3_IF, lower = 0, upper = 15, len = arg.length)
   
   # make internal data.table
   dt <- data.table(A_SOM_LOI = A_SOM_LOI,
                    A_CLAY_MI = A_CLAY_MI,
                    A_SAND_MI = 100 - A_CLAY_MI - A_SILT_MI,
-                   A_CACO3_MI = A_CACO3_MI,
+                   A_CACO3_IF = A_CACO3_IF,
                    value = NA_real_)
   
   # function for CEC at 8.2 (NH4Ac) (n = 417, R2 = 0.85)
-  dt[, value := 0.027 + 0.811 * A_CLAY_MI - 0.045 * A_SAND_MI + 0.168 * A_SOM_LOI - 0.091 * A_CACO3_MI]
+  dt[, value := 0.027 + 0.811 * A_CLAY_MI - 0.045 * A_SAND_MI + 0.168 * A_SOM_LOI - 0.091 * A_CACO3_IF]
   
   # update when input is missing (n = 417, R2 = 0.83)
-  dt[is.na(A_CACO3_MI), value := 0.112 + 0.878 * A_CLAY_MI + 0.127 * A_CLAY_MI / A_SOM_LOI]
+  dt[is.na(A_CACO3_IF), value := 0.112 + 0.878 * A_CLAY_MI + 0.127 * A_CLAY_MI / A_SOM_LOI]
   
   # update unit from cmol/kg to mmol/kg
   dt[, value := value * 10]
@@ -2737,8 +2585,7 @@ sptf_cec58 <- function(A_SOM_LOI, A_CLAY_MI, A_SILT_MI, A_CACO3_MI) {
 #'
 #' This function calculates the CEC at pH 8.2 for soil in Lower Namoi Valley, Australia. 
 #'
-#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
+#' @inheritParams sptf_bd0
 #' 
 #' @import data.table
 #' 
@@ -2772,8 +2619,7 @@ sptf_cec59 <- function(A_C_OF, A_CLAY_MI) {
 #'
 #' This function calculates the CEC at pH 8.2 for calcareous soils in various countries across all continents
 #' 
-#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
+#' @inheritParams sptf_bd0
 #' 
 #' @import data.table
 #' 
@@ -2809,8 +2655,7 @@ sptf_cec60 <- function(A_C_OF, A_CLAY_MI) {
 #'
 #' This function calculates the CEC at pH 8.2 for calcareous soils in Iran
 #'
-#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
+#' @inheritParams sptf_bd0
 #' 
 #' @import data.table
 #' 
@@ -2847,33 +2692,31 @@ sptf_cec61 <- function(A_C_OF, A_CLAY_MI) {
 #'
 #' This function calculates the CEC at pH 8.2 for calcareous soils in Iran
 #'
-#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
-#' @param A_SILT_MI (numeric) The silt content of the soil (\%).
-#' @param A_CACO3_MI (numeric) The carbonate content of the soil (\%).
+#' @inheritParams sptf_bd0
 #' 
 #' @import data.table
 #' 
 #' @references Kashi et al. (2014) Estimation of Soil Infiltration and Cation Exchange Capacity Based on Multiple Regression, ANN (RBF, MLP), and ANFIS Models.
 #'
 #' @export
-sptf_cec62 <- function(A_C_OF, A_CLAY_MI,A_SILT_MI,A_CACO3_MI) {
+sptf_cec62 <- function(A_C_OF, A_CLAY_MI,A_SILT_MI,A_CACO3_IF) {
   
   # add visual bindings
   bd = sar = ec = A_SAND_MI = NULL
   
   # Check input
-  arg.length <- max(length(A_C_OF), length(A_CLAY_MI),length(A_SILT_MI),length(A_CACO3_MI))
+  arg.length <- max(length(A_C_OF), length(A_CLAY_MI),length(A_SILT_MI),length(A_CACO3_IF))
   checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000,len = arg.length)
   checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
   checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, len = arg.length)
-  checkmate::assert_numeric(A_CACO3_MI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_numeric(A_CACO3_IF, lower = 0, upper = 100, len = arg.length)
   
   # make internal data.table
   dt <- data.table(A_C_OF = A_C_OF,
                    A_CLAY_MI = A_CLAY_MI,
                    A_SILT_MI = A_SILT_MI,
-                   A_CACO3_MI = A_CACO3_MI,
+                   A_SAND_MI = 100 - A_CLAY_MI - A_SILT_MI,
+                   A_CACO3_IF = A_CACO3_IF,
                    value = NA_real_)
   
   # estimate bulk density (in g/cm3)
@@ -2889,7 +2732,7 @@ sptf_cec62 <- function(A_C_OF, A_CLAY_MI,A_SILT_MI,A_CACO3_MI) {
   dt[, value := 18.87 - 6.16 * bd - 0.019 * sar + 0.016 * A_SAND_MI + 0.026 * A_SILT_MI + 0.076 * A_CLAY_MI - 0.038 * ec]
   
   # when carbonate is known adapt
-  dt[, value := value - 0.07 * fifelse(is.na(A_CACO3_MI),19,A_CACO3_MI)]
+  dt[, value := value - 0.07 * fifelse(is.na(A_CACO3_IF),19,A_CACO3_IF)]
   
   # update unit from cmol/kg to mmol/kg
   dt[, value := value * 10]
@@ -2906,8 +2749,7 @@ sptf_cec62 <- function(A_C_OF, A_CLAY_MI,A_SILT_MI,A_CACO3_MI) {
 #'
 #' This function calculates the CEC for soils in Italy
 #'
-#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
+#' @inheritParams sptf_bd0
 #' 
 #' @import data.table
 #' 
@@ -2941,8 +2783,7 @@ sptf_cec63 <- function(A_C_OF, A_CLAY_MI) {
 #'
 #' This function calculates the CEC for agricultural soils (0-20cm) in New Zealand
 #'
-#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
+#' @inheritParams sptf_bd0
 #' 
 #' @import data.table
 #' 
@@ -2976,7 +2817,7 @@ sptf_cec64 <- function(A_C_OF, A_CLAY_MI) {
 #'
 #' This function calculates the effective CEC at pH 7 for agricultural topsoils (0-30cm) in Iran.
 #'
-#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
+#' @inheritParams sptf_bd0
 #'  
 #' @import data.table
 #' 
@@ -2986,10 +2827,10 @@ sptf_cec64 <- function(A_C_OF, A_CLAY_MI) {
 sptf_cec65 <- function(A_C_OF) {
   
   # Check input
-  checkmate::assert_numeric(A_C_OF, lower = 0, upper = 100)
+  checkmate::assert_numeric(A_C_OF, lower = 0, upper = 600)
 
-  # make internal data.table
-  dt <- data.table(A_C_OF = A_C_OF,
+  # make internal data.table (organic C in %)
+  dt <- data.table(A_C_OF = A_C_OF * 0.1,
                    value = NA_real_)
   
   # function effective CEC, NH4-Ac and KCl (n= 57, R2 =  0.73)
@@ -3010,8 +2851,7 @@ sptf_cec65 <- function(A_C_OF) {
 #'
 #' This function calculates the CEC for soils in Iraq
 #'
-#' @param A_SOM_LOI (numeric) The organi cmatter content of the soil (\%).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
+#' @inheritParams sptf_bd0
 #' 
 #' @import data.table
 #' 
@@ -3045,8 +2885,7 @@ sptf_cec66 <- function(A_SOM_LOI, A_CLAY_MI) {
 #'
 #' This function calculates the CEC for soils in Iran
 #'
-#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
+#' @inheritParams sptf_bd0
 #' 
 #' @import data.table
 #' 
@@ -3080,8 +2919,7 @@ sptf_cec67 <- function(A_C_OF, A_CLAY_MI) {
 #'
 #' This function calculates the CEC for soils in New Zealand
 #'
-#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
+#' @inheritParams sptf_bd0
 #' 
 #' @import data.table
 #' 
@@ -3115,8 +2953,7 @@ sptf_cec68 <- function(A_C_OF, A_CLAY_MI) {
 #'
 #' This function calculates the CEC at pH 7 for soils in India, variable land uses
 #'
-#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
+#' @inheritParams sptf_bd0
 #' 
 #' @import data.table
 #' 
@@ -3150,8 +2987,7 @@ sptf_cec69 <- function(A_C_OF, A_CLAY_MI) {
 #'
 #' This function calculates the CEC at pH 7 for forage soils in Quebec.
 #'
-#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
+#' @inheritParams sptf_bd0
 #' 
 #' @import data.table
 #' 
@@ -3185,8 +3021,7 @@ sptf_cec70 <- function(A_C_OF, A_CLAY_MI) {
 #'
 #' This function calculates the CEC at pH 8.2 for various land use soils in Ireland
 #'
-#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
+#' @inheritParams sptf_bd0
 #' 
 #' @import data.table
 #' 
@@ -3219,10 +3054,8 @@ sptf_cec71 <- function(A_C_OF, A_CLAY_MI) {
 #' Calculate the CEC
 #'
 #' This function calculates the CEC at pH 8.2 for various land use soils in Ireland
-#'
-#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
-#' @param A_PH_WA (numeric) The acidity of the soil, pH in water (-).
+#' 
+#' @inheritParams sptf_bd0
 #' 
 #' @import data.table
 #' 
@@ -3258,10 +3091,7 @@ sptf_cec72 <- function(A_C_OF, A_CLAY_MI,A_PH_WA) {
 #'
 #' This function calculates the effective CEC at pH 7 for agricultural topsoils (0-30cm) in Germany
 #'
-#' @param A_SOM_LOI (numeric) The percentage organic matter in the soil (\%).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
-#' @param A_SILT_MI (numeric) The clay content of the soil (\%).
-#' @param A_PH_WA (numeric) The acidity of the soil, pH in water (-).
+#' @inheritParams sptf_bd0
 #'   
 #' @import data.table
 #' 
@@ -3310,10 +3140,7 @@ sptf_cec73 <- function(A_SOM_LOI, A_CLAY_MI, A_SILT_MI,A_PH_WA) {
 #'
 #' This function calculates the CEC at pH 7 of soils in continental USA per taxonomic order stratification group.
 #'
-#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
-#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
-#' @param A_SILT_MI (numeric) The silt content of the soil (\%).
-#' @param A_PH_WA (numeric) The acidity of the soil, pH in water (-).
+#' @inheritParams sptf_bd0
 #' @param B_SOILCLASS_USDA The soil type class according to the USDA Soil Taxonomy (https://en.wikipedia.org/wiki/USDA_soil_taxonomy)
 #' 
 #' @import data.table
@@ -3332,9 +3159,10 @@ sptf_cec74 <- function(A_C_OF,A_CLAY_MI,A_SILT_MI,A_PH_WA,B_SOILCLASS_USDA) {
   checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
   checkmate::assert_numeric(A_PH_WA, lower = 2, upper = 12, len = arg.length)
   checkmate::assert_character(B_SOILCLASS_USDA,len = arg.length)
-  checkmate::assert_subset(B_SOILCLASS_USDA,choiced = c('alfisol','andisol','aridisol','entisol',
+  checkmate::assert_subset(B_SOILCLASS_USDA,choices = c('alfisol','andisol','aridisol','entisol',
                                                         'gelisol','inceptisol','mollisol','oxisol',
-                                                        'spodosol','ultisol','vertisol','histosol'))
+                                                        'spodosol','ultisol','vertisol','histosol',
+                                                        NA_character_))
   
   # make internal data.table (assuming that Corg equals total C, units in \%)
   dt <- data.table(id = 1:arg.length,
@@ -3378,6 +3206,273 @@ sptf_cec74 <- function(A_C_OF,A_CLAY_MI,A_SILT_MI,A_PH_WA,B_SOILCLASS_USDA) {
   value <- dt[,value]
   
   # return value
+  return(value)
+  
+}
+
+#' Calculate the CEC
+#'
+#' This function calculates the CEC at pH 7
+#'
+#' @inheritParams sptf_bd0
+#' 
+#' @import data.table
+#' 
+#' @references Thiere et al. (1986). Analyse des Zusammenhanges von Austauschkapazit€at (T-Wert), Kornung, organischer Bodensubstanz und Bodenreaktion fur verbreitete € Substrat- und Horizontgruppen. Cited in Liao & Zhu (2015).
+#'
+#' @export
+sptf_cec75 <- function(A_C_OF, A_CLAY_MI, A_PH_CC) {
+  
+  # Check input
+  arg.length <- max(length(A_C_OF), length(A_CLAY_MI))
+  checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000,len = arg.length)
+  checkmate::assert_numeric(A_PH_CC, lower = 3, upper = 12, len = arg.length)
+  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
+  
+  # make internal data.table (with clay and Corg in %)
+  dt <- data.table(A_C_OF = A_C_OF * 0.1,
+                   A_CLAY_MI = A_CLAY_MI,
+                   A_PH_CC = A_PH_CC)
+  
+  # function for CEC(n = , R2 = )
+  dt[, value := -3.30 + 0.46 * A_CLAY_MI + 3.06 * A_C_OF + 0.77 * A_PH_CC]
+  
+  # update unit from cmol/kg to mmol/kg
+  dt[, value := value * 10]
+  
+  # select output variable
+  value <- dt[,value]
+  
+  # return value (mmol+ / kg)
+  return(value)
+  
+}
+
+#' Calculate the CEC
+#'
+#' This function calculates the CEC at pH 7 from agricultural topsoils (0-20 cm) in China
+#'
+#' @param A_SOM_LOI (numeric) The percentage organic matter in the soil (\%).
+#' @param A_SAND_MI (numeric) The sand content of the soil (\%).
+#' @param A_PH_WA (numeric) The acidity of the soil, pH in water (-)
+#' 
+#' @import data.table
+#' 
+#' @references Yunan et al. (2018) Study on Cation Exchange Capacity of Agricultural Soils
+#'
+#' @export
+sptf_cec76 <- function(A_SOM_LOI, A_SAND_MI, A_PH_WA) {
+  
+  # Check input
+  arg.length <- max(length(A_SOM_LOI), length(A_SAND_MI),length(A_PH_WA))
+  checkmate::assert_numeric(A_SOM_LOI, lower = 0, upper = 100,len = arg.length)
+  checkmate::assert_numeric(A_PH_WA, lower = 3, upper = 12, len = arg.length)
+  checkmate::assert_numeric(A_SAND_MI, lower = 0, upper = 100, len = arg.length)
+  
+  # make internal data.table (with SOM in g/kg)
+  dt <- data.table(A_SOM_LOI = A_SOM_LOI * 10,
+                   A_SAND_MI = A_SAND_MI,
+                   A_PH_WA = A_PH_WA)
+  
+  # function for CEC(n = 100, R2 = )
+  dt[, value := 14.488 - 0.233 * A_SAND_MI + 0.121 * A_SOM_LOI + 1.458 * A_PH_WA]
+  
+  # update unit from cmol/kg to mmol/kg
+  dt[, value := value * 10]
+  
+  # select output variable
+  value <- dt[,value]
+  
+  # return value (mmol+ / kg)
+  return(value)
+  
+}
+
+#' Calculate the CEC
+#'
+#' This function calculates the CEC at pH 7 from agricultural topsoils (0-30 cm) in Iran
+#'
+#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
+#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
+#' @param A_SILT_MI (numeric) The silt content of the soil (\%).
+#' @param A_SAND_MI (numeric) The sand content of the soil (\%).
+#' @param A_PH_WA (numeric) The acidity of the soil, pH in water (-)
+#' 
+#' @import data.table
+#' 
+#' @references Ghorbani et al. (2015) Estimation of Soil Cation Exchange Capacity using Multiple Regression, Artificial Neural Networks, and Adaptive Neuro-fuzzy Inference System Models in Golestan Province, Iran
+#'
+#' @export
+sptf_cec77 <- function(A_C_OF, A_CLAY_MI,A_SILT_MI,A_SAND_MI, A_PH_WA) {
+  
+  # Check input
+  arg.length <- max(length(A_C_OF), length(A_CLAY_MI),length(A_SILT_MI),length(A_SAND_MI),length(A_PH_WA))
+  checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000,len = arg.length)
+  checkmate::assert_numeric(A_PH_WA, lower = 3, upper = 12, len = arg.length)
+  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_numeric(A_SAND_MI, lower = 0, upper = 100, len = arg.length)
+  
+  # make internal data.table (with SOC in %)
+  dt <- data.table(A_C_OF = A_C_OF * 0.1,
+                   A_CLAY_MI = A_CLAY_MI,
+                   A_SILT_MI = A_SILT_MI,
+                   A_SAND_MI = A_SAND_MI,
+                   A_PH_WA = A_PH_WA)
+  
+  # function for CEC(n = 220, R2 = 0.77)
+  dt[, value := 31.59 - 5.38 * A_PH_WA - 2.69 * A_C_OF + 0.17 * A_SAND_MI + 0.19 * A_SILT_MI + 0.44 * A_CLAY_MI]
+  
+  # update unit from cmol/kg to mmol/kg
+  dt[, value := value * 10]
+  
+  # select output variable
+  value <- dt[,value]
+  
+  # return value (mmol+ / kg)
+  return(value)
+  
+}
+
+#' Calculate the CEC
+#'
+#' This function calculates the CEC at pH 7 from agricultural topsoils (0-30 cm) in China
+#'
+#' @param A_SOM_LOI (numeric) The percentage organic matter in the soil (\%).
+#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
+#' @param A_SILT_MI (numeric) The silt content of the soil (\%).
+#' @param A_PH_WA (numeric) The acidity of the soil, pH in water (-)
+#' 
+#' @import data.table
+#' 
+#' @references Wang et al. (2012) Distribution and Affecting Factors of Soil Cation Exchange Capacity in Watershed of the Loess Plateau. Cited in Yunan et al. (2018).
+#'
+#' @export
+sptf_cec78 <- function(A_SOM_LOI, A_CLAY_MI,A_SILT_MI, A_PH_WA) {
+  
+  # Check input
+  arg.length <- max(length(A_SOM_LOI), length(A_CLAY_MI),length(A_SILT_MI),length(A_PH_WA))
+  checkmate::assert_numeric(A_SOM_LOI, lower = 0, upper = 100,len = arg.length)
+  checkmate::assert_numeric(A_PH_WA, lower = 3, upper = 12, len = arg.length)
+  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, len = arg.length)
+
+  
+  # make internal data.table
+  dt <- data.table(A_SOM_LOI = A_SOM_LOI,
+                   A_CLAY_MI = A_CLAY_MI,
+                   A_SILT_MI = A_SILT_MI,
+                   A_PH_WA = A_PH_WA)
+  
+  # function for CEC(n = 18, R2 = 0.99)
+  dt[, value := -43.446 + 0.508 * A_SOM_LOI + 5.145 * A_PH_WA + 0.023 * A_SILT_MI + 0.397 * A_CLAY_MI]
+  
+  # update unit from cmol/kg to mmol/kg
+  dt[, value := value * 10]
+  
+  # select output variable
+  value <- dt[,value]
+  
+  # return value (mmol+ / kg)
+  return(value)
+  
+}
+
+#' Calculate the CEC
+#'
+#' This function calculates the CEC at pH 8.2 for various land use soils in Australia
+#'
+#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
+#' @param A_CLAY_MI (numeric) The clay content of the soil (\%).
+#' 
+#' @import data.table
+#' 
+#' @references Hallsworth and Wilkinson (1958). The contribution of clay and orgnai cmatter to the cation exchange capacity of soils.
+#'
+#' @export
+sptf_cec79 <- function(A_C_OF, A_CLAY_MI) {
+  
+  # Check input
+  arg.length <- max(length(A_C_OF), length(A_CLAY_MI))
+  checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000,len = arg.length)
+  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
+  
+  # make internal data.table (both in %)
+  dt <- data.table(A_C_OF = A_C_OF * 0.1,
+                   A_CLAY_MI = A_CLAY_MI,
+                   value = NA_real_)
+  
+  # function for CEC  (n =  , R2 =  )
+  dt[, value := (5.13 + 0.23 * A_CLAY_MI + 2.27 * A_C_OF) * 10]
+  
+  # select output variable
+  value <- dt[,value]
+  
+  # return value (mmol+ / kg)
+  return(value)
+  
+}
+
+#' Calculate the CEC
+#'
+#' This function calculates the CEC at pH 8.2 for agricultural red soil in Australia
+#'
+#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
+#' 
+#' @import data.table
+#' 
+#' @references Chan et al. (1992) Organic Carbon and Associated Soil Properties of a Red Earth after 10 years of Rotation under Different Stubble and Tillage Practices 
+#'
+#' @export
+sptf_cec80 <- function(A_C_OF) {
+  
+  # Check input
+  arg.length <- max(length(A_C_OF))
+  checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000,len = arg.length)
+  
+  # make internal data.table (both in %)
+  dt <- data.table(A_C_OF = A_C_OF * 0.1,
+                   value = NA_real_)
+  
+  # function for CEC  (n = 10 , R2 =  0.91)
+  dt[, value := (0.123 + 2.97 * A_C_OF) * 10]
+  
+  # select output variable
+  value <- dt[,value]
+  
+  # return value (mmol+ / kg)
+  return(value)
+  
+}
+
+#' Calculate the CEC
+#'
+#' This function calculates the CEC at pH 8.2 for agricultural red soil in Spain
+#'
+#' @param A_C_OF (numeric) The carbon content of the soil (g / kg).
+#' 
+#' @import data.table
+#' 
+#' @references Caravaca et al. (1991). Organic matter, nutrient contents and cation exchange capacity in fine fractions from semiarid calcareous soils
+#'
+#' @export
+sptf_cec81 <- function(A_C_OF) {
+  
+  # Check input
+  arg.length <- max(length(A_C_OF))
+  checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000,len = arg.length)
+  
+  # make internal data.table (both in %)
+  dt <- data.table(A_C_OF = A_C_OF * 0.1,
+                   value = NA_real_)
+  
+  # function for CEC  (n = 20 , R2 =  0.89)
+  dt[, value := (9.45 + 4.9 * A_C_OF) * 10]
+  
+  # select output variable
+  value <- dt[,value]
+  
+  # return value (mmol+ / kg)
   return(value)
   
 }

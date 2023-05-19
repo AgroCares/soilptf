@@ -15,5 +15,5 @@ sptf_pmn10(A_N_RT, t = 7)
 Calculate the PMN given the pedo transfer function of Rasiah (1995), based on dataset of Simard & N'dayegamiye (1993)
 }
 \references{
-Cimard & N'dayegamiye (1993) Nitrogen -ninerahzation potential of meadow soils. Can. J. Soil Sci. 73:27-38
+Simard & N'dayegamiye (1993) Nitrogen -mineralization potential of meadow soils. Can. J. Soil Sci. 73:27-38
 }

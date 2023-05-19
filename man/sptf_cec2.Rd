@@ -7,11 +7,11 @@
 sptf_cec2(A_SOM_LOI, A_CLAY_MI, A_PH_KCL)
 }
 \arguments{
-\item{A_SOM_LOI}{(numeric) The percentage organic matter in the soil (\%).}
+\item{A_SOM_LOI}{(numeric) The percentage organic matter in the soil determined by loss on ignition (\%)}
 
-\item{A_CLAY_MI}{(numeric) The clay content of the soil (\%).}
+\item{A_CLAY_MI}{(numeric) The clay content of the mineral soil fraction (\%).}
 
-\item{A_PH_KCL}{(numeric) The acidity of the soil, pH in KCL (-)}
+\item{A_PH_KCL}{(numeric) Acidity in KCl (-)}
 }
 \description{
 This function calculates the CEC at 8.2

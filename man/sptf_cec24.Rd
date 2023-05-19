@@ -7,11 +7,11 @@
 sptf_cec24(A_C_OF, A_CLAY_MI, A_PH_CC)
 }
 \arguments{
-\item{A_C_OF}{(numeric) The carbon content of the soil (g / kg).}
+\item{A_C_OF}{(numeric) Organic Carbon Content (g / kg)}
 
-\item{A_CLAY_MI}{(numeric) The clay content of the soil (\%).}
+\item{A_CLAY_MI}{(numeric) The clay content of the mineral soil fraction (\%).}
 
-\item{A_PH_CC}{(numeric) The acidity of the soil, pH in CaCl2 (-).}
+\item{A_PH_CC}{(numeric) Acidity in CaCl2 (-)}
 }
 \description{
 This function calculates the CEC at pH 7 of forest and nature soils in continental USA.

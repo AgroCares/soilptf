@@ -4,18 +4,14 @@
 \alias{sptf_whc12}
 \title{Calculate the water holding capacity given the pedotransferfunction of Rawls & Brakensiek 1985}
 \usage{
-sptf_whc12(A_CLAY_MI, A_SAND_MI, D_BDS, mp_wp = 1500, mp_fc = 33)
+sptf_whc12(A_C_OF, A_CLAY_MI, A_SAND_MI)
 }
 \arguments{
+\item{A_C_OF}{(numeric) Organic Carbon Content (g / kg)}
+
 \item{A_CLAY_MI}{(numeric) The clay content of the mineral soil fraction (\%).}
 
 \item{A_SAND_MI}{(numeric) Sand content (\%)}
-
-\item{D_BDS}{(numeric) Bulk density (kg/m3)}
-
-\item{mp_wp}{(numeric) Water potential at wilting point (kPa).}
-
-\item{mp_fc}{(numeric) Water potential at field capacity (kPa).}
 }
 \description{
 Note: Calculation of whc parameters may be wrong. The calculated water content is out of normal range. Original literature cannot be found on web.

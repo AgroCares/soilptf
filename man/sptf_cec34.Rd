@@ -5,25 +5,19 @@
 \title{Calculate the CEC}
 \usage{
 sptf_cec34(A_C_OF, A_CLAY_MI, A_PH_CC, B_LU_PTFCLASS)
-
-sptf_cec34(A_C_OF, A_CLAY_MI, A_PH_CC, B_LU_PTFCLASS)
 }
 \arguments{
-\item{A_C_OF}{(numeric) The carbon content of the soil (g / kg).}
+\item{A_C_OF}{(numeric) Organic Carbon Content (g / kg)}
 
-\item{A_CLAY_MI}{(numeric) The clay content of the soil (\%).}
+\item{A_CLAY_MI}{(numeric) The clay content of the mineral soil fraction (\%).}
 
-\item{A_PH_CC}{(numeric) The acidity of the soil, pH in CaCl2 (-)}
+\item{A_PH_CC}{(numeric) Acidity in CaCl2 (-)}
 
 \item{B_LU_PTFCLASS}{(character) The land use category (options: agriculture, grassland, cropland, forest, nature)}
 }
 \description{
-This function calculates the CEC at pH 7
-
 This function calculates the CEC at pH 7 for forest and natural grassland soils in eastern Canada
 }
 \references{
-Thiere et al. (1986). Analyse des Zusammenhanges von Austauschkapazit€at (T-Wert), Kornung, organischer Bodensubstanz und Bodenreaktion fur verbreitete € Substrat- und Horizontgruppen. Cited in Liao & Zhu (2015).
-
 Meyer et al. (1994).  Cation exchange capacities of upland soils in eastern Canada.
 }

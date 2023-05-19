@@ -4,12 +4,10 @@
   require(data.table)
   require(usethis)
   
+# sptf_bulkdensity =============================================================
 # load the csv file with pdtf for bulk density
-  d1 <- fread('dev/sptf_bulkdensity.csv',na.strings=NULL, dec=',')
+  d1 <- fread('dev/sptf_bulkdensity.csv',na.strings='', dec=',')
 
-  # set empty string to NA
-  d1$landuse[d1$landuse==''] <- NA_character_
-  
   # make copy for package table
   sptf_bulkdensity <- copy(d1)
   
@@ -26,7 +24,8 @@
     
     # download data
     # d2 <- fread('https://pkgstore.datahub.io/core/country-list/data_csv/data/d7c9d7cfb42cb69f4422dec222dbbaa8/data_csv.csv', encoding = 'UTF-8')
-  
+
+# sptf_countries ===============================================================
 # loaddata
   d2 <- fread('dev/sptf_countries.csv',encoding = 'UTF-8')
   
@@ -36,14 +35,22 @@
   # set countries to lower case
   d2[, country_name := tolower(country_name)]
 
+  # set NA for north-america to NAm
+  d2[is.na(continent_code)|continent_code =='NA', continent_code := 'NAm']
+  d2[continent_code=='SA', continent_code := 'SAm']
+  
   # make copy for package table
   sptf_countries <- copy(d2)
   
   # save updated crop table
   usethis::use_data(sptf_countries,overwrite = TRUE)
   
+# sptf_soilproperties ==========================================================
 # load data
   d3 <- fread('dev/sptf_soilproperties.csv',encoding = 'UTF-8')
+  
+  # set empty continentcode to NA
+  d3[continent_code=='', continent_code := NA_character_]
   
   # make copy for package table
   sptf_soilproperties <- copy(d3)
@@ -53,7 +60,7 @@
   
           
   
-  # parameters ====
+# sptf_parameters ==============================================================
   sptf_parameters <- fread('dev/sptf_parameters.csv',encoding = 'UTF-8')
   usethis::use_data(sptf_parameters, overwrite = TRUE)
 

@@ -7,11 +7,11 @@
 sptf_cec7(A_SOM_LOI, A_CLAY_MI, A_PH_CC, B_LU_PTFCLASS)
 }
 \arguments{
-\item{A_SOM_LOI}{(numeric) The percentage organic matter in the soil (\%).}
+\item{A_SOM_LOI}{(numeric) The percentage organic matter in the soil determined by loss on ignition (\%)}
 
-\item{A_CLAY_MI}{(numeric) The clay content of the soil (\%).}
+\item{A_CLAY_MI}{(numeric) The clay content of the mineral soil fraction (\%).}
 
-\item{A_PH_CC}{(numeric) The acidity of the soil, pH in CaCl2 (-).}
+\item{A_PH_CC}{(numeric) Acidity in CaCl2 (-)}
 
 \item{B_LU_PTFCLASS}{(character) The land use category (options: agriculture, grassland, cropland, forest, nature)}
 }

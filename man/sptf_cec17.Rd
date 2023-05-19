@@ -7,7 +7,7 @@
 sptf_cec17(A_SOM_LOI, B_LU_PTFCLASS)
 }
 \arguments{
-\item{A_SOM_LOI}{(numeric) The percentage organic matter in the soil (\%).}
+\item{A_SOM_LOI}{(numeric) The percentage organic matter in the soil determined by loss on ignition (\%)}
 
 \item{B_LU_PTFCLASS}{(character) The land use category (options: agriculture, grassland, cropland, forest, nature)}
 }

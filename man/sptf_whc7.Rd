@@ -8,33 +8,16 @@ Note YF 20220928: It may be better to copy-paste codes and RF model results from
 # so that we have no dependency on euptf2 package?
 Note YF 20220929: The function 'euptfFun' does not work when the data frame has only 1 row ?!}
 \usage{
-sptf_whc7(
-  A_SAND_MI,
-  A_CLAY_MI,
-  A_SILT_MI,
-  D_BDS,
-  A_C_OF,
-  A_DEPTH = 0.15,
-  mp_wp = 1500,
-  mp_fc = 33
-)
+sptf_whc7(A_C_OF, A_CLAY_MI, A_SILT_MI, A_SAND_MI)
 }
 \arguments{
-\item{A_SAND_MI}{(numeric) Sand content (\%)}
+\item{A_C_OF}{(numeric) Organic Carbon Content (g / kg)}
 
 \item{A_CLAY_MI}{(numeric) The clay content of the mineral soil fraction (\%).}
 
 \item{A_SILT_MI}{(numeric) Silt content (\%)}
 
-\item{D_BDS}{(numeric) Bulk density (kg/m3)}
-
-\item{A_C_OF}{(numeric) Organic Carbon Content (g / kg)}
-
-\item{A_DEPTH}{(numeric) The depth of the sampled soil layer (m)}
-
-\item{mp_wp}{(numeric) Water potential at wilting point (kPa).}
-
-\item{mp_fc}{(numeric) Water potential at field capacity (kPa).}
+\item{A_SAND_MI}{(numeric) Sand content (\%)}
 }
 \description{
 Calculate the water holding capacity given the pedotransferfunction of Szabo et al.2021

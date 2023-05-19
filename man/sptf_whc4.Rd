@@ -4,18 +4,14 @@
 \alias{sptf_whc4}
 \title{Calculate the waterholding capacity given the pedotransferfunction of Oosterveld and Chang (1980)}
 \usage{
-sptf_whc4(A_SAND_MI, A_CLAY_MI, D_BDS, A_DEPTH = 15, mp_wp = 1500)
+sptf_whc4(A_C_OF, A_CLAY_MI, A_SAND_MI)
 }
 \arguments{
-\item{A_SAND_MI}{(numeric) Sand content (\%)}
+\item{A_C_OF}{(numeric) Organic Carbon Content (g / kg)}
 
 \item{A_CLAY_MI}{(numeric) The clay content of the mineral soil fraction (\%).}
 
-\item{D_BDS}{(numeric) Bulk density (kg/m3)}
-
-\item{A_DEPTH}{(numeric) The depth of the sampled soil layer (m)}
-
-\item{mp_wp}{(numeric) Water potential at wilting point (kPa).}
+\item{A_SAND_MI}{(numeric) Sand content (\%)}
 }
 \description{
 Calculate the waterholding capacity given the pedotransferfunction of Oosterveld and Chang (1980)

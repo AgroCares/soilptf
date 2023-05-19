@@ -7,9 +7,9 @@
 sptf_cec31(A_SOM_LOI, A_CLAY_MI, B_SOILCLASS_USDA = NA)
 }
 \arguments{
-\item{A_SOM_LOI}{(numeric) The percentage organic matter in the soil (\%).}
+\item{A_SOM_LOI}{(numeric) The percentage organic matter in the soil determined by loss on ignition (\%)}
 
-\item{A_CLAY_MI}{(numeric) The clay content of the soil (\%).}
+\item{A_CLAY_MI}{(numeric) The clay content of the mineral soil fraction (\%).}
 
 \item{B_SOILCLASS_USDA}{The soil type class according to the USDA Soil Taxonomy (https://en.wikipedia.org/wiki/USDA_soil_taxonomy)}
 }

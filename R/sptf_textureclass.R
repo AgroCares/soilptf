@@ -8,20 +8,26 @@
 sptf_textureclass <- function(A_CLAY_MI, A_SILT_MI, A_SAND_MI){
   
   # add visual bindings
-  cl = sa = si = NULL
+  cl = sa = si = num_obs = NULL
   
   # check inputs
   arg.length <- max(length(A_CLAY_MI),length(A_SAND_MI),length(A_SILT_MI))
-  check_numeric('A_CLAY_MI', A_CLAY_MI, FALSE, arg.length)
-  check_numeric('A_SAND_MI', A_SAND_MI, FALSE, arg.length)
-  check_numeric('A_SILT_MI', A_SILT_MI, FALSE, arg.length)
-  checkmate::assert_true(all(rowSums(data.table(A_CLAY_MI, A_SAND_MI, A_SILT_MI)) <= 100))
+  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_numeric(A_SAND_MI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_true(all(rowSums(data.table(A_CLAY_MI, A_SAND_MI, A_SILT_MI),na.rm=T) <= 100))
   
   # make internal table with shorter names
   dt <- data.table(cl = A_CLAY_MI,
                    sa = A_SAND_MI,
                    si = A_SILT_MI,
                    value = NA_character_)
+  
+  # estimate missing variables for texture being dependent on each other
+  dt[, num_obs := Reduce(`+`, lapply(.SD,function(x) !is.na(x))),.SDcols = c('cl','sa','si')]
+  dt[num_obs == 2 & is.na(cl), cl := 100 - sa - si]
+  dt[num_obs == 2 & is.na(sa), sa := 100 - cl - si]
+  dt[num_obs == 2 & is.na(si), si := 100 - cl - sa]
   
   # find USDA classification
   dt[cl>40 & sa <=45 & si<=40, value := 'clay']

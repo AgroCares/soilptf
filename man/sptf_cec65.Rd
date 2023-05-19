@@ -7,7 +7,7 @@
 sptf_cec65(A_C_OF)
 }
 \arguments{
-\item{A_C_OF}{(numeric) The carbon content of the soil (g / kg).}
+\item{A_C_OF}{(numeric) Organic Carbon Content (g / kg)}
 }
 \description{
 This function calculates the effective CEC at pH 7 for agricultural topsoils (0-30cm) in Iran.

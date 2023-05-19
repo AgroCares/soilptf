@@ -24,7 +24,7 @@ test_that("water holding capacity functions returns the correct values", {
       A_SAND_MI = A_SAND_MI,
       A_CLAY_MI = A_CLAY_MI
     ),
-    expected = c(0.19789  , 0.52965),
+    expected = c(NA_real_,NA_real_),
     tolerance = 0.01
   )
   
@@ -34,57 +34,46 @@ test_that("water holding capacity functions returns the correct values", {
       A_SAND_MI = A_SAND_MI,
       A_CLAY_MI = A_CLAY_MI
     ),
-    expected = c(0.21108  , 0.30864),
+    expected = c(NA_real_,NA_real_),
     tolerance = 0.01
   )
   
   expect_equal(
     sptf_whc3(
       A_SAND_MI = A_SAND_MI,
-      A_CLAY_MI = A_CLAY_MI,
-      mp_wp = 1500,
-      mp_fc = 33
+      A_CLAY_MI = A_CLAY_MI
     ),
-    expected = c(0.1972271 , 0.1654625),
+    expected = c(0.81 , 0.63),
     tolerance = 0.01
   )
   
   expect_equal(
     sptf_whc4(
+      A_C_OF = A_C_OF,
       A_SAND_MI = A_SAND_MI,
-      A_CLAY_MI = A_CLAY_MI,
-      D_BDS = D_BDS,
-      A_DEPTH = c(.16, .16),
-      mp_wp = 1500
+      A_CLAY_MI = A_CLAY_MI
     ),
-    expected = c(159.2110, 146.5118),
+    expected = c(NA_real_,NA_real_),
     tolerance = 0.01
   )
   
   expect_equal(
     sptf_whc5(
-      A_SILT_MI = A_SILT_MI,
-      A_CLAY_MI = A_CLAY_MI,
-      D_BDS = D_BDS,
       A_SOM_LOI = A_SOM_LOI,
-      topsoil = 1,
-      mp_wp = 1500,
-      mp_fc = 33
+      A_SILT_MI = A_SILT_MI,
+      A_CLAY_MI = A_CLAY_MI
     ),
-    expected = c(0 , 0),
+    expected = c(0.42 , 0.45),
     tolerance = 0.01
   )
   
   expect_equal(
     sptf_whc6(
-      A_SAND_MI = A_SAND_MI,
-      A_CLAY_MI = A_CLAY_MI,
-      D_BDS = D_BDS,
       A_C_OF = A_C_OF,
-      mp_wp = 1500,
-      mp_fc = 33
+      A_SAND_MI = A_SAND_MI,
+      A_CLAY_MI = A_CLAY_MI
     ),
-    expected = c(0, 0),
+    expected = c(0.45, 0.69),
     tolerance = 0.01
   )
   
@@ -104,14 +93,11 @@ test_that("water holding capacity functions returns the correct values", {
   
   expect_equal(
     sptf_whc8(
-      A_SAND_MI = A_SAND_MI,
-      A_CLAY_MI = A_CLAY_MI,
-      D_BDS = D_BDS,
       A_C_OF = A_C_OF,
-      mp_wp =  1500,
-      mp_fc =  33
+      A_SAND_MI = A_SAND_MI,
+      A_CLAY_MI = A_CLAY_MI
     ),
-    expected = c(-79.39869,-71.52744),
+    expected = c(0.434,0.578),
     tolerance = 0.01
   )
   
@@ -119,23 +105,20 @@ test_that("water holding capacity functions returns the correct values", {
     sptf_whc9(
       A_CLAY_MI = A_CLAY_MI,
       A_SILT_MI = A_SILT_MI,
-      A_C_OF = A_C_OF,
-      mp_fc =  33
+      A_C_OF = A_C_OF
     ),
-    expected = c(0.09564 , 0.06056),
+    expected = c(0.386,0.342),
     tolerance = 0.01
   )
   
   expect_equal(
     sptf_whc10(
+      A_C_OF = A_C_OF,
       A_CLAY_MI = A_CLAY_MI,
       A_SILT_MI = A_SILT_MI,
-      A_SAND_MI = A_SAND_MI,
-      A_C_OF = A_C_OF,
-      D_BDS = D_BDS,
-      mp_fc = 33
+      A_SAND_MI = A_SAND_MI
     ),
-    expected = c(0.2158 , 0.4356),
+    expected = c(0.60,1.03),
     tolerance = 0.01
   )
   
@@ -156,13 +139,9 @@ test_that("water holding capacity functions returns the correct values", {
     sptf_whc14(
       A_CLAY_MI = A_CLAY_MI,
       A_SILT_MI = A_SILT_MI,
-      A_SOM_LOI = A_SOM_LOI,
-      A_SAND_M50 = A_SAND_M50,
-      topsoil = 1,
-      mp_wp = 1500,
-      mp_fc = 33
+      A_SOM_LOI = A_SOM_LOI
     ),
-    expected = c(0.1162968 , 0.1336105),
+    expected = c(0.394 , 0.468),
     tolerance = 0.01
   )
   
@@ -170,13 +149,9 @@ test_that("water holding capacity functions returns the correct values", {
     sptf_whc15(
       A_CLAY_MI = A_CLAY_MI,
       A_SILT_MI = A_SILT_MI,
-      A_SOM_LOI = A_SOM_LOI,
-      A_SAND_M50 = A_SAND_M50,
-      topsoil = 1,
-      mp_wp = 1500,
-      mp_fc = 33
+      A_SOM_LOI = A_SOM_LOI
     ),
-    expected = c(0.1202259 , 0.1384599),
+    expected = c(0.42 , 0.48),
     tolerance = 0.01
   )
   
@@ -184,12 +159,9 @@ test_that("water holding capacity functions returns the correct values", {
     sptf_whc16(
       A_CLAY_MI = A_CLAY_MI,
       A_SILT_MI = A_SILT_MI,
-      A_SOM_LOI = A_SOM_LOI,
-      A_SAND_M50 = A_SAND_M50,
-      mp_wp = 1500,
-      mp_fc = 33
+      A_SOM_LOI = A_SOM_LOI
     ),
-    expected = c(0.1499688, 0.2139534),
+    expected = c(0.4, 0.43),
     tolerance = 0.01
   )
   
