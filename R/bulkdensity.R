@@ -6869,3 +6869,96 @@ sptf_bd188 <- function(A_SOM_LOI,A_CLAY_MI,A_SAND_MI) {
   return(value)
   
 }
+
+#' Calculate the bulk density given the pedotransferfunction of Kortleven (1970)
+#'
+#' @inheritParams sptf_bd0
+#'
+#' @import data.table
+#' 
+#' @references Kortleven (1970) Volumegewicht, poriënvolume en humusgehalte. Inst. Bodemvruchtbaarheid, Stencil C-7759. Cited in Loman et al. (1972) Kalkverliezen op zandbouwland.
+#'
+#' @export
+sptf_bd189 <- function(A_SOM_LOI) {
+  
+  # Check input
+  checkmate::assert_numeric(A_SOM_LOI, lower = 0, upper = 100)
+  
+  # Collect data into a table
+  dt <- data.table(A_SOM_LOI = A_SOM_LOI,value = NA_real_)
+  
+  # estimate soil density in Mg m-3 = ton m-3
+  dt[, value := 1/(0.02525 * A_SOM_LOI + 0.6541)]
+  
+  # convert to kg / m3
+  dt[, value := value * 1000]
+  
+  # return value
+  value <- dt[, value]
+  
+  # return value
+  return(value)
+  
+}
+
+#' Calculate the bulk density given the pedotransferfunction of Boekel (1961)
+#'
+#' @inheritParams sptf_bd0
+#'
+#' @import data.table
+#' 
+#' @references Boekel (1961) De bepaling van het soortelijk gewicht van grind. Cited in Schothorst (1963) Het porienvolume van losse en dichte zand- en veengronden. https://edepot.wur.nl/259006
+#'
+#' @export
+sptf_bd190 <- function(A_SOM_LOI) {
+  
+  # Check input
+  checkmate::assert_numeric(A_SOM_LOI, lower = 0, upper = 100)
+  
+  # Collect data into a table
+  dt <- data.table(A_SOM_LOI = A_SOM_LOI,value = NA_real_)
+  
+  # estimate soil density in Mg m-3 = ton m-3
+  dt[, value := 100/(A_SOM_LOI/1.47 + (100 - A_SOM_LOI)/2.66)]
+  
+  # convert to kg / m3
+  dt[, value := value * 1000]
+  
+  # return value
+  value <- dt[, value]
+  
+  # return value
+  return(value)
+  
+}
+
+#' Calculate the bulk density given the pedotransferfunction of Hooghoudt
+#'
+#' @inheritParams sptf_bd0
+#'
+#' @import data.table
+#' 
+#' @references Hooghoudt (1945) Cited in Schothorst (1963) Het porienvolume van losse en dichte zand- en veengronden. https://edepot.wur.nl/259006
+#'
+#' @export
+sptf_bd191 <- function(A_SOM_LOI) {
+  
+  # Check input
+  checkmate::assert_numeric(A_SOM_LOI, lower = 0, upper = 100)
+  
+  # Collect data into a table
+  dt <- data.table(A_SOM_LOI = A_SOM_LOI,value = NA_real_)
+  
+  # estimate soil density in Mg m-3 = ton m-3
+  dt[, value := 100/(A_SOM_LOI/1.47 + (100 - A_SOM_LOI)/2.65)]
+  
+  # convert to kg / m3
+  dt[, value := value * 1000]
+  
+  # return value
+  value <- dt[, value]
+  
+  # return value
+  return(value)
+  
+}
