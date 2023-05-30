@@ -187,3 +187,7 @@
 186;CA;NAm;variable;agriculture;15;144;0,83;a_c_of||a_clay_mi;dasilva_1997;
 187;UK;EU;variable;agriculture;30;91;0,87;a_som_loi||a_clay_mi;guerif_1979;
 188;US;NAm;variable;variable;30;2721;;a_som_loi||a_clay_mi||a_sand_mi;rawls_1983;not available
+189;NL;EU;variable;agriculture;;;;a_som_loi;kortleven_1970;https://edepot.wur.nl/217268
+190;NL;EU;variable;agriculture;;;;a_som_loi;boekel_1961;https://edepot.wur.nl/259006
+191;NL;EU;variable;agriculture;;;;a_som_loi;hooghoudt_1945;https://edepot.wur.nl/259006
+192;PL;EU;variable;variable;;52;0,78;a_som_loi;bryk_2023;https://doi.org/10.3390/s23041852

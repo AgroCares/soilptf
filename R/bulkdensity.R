@@ -6962,3 +6962,51 @@ sptf_bd191 <- function(A_SOM_LOI) {
   return(value)
   
 }
+
+#' Calculate the bulk density given the pedotransferfunction of Bryk & Kolodziej (2023)
+#'
+#' @inheritParams sptf_bd0
+#'
+#' @import data.table
+#' 
+#' @references Bryk & Kolodziej (2023) Pedotransfer Functions for Estimating Soil Bulk Density Using Image Analysis of Soil Structure
+#'
+#' @export
+sptf_bd191 <- function(A_SOM_LOI) {
+  
+  # add visual bindings
+  v1 = v2 = v3 = v4 = v5 = v6 = id = NULL
+  
+  # Check input
+  checkmate::assert_numeric(A_SOM_LOI, lower = 0, upper = 100)
+  
+  # Collect data into a table
+  dt <- data.table(id = 1:length(A_SOM_LOI),
+                   A_SOM_LOI = A_SOM_LOI,
+                   A_C_OF = A_SOM_LOI * 0.5,
+                   value = NA_real_)
+  
+  # estimate soil density in Mg m-3 = ton m-3 for organic and mineral horizons, R2 = 0.78
+  dt[, v1 := 1.660 - 0.318 * A_C_OF^0.5]
+  dt[, v2 := 1.747 - 0.291 * A_C_OF^0.5]
+  dt[, v3 := 1.625 - 0.246 * A_C_OF^0.5]
+  
+  # estimate soil density in Mg m-3 = ton m-3 for organic and mineral horizons, R2 = 0.45
+  dt[, v4 := 0.159 * 1.561 /(1.561 * A_SOM_LOI + 0.159 * (1-A_SOM_LOI))]
+  dt[, v5 := 0.167 * 1.526 /(1.526 * A_SOM_LOI + 0.167 * (1-A_SOM_LOI))]
+  dt[, v6 := 0.178 * 1.527 /(1.527 * A_SOM_LOI + 0.178 * (1-A_SOM_LOI))]
+  
+  # estimate soil density in Mg m-3 = ton m-3
+  dt <- melt(dt, id.vars = 'id',measure.vars = patterns("^v"))
+  dt <- dt[,list(value = mean(value, na.rm=T)), by = id]
+  
+  # convert to kg / m3
+  dt[, value := value * 1000]
+  
+  # return value
+  value <- dt[, value]
+  
+  # return value
+  return(value)
+  
+}
