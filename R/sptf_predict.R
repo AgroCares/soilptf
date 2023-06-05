@@ -600,6 +600,17 @@ ptf_bd_all <- function(dt){
     dt[, p179 := sptf_bd179(A_SOM_LOI = A_SOM_LOI,A_C_OF = A_C_OF,A_CLAY_MI = A_CLAY_MI,A_SILT_MI = A_SILT_MI,A_SAND_MI = A_SAND_MI,A_PH_WA = A_PH_WA)]
     dt[, p180 := sptf_bd180(A_SOM_LOI = A_SOM_LOI,A_SAND_MI = A_SAND_MI,A_CLAY_MI = A_CLAY_MI)]
     dt[, p181 := sptf_bd181(A_SOM_LOI = A_SOM_LOI,A_CLAY_MI = A_CLAY_MI,A_SILT_MI = A_SILT_MI)]
+    dt[, p182 := sptf_bd182(A_SOM_LOI = A_SOM_LOI)]
+    dt[, p183 := sptf_bd183(A_SOM_LOI = A_SOM_LOI)]
+    dt[, p184 := sptf_bd184(A_SOM_LOI = A_SOM_LOI,A_CLAY_MI = A_CLAY_MI,A_SILT_MI = A_SILT_MI)]
+    dt[, p185 := sptf_bd185(A_SOM_LOI = A_SOM_LOI,A_CLAY_MI = A_CLAY_MI)]
+    dt[, p186 := sptf_bd186(A_C_OF = A_C_OF,A_CLAY_MI = A_CLAY_MI)]
+    dt[, p187 := sptf_bd187(A_SOM_LOI = A_SOM_LOI,A_CLAY_MI = A_CLAY_MI)]
+    dt[, p188 := sptf_bd188(A_SOM_LOI = A_SOM_LOI,A_CLAY_MI = A_CLAY_MI, A_SAND_MI = A_SAND_MI)]
+    dt[, p189 := sptf_bd189(A_SOM_LOI = A_SOM_LOI)]
+    dt[, p190 := sptf_bd190(A_SOM_LOI = A_SOM_LOI)]
+    dt[, p191 := sptf_bd191(A_SOM_LOI = A_SOM_LOI)]
+    dt[, p192 := sptf_bd192(A_SOM_LOI = A_SOM_LOI)]
     
     # melt the data
     dt2 <- melt(dt, 

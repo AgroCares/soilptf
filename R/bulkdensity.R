@@ -6972,7 +6972,7 @@ sptf_bd191 <- function(A_SOM_LOI) {
 #' @references Bryk & Kolodziej (2023) Pedotransfer Functions for Estimating Soil Bulk Density Using Image Analysis of Soil Structure
 #'
 #' @export
-sptf_bd191 <- function(A_SOM_LOI) {
+sptf_bd192 <- function(A_SOM_LOI) {
   
   # add visual bindings
   v1 = v2 = v3 = v4 = v5 = v6 = id = NULL
