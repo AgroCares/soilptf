@@ -1,4 +1,5 @@
 # this script analyzes behaviours of different PTFs, using a test dataset
+# For the PPS report 1819
 
 library(data.table)
 library(readxl)
@@ -16,6 +17,7 @@ source('R/sptf_textureclass.R')
 source('R/sptf_predict.R') 
 source('R/bulkdensity.R') 
 source('R/whc.R')
+source('R/paw.R')
 source('R/pmn.R')
 source('R/checkmate_tools.R')
 
@@ -90,7 +92,8 @@ dt[(A_CLAY_MI+A_SAND_MI+A_SILT_MI) > 100, cf_tex := 100/(A_CLAY_MI+A_SAND_MI+A_S
 dt[, A_CLAY_MI := A_CLAY_MI * cf_tex]
 dt[, A_SAND_MI := A_SAND_MI * cf_tex]
 dt[, A_SILT_MI := A_SILT_MI * cf_tex]
-dt[A_CLAY_MI+A_SAND_MI+A_SILT_MI >100, A_SAND_MI := A_SAND_MI - ((A_CLAY_MI+A_SAND_MI+A_SILT_MI) - 100)]
+# some still has clay+sand+silt>100 (with very small decimal place). To prevent error, reduce the sand content a bit
+dt[A_CLAY_MI+A_SAND_MI+A_SILT_MI >= 99.999, A_SAND_MI := A_SAND_MI - ((A_CLAY_MI+A_SAND_MI+A_SILT_MI) - 99.999)]
 
 dt[, A_SAND_M50 := 157.5]
 
@@ -112,9 +115,9 @@ dt3 <- merge(dt3, ptf.mods[, .(ptf_id, country_code, continent_code, soiltype, l
              by = "ptf_id", all.x = T)
 
 # Check strange values
-nneg <- dt3[value < 0, .N, by = ptf_id]
-n2500 <- dt3[value > 2500, .N, by = ptf_id]
-nna <- dt3[is.na(value), .N, by = ptf_id]
+nneg <- dt3[bd < 0, .N, by = ptf_id]
+n2500 <- dt3[bd > 2500, .N, by = ptf_id]
+nna <- dt3[is.na(bd), .N, by = ptf_id]
 # 10 PTF's need not-standard input values. That are: 
 # 25: A_H2O_T105, 70: B_ALTITUDE,B_SLOPE_DEGREE,B_SLOPE_ASPECT, 
 # 71: B_SLOPE_DEGREE, 78: A_PH_WA, 79: A_PH_WA, 80: A_CACO3_MI
@@ -125,7 +128,7 @@ nna <- dt3[is.na(value), .N, by = ptf_id]
 ## Scatter plot SOM vs BD -------
 
 ## Fitterd line only
-ggplot(dt3[flag == "relevant"], aes(x = A_SOM_LOI, y = value, 
+ggplot(dt3[flag == "relevant"], aes(x = A_SOM_LOI, y = bd, 
                 #col = as.factor(flag))) +
                 col = as.factor(ptf_id))) +
   geom_smooth(method = "loess", se = FALSE) + 
@@ -137,17 +140,17 @@ ggplot(dt3[flag == "relevant"], aes(x = A_SOM_LOI, y = value,
 
 # All points with fitted line 
 # prediction interval
-dt4 <- dt3[!is.na(value) & !is.na(A_SOM_LOI) & flag == "relevant",]
+dt4 <- dt3[!is.na(bd) & !is.na(A_SOM_LOI) & flag == "relevant",]
 #model1 <- lm(value ~ A_SOM_LOI, data=dt4) #-> this should be nonlinear model
-model1 <- lm(value ~ poly(A_SOM_LOI, 2), data=dt4)
+model1 <- lm(bd ~ poly(A_SOM_LOI, 2), data=dt4)
 temp_var <- predict(model1, interval="prediction")
 dt4 <- cbind(dt4, temp_var)
 
 ggplot(dt4,
-       aes(x = A_SOM_LOI, y = value)) +
+       aes(x = A_SOM_LOI, y = bd)) +
   # add not-relevant points
-  geom_point(data = dt3[!is.na(value) & !is.na(A_SOM_LOI) & flag != "relevant"],
-             aes(x = A_SOM_LOI, y = value), size = 0.5, col = "gray") +
+  geom_point(data = dt3[!is.na(bd) & !is.na(A_SOM_LOI) & flag != "relevant"],
+             aes(x = A_SOM_LOI, y = bd), size = 0.5, col = "gray") +
   geom_point(size = 1) +
   geom_ribbon(aes(ymin = lwr, ymax = upr), fill = "blue", alpha = .4) + 
   #geom_smooth(method = "loess", se=TRUE,  level=0.95) + 
@@ -162,9 +165,9 @@ ggplot(dt4,
 dt3[, SOM_int := cut(A_SOM_LOI, breaks = seq(min(A_SOM_LOI), max(A_SOM_LOI), length.out = 100),
                      labels = seq(min(A_SOM_LOI), max(A_SOM_LOI), length.out = 100)[-1])]
 # median and percentiles of each SOM interval
-sum_int <- dt3[flag == "relevant", .(med = median(value, na.rm = T),
-                   q5 = quantile(value, probs = 0.05, na.rm = T),
-                   q95 = quantile(value, probs = 0.95, na.rm = T),
+sum_int <- dt3[flag == "relevant", .(med = median(bd, na.rm = T),
+                   q5 = quantile(bd, probs = 0.05, na.rm = T),
+                   q95 = quantile(bd, probs = 0.95, na.rm = T),
                    N = .N), by = SOM_int]
 sum_int[, SOM_int := as.numeric(as.character(SOM_int))]
 
@@ -185,10 +188,10 @@ ggplot(sum_int) +
 ## variation in BD by differnt PTF --------
 
 # quantify variation
-iqr <- dt3[value > 0, 
-              .(q1 = quantile(value, probs = 0.25, na.rm = T),
-                q3 = quantile(value, probs = 0.75, na.rm = T),
-                q2 = quantile(value, probs = 0.5, na.rm = T)), by = id]
+iqr <- dt3[bd > 0, 
+              .(q1 = quantile(bd, probs = 0.25, na.rm = T),
+                q3 = quantile(bd, probs = 0.75, na.rm = T),
+                q2 = quantile(bd, probs = 0.5, na.rm = T)), by = id]
 # interquartile range (IQR)
 iqr[, iqr := q3 - q1]
 # quartile coefficient of dispersion (QCD) 
@@ -254,7 +257,7 @@ tb <- tb[order(N, decreasing = T)]
 
 
 
-# WHC -------------------------------------
+# WHC & PAW -------------------------------------
 
 ## Estimate water holding capacity  ---------
 
@@ -275,18 +278,27 @@ dt[, D_BDS := D_BDS_kg_m3 / 1000]
 library(euptf2)
 dt_whc <- ptf_whc_all(dt) 
 
-# check number of NA's -> ptf2 (for calcareous soil), 6 (Belgium soil: not accurate for clay), 13
-dt_whc[is.na(value)|value < 0, .N, by = 'ptf_id']
+# check number of NA's -> ptf1 & ptf2 (only for FC and WP), ptf4 (only for FC and WP), ptf7  (using package euptf2) are all NA
+# ptf9 and ptf10 are not suited to predict WHC
+dt_whc[is.na(whc)|whc < 0, .N, by = 'ptf_id']
 
 
-## Scatter plot SOM vs WHC -------
+# calculate PAW
+dt_paw <- ptf_paw_all(dt) 
+
+# check number of NA's -> ptf2 (for calcareous soil) has 6 negative values, ptf13 has 19 negative values, 
+#                         ptf7 (using package euptf2) & ptf11 (wrong parameter values of the model?) are all NA 
+dt_paw[is.na(paw)|paw < 0, .N, by = 'ptf_id']
+
+
+## Scatter plot WHC vs SOM -------
 
 # prepare facet labels
 ptf_label <- paste0("PTF ", unique(dt_whc$ptf_id))
 names(ptf_label) <- unique(dt_whc$ptf_id)
 
-ggplot(dt_whc,
-       aes(y = value,
+ggplot(dt_whc[!ptf_id %in% c(1, 2, 4, 7, 9, 10),],
+       aes(y = whc,
            x = A_SOM_LOI,
            #x = A_CLAY_MI,
            #x = D_BDS,
@@ -301,15 +313,38 @@ ggplot(dt_whc,
   labs(col = "Clay (%)") +
   theme_minimal() +
   theme(legend.position = "top")
-#ggsave(file = paste0(projectdr, "figs/whc_vs_som_perptf_facet.jpeg"),bg = "white", width = 7, height = 7)
+#ggsave(file = paste0(projectdr, "figs/whc_vs_som_perptf_facet.jpeg"),bg = "white", width = 7, height = 5)
+
+## Scatter plot PAW VS SOM-------
+
+# prepare facet labels
+ptf_label <- paste0("PTF ", unique(dt_paw$ptf_id))
+names(ptf_label) <- unique(dt_paw$ptf_id)
+
+ggplot(dt_paw[!ptf_id %in% c(7, 11),], # exclude PTF with only NA's
+       aes(y = paw,
+           x = A_SOM_LOI,
+           col = A_CLAY_MI)) + 
+  geom_hline(yintercept = 0) +
+  geom_hline(yintercept = 1) +
+  geom_point() +
+  scale_color_viridis() +
+  #geom_smooth(method = "loess", se = FALSE) + 
+  ylab("Plant available water (cm3 / cm3)") + xlab("SOM (%)") +
+  facet_wrap(.~ ptf_id, ncol = 5, labeller = labeller(ptf_id=ptf_label)) + 
+  labs(col = "Clay (%)") + ylim(c(0,1)) + 
+  theme_minimal() +
+  theme(legend.position = "top")
+#ggsave(file = paste0(projectdr, "figs/paw_vs_som_perptf_facet.jpeg"),bg = "white", width = 7, height = 7)
+
 
 ## variation in WHC by differnt PTF --------
 
 # quantify variation
-iqr <- dt_whc[value > 0, 
-              .(q1 = quantile(value, probs = 0.25, na.rm = T),
-                q3 = quantile(value, probs = 0.75, na.rm = T),
-                q2 = quantile(value, probs = 0.5, na.rm = T)), by = id]
+iqr <- dt_whc[!ptf_id %in% c(1, 2, 4, 7, 9, 10) & whc > 0, 
+              .(q1 = quantile(whc, probs = 0.25, na.rm = T),
+                q3 = quantile(whc, probs = 0.75, na.rm = T),
+                q2 = quantile(whc, probs = 0.5, na.rm = T)), by = id]
 # interquartile range (IQR)
 iqr[, iqr := q3 - q1]
 # quartile coefficient of dispersion (QCD) 
@@ -317,10 +352,10 @@ iqr[, qcd := iqr / (q3 + q1)]
 iqr <- merge(iqr, dt[, .(id, B_SOILTYPE_AGR, B_LU_BRP, A_SOM_LOI, D_BDS, A_CLAY_MI)], 
              by = "id", all.x = T)
 
-# histogram QCD per soil type
-ggplot(iqr) + 
-  geom_histogram(aes(x = qcd)) + facet_grid(B_SOILTYPE_AGR ~ ., scale = "free_y") +
-  theme_minimal() 
+# # histogram QCD per soil type
+# ggplot(iqr) + 
+#   geom_histogram(aes(x = qcd)) + facet_grid(B_SOILTYPE_AGR ~ ., scale = "free_y") +
+#   theme_minimal() 
 
 # som vs clay vs QCD-WCH
 gp1 <- ggplot(iqr) + 
@@ -340,14 +375,52 @@ ggpubr::ggarrange(gp2, gp1)
 #ggsave(file = paste0(projectdr, "figs/whc_vs_som_vs_clay_median_qcd.jpeg"),bg = "white", width = 8, height = 3)
 
 
-## 5-95% of each interval
+## variation in PAW by differnt PTF --------
+
+# quantify variation
+iqr_paw <- dt_paw[paw > 0, 
+              .(q1 = quantile(paw, probs = 0.25, na.rm = T),
+                q3 = quantile(paw, probs = 0.75, na.rm = T),
+                q2 = quantile(paw, probs = 0.5, na.rm = T)), by = id]
+# interquartile range (IQR)
+iqr_paw[, iqr := q3 - q1]
+# quartile coefficient of dispersion (QCD) 
+iqr_paw[, qcd := iqr / (q3 + q1)]
+iqr_paw <- merge(iqr_paw, dt[, .(id, B_SOILTYPE_AGR, B_LU_BRP, A_SOM_LOI, D_BDS, A_CLAY_MI)], 
+             by = "id", all.x = T)
+
+# # histogram QCD per soil type
+# ggplot(iqr) + 
+#   geom_histogram(aes(x = qcd)) + facet_grid(B_SOILTYPE_AGR ~ ., scale = "free_y") +
+#   theme_minimal() 
+
+# som vs clay vs QCD-WCH
+gp1 <- ggplot(iqr_paw) + 
+  geom_point(aes(x = A_SOM_LOI, y = A_CLAY_MI, col = qcd)) +
+  labs(col  = "QCD PAW") + xlab("SOM (%)") + ylab("Clay (%)") + 
+  scale_color_viridis() +
+  theme_minimal() 
+
+# som vs clay vs median-WHC
+gp2 <- ggplot(iqr_paw) + 
+  geom_point(aes(x = A_SOM_LOI, y = A_CLAY_MI, col = q2)) +
+  labs(col  = "median PAW") + xlab("SOM (%)") + ylab("Clay (%)") + 
+  scale_color_viridis() +
+  theme_minimal() 
+
+ggpubr::ggarrange(gp2, gp1)
+#ggsave(file = paste0(projectdr, "figs/paw_vs_som_vs_clay_median_qcd.jpeg"),bg = "white", width = 8, height = 3)
+
+
+
+## 5-95% of WHC for each interval 
 # make intervals of SOM
 dt_whc[, SOM_int := cut(A_SOM_LOI, breaks = seq(min(A_SOM_LOI), max(A_SOM_LOI), length.out = 100),
                      labels = seq(min(A_SOM_LOI), max(A_SOM_LOI), length.out = 100)[-1])]
 # median and percentiles of each SOM interval
-sum_int <- dt_whc[, .(med = median(value, na.rm = T),
-                                     q5 = quantile(value, probs = 0.05, na.rm = T),
-                                     q95 = quantile(value, probs = 0.95, na.rm = T),
+sum_int <- dt_whc[!ptf_id %in% c(1, 2, 4, 7, 9, 10), .(med = median(whc, na.rm = T),
+                                     q5 = quantile(whc, probs = 0.05, na.rm = T),
+                                     q95 = quantile(whc, probs = 0.95, na.rm = T),
                                      N = .N), by = SOM_int]
 sum_int[, SOM_int := as.numeric(as.character(SOM_int))]
 
@@ -357,12 +430,38 @@ ggplot(sum_int) +
   # median
   geom_line(aes(x = SOM_int, y = med), col = "red") +
   # fitted line
-  geom_smooth(data = dt_whc, aes(x = A_SOM_LOI, y = value),
+  geom_smooth(data = dt_whc, aes(x = A_SOM_LOI, y = whc),
               method = "lm", formula = y ~ poly(x, 2), se = FALSE)+
   #xlim(c(0, max(dt3$A_SOM_LOI))) + ylim(c(0,2000)) + 
-  xlab("SOM (%)") + ylab("Water Holding Capacity (cm3 / cm3)") +
+  xlab("SOM (%)") + ylab("Water Holding Capacity (cm3 / cm3)") +ylim(c(0,1)) +
   theme_minimal() 
 #ggsave(file = paste0(projectdr, "figs/whc_vs_som_interval.jpg"), bg = "white", width = 5, height = 5)
+
+
+## 5-95% of PAW for each interval 
+# make intervals of SOM
+dt_paw[, SOM_int := cut(A_SOM_LOI, breaks = seq(min(A_SOM_LOI), max(A_SOM_LOI), length.out = 100),
+                        labels = seq(min(A_SOM_LOI), max(A_SOM_LOI), length.out = 100)[-1])]
+# median and percentiles of each SOM interval
+sum_int <- dt_paw[, .(med = median(paw, na.rm = T),
+                      q5 = quantile(paw, probs = 0.05, na.rm = T),
+                      q95 = quantile(paw, probs = 0.95, na.rm = T),
+                      N = .N), by = SOM_int]
+sum_int[, SOM_int := as.numeric(as.character(SOM_int))]
+
+ggplot(sum_int) +
+  # 5-95th percentile
+  geom_segment(aes(x = SOM_int, xend = SOM_int, y = q5, yend = q95)) +
+  # median
+  geom_line(aes(x = SOM_int, y = med), col = "red") +
+  # fitted line
+  geom_smooth(data = dt_paw, aes(x = A_SOM_LOI, y = paw),
+              method = "lm", formula = y ~ poly(x, 2), se = FALSE)+
+  #xlim(c(0, max(dt3$A_SOM_LOI))) + ylim(c(0,2000)) + 
+  xlab("SOM (%)") + ylab("Plant available water (cm3 / cm3)") + ylim(c(0,1)) +
+  theme_minimal() 
+#ggsave(file = paste0(projectdr, "figs/paw_vs_som_interval.jpg"), bg = "white", width = 5, height = 5)
+
 
 
 
