@@ -22,7 +22,7 @@ library(soilptf); library(data.table);require(ggplot2)
 ```
 
 # 1. Soilptf package
-Soil indicators help to access quality of soils. In Netherlands, an indicator set called BLN (‘Bodemindicatoren voor Landbouwgronden in Nederland’) was developed to integrally evaluate  the quality of agricultural soils (de Haan et al., 2021). This set of soil health indicators was merged in 2023 with the soil evaluation framework of the Open Soilindex (Ros et al., 2023). 
+Soil indicators help to assess quality of soils. In Netherlands, an indicator set called BLN (‘Bodemindicatoren voor Landbouwgronden in Nederland’) was developed to integrally evaluate  the quality of agricultural soils (de Haan et al., 2021). This set of soil health indicators was merged in 2023 with the soil evaluation framework of the Open Soilindex (Ros et al., 2023). 
 
 Quantifying BLN indicators often requires labour-intensive measurements, limiting their on-farm use. An alternative might be to include methods to estimate those difficult-to-measure parameters by so called pedotransferfunctions (PTFs), being empirical relationships calibrated on large datasets. The use of ptfs helps the application of soil health indicators on a much larger spatial scale at lower cost. The ptfs might also help to underpin site specific threshold values. 
 
@@ -55,10 +55,10 @@ Are you interested to contribute? See the `vignette("howtocontribute")`.
 ## 2.1. Bulk density
 
 ### 2.1.1. introduction
-Soil bulk density is one of the most important soil properties. On the one hand, it describes the quality of the soil since soil bulk density directly reflects soil porosity and compaction which influence water and air soil properties. On the other hand, soil bulk density is a crucial parameter used in balancing and modelling of various processes in the environment. Soil bulk density can be determined in two ways: directly in laboratory using core samples by a thermogravimetric method and indirectly using prediction methods including the use of PTFs which are equations or algorithms representing relationships between soil properties different in difficulty of their measurement or their availability. PTFs use thereby other parameters of soil to estimate its bulk density such as soil organic matter, soil organic carbon, and soil mineralogy (clay, sand or silt content).
+Soil bulk density is one of the most important soil properties. On the one hand, it describes the quality of the soil since soil bulk density directly reflects soil porosity and compaction which influence water and air soil properties. On the other hand, soil bulk density is a crucial parameter used in balancing and modelling of various processes in the environment. Soil bulk density can be determined in two ways: directly in laboratory using core samples by a thermogravimetric method and indirectly, using prediction methods including the use of PTFs. PTFs use other parameters of the soil to estimate its bulk density such as soil organic matter, soil organic carbon, and soil mineralogy (clay, sand or silt content).
 
 ### 2.1.2. ptfs in package
-A number of PTFs exists to estimate soil bulk density. Of 181 collected PTF’s, more than half of the PTF’s were built on data of Europe (39%) or North America (19%). Some PTFs are built on data of specific land use type, such as forest (23%), nature (3%) or agriculture (11%). More than half of the PTFs require only 1 input parameter (54%), followed by 2 parameters (20 %) and 3 parameters (16 %). Almost all PTFs use soil organic matter or soil organic carbon as input parameter, and many also use soil minerology (e.g. sand and clay content) as additional input parameters.
+A number of PTFs exists to estimate soil bulk density. Of the `r nrow(sptf_bulkdensity)` collected PTF’s, more than half of the PTF’s were built on data of Europe (`r round(nrow(sptf_bulkdensity[continent_code == 'NA'])/nrow(sptf_bulkdensity)*100)`%) or North America (`r round(nrow(sptf_bulkdensity[continent_code == 'EU'])/nrow(sptf_bulkdensity)*100)`%). Some PTFs are built on data of specific land use type, such as forest (`r round(nrow(sptf_bulkdensity[landuse == 'forest'])/nrow(sptf_bulkdensity)*100)`%), nature (`r round(nrow(sptf_bulkdensity[landuse == 'nature'])/nrow(sptf_bulkdensity)*100)`%) or agriculture (`r round(nrow(sptf_bulkdensity[landuse == 'agriculture'])/nrow(sptf_bulkdensity)*100)`%). More than half of the PTFs require only 1 input parameter (`round(nrow(sptf_bulkdensity[!grepl('\\|\\|',soilproperties)])/nrow(sptf_bulkdensity)*100)`%), followed by 2 parameters (`round(nrow(sptf_bulkdensity[grepl('^\\w+\\|\\|\\w+$',soilproperties)])/nrow(sptf_bulkdensity)*100)` %) and 3 parameters (`round(nrow(sptf_bulkdensity[grepl('^\\w+\\|\\|\\w+\\|\\|\\w+$',soilproperties)])/nrow(sptf_bulkdensity)*100)` %). Almost all PTFs use soil organic matter or soil organic carbon as input parameter, and many also use soil mineralogy (e.g. sand and clay content) as additional input parameters.
 
 ### 2.1.3. examples
 The function to predict the bulk density from soil properties can be used as follows:
@@ -97,7 +97,7 @@ The bulk density declines when more SOC is available. This is illustrated below 
   # the cation exchange capacity
   dt1.bd <- ptf_bd_all(dt1)
   
-  # retreive the mean and standard deviation of top 10 best ones
+  # retrieve the mean and standard deviation of top 10 best ones
   dt1.bd <- dt1.bd[,list(bd.mean = mean(bd,na.rm=T),
                          bd.se = sd(bd,na.rm=T)/sqrt(sum(!is.na(bd)))),by='id']
   dt1 <- merge(dt1,dt1.bd,by='id')
@@ -105,7 +105,7 @@ The bulk density declines when more SOC is available. This is illustrated below 
   p.bd <- predict(m.bd,newdata = data.frame(A_C_OF = dt1$A_C_OF))
   l.bd <- paste('CEC == ', '2125 -1.056 * C - 257 * log(C)')
   
-  # se theme for figures of the pedotransfer functions
+  # set theme for figures of the pedotransfer functions
   ptl <- theme(plot.subtitle=element_text(size=10, face="italic", color="black"),
                axis.text = element_text(size = 12,colour ='black'),
                axis.title = element_text(size = 12,colour ='black'),

@@ -26,6 +26,10 @@
 * options for parameter `B_SOILCLASS_USDA` in `sptf_parameters`, issue #23
 * add ptfs cec75, cec76 and cec77
 
+## Version 0.5.1.9000
+## Removed
+* function `sptf_whc12` as it most likely did not work as intended. Closes #32.
+
 ## Version 0.5.0  2023-04-29
 
 ## Added
