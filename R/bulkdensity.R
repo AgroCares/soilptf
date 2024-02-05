@@ -7010,3 +7010,447 @@ sptf_bd192 <- function(A_SOM_LOI) {
   return(value)
   
 }
+
+#' Calculate the bulk density given the pedotransferfunction of China
+#'
+#' @inheritParams sptf_bd0
+#' 
+#' @import data.table
+#' 
+#' @references 王思楚,王志强,成聪聪,张帅,任霄玉 & 程卓.(2018).东北松嫩黑土区土壤密度传递函数及其适用性. 北京师范大学学报(自然科学版)(03),381-390. doi:10.16360/j.cnki.jbnuns.2018.03.015.
+#'
+#' @export
+sptf_bd193 <- function(A_C_OF, A_SAND_MI, A_DEPTH) {
+  
+  # Check input
+  arg.length <- max(length(A_C_OF), length(A_SAND_MI), length(A_DEPTH))
+  checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000, any.missing = FALSE,len = arg.length)
+  checkmate::assert_numeric(A_DEPTH, lower = 0, upper = 2, len = arg.length)
+  checkmate::assert_numeric(A_SAND_MI, lower = 0, upper = 100, len = arg.length)
+  
+  # Collect data into a table
+  dt <- data.table(id = 1: arg.length,
+                   A_C_OF = A_C_OF * 0.1, # convert from g/kg to %
+                   A_SAND_MI = A_SAND_MI,
+                   A_DEPTH = A_DEPTH * 100, # convert from m to cm
+                   value = NA_real_)
+  
+  # estimate soil density in kg / m3 (n = 146, R2 = 0.717)
+  dt[, value := exp(0.379 - 0.153 * A_C_OF ^ 0.5 - 0.004 * A_C_OF ^ 2 + 0.002 * A_SAND_MI + 0.001 * A_DEPTH)]
+  
+  # convert to kg / m3
+  dt[, value := value * 1000]
+  
+  # return value
+  value <- dt[, value]
+  
+  # return value
+  return(value)
+  
+}
+
+
+#' Calculate the bulk density given the pedotransferfunction in terms of land in China
+#'
+#' @inheritParams sptf_bd0
+#' 
+#' @import data.table
+#' 
+#' @references 韩光中,王德彩 & 谢贤健.(2016).中国主要土壤类型的土壤容重传递函数研究. 土壤学报(01),93-102. doi:10.11766/trxb201503300151.
+#'
+#' @export
+sptf_bd194 <- function(A_SOM_LOI) {
+  
+  # Check input
+  arg.length <- max(length(A_SOM_LOI))
+  checkmate::assert_numeric(A_SOM_LOI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
+  
+  # Collect data into a table # convert to g/kg
+  dt <- data.table(id = 1: arg.length,
+                   A_SOM_LOI = A_SOM_LOI * 10, # convert to g/kg
+                   value = NA_real_)
+  
+  # estimate soil density in kg / m3 (n = 27, R2 = 0.86.3)
+  # for peatland
+  dt[, value := exp(0.373 - 0.0028 * A_SOM_LOI)]
+  
+  # convert to kg / m3
+  dt[, value := value * 1000]
+  
+  # return value
+  value <- dt[, value]
+  
+  # return value
+  return(value)
+  
+}
+
+#' Calculate the bulk density given the pedotransferfunction for Hebei province in China
+#'
+#' @inheritParams sptf_bd0
+#' 
+#' @import data.table
+#' 
+#' @references 门明新,彭正萍,许皞 & 宇振荣.(2008).河北省土壤容重的传递函数研究. 土壤通报(01),33-37. doi:10.19336/j.cnki.trtb.2008.01.006.
+#'
+#' @export
+sptf_bd195 <- function(A_C_OF, A_CLAY_MI, A_SILT_MI) {
+  
+  # Check input
+  arg.length <- max(length(A_C_OF), length(A_CLAY_MI), length(A_SILT_MI))
+  checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000, any.missing = FALSE,len = arg.length)
+  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, len = arg.length)
+  
+  # Collect data into a table
+  dt <- data.table(id = 1: arg.length,
+                   A_C_OF = A_C_OF * 0.1, # convert to %
+                   A_CLAY_MI = A_CLAY_MI,
+                   A_SILT_MI = A_SILT_MI,
+                   value = NA_real_)
+  
+  # estimate soil density in kg / m3 
+  dt[, value := 1.386 - 0.078 * A_C_OF + 0.001 * A_SILT_MI + 0.001 * A_CLAY_MI]
+  
+  # convert to kg / m3
+  dt[, value := value * 1000]
+  
+  # return value
+  value <- dt[, value]
+  
+  # return value
+  return(value)
+  
+}
+
+#' Calculate the bulk density given the pedotransferfunction for Heilongjiang province in China
+#'
+#' @inheritParams sptf_bd0
+#' 
+#' @import data.table
+#' 
+#' @references 韩光中 & 李秀芝.(2014).黑龙江省土壤容重传递函数研究. 内江师范学院学报(02),53-55. doi:CNKI:SUN:NJSG.0.2014-02-013.
+#'
+#' @export
+sptf_bd196 <- function(A_SOM_LOI, A_DEPTH) {
+  
+  # Check input
+  arg.length <- max(length(A_SOM_LOI), length(A_DEPTH))
+  checkmate::assert_numeric(A_SOM_LOI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
+  checkmate::assert_numeric(A_DEPTH, lower = 0, upper = 2, len = arg.length)
+  
+  # Collect data into a table
+  dt <- data.table(id = 1: arg.length,
+                   A_SOM_LOI = A_SOM_LOI / 100,  # convert to g/g
+                   A_DEPTH = A_DEPTH * 100, # convert to cm
+                   value = NA_real_)
+  
+  # estimate soil density in kg / m3 
+  
+  dt[, value := exp(0.443 - 0.0027 * A_SOM_LOI - 0.0048 * log(A_SOM_LOI) + 0.0006 * A_DEPTH)]
+  
+  # convert to kg / m3
+  dt[, value := value * 1000]
+  
+  # return value
+  value <- dt[, value]
+  
+  # return value
+  return(value)
+  
+}
+#' Calculate the bulk density given the pedotransferfunction for Heilongjiang province in China
+#'
+#' @inheritParams sptf_bd0
+#' 
+#' @import data.table
+#' 
+#' @references 韩光中 & 李秀芝.(2014).黑龙江省土壤容重传递函数研究. 内江师范学院学报(02),53-55. doi:CNKI:SUN:NJSG.0.2014-02-013.
+#'
+#' @export
+sptf_bd197 <- function(A_SOM_LOI) {
+  
+  # Check input
+  arg.length <- max(length(A_SOM_LOI))
+  checkmate::assert_numeric(A_SOM_LOI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
+  
+  # Collect data into a table
+  dt <- data.table(id = 1: arg.length,
+                   A_SOM_LOI = A_SOM_LOI * 0.01,   # convert to g/g
+                   value = NA_real_)
+  
+  # estimate soil density in kg / m3 
+  
+  dt[, value := exp(0.339 - 0.0031 * A_SOM_LOI)]
+  
+  # convert to kg / m3
+  dt[, value := value * 1000]
+  
+  # return value
+  value <- dt[, value]
+  
+  # return value
+  return(value)
+  
+}
+#' Calculate the bulk density given the pedotransferfunction for loess plateau in China
+#'
+#' @inheritParams sptf_bd0
+#' 
+#' @import data.table
+#' 
+#' @references 易小波,邵明安,赵春雷 & 张晨成.(2017).黄土高原南北样带不同土层土壤容重变异分析与模拟. 农业机械学报(04),198-205.
+#'
+#' @export
+sptf_bd198 <- function(A_SAND_MI, A_CLAY_MI) {
+  
+  # Check input
+  arg.length <- max(length(A_SAND_MI), length(A_CLAY_MI))
+  checkmate::assert_numeric(A_SAND_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
+  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
+  
+  # Collect data into a table
+  dt <- data.table(id = 1: arg.length,
+                   A_SAND_MI = A_SAND_MI,
+                   A_CLAY_MI = A_CLAY_MI,
+                   value = NA_real_)
+  
+  # estimate soil density in kg / m3 
+  #dt[, v1 := -0.56 + 0.867 * A_CLAY_MI + 1.253 * A_SAND_MI]
+  #dt[, v2 := -0.519 + 0.871 * A_CLAY_MI + 1.167 * A_SAND_MI]
+  #dt[, value := (v1 + v2) / 2]
+  
+  
+  # return value
+  value <- dt[, value]
+  
+  # return value
+  return(value)
+  
+}
+#' Calculate the bulk density given the pedotransferfunction for Guizhou province in China
+#'
+#' @inheritParams sptf_bd0
+#' 
+#' @import data.table
+#' 
+#' @references 李颖 & 周德全.(2017).基于土壤理化性质的贵州省土壤容重传递函数研究. 贵州科学(05),64-71. doi:CNKI:SUN:GZKX.0.2017-05-014.
+#'
+#' @export
+sptf_bd199 <- function(A_SOM_LOI, A_SAND_MI, A_CLAY_MI, A_N_RT, A_DEPTH) {
+  
+  # Check input
+  arg.length <- max(length(A_SAND_MI), length(A_CLAY_MI), length(A_SOM_LOI), length(A_N_RT), length(A_DEPTH))
+  checkmate::assert_numeric(A_SAND_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
+  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_numeric(A_SOM_LOI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_numeric(A_N_RT, lower = 0, upper = 30000, len = arg.length)
+  checkmate::assert_numeric(A_DEPTH, lower = 0, upper = 2, len = arg.length)
+  
+  
+  # Collect data into a table
+  dt <- data.table(id = 1: arg.length,
+                   A_SAND_MI = A_SAND_MI,
+                   A_CLAY_MI = A_CLAY_MI,
+                   A_SOM_LOI = A_SOM_LOI * 10, # convert from % to g/kg
+                   A_N_RT = A_N_RT / 1000, # convert from mg/kg to g/kg
+                   A_DEPTH = A_DEPTH * 100, # convert from m to cm
+                   value = NA_real_)
+  
+  # estimate soil density in kg / m3 
+  dt[, value := exp(0.041 + 0.002 * A_DEPTH - 0.001 * A_SAND_MI - 0.002 * A_CLAY_MI - 0.004 * A_SOM_LOI + 0.053 * log(A_SOM_LOI) + 0.005 * A_N_RT)]
+  
+  # convert to kg / m3
+  dt[, value := value * 1000]
+  
+  # return value
+  value <- dt[, value]
+  
+  # return value
+  return(value)
+  
+}
+#' Calculate the bulk density given the pedotransferfunction for Lime soil in China
+#'
+#' @inheritParams sptf_bd0
+#' 
+#' @import data.table
+#' 
+#' @references 李颖,刘秀明,王世杰,周德全 & 罗慧.(2018).中国南方喀斯特地区石灰土容重传递函数模型及影响因素研究. 地球环境学报(03),245-256. doi:CNKI:SUN:DQHJ.0.2018-03-004.
+#'
+#' @export
+sptf_bd200 <- function(A_SOM_LOI, A_SAND_MI, A_SILT_MI, A_N_RT, A_DEPTH) {
+  
+  # Check input
+  arg.length <- max(length(A_SOM_LOI), length(A_SAND_MI), length(A_SILT_MI), length(A_N_RT), length(A_DEPTH))
+  checkmate::assert_numeric(A_SOM_LOI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_numeric(A_SAND_MI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_numeric(A_N_RT, lower = 0, upper = 1000000, len = arg.length)
+  checkmate::assert_numeric(A_DEPTH, lower = 0, upper = 2, len = arg.length)
+  
+  
+  # Collect data into a table
+  dt <- data.table(id = 1: arg.length,
+                   A_SOM_LOI = A_SOM_LOI,
+                   A_SAND_MI = A_SAND_MI,
+                   A_SILT_MI = A_SILT_MI,
+                   A_N_RT = A_N_RT / 10000, # convert from mg/kg to %
+                   A_DEPTH = A_DEPTH * 100, # convert from m to cm
+                   value = NA_real_)
+  
+  # estimate soil density in kg / m3 
+  dt[, v1 := exp(0.3951 - 0.03283 * A_SOM_LOI)]
+  dt[, v2 := exp(-0.01077 - 0.00328 * A_SAND_MI + 0.01837 * A_SILT_MI - 1.65809 * A_N_RT)]
+  dt[, v3 := 1.467034 + 0.001305 * A_DEPTH - 0.18159 * A_SOM_LOI ^ 0.5]
+  dt[, v4 := exp(0.474332 - 0.11598 * A_SOM_LOI ^ 0.5)]
+  dt[, value := (v1 + v2 + v3 + v4) / 4]
+  
+  # convert to kg / m3
+  dt[, value := value * 1000]
+  
+  # return value
+  value <- dt[, value]
+  
+  # return value
+  return(value)
+  
+}
+#' Calculate the bulk density given the pedotransferfunction for Grassland in Xinjiang province in China
+#'
+#' @inheritParams sptf_bd0
+#' 
+#' @import data.table
+#' 
+#' @references 狄晓双,武红旗,贾宏涛,张文太,谷海斌,邵明轩 & 盛建东.(2021).新疆主要草地土壤容重与有机碳含量关系模型构建. 土壤通报(06),1323-1329. doi:10.19336/j.cnki.trtb.2020101203.
+#'
+#' @export
+sptf_bd201 <- function(A_C_OF) {
+  
+  # Check input
+  arg.length <- max(length(A_C_OF))
+  checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000, any.missing = FALSE,len = arg.length)
+  
+  
+  # Collect data into a table
+  dt <- data.table(id = 1: arg.length,
+                   A_C_OF = A_C_OF * 0.1, #convert to %
+                   value = NA_real_)
+  
+  # estimate soil density in kg / m3 
+  dt[, value := 1.5251 * exp(-0.0803 * A_C_OF)]
+  
+  # convert to kg / m3
+  dt[, value := value * 1000]
+  
+  # return value
+  value <- dt[, value]
+  
+  # return value
+  return(value)
+  
+}
+#' Calculate the bulk density given the pedotransferfunction for paddy soil in China
+#'
+#' @inheritParams sptf_bd0
+#' 
+#' @import data.table
+#' 
+#' @references Reis, A. M. H. D., Teixeira, W. G., Fontana, A., Barros, A. H. C., De C Victoria, D., Vasques, G. M., Samuel‐Rosa, A., Ottoni, M. V., & De Almeida Monteiro, J. E. B. (2024). Hierarchical pedotransfer functions for predicting bulk density in Brazilian soils. Scientia Agricola, 81. https://doi.org/10.1590/1678-992x-2022-0255
+#' @export
+sptf_bd202 <- function(A_SAND_MI, A_CLAY_MI, A_C_OF) {
+  
+  # Check input
+  arg.length <- max(length(A_SAND_MI), length(A_CLAY_MI), length(A_C_OF))
+  checkmate::assert_numeric(A_SAND_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
+  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000, len = arg.length)
+  
+  # Collect data into a table
+  dt <- data.table(id = 1: arg.length,
+                   A_SAND_MI = A_SAND_MI,
+                   A_CLAY_MI = A_CLAY_MI,
+                   A_C_OF = A_C_OF * 0.1,
+                   value = NA_real_)
+  
+  # estimate soil density in kg / m3 
+  dt[, value :=  1.358 + 2.79 * 0.001 * A_SAND_MI - 2.328 * 0.001 * A_CLAY_MI + 0.052 * A_C_OF]
+  
+  # convert to kg / m3
+  dt[, value := value * 1000]
+  
+  # return value
+  value <- dt[, value]
+  
+  # return value
+  return(value)
+  
+}
+
+#' Calculate the bulk density given the pedotransferfunction for Poland
+#'
+#' @inheritParams sptf_bd0
+#' 
+#' @import data.table
+#' 
+#' @references Bryk, M., & Kołodziej, B. (2023). Pedotransfer functions for estimating soil bulk density using image analysis of soil structure. Sensors, 23(4), 1852. https://doi.org/10.3390/s23041852
+#'
+#' @export
+sptf_bd203 <- function(A_SOM_LOI) {
+  
+  # Check input
+  arg.length <- max(length(A_SOM_LOI))
+  checkmate::assert_numeric(A_SOM_LOI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
+  
+  # Collect data into a table
+  dt <- data.table(id = 1: arg.length,
+                   A_SOM_LOI = A_SOM_LOI * 0.01, # convert % to g/g
+                   value = NA_real_)
+  
+  # estimate soil density in kg / m3 
+  dt[, value := 0.078 * 1.572 / (1.572 * A_SOM_LOI + 0.178 * (1 - A_SOM_LOI))]
+  
+  # convert to kg / m3
+  dt[, value := value * 1000]
+  
+  # return value
+  value <- dt[, value]
+  
+  # return value
+  return(value)
+  
+}
+
+#' Calculate the bulk density given the pedotransferfunction for U.S. soil
+#'
+#' @inheritParams sptf_bd0
+#' 
+#' @import data.table
+#' 
+#' @references Abdelbaki, A. (2018). Evaluation of pedotransfer functions for predicting soil bulk density for U.S. soils. Ain Shams Engineering Journal, 9(4), 1611–1619. https://doi.org/10.1016/j.asej.2016.12.002
+#'
+#' @export
+sptf_bd204 <- function(A_C_OF) {
+  
+  # Check input
+  arg.length <- max(length(A_C_OF))
+  checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000, any.missing = FALSE,len = arg.length)
+  
+  # Collect data into a table
+  dt <- data.table(id = 1: arg.length,
+                   A_C_OF = A_C_OF * 0.1, # convert g/kg to %
+                   value = NA_real_)
+  
+  # estimate soil density in kg / m3 
+  dt[, value := 1.449 * exp(-0.03 * A_C_OF)]
+  
+  # convert to kg / m3
+  dt[, value := value * 1000]
+  
+  # return value
+  value <- dt[, value]
+  
+  # return value
+  return(value)
+  
+}
