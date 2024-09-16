@@ -4,12 +4,14 @@
 \alias{sptf_whc3}
 \title{Calculate the water holding capacity given the pedotransferfunction of Saxton et al.1986}
 \usage{
-sptf_whc3(A_SAND_MI, A_CLAY_MI)
+sptf_whc3(A_SAND_MI, A_CLAY_MI, mp_fc = 33)
 }
 \arguments{
 \item{A_SAND_MI}{(numeric) Sand content (\%)}
 
 \item{A_CLAY_MI}{(numeric) The clay content of the mineral soil fraction (\%).}
+
+\item{mp_fc}{(numeric) Water potential at field capacity (kPa).}
 }
 \description{
 Calculate the water holding capacity given the pedotransferfunction of Saxton et al.1986

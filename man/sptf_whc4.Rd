@@ -17,7 +17,7 @@ sptf_whc4(A_C_OF, A_CLAY_MI, A_SAND_MI)
 Calculate the waterholding capacity given the pedotransferfunction of Oosterveld and Chang (1980)
 }
 \details{
-For this function A_DEPTH should be between 0.08 and 0.18
+For this function, A_DEPTH should be between 0.08 and 1.8 m
 }
 \references{
 Oosterveld and Chang (1980) Empirical relations between laboratory determinations of soil texture and moisture retention
