@@ -2978,7 +2978,7 @@ ptf_pmn_all <- function(dt){
   
   # add visual bindings
   A_C_OF = A_CLAY_MI = A_SAND_MI = A_SILT_MI = A_N_RT = A_PH_CC = A_CEC_CO = NULL
-  A_PH_KCL = A_PH_WA = A_PH_CC= pmn = A_P_AL = NULL
+  A_PH_KCL = A_PH_WA = A_PH_CC= A_CN_FR = pmn = A_P_AL = NULL
   num_obs = A_SOM_LOI = p1_p = p1 = p2 = p3 = p4 = p5 = p6 = p7 = p8 = p9 = p10 = NULL
   p11 = p12 = p13 = p14 = p15 = p16 = p17 = p18 = p19 = p20 = p21 = p22 = p23 = p24 = p25 = NULL
   patterns = ptf_id = id = NULL
@@ -3004,6 +3004,10 @@ ptf_pmn_all <- function(dt){
   # estimate missing SOM variables
   dt[is.na(A_SOM_LOI) & !is.na(A_C_OF), A_SOM_LOI := A_C_OF * 0.1 * 1.724]
   dt[!is.na(A_SOM_LOI) & is.na(A_C_OF), A_C_OF := A_SOM_LOI * 10 / 1.724]
+  
+  # estimate missing CN ratio
+  dt[is.na(A_CN_FR) & !is.na(A_N_RT) & !is.na(A_C_OF), A_CN_FR := A_C_OF *1000 / A_N_RT]
+  dt[is.na(A_N_RT) & !is.na(A_CN_FR) & !is.na(A_C_OF), A_N_RT := A_C_OF * 1000/ A_CN_FR]
   
   # estimate pH values
   dt[is.na(A_PH_KCL) & !is.na(A_PH_CC), A_PH_KCL := (A_PH_CC - 0.5262)/0.9288]
