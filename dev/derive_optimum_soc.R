@@ -1077,6 +1077,7 @@ optimcarbon <- function(xs, dtr){
     db.int <- db.int[,.(ncu,crop_name,area_ncu,clay,ph,cn,soc_ref)]
     db.int <- db.int[,.(area = sum(area_ncu),A_CLAY_MI = clay[1],ph = ph[1],cn = cn[1],A_C_OF = soc_ref[1]*10),by=ncu]
     db.int[,A_SAND_MI := (100-A_CLAY_MI)*0.5]
+    #db.int[,cec := (0.44 * ph + 3)*A_CLAY_MI + (5.1 * ph - 5.9)*A_C_OF*0.1]
     
     # calculate optimum soc
     db.int[, c('copt','copt_se') := optimcarbon_fix(A_C_OF = A_C_OF,
