@@ -913,6 +913,235 @@ sptf_pmn20 <- function(A_C_OF,A_CLAY_MI) {
   
 }
 
+#' Calculate the PMN given the pedo transfer function of Zhang et al. (2017), based on incubation data in China
+#' 
+#' @inheritParams sptf_bd0
+#' @param t (numeric) Length of incubation period (days). 
+#' 
+#' @import data.table
+#' 
+#' @references Zhang, Y., Wang, X., Duan, P., Cong, Y., An, T., Yu, N., Zou, H., Dang, X., An, J., Fan, Q., & Zhang, Y. (2017). Evaluation and simulation of nitrogen mineralization of paddy soils in Mollisols area of Northeast China under waterlogged incubation. PLOS ONE, 12(2), e0171022. https://doi.org/10.1371/journal.pone.0171022
+#'
+#' @export
+sptf_pmn21 <- function(A_C_OF, t = 7) {
+  
+  # add visual bindings
+  wk = N0 = k0 = NULL
+  
+  # Check input
+  arg.length <- max(length(A_C_OF))
+  checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000, len = arg.length)
+  checkmate::assert_numeric(t, lower = 0, upper = 100)
+  
+  # Collect data into a table
+  dt <- data.table(A_C_OF = A_C_OF,
+                   value = NA_real_)
+  
+  # Calculate SOC content as mg/kg
+  #dt[, A_C_OF :=  A_C_OF * 1000] # g/kg to mg/kg
+  
+  # Calculate Nmin(TSN) (mg/kg) based on 1-pool model 
+  
+  # mineralizable N (mg/kg)
+  dt[, N0 := 4.67 + 5.29 * A_C_OF ] #figure 3
+  
+  # set rate constant (1/day)
+  # the regression model was NA. Average value of 10 soils. Table 3
+  dt[, k0 := 0.0235]
+  
+  # calculate PMN
+  dt[, value := N0 * (1 - exp(-k0 * t))]
+  
+  # select value
+  value <- dt[, value]
+  
+  # return value
+  return(value)
+  
+}
+
+
+
+#' Calculate the PMN given the pedo transfer function of Ve et al. (2004), based on data in Phlippine land growing rice
+#' The mineralized N is measured by the accumulation of NH4-N 
+#' @inheritParams sptf_bd0
+#' @param t (numeric) Length of incubation period (days). 
+#' 
+#' @import data.table
+#' 
+#' @references Ve, N. B., Olk, D. C., & Cassman, K. G. (2004). Characterization of humic acid fractions improves estimates of nitrogen mineralization kinetics for lowland rice soils. Soil Science Society of America Journal, 68(4), 1266–1277. https://doi.org/10.2136/sssaj2004.1266
+#'
+#' @export
+sptf_pmn22 <- function(A_C_OF, A_N_RT, t = 7) {
+  
+  # add visual bindings
+  N1 = k1 = k2 = MHA_CN = NULL
+  
+  # Check input
+  arg.length <- max(length(A_C_OF), length(A_N_RT))
+  checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000, len = arg.length)
+  checkmate::assert_numeric(A_N_RT, lower = 0, upper = 30000, len = arg.length)
+  checkmate::assert_numeric(t, lower = 0, upper = 100)
+  
+  # Collect data into a table
+  dt <- data.table(A_C_OF = A_C_OF,
+                   A_N_RT = A_N_RT * 0.001, # in g/kg
+                   value = NA_real_)
+  
+  # Calculate N1 (mg/kg), Table 6 Model 1 R2 = 0.81
+  dt[, N1 := pmax(30, -286 + 37.4 * A_C_OF - 0.764 * A_C_OF ^ 2)] 
+  
+  # calculate C/N ratio in mobile humic acid fraction(MHA)
+  dt[, MHA_CN := (-0.1 + 0.016 * A_C_OF)/(-0.14 + 0.2 * A_N_RT)]
+  
+  # set the exchangeable K as the average value which is 0.305 cmol/kg
+  dt[, k1 := pmax(0,0.484 + 0.0516 * A_N_RT + 0.0548 *  0.305 - 0.0444 * MHA_CN)] # Table 7 Model 2 R2 = 0.64
+  dt[, k2 := pmax(0,1.98 + 0.268 * A_N_RT + 0.176 * 0.305 - 0.2 * MHA_CN)] # Table 8 Model 2 R2 = 0.75
+  
+  # calculate Nt based on a two-pool first- and zero-order combined model
+  dt[, value := N1 * (1 - exp(-k1 * t)) + k2 * t]
+  
+  # select value
+  value <- dt[, value]
+  
+  # return value
+  return(value)
+  
+}
+
+#' Calculate the PMN given the pedo transfer function of Sahrawat (1983), based on incubation data of Phlippine land growing rice
+#' The mineralized N is measured by released ammonium 
+#' 
+#' @inheritParams sptf_bd0
+#' @param t (numeric) Length of incubation period (days). 
+#' 
+#' @import data.table
+#' 
+#' @references Sahrawat, K. L. (1983). Mineralization of soil organic nitrogen under waterlogged conditions in relation to other properties of tropical rice soils. Soil Research, 21(2), 133. https://doi.org/10.1071/sr9830133
+#'
+#' @export
+sptf_pmn23 <- function(A_C_OF, A_N_RT, A_CN_FR, A_PH_WA, A_CEC_CO, A_CLAY_MI) {
+  
+  # add visual bindings
+  Nmin = NULL
+  
+  # Check input
+  arg.length <- max(length(A_C_OF), length(A_N_RT), length(A_CN_FR), length(A_PH_WA), length(A_CEC_CO), length(A_CLAY_MI))
+  checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000, len = arg.length)
+  checkmate::assert_numeric(A_N_RT, lower = 0, upper = 30000, len = arg.length)
+  checkmate::assert_numeric(A_CN_FR, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_numeric(A_PH_WA, lower = 3, upper = 10, len = arg.length)
+  checkmate::assert_numeric(A_CEC_CO, lower = 0, upper = 1000, len = arg.length)
+  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
+  
+  # Collect data into a table
+  dt <- data.table(A_C_OF = A_C_OF * 0.1, # g/kg to %
+                   A_N_RT = A_N_RT * 0.001 * 0.1, # mg N/kg to g/kg to %
+                   A_CN_FR = A_CN_FR,
+                   A_PH_WA = A_PH_WA,
+                   A_CEC_CO = A_CEC_CO * 0.1, # mmol+/kg to m.e./100g
+                   A_CLAY_MI = A_CLAY_MI,
+                   value = NA_real_)
+  
+  # Calculate Min-N (μg/g) in incubation period of 2 weeks
+  dt[, Nmin := pmax(0,-68.8 + 1969.6 * A_N_RT - 128.8 * A_C_OF + 9.9 * A_CN_FR - 9.2 * A_PH_WA + 0.88 * A_CEC_CO - 0.75 * A_CLAY_MI)] #Table 6 Model 1 R2 = 0.81
+  
+  # Calculate MIN-N (7day) 
+  dt[, value :=  Nmin / 2]
+  
+  # select value
+  value <- dt[, value]
+  
+  # return value
+  return(value)
+  
+}
+
+#' Calculate the PMN given the pedo transfer function of Kadono et al. (2008), based on data from Ukraine and Kazakhastan
+#' 
+#' @inheritParams sptf_bd0
+#' @param t (numeric) Length of incubation period (days). 
+#' 
+#' @import data.table
+#' 
+#' @references Kadono, A., Funakawa, S., & Kosaki, T. (2008). Factors controlling mineralization of soil organic matter in the Eurasian steppe. Soil Biology & Biochemistry, 40(4), 947–955. https://doi.org/10.1016/j.soilbio.2007.11.015
+#'
+#' @export
+sptf_pmn24 <- function(A_N_RT, t = 7) {
+  
+  # add visual bindings
+  TN = k = N0 = NULL
+  
+  # Check input
+  arg.length <- max(length(A_N_RT))
+  checkmate::assert_numeric(A_N_RT, lower = 0, upper = 30000, len = arg.length)
+  checkmate::assert_numeric(t, lower = 0, upper = 100)
+  
+  # Collect data into a table
+  dt <- data.table(A_N_RT = A_N_RT,
+                   value = NA_real_)
+  
+  # Calculate N0 (mg/kg) 
+  dt[, N0 := 79.5 + 0.059 * A_N_RT] 
+  
+  # set k(day-1) as the average value of 41 soil samples
+  k = 0.011
+  
+  #Calculate MIN-N (7day) (mg/kg) based on 1-pool model
+  dt[, value :=  N0 * (1- exp(-k * t))]
+  
+  # select value
+  value <- dt[, value]
+  
+  # return value
+  return(value)
+  
+}
+
+
+#' Calculate the PMN given the pedo transfer function of Sharifi et al. (2007), based on data from from 17 existing field experiments in New Brunswick, Quebec, Manitoba, and Saskatchewan, Canada, and Maine, USA.
+#' 
+#' @inheritParams sptf_bd0
+#' @param t (numeric) Length of incubation period (days). 
+#' 
+#' @import data.table
+#' 
+#' @references Sharifi, M., Zebarth, B. J., Burton, D. L., Grant, C. A., & Cooper, J. (2007). Evaluation of some indices of potentially mineralizable nitrogen in soil. Soil Science Society of America Journal, 71(4), 1233–1239. https://doi.org/10.2136/sssaj2006.0265
+#'
+#' @export
+sptf_pmn25 <- function(A_C_OF, t = 7) {
+  
+  # add visual bindings
+  wk = N0 = k0 = NULL
+  
+  # Check input
+  arg.length <- max(length(A_C_OF))
+  checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000, len = arg.length)
+  checkmate::assert_numeric(t, lower = 0, upper = 100)
+  
+  # Collect data into a table
+  dt <- data.table(A_C_OF = A_C_OF,
+                   value = NA_real_)
+  
+  # Calculate Nmin(TSN) (mg/kg) based on 1-pool model 
+  # mineralizable N0 (mg/kg)
+  dt[, N0 := 50.56 + 2.82 * A_C_OF] #Table 4
+  
+  # convert t into wk
+  dt[, wk := t/7]
+  # set the rate constant (1/week) as the mean 0.077. Table 2
+  dt[, k0 := 0.077]
+  
+  #calculte the Min-N(7days) based on 1-pool model
+  dt[, value := N0 * (1 - exp(-k0 * wk))]
+  
+  # select value
+  value <- dt[, value]
+  
+  # return value
+  return(value)
+  
+}
 
 #' Empirical relationship to convert Nmin to 7 days (mgN/kg/7 days)
 #' 
