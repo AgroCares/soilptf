@@ -1180,3 +1180,962 @@ sptf_paw16 <- function(A_SOM_LOI,A_CLAY_MI,A_SILT_MI) {
   
 }
 
+#' Calculate the Plant Available Water (PAW) given the pedotransferfunction of Lal et al.1978 (Table V & VI), for group I
+#'
+#' @inheritParams sptf_bd0
+#'
+#' @import data.table
+#'
+#' @references Lal, R. (1978). Physical properties and moisture retention characteristics of some nigerian soils. Geoderma, 21(3), 209–223. https://doi.org/10.1016/0016-7061(78)90028-9
+#'
+#' @export
+sptf_paw17 <- function(A_CLAY_MI, A_C_OF) {
+  
+  # Add visual bindings
+  theta_sat = theta_res = theta_fc = alfa = n = A_LOAM_MI = theta_wp = D_BDS = NULL
+  
+  # Check input
+  arg.length <-max(length(A_CLAY_MI),length(A_C_OF))
+  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000,len = arg.length)
+  
+  # Collect data into a table, with loam content (< 50 um)
+  dt <- data.table(A_CLAY_MI = A_CLAY_MI,
+                   A_C_OF = A_C_OF,
+                   value = NA_real_)
+  
+  # Calculate weight-based water content at field capacity (g/g)
+  dt[, theta_fc := A_CLAY_MI * 0.004 + 0.065]
+  
+  # Calculate weight-based water content at wilting point g/g)
+  dt[, theta_wp := A_CLAY_MI * 0.003 + 0.006]
+  
+  # Calculate water holding capacity (g/g)
+  dt[, value :=  theta_fc - theta_wp]
+  
+  # Calculate the bulk density (g / cm3)
+  dt[,D_BDS := (1617 - 77.4 * log(A_C_OF) - 3.49 * A_C_OF)*0.001]
+  
+  # Convert gravimetric water holding capacity into volumetric one should be changed into volumetric water content
+  dt[, value :=  value * D_BDS]
+  
+  # select value
+  value <- dt[, value]
+  
+  # return value
+  return(value)
+  
+}
+#' Calculate the Plant Available Water (PAW) given the pedotransfer function of chen et al., 2005 about soil in SHanxi and Henan province in China
+#'
+#' @inheritParams sptf_bd0
+#'
+#' @import data.table
+#'
+#' @references 王志强.(2003).科尔沁沙地土壤水力特性的推算(硕士学位论文,内蒙古农业大学).https://kns.cnki.net/KCMS/detail/detail.aspx?dbname=CMFD9904&filename=2003085422.nh
+#'
+#' @export
+sptf_paw18 <- function(A_C_OF, A_SAND_MI, A_CLAY_MI, A_SILT_MI) {
+  
+  # add visual bindings
+  D_BDS = NULL
+  
+  # Check input
+  arg.length <-max(length(A_C_OF), length(A_SAND_MI), length(A_CLAY_MI), length(A_SILT_MI))
+  checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000,len = arg.length)
+  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_numeric(A_SAND_MI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, len = arg.length)
+  
+  # Collect data into a table
+  dt <- data.table(A_C_OF = A_C_OF,
+                   A_SAND_MI = A_SAND_MI,
+                   A_CLAY_MI = A_CLAY_MI,
+                   A_SILT_MI = A_SILT_MI,
+                   value = NA_real_
+                   )
+  
+  # Calculate the bulk density (g / cm3)
+  dt[,D_BDS := (1617 - 77.4 * log(A_C_OF) - 3.49 * A_C_OF)*0.001]
+  
+  # Calculate volumetric plant available water (m3/m3)
+  dt[, value :=  -1.13299 + 0.00826 * A_SAND_MI + 0.10925 * (A_SAND_MI ^ -0.1276) + 0.00847 * A_SILT_MI - 0.03512 * (A_SILT_MI ^ (A_CLAY_MI / 100)) + 0.01383 * A_CLAY_MI - 1.3209 * log(D_BDS) + 0.6953 * D_BDS]
+  
+  # return value
+  value <- dt[, value]
+  
+  # return value
+  return(value)
+}
+
+
+#' Calculate the Plant Available Water (PAW) given the pedotransferfunction of Dijkerman for soil in Sierra Leone
+#'
+#' @inheritParams sptf_bd0
+#'
+#' @import data.table
+#'
+#' @references Dijkerman, J. (1988). An Ustult-Aquult-Tropept catena in Sierra Leone, West Africa, II. Land qualities and land evaluation. Geoderma, 42(1), 29–49. https://doi.org/10.1016/0016-7061(88)90021-3
+#'
+#' @export
+sptf_paw19 <- function(A_C_OF, A_CLAY_MI) {
+  
+  # add visual bindings
+  theta_wp = theta_fc = D_BDS = NULL
+  
+  # Check input
+  arg.length <-max(length(A_C_OF), length(A_CLAY_MI))
+  checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000,len = arg.length)
+  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
+  
+  # Collect data into a table
+  dt <- data.table(A_CLAY_MI = A_CLAY_MI,
+                   A_C_OF = A_C_OF,
+                   value = NA_real_)
+  
+  # Calculate gravimetric water content at field capacity (%)
+  dt[, theta_fc := 36.97 - 0.35 * A_CLAY_MI]
+  
+  # Calculate gravimetric water content at wilting point (%)
+  dt[, theta_wp := 0.74 + 0.39 * A_CLAY_MI]
+  
+  # Calculate plant water availability (%)
+  dt[, value :=  theta_fc - theta_wp]
+  
+  # Calculate the bulk density (g / cm3)
+  dt[,D_BDS := (1617 - 77.4 * log(A_C_OF) - 3.49 * A_C_OF)*0.001]
+  
+  # Convert gravimetric water holding capacity into volumetric one should be changed into volumetric water content(mm/100mm)
+  dt[, value :=  value * D_BDS]
+  
+  # convert mm / 100mm to fraction (cm3/cm3)
+  dt[, value := value / 100]
+  
+  # return value
+  value <- dt[, value]
+  
+  # return value
+  return(value)
+  
+}
+
+#' Calculate the Plant Available Water (PAW) given the pedotransferfunction of Aina and Periaswamy (1985)  for soil in Nigeria
+#'
+#' @inheritParams sptf_bd0
+#'
+#' @import data.table
+#'
+#' @references Aina, P. O., & Periaswamy, S. P. (1985). ESTIMATING AVAILABLE WATER-HOLDING CAPACITY OF WESTERN NIGERIAN SOILS FROM SOIL TEXTURE AND BULK DENSITY, USING CORE AND SIEVED SAMPLES. Soil Science, 140(1), 55–58. https://doi.org/10.1097/00010694-198507000-00007
+#'
+#' @export
+sptf_paw20 <- function(A_C_OF, A_CLAY_MI, A_SILT_MI) {
+  
+  # add visual bindings
+  theta_wp = theta_fc = D_BDS = NULL
+  
+  # Check input
+  arg.length <-max(length(A_C_OF), length(A_CLAY_MI), length(A_SILT_MI))
+  checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000,len = arg.length)
+  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, len = arg.length)
+  
+  # Collect data into a table
+  dt <- data.table(A_CLAY_MI = A_CLAY_MI,
+                   A_SILT_MI = A_SILT_MI,
+                   A_C_OF = A_C_OF,
+                   value = NA_real_)
+  
+  # Calculate the bulk density (g / cm3)
+  dt[,D_BDS := (1617 - 77.4 * log(A_C_OF) - 3.49 * A_C_OF)*0.001]
+  
+  # Calculate plant water availability (%)
+  dt[, value :=  14.01 + 0.03 * (A_SILT_MI * A_CLAY_MI ) - 8.78 * D_BDS]
+  
+  # convert mm / 100mm to fraction (cm3/cm3)
+  dt[, value := value / 100]
+  
+  # return value
+  value <- dt[, value]
+  
+  # return value
+  return(value)
+  
+}
+#' Calculate the Plant Available Water (PAW) given the pedotransferfunction of Saxton & Rawl et al.2006 
+#'
+#' @inheritParams sptf_bd0
+#'
+#' @import data.table
+#'
+#' @references Saxton, K. E., & Rawls, W. J. (2006). Soil water characteristic estimates by texture and organic matter for hydrologic solutions. Soil Science Society of America Journal, 70(5), 1569–1578. https://doi.org/10.2136/sssaj2005.0117
+#'
+#' @export
+sptf_paw21 <- function(A_SOM_LOI, A_SAND_MI, A_CLAY_MI) {
+  
+  # add visual bindings
+  theta_wp = theta_fc = NULL
+  
+  # Check input
+  arg.length <-max(length(A_SOM_LOI), length(A_SAND_MI), length(A_CLAY_MI))
+  checkmate::assert_numeric(A_SOM_LOI, lower = 0, upper = 100,len = arg.length)
+  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_numeric(A_SAND_MI, lower = 0, upper = 100, len = arg.length)
+  
+  # Collect data into a table (set in units %)
+  dt <- data.table(A_SOM_LOI = A_SOM_LOI * 0.01,
+                   A_SAND_MI = A_SAND_MI * 0.01,
+                   A_CLAY_MI = A_CLAY_MI * 0.01,
+                   value = NA_real_
+                   )
+  
+  # Calculate volumetric water content at plant wilting point (mm / 100mm)
+  dt[, theta_wp := -0.024 * A_SAND_MI + 0.487 * A_CLAY_MI + 0.006 * A_SOM_LOI + 0.005 * A_SAND_MI * A_SOM_LOI - 0.013 * A_CLAY_MI * A_SOM_LOI + 
+       + 0.068 * A_SAND_MI * A_CLAY_MI + 0.031]
+  dt[, theta_wp := theta_wp + 0.14 * theta_wp - 0.02]
+  
+  # Calculate volumetric water content at field capacity (mm / 100mm)
+  dt[, theta_fc := -0.251 * A_SAND_MI + 0.195 * A_CLAY_MI + 0.011 * A_SOM_LOI + 
+       + 0.006 * A_SAND_MI * A_SOM_LOI - 0.027 * A_CLAY_MI * A_SOM_LOI + 0.452 * A_SAND_MI * A_CLAY_MI + 0.299]
+  dt[, theta_fc := theta_fc + 1.283 * theta_fc^2 - 0.374 * theta_fc - 0.015]
+  
+  # Calculate water holding capacity (cm3/cm3)
+  dt[, value :=  theta_fc - theta_wp]
+  
+  # return value
+  value <- dt[, value]
+  
+  # return value
+  return(value)
+  
+}
+
+#' Calculate the Plant Available Water (PAW) given the pedotransferfunction of da Costa et al.2013 for surface soil
+#'
+#' @inheritParams sptf_bd0
+#'
+#' @import data.table
+#'
+#' @references Da Costa, A., Albuquerque, J. A., De Almeida, J. A., Da Costa, A., & Luciano, R. V. (2013). Pedotransfer functions to estimate retention and availability of water in soils of the state of Santa Catarina, Brazil. Revista Brasileira De Ciencia Do Solo, 37(4), 889–910. https://doi.org/10.1590/s0100-06832013000400007
+#'
+#' @export
+sptf_paw22 <- function(A_SOM_LOI, A_SAND_MI, A_CLAY_MI, A_SILT_MI) {
+  
+  # add visual bindings
+  theta_wp = theta_fc = NULL
+  
+  # Check input
+  arg.length <-max(length(A_SOM_LOI), length(A_SAND_MI), length(A_CLAY_MI), length(A_SILT_MI))
+  checkmate::assert_numeric(A_SOM_LOI, lower = 0, upper = 100,len = arg.length)
+  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_numeric(A_SAND_MI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, len = arg.length)
+  
+  # Collect data into a table (set in units %)
+  dt <- data.table(A_SOM_LOI = A_SOM_LOI * 10,
+                   A_SAND_MI = A_SAND_MI * 0.01,
+                   A_CLAY_MI = A_CLAY_MI * 0.01,
+                   A_SILT_MI = A_SILT_MI * 0.01,
+                   value = NA_real_
+                   )
+  
+  # Calculate volumetric water content at field capacity (cm3/cm3)
+  dt[, theta_fc := 0.39 + 0.0044 * A_SAND_MI * A_SOM_LOI + 3.4304 * A_SILT_MI ^ 2 * A_CLAY_MI ^ 2 
+     - 0.5955 * A_SAND_MI ^ 2 * A_SILT_MI ^ 2 - 0.3014 * A_SAND_MI ^ 2 - 0.0012 / A_SAND_MI]
+  
+  # Calculate volumetric water content at plant wilting point (cm3/cm3)
+  dt[, theta_wp := 0.39 + 0.0041 * A_SAND_MI * A_SOM_LOI - 9.649 * A_SAND_MI ^ 2 * A_SILT_MI ^ 2 - 0.403 * A_SAND_MI ^ 2]
+  
+  # Calculate water holding capacity (cm3/cm3)
+  dt[, value :=  theta_fc - theta_wp]
+  
+  # return value
+  value <- dt[, value]
+  
+  # return value
+  return(value)
+  
+}
+
+#' Calculate the Plant Available Water (PAW) given the pedotransferfunction of da Costa et al.2013 for subsurface soil
+#'
+#' @inheritParams sptf_bd0
+#'
+#' @import data.table
+#'
+#' @references Da Costa, A., Albuquerque, J. A., De Almeida, J. A., Da Costa, A., & Luciano, R. V. (2013). Pedotransfer functions to estimate retention and availability of water in soils of the state of Santa Catarina, Brazil. Revista Brasileira De Ciencia Do Solo, 37(4), 889–910. https://doi.org/10.1590/s0100-06832013000400007
+#'
+#' @export
+sptf_paw23 <- function(A_SOM_LOI, A_SAND_MI, A_CLAY_MI, A_SILT_MI) {
+  
+  # the results are out of range
+  # add visual bindings
+  theta_wp = theta_fc = NULL
+  
+  # Check input
+  arg.length <-max(length(A_SOM_LOI), length(A_SAND_MI), length(A_CLAY_MI), length(A_SILT_MI))
+  checkmate::assert_numeric(A_SOM_LOI, lower = 0, upper = 100,len = arg.length)
+  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_numeric(A_SAND_MI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, len = arg.length)
+  
+  # Collect data into a table (set in units %)
+  dt <- data.table(A_SOM_LOI = A_SOM_LOI * 10,
+                   A_SAND_MI = A_SAND_MI * 0.01,
+                   A_CLAY_MI = A_CLAY_MI * 0.01,
+                   A_SILT_MI = A_SILT_MI * 0.01,
+                   value = NA_real_
+  )
+  
+  # Calculate water holding capacity (cm3/cm3)
+  dt[, value := 0.07 + 0.0039 * A_SAND_MI * A_SOM_LOI + 0.163 * A_SILT_MI ^ 2 ]
+  
+  # return value
+  value <- dt[, value]
+  
+  # return value
+  return(value)
+  
+}
+
+#' Calculate the Plant Available Water (PAW) given the pedotransferfunction of Rawl et al.2003 for soil data from US national soil characterization database
+#'
+#' @inheritParams sptf_bd0
+#'
+#' @import data.table
+#'
+#' @references Rawls, W. J., Pachepsky, Y., Ritchie, J. C., Sobecki, T. M., & Bloodworth, H. (2003b). Effect of soil organic carbon on soil water retention. Geoderma, 116(1–2), 61–76. https://doi.org/10.1016/s0016-7061(03)00094-6
+#'
+#' @export
+sptf_paw24 <- function(A_C_OF, A_SAND_MI, A_CLAY_MI) {
+  
+  # add visual bindings
+  theta_wp = theta_fc = x = y = z = NULL
+  
+  # Check input
+  arg.length <-max(length(A_C_OF), length(A_SAND_MI), length(A_CLAY_MI))
+  checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000,len = arg.length)
+  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_numeric(A_SAND_MI, lower = 0, upper = 100, len = arg.length)
+  
+  # Collect data into a table (set in units %)
+  dt <- data.table(A_C_OF = A_C_OF * 0.1,
+                   A_SAND_MI = A_SAND_MI,
+                   A_CLAY_MI = A_CLAY_MI,
+                   value = NA_real_)
+  
+  #add x, y, z as intermediate parameters
+  x = -0.837531 + 0.430183 * A_C_OF
+  y = -1.40744 + 0.0661969 * A_CLAY_MI
+  z = -1.51866 + 0.0393284 * A_SAND_MI
+  
+  # Calculate volumetric water content at field capacity (%)
+  dt[, theta_fc := 29.7528 + 10.3544 * (0.0461615 + 0.290955 * x - 0.0496845 * x ^ 2 
+                                        + 0.00704802 * x ^ 3 + 0.269101 * y - 0.176528 * x * y + 0.0543138 * x ^ 2 * y + 0.1982 * y ^ 2 
+                                        - 0.060699 * y ^ 3 - 0.320249 * z - 0.0111693 * x ^ 2 * z + 0.14104 * y * z + 0.0657345 * x * y * z
+                                        - 0.102026 * y ^ 2 * z - 0.04012 * z ^ 2 + 0.160838 * x * z ^ 2 - 0.121392 * y * z ^ 2 - 0.0616676 * z ^ 3)]
+  
+  # Calculate volumetric water content at plant wilting point (%)
+  dt[, theta_wp := 14.2568 + 7.36318 * (0.06865 + 0.108713 * x - 0.0157225 * x ^ 2 + 0.00102805 * x ^ 3
+                                        + 0.886569 * y - 0.223581 * x * y + 0.0126379 * x ^ 2 * y - 0.017059 * y ^ 2 + 0.0135266 * x * y ^ 2 - 0.0334434 * y ^ 3 
+                                        - 0.0535182 * z - 0.0354271 * x * z - 0.00261313 * x ^ 2 * z - 0.154563 * y * z - 0.0160219 * x * y * z - 0.0400606 * y ^ 2 * z
+                                        - 0.104875 * z ^ 2 + 0.0159857 * x * z ^ 2 - 0.0671656 * y * z ^ 2 - 0.0260699 * z ^ 3)]
+  
+  # Calculate water holding capacity (%)
+  dt[, value :=  theta_fc - theta_wp]
+  
+  #convert water holding capacity(%) into cm3/cm3
+  dt[, value := value / 100]
+  
+  # return value
+  value <- dt[, value]
+  
+  # return value
+  return(value)
+  
+}
+
+
+#' Calculate the Plant Available Water (PAW) given the pedotransfer function from model 6 of Katterer et al.2007 for soil data from Swedish top soil
+#'
+#' @inheritParams sptf_bd0
+#'
+#' @import data.table
+#'
+#' @references Kätterer, T., Andrén, O., & Jansson, P. (2006). Pedotransfer functions for estimating plant available water and bulk density in Swedish agricultural soils. Acta Agriculturae Scandinavica Section B-soil and Plant Science, 56(4), 263–276. https://doi.org/10.1080/09064710500310170
+#'
+#' @export
+sptf_paw25 <- function(A_C_OF, A_SAND_MI, A_CLAY_MI) {
+  
+  # add visual bindings
+  theta_wp = theta_fc = NULL
+  
+  # Check input
+  arg.length <-max(length(A_C_OF), length(A_SAND_MI), length(A_CLAY_MI))
+  checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000,len = arg.length)
+  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_numeric(A_SAND_MI, lower = 0, upper = 100, len = arg.length)
+  
+  # Collect data into a table (set in units %)
+  dt <- data.table(A_C_OF = A_C_OF * 0.1,
+                   A_SAND_MI = A_SAND_MI * 0.01,
+                   A_CLAY_MI = A_CLAY_MI * 0.01,
+                   value = NA_real_
+                   )
+  
+  # Calculate volumetric water content at field capacity (m3/m3)
+  dt[, theta_fc := 0.4384 - 0.3839 * A_SAND_MI + 0.0796 * A_C_OF * A_SAND_MI]
+  
+  # Calculate volumetric water content at plant wilting point (m3/m3)
+  dt[, theta_wp := 0.0086 + 0.4473 * A_CLAY_MI - 0.0157 * A_C_OF * A_CLAY_MI + 0.0123 * A_C_OF * A_SAND_MI]
+  
+  # Calculate water holding capacity (cm3/cm3)
+  dt[, value :=  theta_fc - theta_wp]
+  
+  # return value
+  value <- dt[, value]
+  
+  # return value
+  return(value)
+  
+}
+
+#' Calculate the Plant Available Water (PAW) given the pedotransfer function from model 6 of Katterer et al.2007 for soil data from Swedish subsoil
+#'
+#' @inheritParams sptf_bd0
+#'
+#' @import data.table
+#'
+#' @references Kätterer, T., Andrén, O., & Jansson, P. (2006). Pedotransfer functions for estimating plant available water and bulk density in Swedish agricultural soils. Acta Agriculturae Scandinavica Section B-soil and Plant Science, 56(4), 263–276. https://doi.org/10.1080/09064710500310170
+#'
+#' @export
+sptf_paw26 <- function(A_C_OF, A_SAND_MI, A_CLAY_MI) {
+  
+  # add visual bindings
+  theta_wp = theta_fc = NULL
+  
+  # Check input
+  arg.length <-max(length(A_C_OF), length(A_SAND_MI), length(A_CLAY_MI))
+  checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000,len = arg.length)
+  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_numeric(A_SAND_MI, lower = 0, upper = 100, len = arg.length)
+  
+  # Collect data into a table (set in units %)
+  dt <- data.table(A_C_OF = A_C_OF * 0.1,
+                   A_SAND_MI = A_SAND_MI * 0.01,
+                   A_CLAY_MI = A_CLAY_MI * 0.01,
+                   value = NA_real_
+                   )
+  
+  # Calculate volumetric water content at field capacity (m3/m3)
+  dt[, theta_fc := 0.3692 + 0.0784 * A_CLAY_MI - 0.296 * A_SAND_MI + 0.0355 * A_C_OF + 0.0314 * A_C_OF * A_SAND_MI]
+  
+  # Calculate volumetric water content at plant wilting point (m3/m3)
+  dt[, theta_wp := 0.0379 + 0.4352 * A_CLAY_MI - 0.0213 * A_C_OF * A_CLAY_MI - 0.0118 * A_C_OF * A_SAND_MI]
+  
+  # Calculate water holding capacity (cm3/cm3)
+  dt[, value :=  theta_fc - theta_wp]
+  
+  # return value
+  value <- dt[, value]
+  
+  # return value
+  return(value)
+  
+}
+
+#' Calculate the Plant Available Water (PAW) given the pedotransfer function of Dobarco et al.2019 for soil data from France
+#'
+#' @inheritParams sptf_bd0
+#'
+#' @import data.table
+#'
+#' @references Dobarco, M. Ŕ., Cousin, I., Bas, C. L., & Martín, M. (2019). Pedotransfer functions for predicting available water capacity in French soils, their applicability domain and associated uncertainty. Geoderma, 336, 81–95. https://doi.org/10.1016/j.geoderma.2018.08.022
+#'
+#' @export
+sptf_paw27 <- function(A_C_OF, A_SAND_MI, A_CLAY_MI) {
+  
+  # add visual bindings
+  theta_wp = theta_fc = D_BDS = NULL
+  
+  # Check input
+  arg.length <-max(length(A_C_OF), length(A_SAND_MI), length(A_CLAY_MI))
+  checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000,len = arg.length)
+  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_numeric(A_SAND_MI, lower = 0, upper = 100, len = arg.length)
+  
+  # Collect data into a table (set in units %)
+  dt <- data.table(A_C_OF = A_C_OF, 
+                   A_SAND_MI = A_SAND_MI,
+                   A_CLAY_MI = A_CLAY_MI,
+                   value = NA_real_
+                   )
+  
+  # Calculate the bulk density (g / cm3)
+  dt[,D_BDS := (1617 - 77.4 * log(A_C_OF) - 3.49 * A_C_OF)*0.001]
+  
+  #update the units of SOC content
+  dt[,A_C_OF := A_C_OF * 0.1]
+  
+  # Calculate volumetric water content at field capacity (cm3/cm3)
+  dt[, theta_fc := 0.394 + 0.00229 * A_CLAY_MI - 0.00124 * A_SAND_MI - 0.0758 * D_BDS]
+  
+  # Calculate volumetric water content at plant wilting point (cm3/cm3)
+  dt[, theta_wp := 0.074 + 0.00412 * A_CLAY_MI - 0.000241 * A_SAND_MI + 0.00128 * A_C_OF]
+  
+  # Calculate water holding capacity (cm3/cm3)
+  dt[, value :=  theta_fc - theta_wp]
+  
+  # return value
+  value <- dt[, value]
+  
+  # return value
+  return(value)
+  
+}
+
+#' Calculate the Plant Available Water (PAW) given the pedotransfer function of Gupta and Larson (1979) for soil data from United States
+#'
+#' @inheritParams sptf_bd0
+#'
+#' @import data.table
+#'
+#' @references Gupta, S. C., & Larson, W. E. (1979). Estimating soil water retention characteristics from particle size distribution, organic matter percent, and bulk density. Water Resources Research, 15(6), 1633–1635. https://doi.org/10.1029/wr015i006p01633
+#'
+#' @export
+sptf_paw28 <- function(A_C_OF, A_SOM_LOI, A_SAND_MI, A_CLAY_MI, A_SILT_MI) {
+  
+  # add visual bindings
+  theta_wp = theta_fc = D_BDS = NULL
+  
+  # Check input
+  arg.length <-max(length(A_C_OF), length(A_SOM_LOI), length(A_SAND_MI), length(A_CLAY_MI), length(A_SILT_MI))
+  checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000,len = arg.length)
+  checkmate::assert_numeric(A_SOM_LOI, lower = 0, upper = 100,len = arg.length)
+  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_numeric(A_SAND_MI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, len = arg.length)
+  
+  # Collect data into a table (set in units %)
+  dt <- data.table(A_C_OF = A_C_OF,
+                   A_SOM_LOI = A_SOM_LOI,
+                   A_SAND_MI = A_SAND_MI,
+                   A_CLAY_MI = A_CLAY_MI,
+                   A_SILT_MI = A_SILT_MI,
+                   value = NA_real_
+                   )
+  
+  
+  # Calculate the bulk density (g / cm3)
+  dt[,D_BDS := (1617 - 77.4 * log(A_C_OF) - 3.49 * A_C_OF)*0.001]
+  
+  # Calculate volumetric water content at field capacity (cm3/cm3)
+  dt[, theta_fc := 3.075 * 0.001 * A_SAND_MI + 5.886 * 0.001 * A_SILT_MI + 8.039 * 0.001 * A_CLAY_MI + 2.208 * 0.001 * A_SOM_LOI  - 0.1434 * D_BDS]
+  
+  # Calculate volumetric water content at plant wilting point (cm3/cm3)
+  dt[, theta_wp := -0.059 * 0.001 * A_SAND_MI + 1.142 * 0.001 * A_SILT_MI + 5.766 * 0.001 * A_CLAY_MI + 2.228 * 0.001 * A_SOM_LOI + 2.671 * 0.01 * D_BDS]
+  
+  # Calculate water holding capacity (cm3/cm3)
+  dt[, value :=  theta_fc - theta_wp]
+  
+  # return value
+  value <- dt[, value]
+  
+  # return value
+  return(value)
+  
+}
+
+
+#' Calculate the Plant Available Water (PAW) given the pedotransfer function of Yost and Hartemink (2019) for soil data from United States
+#'
+#' @inheritParams sptf_bd0
+#'
+#' @import data.table
+#'
+#' @references Yost, J. L., & Hartemink, A. E. (2019). Effects of carbon on moisture storage in soils of the Wisconsin Central Sands, USA. European Journal of Soil Science, 70(3), 565–577. https://doi.org/10.1111/ejss.12776
+#'
+#' @export
+sptf_paw29 <- function(A_C_OF, A_SAND_MI, A_CLAY_MI, A_SILT_MI) {
+  
+  # add visual bindings
+  D_BDS = NULL
+  
+  # Check input
+  arg.length <-max(length(A_C_OF), length(A_SAND_MI), length(A_CLAY_MI), length(A_SILT_MI))
+  checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000,len = arg.length)
+  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_numeric(A_SAND_MI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, len = arg.length)
+  
+  # Collect data into a table (set in units %)
+  dt <- data.table(A_C_OF = A_C_OF,
+                   A_SAND_MI = A_SAND_MI,
+                   A_CLAY_MI = A_CLAY_MI,
+                   A_SILT_MI = A_SILT_MI,
+                   value = NA_real_
+                   )
+  
+  # Calculate the bulk density (g / cm3)
+  dt[,D_BDS := (1617 - 77.4 * log(A_C_OF) - 3.49 * A_C_OF)*0.001]
+  
+  #update the units of SOC content
+  dt[,A_C_OF := A_C_OF * 0.1]
+  
+  # Calculate water holding capacity (cm3/cm3)
+  dt[, value :=  -0.1199 + 0.00009 * A_SAND_MI + 0.0040 * A_SILT_MI + 0.0026 * A_CLAY_MI + 0.0729 * D_BDS + 0.0235 * A_C_OF]
+  
+  # return value
+  value <- dt[, value]
+  
+  # return value
+  return(value)
+  
+}
+
+#' Calculate the Plant Available Water (PAW) given the pedotransfer function of chen et al., 2005 about soil in SHanxi and Henan province in China
+#'
+#' @inheritParams sptf_bd0
+#'
+#' @import data.table
+#'
+#' @references 陈晓燕,陆桂华,秦福兴,等. 土壤传递函数法在确定田间持水量中的应用[J]. 河海大学学报（自然科学版）,2005,33(2):170-172. DOI:10.3321/j.issn:1000-1980.2005.02.013.
+#'
+#' @export
+sptf_paw30 <- function(A_SAND_MI, A_CLAY_MI, A_SILT_MI) {
+  
+  # add visual bindings
+  D_BDS = NULL
+  
+  # Check input
+  arg.length <-max(length(A_SAND_MI), length(A_CLAY_MI), length(A_SILT_MI))
+  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_numeric(A_SAND_MI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, len = arg.length)
+  
+  # Collect data into a table (set in units %)
+  dt <- data.table(A_SAND_MI = A_SAND_MI,
+                   A_CLAY_MI = A_CLAY_MI,
+                   A_SILT_MI = A_SILT_MI,
+                   value = NA_real_
+                   )
+  
+  # Calculate water holding capacity (%)
+  dt[, value :=  -2.3533 + 0.06926 * A_SAND_MI + 0.12811 * A_SILT_MI + 1.69426 * A_CLAY_MI]
+  
+  # convert into water holding capacity (cm3/cm3)
+  dt[, value := value / 100]
+  
+  # return value
+  value <- dt[, value]
+  
+  # return value
+  return(value)
+}
+
+
+#' Calculate the Plant Available Water (PAW) given the pedotransfer function about soil in the Balaguer River basin in China
+#'
+#' @inheritParams sptf_bd0
+#'
+#' @import data.table
+#'
+#' @references 房丽晶,高瑞忠,刘廷玺,张阿龙 & 王喜喜.(2020).巴拉格尔河流域土壤传递函数构建与评估. 干旱区研究(05),1156-1165. doi:10.13866/j.azr.2020.05.08.
+#'
+#' @export
+sptf_paw31 <- function(A_C_OF, A_SOM_LOI) {
+  
+  # add visual bindings
+  D_BDS = NULL
+  
+  # Check input
+  arg.length <-max(length(A_SOM_LOI), length(A_C_OF))
+  checkmate::assert_numeric(A_SOM_LOI, lower = 0, upper = 100,len = arg.length)
+  checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000, len = arg.length)
+  
+  # Collect data into a table 
+  dt <- data.table(A_SOM_LOI = A_SOM_LOI * 10, #convert from % to g/kg
+                   A_C_OF = A_C_OF,
+                   value = NA_real_
+                   )
+  
+  # Calculate the bulk density (g / cm3)
+  dt[,D_BDS := (1617 - 77.4 * log(A_C_OF) - 3.49 * A_C_OF)*0.001]
+  
+  # Calculate plant available water (%)
+  dt[, value := 1.73 * A_SOM_LOI - 25.35 * D_BDS + 42.41]
+  
+  # convert into plant available water (cm3/cm3)
+  dt[, value := value / 1000]
+  
+  # return value
+  value <- dt[, value]
+  
+  # return value
+  return(value)
+}
+
+#' Calculate the Plant Available Water (PAW) given the pedotransfer function of chen et al., 2005 about soil in Eastern Tibetan Plateau in China
+#'
+#' @inheritParams sptf_bd0
+#'
+#' @import data.table
+#'
+#' @references 邓建波.(2020).不同土地利用类型土壤水力学参数的传递函数研究(硕士学位论文,四川农业大学).https://kns.cnki.net/KCMS/detail/detail.aspx?dbname=CMFD202201&filename=1021681965.nh
+#'
+#' @export
+sptf_paw32 <- function(A_C_OF, A_SAND_MI, A_SILT_MI) {
+  # By an order of magnitude
+  
+  # add visual bindings
+  D_BDS = theta_fc = theta_wp = NULL
+  
+  # Check input
+  arg.length <-max(length(A_C_OF), length(A_SAND_MI), length(A_SILT_MI))
+  checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000,len = arg.length)
+  checkmate::assert_numeric(A_SAND_MI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, len = arg.length)
+  
+  # Collect data into a table (set in units %)
+  dt <- data.table(A_C_OF = A_C_OF, 
+                   A_SAND_MI = A_SAND_MI,
+                   A_SILT_MI = A_SILT_MI,
+                   value = NA_real_
+  )
+  
+  # Calculate the bulk density
+  # add density (g / cm3)
+  dt[,D_BDS := (1617 - 77.4 * log(A_C_OF) - 3.49 * A_C_OF)*0.001]
+  
+  #agricultural land
+  # Calculate volumetric water content at field capacity (cm3/cm3)
+  dt[, theta_fc := 0.846 - 0.247 * D_BDS - 0.142 * log10(A_SAND_MI)]
+  
+  # Calculate volumetric water content at plant wilting point (cm3/cm3)
+  dt[, theta_wp := 0.357 - 0.219 * D_BDS + 0.111 * log10(A_SILT_MI)]
+  
+  # Calculate water holding capacity (cm3/cm3)
+  dt[, value :=  theta_fc - theta_wp]
+  
+  # return value
+  value <- dt[, value]
+  
+  # return value
+  return(value)
+}
+
+#' Calculate the Plant Available Water (PAW) given the pedotransfer function of chen et al., 2005 about soil in Upper Yangtze River basin in China
+#'
+#' @inheritParams sptf_bd0
+#'
+#' @import data.table
+#'
+#' @references 邓建波.(2020).不同土地利用类型土壤水力学参数的传递函数研究(硕士学位论文,四川农业大学).https://kns.cnki.net/KCMS/detail/detail.aspx?dbname=CMFD202201&filename=1021681965.nh
+#'
+#' @export
+sptf_paw33 <- function(A_C_OF, A_SOM_LOI, A_SAND_MI, A_CLAY_MI) {
+  
+  # the range of parameter should be limited
+  # add visual bindings
+  D_BDS = theta_fc = theta_wp = NULL
+  
+  # Check input
+  arg.length <-max(length(A_C_OF), length(A_SOM_LOI), length(A_SAND_MI), length(A_CLAY_MI))
+  checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000,len = arg.length)
+  checkmate::assert_numeric(A_SOM_LOI, lower = 0, upper = 100,len = arg.length)
+  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_numeric(A_SAND_MI, lower = 0, upper = 100, len = arg.length)
+  
+  # Collect data into a table (set in units %)
+  dt <- data.table(A_C_OF = A_C_OF * 0.1, # to % 
+                   A_SOM_LOI = A_SOM_LOI, 
+                   A_SAND_MI = A_SAND_MI, 
+                   A_CLAY_MI = A_CLAY_MI,
+                   value = NA_real_ 
+                   )
+  
+  # Calculate the bulk density (g / cm3)
+  dt[,D_BDS := (1617 - 77.4 * log(A_C_OF) - 3.49 * A_C_OF)*0.001]
+  
+  # grassland 
+  # Calculate volumetric water content at field capacity (cm3/cm3)
+  dt[, theta_fc := 0.738 - 0.157 * D_BDS + 0.326 * log10(A_SOM_LOI) - 0.24 * log10(A_SAND_MI)]
+  
+  # Calculate volumetric water content at plant wilting point (cm3/cm3)
+  dt[, theta_wp := 1.122 + 0.286 * log10(A_SOM_LOI) - 0.447 * log10(A_SAND_MI) - 0.231 * log10(A_CLAY_MI)]
+  
+  # Calculate water holding capacity (cm3/cm3)
+  dt[, value :=  theta_fc - theta_wp]
+  dt[value < 0, value := 0]
+  
+  # return value
+  value <- dt[, value]
+  
+  # return value
+  return(value)
+}
+
+#' Calculate the Plant Available Water (PAW) given the pedotransfer function of chen et al., 2005 about soil in SHanxi and Henan province in China
+#'
+#' @inheritParams sptf_bd0
+#'
+#' @import data.table
+#'
+#' @references 朱安宁,张佳宝,程竹华.(2003).轻质土壤水分特征曲线估计的简便方法. 土壤通报(04),253-258. doi:10.19336/j.cnki.trtb.2003.04.004.
+#'
+#' @export
+sptf_paw34 <- function(A_C_OF, A_SAND_MI, A_CLAY_MI) {
+  
+  # add visual bindings
+  D_BDS = theta_fc = theta_wp = NULL
+  
+  # Check input
+  arg.length <-max(length(A_C_OF), length(A_SAND_MI), length(A_CLAY_MI))
+  checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000,len = arg.length)
+  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_numeric(A_SAND_MI, lower = 0, upper = 100, len = arg.length)
+  
+  # Collect data into a table
+  dt <- data.table(A_C_OF = A_C_OF,
+                   A_SAND_MI = A_SAND_MI,
+                   A_CLAY_MI = A_CLAY_MI,
+                   value = NA_real_
+                   )
+  
+  # Calculate the bulk density (g / cm3)
+  dt[,D_BDS := (1617 - 77.4 * log(A_C_OF) - 3.49 * A_C_OF)*0.001]
+  
+  # Calculate volumetric water content at field capacity (cm3/cm3) #θ30
+  dt[, theta_fc := 0.445 - 0.00269 * A_SAND_MI]
+  
+  # Calculate volumetric water content at plant wilting point (cm3/cm3) #θ1500
+  dt[, theta_wp := -0.148 - 0.00242 * A_SAND_MI - 0.0044 * A_CLAY_MI + 0.292 * D_BDS]
+  
+  # Calculate water holding capacity (cm3/cm3)
+  dt[, value :=  theta_fc - theta_wp]
+  
+  # return value
+  value <- dt[, value]
+  
+  # return value
+  return(value)
+}
+
+
+#' Estimate PAW based on water retention curve parameters by Sun et al. (2022)
+#'
+#' @inheritParams sptf_bd0
+#'
+#' @import data.table
+#'
+#' @references 孙志祥,邓建波,吕玉娟等.长江上游低山丘陵区土壤水分特征曲线传递函数研究[J].灌溉排水学报,2022,41(06):97-104.DOI:10.13522/j.cnki.ggps.2021609.
+#'
+#' @export
+sptf_paw35 <-  function(A_C_OF, A_SOM_LOI, A_CLAY_MI, A_SILT_MI) {
+  
+  # Add visual bindings
+  theta_sat = theta_res = theta_fc = alfa = n = theta_wp = NULL
+  D_BDS = NULL
+  
+  # set default parameters for this function
+  # boolean argument for top soil (1) or sub-soil (0)
+  mp_wp = 4.2
+  mp_fc = 2.0
+  
+  # Check input
+  arg.length <-max(length(A_C_OF), length(A_SOM_LOI), length(A_CLAY_MI),length(A_SILT_MI))
+  checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000,len = arg.length)
+  checkmate::assert_numeric(A_SOM_LOI, lower = 0, upper = 100,len = arg.length)
+  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, len = arg.length)
+  
+  # Collect data into a table (set in units %)
+  dt <- data.table(A_C_OF = A_C_OF,
+                   A_SOM_LOI = A_SOM_LOI * 10, # to SOM (g/kg)
+                   A_CLAY_MI = A_CLAY_MI,
+                   A_SILT_MI = A_SILT_MI,
+                   value = NA_real_ )
+  
+  # add density (g / cm3)
+  dt[,D_BDS := (1617 - 77.4 * log(A_C_OF) - 3.49 * A_C_OF)*0.001]
+  
+  # Estimate water retention parameters
+  dt[, theta_res := 0.357 - 0.24 * D_BDS - 0.021 * log10(A_SOM_LOI) + 0.042 * log10(A_CLAY_MI) + 0.095 * log10(A_SILT_MI)]
+  dt[, theta_sat := 0.676 - 0.304 * D_BDS + 0.167 * log10(A_SILT_MI) - 0.159 * log10(A_CLAY_MI)]
+  dt[, alfa := 10^(-0.29 - 0.857 * D_BDS)]
+  dt[, n := 10^(0.204 + 0.049 * D_BDS - 0.095 * log10(A_CLAY_MI))]
+  
+  # Calculate volumetric water content at field capacity (cm3/cm3)
+  dt[, theta_fc := pF_curve(head=-1*10^mp_fc, theta_res, theta_sat, alfa, n)]
+  
+  # Calculate volumetric water content at wilting point (cm3/cm3)
+  dt[, theta_wp := pF_curve(head=-1*10^mp_wp, theta_res, theta_sat, alfa, n)]
+  
+  # Calculate water holding capacity (cm3/cm3)
+  dt[, value :=  theta_fc - theta_wp]
+  
+  # return value
+  value <- dt[, value]
+  
+  # return value
+  return(value)
+  
+}
+
+
+
+#' Estimate PAW based on water retention curve parameters by Cui et al. (2021)
+#'
+#' @inheritParams sptf_bd0
+#'
+#' @import data.table
+#'
+#' @references 崔俊芳,邓建波,刘传栋 & 唐翔宇.(2021).若尔盖高寒草甸表层土壤水分特征曲线传递函数研究. 山地学报(04),483-494. doi:10.16089/j.cnki.1008-2786.000613.
+#'
+#' @export
+sptf_paw36 <-  function(A_C_OF, A_SOM_LOI, A_SAND_MI, A_CLAY_MI) {
+  
+  # Add visual bindings
+  theta_sat = theta_res = theta_fc = alfa = n = theta_wp = NULL
+  D_BDS = NULL
+  
+  # set default parameters for this function
+  # boolean argument for top soil (1) or sub-soil (0)
+  mp_wp = 4.2
+  mp_fc = 2.0
+  
+  # Check input
+  arg.length <-max(length(A_C_OF), length(A_SOM_LOI), length(A_SAND_MI), length(A_CLAY_MI))
+  checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000,len = arg.length)
+  checkmate::assert_numeric(A_SOM_LOI, lower = 0, upper = 100,len = arg.length)
+  checkmate::assert_numeric(A_SAND_MI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
+  
+  # Collect data into a table (set in units %)
+  dt <- data.table(A_C_OF = A_C_OF,
+                   A_SOM_LOI = A_SOM_LOI *10, # in g/kg
+                   A_SAND_MI = A_SAND_MI,
+                   A_CLAY_MI = A_CLAY_MI,
+                   value = NA_real_ )
+  
+  # add density (g / cm3)
+  dt[,D_BDS := (1617 - 77.4 * log(A_C_OF) - 3.49 * A_C_OF)*0.001]
+  
+  # Calculate volumetric water content at field capacity (cm3/cm3)
+  dt[, theta_fc := 0.738 - 0.157 * D_BDS + 0.326 * log10(A_SOM_LOI) - 0.24 * log10(A_SAND_MI)]
+  
+  # Calculate volumetric water content at wilting point (cm3/cm3)
+  dt[, theta_wp := 1.122 + 0.286 * log10(A_SOM_LOI) - 0.447 * log10(A_SAND_MI) - 0.231 * log10(A_CLAY_MI)]
+  
+  # Calculate water holding capacity (cm3/cm3)
+  dt[, value :=  theta_fc - theta_wp]
+  dt[value <0, value := 0]
+  
+  # return value
+  value <- dt[, value]
+  
+  # return value
+  return(value)
+  
+}
+
+
