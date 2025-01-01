@@ -1802,6 +1802,7 @@ ptf_mwd_all <- function(dt){
   
   # add visual binding
   p1 = p2 = p3 = p4 = p5 = p6 = p7 = p8 = p9 = p10 = p11 = p12 = p13 = p14 = p15 = p16 = NULL
+  p17 = p18 = p19 = NULL
   A_CLAY_MI = A_SAND_MI = A_SILT_MI = A_SOM_LOI = A_C_OF = A_PH_KCL = A_PH_WA = A_PH_CC = NULL
   num_obs = patterns = ptf_id = id = mwd = NULL
   B_LU_PTFCLASS = A_CEC_CO = A_CACO3_IF = NULL
@@ -1858,6 +1859,9 @@ ptf_mwd_all <- function(dt){
   dt[, p14 := sptf_mwd14(A_SOM_LOI = A_SOM_LOI, A_CLAY_MI = A_CLAY_MI,A_SILT_MI = A_SILT_MI,A_PH_WA = A_PH_WA, A_CACO3_IF = A_CACO3_IF)]
   dt[, p15 := sptf_mwd15(A_C_OF = A_C_OF, A_PH_WA = A_PH_WA)]
   dt[, p16 := sptf_mwd16(A_C_OF = A_C_OF)]
+  dt[, p17 := sptf_mwd17(A_C_OF = A_C_OF,A_CLAY_MI = A_CLAY_MI,A_SILT_MI = A_SILT_MI,A_CACO3_IF = A_CACO3_IF)]
+  dt[, p18 := sptf_mwd18(A_C_OF = A_C_OF)]
+  dt[, p19 := sptf_mwd19(A_SOM_LOI = A_SOM_LOI,A_CLAY_MI = A_CLAY_MI,A_C_OF = A_C_OF)]
   
   # melt the data
   dt2 <- melt(dt, 
