@@ -376,7 +376,9 @@ ptf_bd_all <- function(dt){
     p143 = p144 = p145 = p146 = p147 = p148 = p149 = p150 = p151 = p152 = p153 = NULL
     p154 = p155 = p156 = p157 = p158 = p159 = p160 = p161 = p162 = p163 = p164 = NULL
     p165 = p166 = p167 = p168 = p169 = p170 = p171 = p172 = p173 = p174 = p175 = NULL
-    p176 = p177 = p178 = p179 = p180 = p181 = NULL
+    p176 = p177 = p178 = p179 = p180 = p181 = p182 = p183 = p184 = p185 = p186 = NULL
+    p187 = p188 = p189 = p190 = p191 = p192 = p193 = p194 = p195 = p196 = p197 = NULL
+    p198 = p199 = p200 = p201 = p202 = p203 = p204 = NULL
     num_obs = A_CLAY_MI = A_SAND_MI = A_SILT_MI = A_SOM_LOI = A_C_OF = A_H20_T105 = NULL
     A_DEPTH = B_ALTITUDE = B_SLOPE_DEGREE = B_SLOPE_ASPECT = A_PH_WA = A_CACO3_IF = NULL
     A_N_RT = A_SAND_M50 = A_H2O_T105 = ptf_id = patterns = NULL
@@ -611,6 +613,18 @@ ptf_bd_all <- function(dt){
     dt[, p190 := sptf_bd190(A_SOM_LOI = A_SOM_LOI)]
     dt[, p191 := sptf_bd191(A_SOM_LOI = A_SOM_LOI)]
     dt[, p192 := sptf_bd192(A_SOM_LOI = A_SOM_LOI)]
+    dt[, p193 := sptf_bd193(A_C_OF = A_C_OF, A_SAND_MI = A_SAND_MI,A_DEPTH = A_DEPTH)]
+    dt[, p194 := sptf_bd194(A_SOM_LOI = A_SOM_LOI)]
+    dt[, p195 := sptf_bd195(A_C_OF = A_C_OF, A_CLAY_MI = A_CLAY_MI,A_SILT_MI = A_SILT_MI)]
+    dt[, p196 := sptf_bd196(A_SOM_LOI = A_SOM_LOI,A_DEPTH = A_DEPTH)]
+    dt[, p197 := sptf_bd197(A_SOM_LOI = A_SOM_LOI)]
+    dt[, p198 := sptf_bd198(A_SAND_MI = A_SAND_MI, A_CLAY_MI = A_CLAY_MI)]
+    dt[, p199 := sptf_bd199(A_SOM_LOI = A_SOM_LOI, A_SAND_MI = A_SAND_MI, A_CLAY_MI = A_CLAY_MI, A_N_RT = A_N_RT, A_DEPTH = A_DEPTH)]
+    dt[, p200 := sptf_bd200(A_SOM_LOI = A_SOM_LOI, A_SAND_MI = A_SAND_MI, A_SILT_MI = A_SILT_MI, A_N_RT = A_N_RT, A_DEPTH = A_DEPTH)]
+    dt[, p201 := sptf_bd201(A_C_OF = A_C_OF)]
+    dt[, p202 := sptf_bd202(A_SAND_MI = A_SAND_MI, A_CLAY_MI = A_CLAY_MI,A_C_OF = A_C_OF)]
+    dt[, p203 := sptf_bd203(A_SOM_LOI = A_SOM_LOI)]
+    dt[, p204 := sptf_bd204(A_C_OF = A_C_OF)]
     
     # melt the data
     dt2 <- melt(dt, 
@@ -715,7 +729,6 @@ ptf_bd <- function(A_SOM_LOI = NA_real_, A_C_OF = NA_real_,
   # select only relevant cases
   dt2 <- dt2[!is.na(bd) & bd > 500 & bd < 3000]
   
-
   # add applicability factor given country, continent, depth, land use, and soil type
   dt2[,ap := 0]
   dt2[B_LOC_COUNTRY == country_code, ap := ap + 1]
