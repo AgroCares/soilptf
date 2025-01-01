@@ -1097,7 +1097,9 @@ ptf_paw_all <- function(dt){
   
   # add visual binding
   p1 = p2 = p3 = p4 = p5 = p6 = p7 = p8 = p9 = p10 = p11 = p12 = p13 = p14 = NULL
-  p15 = p16 = A_CLAY_MI = A_SAND_MI = A_SILT_MI = A_SOM_LOI = A_C_OF = A_H20_T105 = NULL 
+  p15 = p16 = p17 = p18 = p19 = p20 = p21 = p22 = p23 = p24 = p25 = p26 = p27 = NULL
+  p28 = p29 = p30 = p31 = p32 = p33 = p34 = p35 = p36 = NULL
+  A_CLAY_MI = A_SAND_MI = A_SILT_MI = A_SOM_LOI = A_C_OF = A_H20_T105 = NULL 
   A_DEPTH = B_ALTITUDE = B_SLOPE_DEGREE = B_SLOPE_ASPECT = A_PH_WA = A_CACO3_IF = NULL
   A_N_RT = A_SAND_M50 = B_SOILTYPE_AGR = D_BDS = topsoil = NULL
   patterns = ptf_id = id = country_code = continent_code = . = ptf_id = nsample = r2 = NULL
@@ -1152,7 +1154,26 @@ ptf_paw_all <- function(dt){
   dt[, p15 := sptf_paw15(A_SOM_LOI = A_SOM_LOI,A_CLAY_MI = A_CLAY_MI,A_SILT_MI = A_SILT_MI)] 
   # # PTF16: table (soilptf::sptf_bouwsteen) is not properly loaded within the function. To be fixed.
   dt[, p16 := sptf_paw16(A_SOM_LOI = A_SOM_LOI,A_CLAY_MI = A_CLAY_MI,A_SILT_MI = A_SILT_MI)]
-  
+  dt[, p17 := sptf_paw17(A_CLAY_MI = A_CLAY_MI,A_C_OF = A_C_OF)]
+  dt[, p18 := sptf_paw18(A_C_OF = A_C_OF,A_CLAY_MI = A_CLAY_MI, A_SILT_MI = A_SILT_MI, A_SAND_MI = A_SAND_MI)]
+  dt[, p19 := sptf_paw19(A_C_OF = A_C_OF,A_CLAY_MI = A_CLAY_MI)]
+  dt[, p20 := sptf_paw20(A_C_OF = A_C_OF,A_CLAY_MI = A_CLAY_MI, A_SILT_MI = A_SILT_MI)]
+  dt[, p21 := sptf_paw21(A_SOM_LOI = A_SOM_LOI,A_CLAY_MI = A_CLAY_MI,A_SAND_MI = A_SAND_MI)]
+  dt[, p22 := sptf_paw22(A_SOM_LOI = A_SOM_LOI,A_CLAY_MI = A_CLAY_MI, A_SILT_MI = A_SILT_MI, A_SAND_MI = A_SAND_MI)]
+  dt[, p23 := sptf_paw23(A_SOM_LOI = A_SOM_LOI,A_CLAY_MI = A_CLAY_MI, A_SILT_MI = A_SILT_MI, A_SAND_MI = A_SAND_MI)]
+  dt[, p24 := sptf_paw24(A_C_OF = A_C_OF,A_CLAY_MI = A_CLAY_MI, A_SAND_MI = A_SAND_MI)]
+  dt[, p25 := sptf_paw25(A_C_OF = A_C_OF,A_CLAY_MI = A_CLAY_MI, A_SAND_MI = A_SAND_MI)]
+  dt[, p26 := sptf_paw26(A_C_OF = A_C_OF,A_CLAY_MI = A_CLAY_MI, A_SAND_MI = A_SAND_MI)]
+  dt[, p27 := sptf_paw27(A_C_OF = A_C_OF,A_CLAY_MI = A_CLAY_MI, A_SAND_MI = A_SAND_MI)]
+  dt[, p28 := sptf_paw28(A_C_OF = A_C_OF,A_SOM_LOI = A_SOM_LOI,A_CLAY_MI = A_CLAY_MI, A_SILT_MI = A_SILT_MI, A_SAND_MI = A_SAND_MI)]
+  dt[, p29 := sptf_paw29(A_C_OF = A_C_OF,A_CLAY_MI = A_CLAY_MI, A_SILT_MI = A_SILT_MI, A_SAND_MI = A_SAND_MI)]
+  dt[, p30 := sptf_paw30(A_CLAY_MI = A_CLAY_MI, A_SILT_MI = A_SILT_MI, A_SAND_MI = A_SAND_MI)]
+  dt[, p31 := sptf_paw31(A_C_OF = A_C_OF,A_SOM_LOI = A_SOM_LOI)]
+  dt[, p32 := sptf_paw32(A_C_OF = A_C_OF,A_SAND_MI = A_SAND_MI, A_SILT_MI = A_SILT_MI)]
+  dt[, p33 := sptf_paw33(A_C_OF = A_C_OF,A_SOM_LOI = A_SOM_LOI,A_CLAY_MI = A_CLAY_MI, A_SAND_MI = A_SAND_MI)]
+  dt[, p34 := sptf_paw34(A_C_OF = A_C_OF,A_CLAY_MI = A_CLAY_MI, A_SAND_MI = A_SAND_MI)]
+  dt[, p35 := sptf_paw35(A_C_OF = A_C_OF,A_SOM_LOI = A_SOM_LOI,A_CLAY_MI = A_CLAY_MI, A_SILT_MI = A_SILT_MI)]
+  dt[, p36 := sptf_paw36(A_C_OF = A_C_OF,A_SOM_LOI = A_SOM_LOI,A_CLAY_MI = A_CLAY_MI, A_SAND_MI = A_SAND_MI)]
   
   # melt the data
   dt2 <- melt(dt, 
