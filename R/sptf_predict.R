@@ -2980,7 +2980,7 @@ ptf_pmn_all <- function(dt){
   A_C_OF = A_CLAY_MI = A_SAND_MI = A_SILT_MI = A_N_RT = A_PH_CC = A_CEC_CO = NULL
   A_PH_KCL = A_PH_WA = A_PH_CC= pmn = A_P_AL = NULL
   num_obs = A_SOM_LOI = p1_p = p1 = p2 = p3 = p4 = p5 = p6 = p7 = p8 = p9 = p10 = NULL
-  p11 = p12 = p13 = p14 = p15 = p16 = p17 = p18 = p19 = NULL
+  p11 = p12 = p13 = p14 = p15 = p16 = p17 = p18 = p19 = p20 = p21 = p22 = p23 = p24 = p25 = NULL
   patterns = ptf_id = id = NULL
   
   # make local copy
@@ -3046,6 +3046,14 @@ ptf_pmn_all <- function(dt){
   dt[, p17 := sptf_pmn17(A_C_OF = A_C_OF, A_PH_CC = A_PH_CC)]
   dt[, p18 := sptf_pmn18(A_C_OF = A_C_OF, A_PH_CC = A_PH_CC)]
   dt[, p19 := sptf_pmn19(A_C_OF = A_C_OF, A_CLAY_MI = A_CLAY_MI)]
+  
+  # expand with functions from Ciu Huyeng
+  dt[, p20 := sptf_pmn20(A_C_OF = A_C_OF,A_CLAY_MI = A_CLAY_MI)]
+  dt[, p21 := sptf_pmn21(A_C_OF = A_C_OF, t = 7)]
+  dt[, p22 := sptf_pmn22(A_C_OF = A_C_OF, A_N_RT = A_N_RT, t = 7)]
+  dt[, p23 := sptf_pmn23(A_C_OF = A_C_OF, A_N_RT = A_N_RT, A_CN_FR = A_CN_FR, A_PH_WA = A_PH_WA, A_CEC_CO = A_CEC_CO, A_CLAY_MI = A_CLAY_MI)]
+  dt[, p24 := sptf_pmn24(A_N_RT = A_N_RT, t = 7)]
+  dt[, p25 := sptf_pmn25(A_C_OF = A_C_OF, t = 7)]
   
   # melt the data
   dt2 <- melt(dt, 
