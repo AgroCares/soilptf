@@ -7070,7 +7070,7 @@ sptf_bd194 <- function(A_SOM_LOI) {
                    A_SOM_LOI = A_SOM_LOI * 10, # convert to g/kg
                    value = NA_real_)
   
-  # estimate soil density in kg / m3 (n = 27, R2 = 0.86.3)
+  # estimate soil density in kg / m3 (n = 27, R2 = 0.863)
   # for peatland
   dt[, value := exp(0.373 - 0.0028 * A_SOM_LOI)]
   
