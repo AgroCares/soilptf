@@ -717,6 +717,136 @@ sptf_mwd16 <- function(A_C_OF) {
   return(value)
   
 }
+
+#' Calculate the Mean Weight Diameter
+#'
+#' Calculate the Mean Weight Diameter for agricultural soils (0-10cm) in Tunesia given the pedotransferfunction of Gomez et al. (2013)
+#'
+#' @inheritParams sptf_bd0
+#' 
+#' @import data.table
+#' 
+#' @references Gomez et al., (2013) Laboratory Vis–NIR spectroscopy as an alternative method for estimating the soil aggregate stability indexes of Mediterranean soils
+#'
+#' @export
+sptf_mwd17 <- function(A_C_OF,A_CLAY_MI,A_SILT_MI, A_CACO3_IF) {
+  
+  # add visual binding
+  B_SOILTYPE =  A_SAND_MI = NULL
+  
+  # Check input
+  arg.length <- max(length(A_C_OF),length(A_CLAY_MI),length(A_SILT_MI),length(A_CACO3_IF))
+  checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000, any.missing = FALSE,len = arg.length)
+  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_numeric(A_SILT_MI, lower = 0, upper = 100, len = arg.length)
+  checkmate::assert_numeric(A_CACO3_IF, lower = 0, upper = 15, len = arg.length)
+  
+  # Collect data into a table (SOC and mineralogy in g/kg)
+  dt <- data.table(A_C_OF = A_C_OF,
+                   A_CLAY_MI = A_CLAY_MI * 10,
+                   A_SILT_MI = A_SILT_MI * 10,
+                   A_CACO3_IF = A_CACO3_IF * 10,
+                   value = NA_real_)
+  
+  # add mean A_CACO3 when the input missing
+  dt[is.na(A_CACO3_IF), A_CACO3_IF := 65]
+  
+  # estimate Mean Weight Diameter in mm (r = 0.6, n = 113). Taking mean iron concentration(1.1g/100g)
+  dt[, value := 0.63 + 0.0031 * A_SILT_MI + 0.00065 * A_CLAY_MI + 0.0005 * A_CACO3_IF - 0.044 * A_C_OF + 0.37 * 1.1 ]
+  
+  # return value
+  value <- dt[, value]
+  
+  # return value
+  return(value)
+  
+}
+
+
+#' Calculate the Mean Weight Diameter
+#'
+#' Calculate the Mean Weight Diameter for Qiyang, Hunan province in China 
+#'
+#' @inheritParams sptf_bd0
+#' 
+#' @import data.table
+#' 
+#' @references Mustafa, A., Xu, M., Shah, S. a. A., Abrar, M., Sun, N., Wang, B., Cai, Z., Saeed, Q., Naveed, M., Mehmood, K., & Núñez‐Delgado, A. (2020c). Soil aggregation and soil aggregate stability regulate organic carbon and nitrogen storage in a red soil of southern China. Journal of Environmental Management, 270, 110894. https://doi.org/10.1016/j.jenvman.2020.110894
+#'
+#' @export
+sptf_mwd18 <- function(A_C_OF) {
+  
+  # add visual binding
+  B_SOILTYPE =  A_SAND_MI = NULL
+  
+  # Check input
+  arg.length <- max(length(A_C_OF))
+  checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000, any.missing = FALSE,len = arg.length)
+  
+  # Collect data into a table (SOC in g/kg)
+  dt <- data.table(A_C_OF = A_C_OF,
+                   value = NA_real_)
+  
+  # estimate Mean Weight Diameter in mm (r = 0.689, n = 9). Taking mean iron concentration(1.1g/100g)
+  dt[, value := 0.454 + 0.008 * A_C_OF]
+  
+  # return value
+  value <- dt[, value]
+  
+  # return value
+  return(value)
+  
+}
+
+#' Calculate the Mean Weight Diameter
+#'
+#' Calculate the Mean Weight Diameter for agricultural soils in Fars province, which is located in the south-central region of Iran
+#'
+#' @inheritParams sptf_bd0
+#' 
+#' @import data.table
+#' 
+#' @references Mina, M., Rezaei, M., Sameni, A., Riksen, M., & Ritsema, C. (2023). Estimating the indices of soil erodibility to wind erosion using pedo- and spectro-transfer functions in calcareous soils. Geoderma, 438, 116612. https://doi.org/10.1016/j.geoderma.2023.116612
+#'
+#' @export
+sptf_mwd19 <- function(A_SOM_LOI, A_CLAY_MI, A_C_OF) {
+  
+  # add visual binding
+  B_SOILTYPE =  A_SAND_MI = NULL
+  
+  # Check input
+  arg.length <- max(length(A_SOM_LOI),length(A_CLAY_MI), length(A_C_OF))
+  checkmate::assert_numeric(A_SOM_LOI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
+  checkmate::assert_numeric(A_CLAY_MI, lower = 0, upper = 100, any.missing = FALSE,len = arg.length)
+  checkmate::assert_numeric(A_C_OF, lower = 0, upper = 1000, any.missing = FALSE,len = arg.length)
+  
+  
+  # Collect data into a table (SOC and mineralogy in g/kg)
+  dt <- data.table(A_SOM_LOI = A_SOM_LOI,
+                   A_CLAY_MI = A_CLAY_MI,
+                   A_C_OF = A_C_OF, 
+                   value = NA_real_)
+  
+  #predict shear strength(kPa)
+  SS = sptf_sss3(A_SOM_LOI,A_CLAY_MI)
+  #convert to kg/cm2
+  SS = SS * 0.0102 
+  # estimate penetration (MPa)
+  PR = soilptf::pr1(A_C_OF, A_CLAY_MI)
+  # convert to kg/cm2
+  PR = PR * 10.2
+  
+  # estimate Mean Weight Diameter in mm . 
+  dt[, value := 0.3 + 0.08 * SS + 0.06 * A_SOM_LOI + 0.06 * PR + 0.002 * A_CLAY_MI]
+  
+  # return value
+  value <- dt[, value]
+  
+  # return value
+  return(value)
+  
+}
+
 # see paper of Purushothaman et al. (2022) for 17 PTFs
 # see Bhattacharya, https://doi.org/10.1002/agj2.20469
 # le bissonnais, gomez, annabi
