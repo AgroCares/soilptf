@@ -191,3 +191,15 @@
 190;NL;EU;variable;agriculture;;;;a_som_loi;boekel_1961;https://edepot.wur.nl/259006
 191;NL;EU;variable;agriculture;;;;a_som_loi;hooghoudt_1945;https://edepot.wur.nl/259006
 192;PL;EU;variable;variable;;52;0,78;a_som_loi;bryk_2023;https://doi.org/10.3390/s23041852
+193;CN;AS;variable;agriculture;20;146;0.717;a_c_of||a_sand_mi||a_depth;wang_2018;http://dx.chinadoi.cn/10.16360/j.cnki.jbnuns.2018.03.015
+194;CN;AS;peat;variable;;27;0.863;a_som_loi;han_2016;http://dx.chinadoi.cn/10.11766/trxb201504200151
+195;CN;AS;variable;variable;695;;;a_c_of||a_clay_mi||a_silt_mi;men_2008;http://dx.chinadoi.cn/10.3321/j.issn:0564-3945.2008.01.006
+196;CN;AS;variable;variable;;408;0.93;a_som_loi||a_depth;han_2014;http://dx.chinadoi.cn/10.3969/j.issn.1671-1785.2014.02.013
+197;CN;AS;variable;variable;;408;0.912;a_som_loi||a_depth;han_2014;http://dx.chinadoi.cn/10.3969/j.issn.1671-1785.2014.02.013
+198;CN;AS;variable;variable;20;86;0.44;a_sand_mi||a_clay_mi;yi_2017;http://dx.chinadoi.cn/10.6041/j.issn.1000-1298.2017.04.026
+199;CN;AS;variable;variable;;148;0.40;a_som_loi||a_sand_mi||a_clay_mi||a_n_rt||a_depth;li_2017;http://dx.chinadoi.cn/10.3969/j.issn.1003-6563.2017.05.014
+200;CN;AS;variable;variable;;104;0.77;a_som_loi||a_sand_mi||a_silt_mi||a_n_rt||a_depth;li_2018;http://dx.chinadoi.cn/10.7515/JEE182021
+201;CN;AS;variable;nature;100;164;0.60;a_c_of;di_2021;http://dx.chinadoi.cn/10.19336/j.cnki.trtb.2020101203
+202;BR;SA;variable;variable;;2829;0.43;a_sand_mi||a_silt_mi||a_c_of;reis_2023;ttps://doi.org/10.1590/1678-992x-2022-0255
+203;PL;EU;variable;variable;;319;0,81;a_som_loi;bryk_2023;https://doi.org/10.3390/s23041852
+204;US;NA;variable;variable;;55000;0.68;a_c_of;adbelbaki_2018;https://doi.org/10.1016/j.asej.2016.12.002
