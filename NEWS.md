@@ -1,7 +1,18 @@
 # Changelog soilptf
-## Version 0.5.3 2023-05-17
+
+## Version 0.5.3 2025-01-01
+
+### Added
+* add ptfs bd189 to bd204 for bulk density
+* add ptfs paw17 to paw36 for plant available water
+* add ptfs mwd17 to mwd19 for mean weight diameter
+* add ptfs pmn21 to pmn25 for potentially mineralisable nitrogen
+* add ptfs ef1 to ef6 for erodibility fraction
+* add ptfs mb1 to mb5 for microbial biomass
+
 ### Changed
 * Improved the function input documentation
+* updated package tables `sptf_bulkdensity` and `sptf_soilproperties`
 
 ## Version 0.5.2  2023-05-10
 
@@ -14,25 +25,25 @@
 
 ## Version 0.5.1  2023-05-09
 
-# Fixed
+### Fixed
 * NAm and SAm as abbreviation for North and South America causes errors due to confusion with NA, issue #3
 * replace `assert_int` with `assert_integer` for years in `sptf_cdec1`, issue #26
 * ensure correct CN ratios in `sptf_cdec1`, issue #26
 
-# Changed
+### Changed
 * all elements for A_CACO3_MI replaced with A_CACO3_IF, issue #30
 
-# Added
+### Added
 * options for parameter `B_SOILCLASS_USDA` in `sptf_parameters`, issue #23
 * add ptfs cec75, cec76 and cec77
 
 ## Version 0.5.0  2023-04-29
 
-## Added
+### Added
 * add vignette `how to contribute`
 * add vignette `introduction`
 
-## Fixed
+### Fixed
 * add missing id in wrapper functions `ptf_xxx_all'
 * add mineralogy check in `sptf_textureclass` and replace missing input when 2 of the 3 inputs are known.
 
@@ -67,6 +78,7 @@
 * all added checkmate functions were updated
 
 ## Version 0.2.1 2023-04-24
+
 ### Fixed
 * summing and rounding error in when checking that `A_SILT_MI`, `A_CLAY_MI`, and 
 `A_SAND_MI` never exceed 100 resolving #18
@@ -87,21 +99,21 @@
 ### Changed
 * various scripts from previous branches that were not fully checked
 
-# Version 0.1.1 2023-04-11
-## Fixed
+## Version 0.1.1 2023-04-11
+### Fixed
 * package being uninstallable due to dependency on EUptf2
 
-## Changed
+### Changed
 * `sptf_whc7` does not work due to missing dependency (EUptf2)
 
-# Version 0.1.0.9000 2023-03-15
-## Added
+## Version 0.1.0.9000 2023-03-15
+### Added
 * `sptf_parameters` a table with data on parameters used within the package
 * functions to facilitate checkmates with `sptf_parameters` (`check_enum()`, 
 `check_numeric`, `get_minval()`, `get_maxval()`, `enum_opts()`)
 * manuals for whc and pmn functions
 
-## Changed
+### Changed
 * checkmates to use `sptf_parameters` instead of hardcoding min and maxvalues in
 each function
 * export whc and pmn ptf's in NAMESPACE
