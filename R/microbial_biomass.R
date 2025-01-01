@@ -97,7 +97,7 @@ sptf_mb2 <- function(A_SOM_LOI, A_CLAY_MI, A_PH_CC) {
 sptf_mb3 <- function(A_C_OF) {
   
   # add visal bindings
-  mbc = NULL
+  mbc = D_BDS = NULL
   
   # Check input
   arg.length <- max(length(A_C_OF))

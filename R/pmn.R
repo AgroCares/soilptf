@@ -1013,7 +1013,6 @@ sptf_pmn22 <- function(A_C_OF, A_N_RT, t = 7) {
 #' The mineralized N is measured by released ammonium 
 #' 
 #' @inheritParams sptf_bd0
-#' @param t (numeric) Length of incubation period (days). 
 #' 
 #' @import data.table
 #' 

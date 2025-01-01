@@ -6975,7 +6975,7 @@ sptf_bd191 <- function(A_SOM_LOI) {
 sptf_bd192 <- function(A_SOM_LOI) {
   
   # add visual bindings
-  v1 = v2 = v3 = v4 = v5 = v6 = id = NULL
+  v1 = v2 = v3 = v4 = v5 = v6 = id = A_C_OF = NULL
   
   # Check input
   checkmate::assert_numeric(A_SOM_LOI, lower = 0, upper = 100)
@@ -7280,6 +7280,9 @@ sptf_bd199 <- function(A_SOM_LOI, A_SAND_MI, A_CLAY_MI, A_N_RT, A_DEPTH) {
 #'
 #' @export
 sptf_bd200 <- function(A_SOM_LOI, A_SAND_MI, A_SILT_MI, A_N_RT, A_DEPTH) {
+  
+  # add visual bindings
+  v1 = v2 = v3 = v4 = NULL
   
   # Check input
   arg.length <- max(length(A_SOM_LOI), length(A_SAND_MI), length(A_SILT_MI), length(A_N_RT), length(A_DEPTH))

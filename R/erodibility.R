@@ -148,6 +148,8 @@ sptf_ef3 <- function(A_CLAY_MI,A_SILT_MI,A_C_OF) {
 #' @export
 sptf_ef4 <- function(A_CLAY_MI, A_SAND_MI, A_SOM_LOI) {
   
+  # add visual bindings
+  v1 = v2 = NULL
   
   # Check input
   arg.length <- max(length(A_CLAY_MI), length(A_SAND_MI), length(A_SOM_LOI))
